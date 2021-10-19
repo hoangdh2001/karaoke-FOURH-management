@@ -1,0 +1,105 @@
+package entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class MatHang {
+	@Id
+	private String maMatHang;
+	@Column(columnDefinition = "nvarchar(255)", nullable = false)
+	private String tenMatHang;
+	@ManyToOne
+	@JoinColumn(name = "maLoaiDichVu", nullable = false)
+	private LoaiDichVu loaiDichVu;
+	private int sLTonKho;
+	@Column(columnDefinition = "money", nullable = false)
+	private double donGia;
+	/**
+	 * @param maMatHang
+	 * @param tenMatHang
+	 * @param loaiDichVu
+	 * @param sLTonKho
+	 * @param donGia
+	 */
+	public MatHang(String maMatHang, String tenMatHang, LoaiDichVu loaiDichVu, int sLTonKho, double donGia) {
+		this.maMatHang = maMatHang;
+		this.tenMatHang = tenMatHang;
+		this.loaiDichVu = loaiDichVu;
+		this.sLTonKho = sLTonKho;
+		this.donGia = donGia;
+	}
+	/**
+	 * 
+	 */
+	public MatHang() {
+	}
+	/**
+	 * @return the maMatHang
+	 */
+	public String getMaMatHang() {
+		return maMatHang;
+	}
+	/**
+	 * @param maMatHang the maMatHang to set
+	 */
+	public void setMaMatHang(String maMatHang) {
+		this.maMatHang = maMatHang;
+	}
+	/**
+	 * @return the tenMatHang
+	 */
+	public String getTenMatHang() {
+		return tenMatHang;
+	}
+	/**
+	 * @param tenMatHang the tenMatHang to set
+	 */
+	public void setTenMatHang(String tenMatHang) {
+		this.tenMatHang = tenMatHang;
+	}
+	/**
+	 * @return the loaiDichVu
+	 */
+	public LoaiDichVu getLoaiDichVu() {
+		return loaiDichVu;
+	}
+	/**
+	 * @param loaiDichVu the loaiDichVu to set
+	 */
+	public void setLoaiDichVu(LoaiDichVu loaiDichVu) {
+		this.loaiDichVu = loaiDichVu;
+	}
+	/**
+	 * @return the sLTonKho
+	 */
+	public int getsLTonKho() {
+		return sLTonKho;
+	}
+	/**
+	 * @param sLTonKho the sLTonKho to set
+	 */
+	public void setsLTonKho(int sLTonKho) {
+		this.sLTonKho = sLTonKho;
+	}
+	/**
+	 * @return the donGia
+	 */
+	public double getDonGia() {
+		return donGia;
+	}
+	/**
+	 * @param donGia the donGia to set
+	 */
+	public void setDonGia(double donGia) {
+		this.donGia = donGia;
+	}
+	@Override
+	public String toString() {
+		return "MatHang [maMatHang=" + maMatHang + ", tenMatHang=" + tenMatHang + ", loaiDichVu=" + loaiDichVu
+				+ ", sLTonKho=" + sLTonKho + ", donGia=" + donGia + "]";
+	}
+}
