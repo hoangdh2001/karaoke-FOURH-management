@@ -7,14 +7,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import gui.component.PanelLogin;
-import gui.dialog.Message;
-import gui.dialog.Message2;
+import gui.component.PanelForm;
 import gui.swing.image.BackgroundImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_DangNhap2 extends JFrame {
@@ -25,24 +21,26 @@ public class GD_DangNhap2 extends JFrame {
     private static final long serialVersionUID = 1L;
     private BackgroundImage bg;
     private MigLayout layout;
-    private PanelLogin form;
+    private PanelForm form;
 
     public GD_DangNhap2(String title) {
         super(title);
         initComponents();
-        buidMain();
+        buidGD_DangNhap();
     }
-
-    private void buidMain() {
+    /**
+     * Xây dựng giao diện đăng nhập
+     */
+    private void buidGD_DangNhap() {
         bg = new BackgroundImage(new ImageIcon(getClass().getResource("/icon/background2.jpg")), new Color(0, 0, 0, 0.7f));
         setContentPane(bg);
         setLocationRelativeTo(null);
-        layout = new MigLayout("fill", "push[center]push");
-        form = new PanelLogin();
+        layout = new MigLayout("fill", "push[center]push"); // layout hiện thị các thành phần ở giữa
+        form = new PanelForm();
         form.login(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                form.showMessage(gui.component.Message.MessageType.SUCCESS, "Test message");
+                form.showMessage(gui.component.Message.MessageType.SUCCESS, "Đăng nhập thành công");
                 // Dừng lại 2s để open GD_Chính
                 new Thread(new Runnable() {
                     @Override

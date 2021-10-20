@@ -23,38 +23,44 @@ import gui.swing.menu.PopupMenu;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_Chinh extends JFrame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Animator animator;
-	private Menu menu;
-	private Header header;
-	private Content content;
-	public GD_Chinh(String title) {
-		super(title);
-		buidGD_Chinh();
-	}
-	
-	private void buidGD_Chinh() {
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setContentPane(createBackground());
-		pack();
-		setLocationRelativeTo(null);
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Animator animator; // thực thi animation
+    private Menu menu; // thành phân nav kiểu menu chọn nội dung hiện thị
+    private Header header; // thành phần header hiện thi thông tin nhân viên
+    private Content content; // thành phần content chứa nội dung
+    public GD_Chinh(String title) {
+	super(title);
+	buidGD_Chinh();
+    }
+    /**
+     * Xây dựng GD_Chính
+     */
+    private void buidGD_Chinh() {
+	setDefaultCloseOperation(EXIT_ON_CLOSE);
+	setContentPane(createBackground());
+	pack();
+	setLocationRelativeTo(null);
 		
-	}
-	
-	private JPanel createBackground() {
-		JPanel background = new JPanel();
-		background.setPreferredSize(new Dimension(1400, 800));
-		MigLayout layout;
-		background.setLayout(layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0"));
-		background.setBackground(new Color(245, 245, 245));
+    }
+    /**
+     * Tạo nên chứa cái thành phần header, nav dọc kiểu menu, content
+     * @return JPanel background
+     */
+    private JPanel createBackground() {
+	JPanel background = new JPanel();
+	background.setPreferredSize(new Dimension(1400, 800));
+	MigLayout layout;
+        // layout 2 cột 1 dòng
+	background.setLayout(layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0")); 
+	background.setBackground(new Color(245, 245, 245));
 		
-		background.add(createNav(), "w 230!, spany 2");
-		background.add(createHeader(), "h 50!, wrap");
-		background.add(createContent(), "w 100%, h 100%");
-		TimingTarget target = new TimingTargetAdapter() {
+	background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
+	background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
+	background.add(createContent(), "w 100%, h 100%"); // content full
+        TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
                 double width;
@@ -74,10 +80,11 @@ public class GD_Chinh extends JFrame {
             }
 
         };
-        animator = new Animator(500, target);
-        animator.setResolution(0);
-        animator.setDeceleration(0.5f);
-        animator.setAcceleration(0.5f);
+        animator = new Animator(500, target); // thực thi sư kiện thời gian trong 5s
+        animator.setResolution(0); // Mượt
+        animator.setDeceleration(0.5f); // giảm tốc 50%
+        animator.setAcceleration(0.5f); // tăng tốc 50% suy ra bình thường
+        // Khi click vào nút menu trên thành header sẽ mở menu rộng ra
         header.addMenuEvent(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -90,51 +97,62 @@ public class GD_Chinh extends JFrame {
                 }
             }
         });
-		return background;
-	}
-	
-	private Header createHeader() {
-		header = new Header();
-		return header;
-	}
-	
-	private Menu createNav() {
-		menu = new Menu();
+        return background;
+    }
+    /**
+     * Tạo header bào gồm hiện thị thông tin nhân viên, loại nhân viên
+     * Thời gian
+     * @return JPanel header
+     */
+    private Header createHeader() {
+	header = new Header();
+	return header;
+    }
+    /**
+     * Tạo menu gồm menuItem and subMenu
+     * Từng index là để show nột dung
+     * @return nav
+     */
+    private Menu createNav() {
+        menu = new Menu();
         menu.addEvent(new EventMenuSelected() {
-            @Override
-            public void menuSelected(int menuIndex, int subMenuIndex) {
-                System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
-                switch (menuIndex) {
-                    case 0:
-                        if(subMenuIndex == 0)
-                            content.showForm(new GD_SoDoPhongHat());
-                        else if(subMenuIndex == 1)
-                            content.showForm(new GD_DanhSachPhong());
-                        break;
-                    case 1:
-                        content.showForm(new GD_DatPhong());
-                        break;
-                    case 2:
-                        content.showForm(new GD_KhachHang());
-                        break;
-                    case 3:
-                        content.showForm(new GD_HoaDon());
-                        break;
-                    case 4:
-                        content.showForm(new GD_NhanVien());
-                        break;
-                    default:
-                        break;
-                }
-                if(menuIndex == 5) {
-                	if(subMenuIndex == 0)
-                    	content.showForm(new GD_ThongKeDoanhThu());
-                    else if(subMenuIndex == 1) 
-                    	content.showForm(new GD_ThongKeHangHoa());
+        @Override
+        public void menuSelected(int menuIndex, int subMenuIndex) {
+//            System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
+            switch (menuIndex) {
+                case 0:
+                    if(subMenuIndex == 0)
+                        content.showForm(new GD_SoDoPhongHat());
+                    else if(subMenuIndex == 1)
+                        content.showForm(new GD_DanhSachPhong());
+                    break;
+                case 1:
+                    content.showForm(new GD_DatPhong());
+                    break;
+                case 2:
+                    content.showForm(new GD_KhachHang());
+                    break;
+                case 3:
+                    content.showForm(new GD_HoaDon());
+                    break;
+                case 4:
+                    content.showForm(new GD_NhanVien());
+                    break;
+                case 5:
+                    if(subMenuIndex == 0)
+                        content.showForm(new GD_ThongKeDoanhThu());
+                    else if(subMenuIndex == 1)
+                        content.showForm(new GD_ThongKeHangHoa());
+                    break;
+                default:
+                    break;
                 }
             }
         });
+        
+        // mở cửa sổ nhỏ khi menu đóng
         menu.addEventShowPopup(new EventShowPopupMenu() {
+            @Override
             public void showPopup(Component com) {
                 MenuItem item = (MenuItem) com;
                 PopupMenu popup = new PopupMenu(GD_Chinh.this, item.getIndex(), item.getEventSelected(), Color.WHITE, item.getMenu().getSubMenu());
@@ -145,13 +163,17 @@ public class GD_Chinh extends JFrame {
             }
         });
         menu.initMenuItem();
-		return menu;
-	}
-	
-	private Content createContent() {
-		content = new Content();
-		content.setBackground(new Color(245, 245, 245));
-		content.showForm(new GD_SoDoPhongHat());
-		return content;
-	}
+	return menu;
+    }
+    /**
+     * Tạo ngăn hiện lên nội dung
+     * @return JPanel content
+     */
+    private Content createContent() {
+	content = new Content();
+	content.setBackground(new Color(245, 245, 245));
+	content.showForm(new GD_SoDoPhongHat());
+	return content;
+    }
 }
+ 

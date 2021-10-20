@@ -33,7 +33,6 @@ gui\GD_Chinh.class
 gui\swing\button\Button$2.class
 gui\GD_DangNhap$5.class
 gui\swing\icon\IconCode.class
-gui\component\PanelVerifyCode.class
 gui\swing\menu\MenuItem.class
 gui\swing\scrollbar\ScrollBarCustom.class
 gui\swing\menu\MenuItem$1.class
@@ -44,7 +43,6 @@ gui\model\ModelMenu.class
 gui\dialog\Message$3.class
 gui\GD_DangNhap$10.class
 gui\event\EventShowPopupMenu.class
-gui\component\PanelForm$5.class
 gui\dialog\Message2$3.class
 gui\dialog\Message$2.class
 gui\GD_ThongKeHangHoa.class
@@ -94,6 +92,7 @@ gui\dialog\Message2$4.class
 gui\GD_DangNhap$9.class
 gui\swing\button\ButtonOutLine.class
 gui\GD_Chinh$2.class
+gui\component\PanelLogin$5.class
 gui\component\PanelCover.class
 gui\swing\menu\PopupMenu.class
 gui\dialog\Message$7.class

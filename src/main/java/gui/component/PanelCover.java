@@ -11,7 +11,6 @@ import java.text.DecimalFormat;
 import net.miginfocom.swing.MigLayout;
 
 public class PanelCover extends BackgroundImage {
-
     /**
      *
      */
@@ -33,7 +32,9 @@ public class PanelCover extends BackgroundImage {
         initComponents();
         buildPanelCover();
     }
-
+    /**
+     * Xây dựng pane cover
+     */
     private void buildPanelCover() {
         layout = new MigLayout("wrap", "push[center]push", "push[]10[]10[]push");
         setLayout(layout);
@@ -51,10 +52,10 @@ public class PanelCover extends BackgroundImage {
         slogan1.setFont(new Font("sansserif", Font.ITALIC, 15));
         slogan1.setForeground(Color.WHITE);
         add(slogan1);
+        
     }
 
     private void initComponents() {
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -70,8 +71,8 @@ public class PanelCover extends BackgroundImage {
     public void forgotPassLeft(double v) {
         v = Double.valueOf(df.format(v));
         login(false);
-        layout.setComponentConstraints(title, "pad 0 -" + v + "% 0 0");
-        layout.setComponentConstraints(slogan, "pad 0 -" + v + "% 0 0");
+        layout.setComponentConstraints(title, "pad 0 -" + v + "% 0 0"); // Đặt phần đệm cho thành phần theo pixel tuyệt đối, thành phần sẽ không bị ảnh hưởng đến layout
+        layout.setComponentConstraints(slogan, "pad 0 -" + v + "% 0 0"); // pad = trên trái dưới phải
         layout.setComponentConstraints(slogan1, "pad 0 -" + v + "% 0 0");
     }
     

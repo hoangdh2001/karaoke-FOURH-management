@@ -1,187 +1,235 @@
 package gui.component;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
+
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+
+import gui.swing.button.Button;
+import gui.swing.textfield.MyPasswordField;
+import gui.swing.textfield.MyTextField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import net.miginfocom.swing.MigLayout;
-import org.jdesktop.animation.timing.Animator;
-import org.jdesktop.animation.timing.TimingTarget;
-import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-public class PanelLogin extends javax.swing.JPanel {
-
-    private MigLayout layout;
-    private boolean isLogin;
-    private PanelCover image;
-    private PanelForm form;
-    private final double coverSize = 40;
-    private final double formSize = 60;
-    private final double addSize = 30;
-    private final DecimalFormat df = new DecimalFormat("##0.###");
-
+public class PanelLogin extends javax.swing.JLayeredPane {
+    private ActionListener evt;
+    private ActionListener evt1;
     public PanelLogin() {
         initComponents();
-        buildPanelForm();
+        buildLogin();
+        buildForgotPass();
+        setOpaque(false);
+        login.setVisible(true);
+        forgotPass.setVisible(false);
     }
-
-    private void buildPanelForm() {
-        layout = new MigLayout("fill, insets 0");
-        image = new PanelCover(new ImageIcon(getClass().getResource("/icon/background2.jpg")));
-        form = new PanelForm();
-        setLayout(layout);
-        TimingTarget target = new TimingTargetAdapter() {
-            @Override
-            public void timingEvent(float fraction) {
-                double fractionCover;
-                double fractionForm;
-                double size = coverSize;
-                if (fraction <= 0.5f) {
-                    size += fraction * size;
-                } else {
-                    size += addSize - fraction * addSize;
-                }
-
-                if (isLogin) {
-                    fractionCover = 1f - fraction;
-                    fractionForm = fraction;
-                    if (fraction >= 0.5f) {
-                        image.forgotPassRight(fractionCover * 100);
-                    } else {
-                        image.loginRight(fractionForm * 100);
-                    }
-                } else {
-                    fractionCover = fraction;
-                    fractionForm = 1f - fraction;
-                    if (fraction <= 0.5f) {
-                        image.forgotPassLeft(fraction * 100);
-                    } else {
-                        image.loginLeft((1f - fraction) * 100);
-                    }
-                }
-                if (fraction >= 0.5f) {
-                    form.showForgetPass(isLogin);
-                }
-                fractionCover = Double.valueOf(df.format(fractionCover));
-                fractionForm = Double.valueOf(df.format(fractionForm));
-                layout.setComponentConstraints(image, "width " + size + "%, pos " + fractionCover + "al 0 n 100%");
-                layout.setComponentConstraints(form, "width " + formSize + "%, pos" + fractionForm + "al 0 n 100%");
-                PanelLogin.this.revalidate();
-            }
-
-            @Override
-            public void end() {
-                isLogin = !isLogin;
-            }
-        };
-        Animator animator = new Animator(1000, target);
-        animator.setAcceleration(0.5f);
-        animator.setDeceleration(0.5f);
-        animator.setResolution(0); // mượt
-        add(image, "width " + coverSize + "%, pos 0al 0 n 100%");
-        add(form, "width " + formSize + "%, pos 1al 0 n 100%");
-        form.addEventOpen(new ActionListener() {
+    /**
+     * Thêm sự kiện cho nút nút quên mật khẩu và quay lại
+     * @param evt 
+     */
+    public void addEventOpen(ActionListener evt) {
+        this.evt = evt;
+    }
+    /**
+     * Thêm sự kiện cho nút đăng nhập
+     * @param evt1 
+     */
+    public void addEventLogin(ActionListener evt1) {
+        this.evt1 = evt1;
+    }
+    /**
+     * Xây dựng giao diện login
+     */
+    private void buildLogin() {
+        login.setLayout(new MigLayout("wrap", "push[center]push", "push[]40[]10[]10[]25[]push"));
+        
+        JLabel label = new JLabel("Đăng nhập");
+        label.setFont(new Font("sansserif", Font.BOLD, 24));
+        label.setForeground(new Color(7, 164, 121));
+        login.add(label);
+        
+        MyTextField txtUser = new MyTextField();
+        txtUser.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/user.png")));
+        txtUser.setHint("Tên đăng nhập");
+        login.add(txtUser, "w 60%");
+        
+        MyPasswordField txtPass = new MyPasswordField();
+        txtPass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
+        txtPass.setHint("Mật khẩu");
+        login.add(txtPass, "w 60%");
+        
+        JButton forgotBtn = new JButton("Quên mật khẩu?");
+        forgotBtn.setFont(new Font("sansserif", Font.ITALIC, 12));
+        forgotBtn.setForeground(Color.GRAY);
+        forgotBtn.setContentAreaFilled(false);
+        forgotBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        forgotBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (!animator.isRunning()) {
-                    animator.start();
+                PanelLogin.this.evt.actionPerformed(arg0);
+            }
+        });
+        login.add(forgotBtn, "w 20%, right");
+        
+        
+        Button loginBtn = new Button("Đăng nhập", true);
+        loginBtn.setBackground(new Color(7, 164, 121));
+        loginBtn.setForeground(Color.WHITE);
+        loginBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                PanelLogin.this.evt1.actionPerformed(arg0);
+            }
+        });
+        login.add(loginBtn, "w 40%, h 40!");
+        
+    }
+    
+    /**
+     * Xây dựng giao diện quên mật khẩu
+     */
+    private void buildForgotPass() {
+        forgotPass.setLayout(new MigLayout("wrap", "push[center]push", "push[]40[]10[]10[]10[]25[]10[]push"));
+        
+        JLabel label = new JLabel("Quên mật khẩu");
+        label.setFont(new Font("sansserif", Font.BOLD, 24));
+        label.setForeground(new Color(7, 164, 121));
+        forgotPass.add(label);
+        
+        MyTextField txtSdt = new MyTextField();
+        txtSdt.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/user.png")));
+        txtSdt.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                switch (txtSdt.getText()) {
+                    case "":
+                        txtSdt.setSuffixIcon(null); // set null khi text rỗng
+                        break;
+                    case "123":
+                        txtSdt.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/ok_20px.png"))); // set icon khi nhập đúng
+                        break;
+                    default:
+                        txtSdt.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/cancel_20px.png"))); // set icon khi nhập sai
+                        break;
+                }
+                    
+            }
+        });
+        txtSdt.setHint("Số điện thoại"); // text dưới nền 
+        forgotPass.add(txtSdt, "w 60%");
+        
+        MyTextField txtEmail = new MyTextField();
+        txtEmail.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/mail.png")));
+        txtEmail.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                switch (txtEmail.getText()) {
+                    case "":
+                        txtEmail.setSuffixIcon(null); // set null khi text rỗng
+                        break;
+                    case "123":
+                        txtEmail.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/checkmark_20px.png"))); // set icon khi nhập đúng
+                        break;
+                    default:
+                        txtEmail.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/delete_20px.png"))); // set icon khi nhập sai
+                        break;
                 }
             }
         });
-
-    }
-
-    public void login(ActionListener evt) {
-        form.addEventLogin(evt);
-    }
-
-    public void showMessage(Message.MessageType messageType, String message) {
-        Message ms = new Message();
-        ms.showMessage(messageType, message);
-        TimingTarget target = new TimingTargetAdapter() {
-            @Override
-            public void begin() {
-                if(!ms.isShow()) {
-                    PanelLogin.this.add(ms, "pos 0.5al -30", 0); // Chèn thêm message vào panel login
-                    ms.setVisible(true);
-                    PanelLogin.this.repaint();
-                }
-            }
-
-            @Override
-            public void timingEvent(float fraction) {
-                float f;
-                if(ms.isShow()) {
-                    f = 40 * (1f - fraction);
-                }
-                else {
-                    f = 40 * fraction;
-                }
-                layout.setComponentConstraints(ms, "pos 0.5al " + (int) (f - 30)); // Hiện thị message theo 
-                PanelLogin.this.repaint();
-                PanelLogin.this.revalidate();
-            }
-            
-            // Sau khi kết thúc sự kiện timing thì xóa ms ra khỏi Panel login
-            @Override
-            public void end() {
-                if(ms.isShow()) {
-                    PanelLogin.this.remove(ms);
-                    PanelLogin.this.repaint();
-                    PanelLogin.this.revalidate();
-                }
-                else {
-                    ms.setShow(true);
-                }
-            }
-        };
-        Animator animator = new Animator(300, target);
-        animator.setResolution(0);
-        animator.setAcceleration(0.5f);
-        animator.setDeceleration(0.5f);
-        animator.start();
+        txtEmail.setHint("Email");
+        forgotPass.add(txtEmail, "w 60%");
         
-        // Lập lại sự kiện timing để tắt message, message sẽ hiện thị trong 2s
-        new Thread(new Runnable() {
+        MyPasswordField txtPass = new MyPasswordField();
+        txtPass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
+        txtPass.setHint("Mật khẩu");
+        forgotPass.add(txtPass, "w 60%");
+        
+        MyPasswordField txtRePass = new MyPasswordField();
+        txtRePass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
+        txtRePass.setHint("Nhập lại mật khẩu");
+        forgotPass.add(txtRePass, "w 60%");
+        
+        
+        Button loginBtn = new Button("Đổi mật khẩu", true);
+        loginBtn.setBackground(new Color(7, 164, 121));
+        loginBtn.setForeground(Color.WHITE);
+        forgotPass.add(loginBtn, "w 40%, h 40!");
+        
+        Button backBtn = new Button("Quay lại", true);
+        backBtn.setBackground(new Color(7, 164, 121));
+        backBtn.setForeground(Color.WHITE);
+        backBtn.addActionListener(new ActionListener() {
             @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                    animator.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void actionPerformed(ActionEvent arg0) {
+                PanelLogin.this.evt.actionPerformed(arg0);
             }
-        }).start();
+        });
+        forgotPass.add(backBtn, "w 40%, h 40!");
     }
-
+    /**
+     * hiển thị giao diện quên mật khẩu theo tham số
+     * @param show 
+     */
+    public void showForgetPass(boolean show) {
+        if(show) {
+            forgotPass.setVisible(false);
+            login.setVisible(true);
+        }
+        else {
+            forgotPass.setVisible(true);
+            login.setVisible(false);
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        login = new javax.swing.JPanel();
+        forgotPass = new javax.swing.JPanel();
+
         setBackground(new java.awt.Color(255, 255, 255));
-        setOpaque(false);
+        setLayout(new java.awt.CardLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 300, Short.MAX_VALUE)
-        );
-    }
+        login.setBackground(new java.awt.Color(255, 255, 255));
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(new Color(255, 255, 255));
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
-        super.paintComponent(g);
-    }
+        javax.swing.GroupLayout loginLayout = new javax.swing.GroupLayout(login);
+        login.setLayout(loginLayout);
+        loginLayout.setHorizontalGroup(
+            loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        loginLayout.setVerticalGroup(
+            loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        add(login, "card2");
+
+        forgotPass.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout forgotPassLayout = new javax.swing.GroupLayout(forgotPass);
+        forgotPass.setLayout(forgotPassLayout);
+        forgotPassLayout.setHorizontalGroup(
+            forgotPassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        forgotPassLayout.setVerticalGroup(
+            forgotPassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        add(forgotPass, "card3");
+    }// </editor-fold>//GEN-END:initComponents
+        
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel forgotPass;
+    private javax.swing.JPanel login;
+    // End of variables declaration//GEN-END:variables
 }
