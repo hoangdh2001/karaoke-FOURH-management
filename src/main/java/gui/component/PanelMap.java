@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui.panel;
+package gui.component;
 
-import javax.swing.JPanel;
+import gui.panel.PanelShadow;
 
 /**
  *
  * @author Admin
  */
-public class PanelRound extends JPanel{
-
-    public PanelRound() {
-        setOpaque(false);
-    }
-    
+public class PanelMap extends PanelShadow {
     
 }

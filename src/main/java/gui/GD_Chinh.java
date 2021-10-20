@@ -66,8 +66,10 @@ public class GD_Chinh extends JFrame {
                 double width;
                 if (menu.isShowMenu()) {
                     width = 50 + (180 * (1f - fraction));
+                    menu.setAlpha(1f - fraction);
                 } else {
                     width = 50 + (180 * fraction);
+                    menu.setAlpha(fraction);
                 }
                 layout.setComponentConstraints(menu, "w " + width + "!, spany 2");
                 menu.revalidate();
@@ -84,8 +86,8 @@ public class GD_Chinh extends JFrame {
         animator.setResolution(0); // Mượt
         animator.setDeceleration(0.5f); // giảm tốc 50%
         animator.setAcceleration(0.5f); // tăng tốc 50% suy ra bình thường
-        // Khi click vào nút menu trên thành header sẽ mở menu rộng ra
-        header.addMenuEvent(new ActionListener() {
+        // Khi click vào nút menu sẽ mở menu rộng ra
+        menu.addMenuEvent(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if (!animator.isRunning()) {
@@ -122,7 +124,7 @@ public class GD_Chinh extends JFrame {
             switch (menuIndex) {
                 case 0:
                     if(subMenuIndex == 0)
-                        content.showForm(new GD_SoDoPhongHat());
+                        content.showForm(new GD_SoDoPhongHat2());
                     else if(subMenuIndex == 1)
                         content.showForm(new GD_DanhSachPhong());
                     break;
@@ -157,7 +159,7 @@ public class GD_Chinh extends JFrame {
                 MenuItem item = (MenuItem) com;
                 PopupMenu popup = new PopupMenu(GD_Chinh.this, item.getIndex(), item.getEventSelected(), Color.WHITE, item.getMenu().getSubMenu());
                 int x = GD_Chinh.this.getX() + 50;
-                int y = GD_Chinh.this.getY() + com.getY() + 130;
+                int y = GD_Chinh.this.getY() + com.getY() + 90;
                 popup.setLocation(x, y);
                 popup.setVisible(true);
             }
@@ -172,7 +174,7 @@ public class GD_Chinh extends JFrame {
     private Content createContent() {
 	content = new Content();
 	content.setBackground(new Color(245, 245, 245));
-	content.showForm(new GD_SoDoPhongHat());
+	content.showForm(new GD_SoDoPhongHat2());
 	return content;
     }
 }
