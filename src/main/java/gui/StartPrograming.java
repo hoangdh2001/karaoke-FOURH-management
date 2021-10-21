@@ -6,7 +6,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class StartPrograming {
-
+    
     public static void main(String[] args) {
 //        try {
 //            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -32,7 +32,8 @@ public class StartPrograming {
             e.printStackTrace();
         }
         EventQueue.invokeLater(() -> {
-            new GD_DangNhap("Đăng nhập").setVisible(true);
+//            new GD_DangNhap("Đăng nhập").setVisible(true);
+            new GD_Chinh("Chinh").setVisible(true);
         });
     }
 }
