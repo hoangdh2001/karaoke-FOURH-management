@@ -36,6 +36,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
         int fontSize = 16;
+        int font16 = 16;
         Color colorBtn = new Color(184, 238, 241);
 
         lblMenu.setFont(new Font(fontName, fontStyle, fontSize));
@@ -43,9 +44,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         panelForm.setPreferredSize(new Dimension(1119, 341));
         panelForm.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
 
-        /*
-         * Begin: group thông tin nhân viên
-         */
+        /*Begin: group thông tin nhân viên*/
         JPanel pnlThongTinNV = new JPanel();
         pnlThongTinNV.setOpaque(false);
         pnlThongTinNV.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Thông tin nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
@@ -136,7 +135,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         cmbCaLam.addItem("Ca 1");
         pnlThongTinNV.add(cmbCaLam, "w 80%, h 36!, wrap");
 
-//      Panel nút chức năng
+        /*Panel nút chức năng*/
         JPanel pnlButton = new JPanel();
         pnlButton.setOpaque(false);
         pnlButton.setLayout(new MigLayout("", "push[]20[]20[]20[]0", "push[]push"));
@@ -165,14 +164,10 @@ public class GD_NhanVien extends javax.swing.JPanel {
         btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
         btnLamMoi.setBackground(colorBtn);
         pnlButton.add(btnLamMoi, "w 100!, h 36!");
-        /*
-         * End: group thông tin nhân viên
-         */
-        
-        
-        /*
-         * Begin: group tìm nhân viên
-         */
+        /*End: group thông tin nhân viên*/
+
+
+ /*Begin: group tìm nhân viên*/
         JPanel pnlTimKiemNV = new JPanel();
         pnlTimKiemNV.setOpaque(false);
         pnlTimKiemNV.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Thông tin nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
@@ -226,14 +221,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         btnTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
         btnTimKiem.setBackground(colorBtn);
         pnlTimKiemNV.add(btnTimKiem, "span, align right, w 100!, h 36!");
-        /*
-         * End: group tìm nhân viên
-         */
-        
-        
-        /*
-         * Begin: group danh sách nhân viên
-         */
+        /* End: group tìm nhân viên*/
+
+ /*Begin: group danh sách nhân viên*/
         panelCenter.setLayout(new MigLayout("", "[]", "[]"));
 
         JPanel subPanelCenter = new JPanel();
@@ -241,10 +231,8 @@ public class GD_NhanVien extends javax.swing.JPanel {
         subPanelCenter.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
 
         panelCenter.add(subPanelCenter, "w 100%, h 1100");
-        /*
-         * End: group danh sách nhân viên
-         */
-        
+        /*End: group danh sách nhân viên*/
+
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
