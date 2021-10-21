@@ -39,12 +39,4 @@ public class ComboBoxUI extends JComboBox {
         super.paintComponent(g);
     }
 
-    @Override
-    protected void paintBorder(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(Color.BLUE);
-        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, getHeight(), getHeight());
-        super.paintBorder(g); //To change body of generated methods, choose Tools | Templates.
-    }
 }

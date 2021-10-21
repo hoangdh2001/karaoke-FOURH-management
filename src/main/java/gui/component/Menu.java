@@ -75,7 +75,7 @@ public class Menu extends JPanel {
     private JButton createCmdMenu() {
         Image image = new ImageIcon(getClass().getResource("/icon/menu.png")).getImage();
         cmdMenu = new Button();
-        cmdMenu.setBackground(Color.decode("#56CCF2"));
+        cmdMenu.setBackground(new Color(0, 0, 0, 0));
         cmdMenu.setBorder(new EmptyBorder(5, 12, 5, 12));
         cmdMenu.setFocusable(false);
         cmdMenu.setCursor(new Cursor(Cursor.HAND_CURSOR));

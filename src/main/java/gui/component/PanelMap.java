@@ -12,5 +12,8 @@ import gui.panel.PanelShadow;
  * @author Admin
  */
 public class PanelMap extends PanelShadow {
+    public PanelMap() {
+        
+    }
     
 }

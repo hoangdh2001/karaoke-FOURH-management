@@ -155,10 +155,10 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         forgotPass.add(txtRePass, "w 60%");
         
         
-        Button loginBtn = new Button("Đổi mật khẩu", true);
-        loginBtn.setBackground(new Color(7, 164, 121));
-        loginBtn.setForeground(Color.WHITE);
-        forgotPass.add(loginBtn, "w 40%, h 40!");
+        Button forgotPassBtn = new Button("Đổi mật khẩu", true);
+        forgotPassBtn.setBackground(new Color(7, 164, 121));
+        forgotPassBtn.setForeground(Color.WHITE);
+        forgotPass.add(forgotPassBtn, "w 40%, h 40!");
         
         Button backBtn = new Button("Quay lại", true);
         backBtn.setBackground(new Color(7, 164, 121));
