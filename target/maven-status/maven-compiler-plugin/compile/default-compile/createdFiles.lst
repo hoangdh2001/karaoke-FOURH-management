@@ -76,7 +76,6 @@ gui\dropshadow\ShadowRenderer.class
 entity\ChiTietNhapHang_PK.class
 entity\LoaiPhong.class
 gui\swing\menu\MenuAnimation$1.class
-gui\GD_SoDoPhongHat2.class
 gui\swing\textfield\TextFieldAnimation.class
 dao\KhachHang_DAO.class
 entity\LoaiNhanVien.class

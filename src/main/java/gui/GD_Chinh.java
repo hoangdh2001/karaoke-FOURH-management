@@ -20,6 +20,7 @@ import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
+import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_Chinh extends JFrame {
@@ -55,7 +56,7 @@ public class GD_Chinh extends JFrame {
 	MigLayout layout;
         // layout 2 cột 1 dòng
 	background.setLayout(layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0")); 
-	background.setBackground(new Color(245, 245, 245));
+	background.setBackground(new Color(236, 240, 245));
 		
 	background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
 	background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
@@ -124,7 +125,7 @@ public class GD_Chinh extends JFrame {
             switch (menuIndex) {
                 case 0:
                     if(subMenuIndex == 0)
-                        content.showForm(new GD_SoDoPhongHat2());
+                        content.showForm(new GD_SoDoPhongHat());
                     else if(subMenuIndex == 1)
                         content.showForm(new GD_DanhSachPhong());
                     break;
@@ -171,11 +172,17 @@ public class GD_Chinh extends JFrame {
      * Tạo ngăn hiện lên nội dung
      * @return JPanel content
      */
-    private Content createContent() {
+    private JScrollPane createContent() {
+        JScrollPane sp = new JScrollPane();
 	content = new Content();
 	content.setBackground(new Color(245, 245, 245));
-	content.showForm(new GD_SoDoPhongHat2());
-	return content;
+	content.showForm(new GD_SoDoPhongHat());
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        sp.setViewportView(content);
+        sp.getVerticalScrollBar().setUnitIncrement(16);
+        sp.setBorder(null);
+	return sp;
     }
 }
  

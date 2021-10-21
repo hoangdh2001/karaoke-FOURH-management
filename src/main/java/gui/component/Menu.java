@@ -22,7 +22,6 @@ import gui.swing.menu.MenuItem;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Cursor;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
@@ -50,13 +49,13 @@ public class Menu extends JPanel {
     }
     
     private void buidMenu() {
-        setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "5[]0[]push[60]0"));
+        setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "5[]5[]push[60]0"));
         setBackground(new Color(35, 35, 35));
         setOpaque(false);
-        add(createCmdMenu(), "pos 1al 0al 100% 50");
+        add(createCmdMenu(), "pos 1al 0al 100% 50, height 50!");
         add(createCmdLogout(), "pos 1al 1al 100% 100, height 60!");
         add(createPaneName());
-        add(createPane(), "h 700!");
+        add(createPane(), "h 680!");
         add(createPaneExit());
         
     }
@@ -205,6 +204,7 @@ public class Menu extends JPanel {
 //        GradientPaint gra = new GradientPaint(0, 0, new Color(0, 135, 255), getWidth(), 0, new Color(255, 255, 199));
 //        GradientPaint gra = new GradientPaint(0, 0, new Color(242, 153, 74), getWidth(), 0, new Color(242, 201, 76));
         GradientPaint gra = new GradientPaint(0, 0, Color.decode("#56CCF2"), 0, getHeight(), Color.decode("#2F80ED"));
+//        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#2C3B41"), 0, getHeight(), Color.decode("#222D32"));
         g2.setPaint(gra);
         g2.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(grphcs);
