@@ -34,11 +34,11 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
     public void build_GDHoaDon() {
         String fontName = "sansserif";
-        int fontStyle = Font.PLAIN;
-        int fontSize = 16;
+        int fontPlain = Font.PLAIN;
+        int font16 = 16;
         Color colorBtn = new Color(184, 238, 241);
 
-        lblMenu.setFont(new Font(fontName, fontStyle, fontSize));
+        lblMenu.setFont(new Font(fontName, fontPlain, font16));
         
         /*
         Chiều cao pnlForm là 141, chiều cao pnlThoiGianHD(có borderTitle) là 135
@@ -73,17 +73,17 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
         // Ngày bắt đầu
         JTextField txtBatDau = new MyTextField();
-        txtBatDau.setFont(new Font(fontName, fontStyle, fontSize));
+        txtBatDau.setFont(new Font(fontName, fontPlain, font16));
         pnlThoiGianHD.add(txtBatDau, "w 50%, h 36!");
 
         // Ngày bắt đầu
         JTextField txtKetThuc = new MyTextField();
-        txtKetThuc.setFont(new Font(fontName, fontStyle, fontSize));
+        txtKetThuc.setFont(new Font(fontName, fontPlain, font16));
         pnlThoiGianHD.add(txtKetThuc, "w 50%, h 36!, wrap");
 
         //Tùy chỉnh
         JComboBox<String> cmbTuyChinh = new JComboBox<>();
-        cmbTuyChinh.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbTuyChinh.setFont(new Font(fontName, fontPlain, font16));
         cmbTuyChinh.addItem("Tùy chỉnh");
         pnlThoiGianHD.add(cmbTuyChinh, "span, w 100%, h 36!");
         /*
@@ -106,12 +106,12 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
         // Tìm kiếm
         JTextField txtTimKiem = new MyTextField();
-        txtTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
+        txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
         pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!, wrap");
 
         //Chọn cột cần tìm
         JComboBox<String> cmbCot = new JComboBox<>();
-        cmbCot.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbCot.setFont(new Font(fontName, fontPlain, font16));
         cmbCot.addItem("Chọn cột cần tìm");
         pnlTimKiemHD.add(cmbCot, "w 100%, h 36!");
 
@@ -134,7 +134,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
         //Chọn cột cần sắp xếp
         JComboBox<String> cmbSapXep = new JComboBox<>();
-        cmbSapXep.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbSapXep.setFont(new Font(fontName, fontPlain, font16));
         cmbSapXep.addItem("Tất cả");
         pnlSapXepHD.add(cmbSapXep, "span, w 100%, h 36!, wrap");
 
@@ -153,7 +153,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlSapXepThuTu.add(chkSapXepThuTu);
 
         JLabel lblSapXepThuTu = new JLabel("Bé đến lớn");
-        lblSapXepThuTu.setFont(new Font(fontName, fontStyle, fontSize));
+        lblSapXepThuTu.setFont(new Font(fontName, fontPlain, font16));
         pnlSapXepThuTu.add(lblSapXepThuTu);
 
         pnlSapXepHD.add(pnlSapXepThuTu, "w 100%");
