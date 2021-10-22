@@ -16,12 +16,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="panelForm" alignment="0" max="32767" attributes="0"/>
+          <Component id="pnlForm" alignment="0" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <Component id="lblMenu" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
-          <Component id="panelCenter" alignment="0" max="32767" attributes="0"/>
+          <Component id="pnlCenter" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -30,9 +30,9 @@
               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               <Component id="lblMenu" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelForm" min="-2" max="-2" attributes="0"/>
+              <Component id="pnlForm" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="panelCenter" max="32767" attributes="0"/>
+              <Component id="pnlCenter" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,7 +49,7 @@
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; h&#xf3;a &#x111;&#x1a1;n "/>
       </Properties>
     </Component>
-    <Container class="gui.panel.PanelShadow" name="panelForm">
+    <Container class="gui.panel.PanelShadow" name="pnlForm">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -74,7 +74,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="gui.component.PanelMap" name="panelCenter">
+    <Container class="gui.component.PanelMap" name="pnlCenter">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
