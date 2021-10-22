@@ -44,7 +44,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         panelForm.setLayout(new MigLayout("","[][][]","[]"));
         
         /*
-         * Begin: group Chọn thời gian bắt đầu
+         * Begin: group Chọn thời gian 
          */
         JPanel pnlThoiGianHD = new JPanel();
         pnlThoiGianHD.setOpaque(false);
@@ -52,12 +52,12 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlThoiGianHD.setLayout(new MigLayout("", "10[center] 10 [center]10", "[center]10[center]"));
         panelForm.add(pnlThoiGianHD, "w 40%, h 135!");
 
-        // Ngày bắt đầu
+        // Chọn thời gian bắt đầu
         JTextField txtBatDau = new MyTextField();
         txtBatDau.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThoiGianHD.add(txtBatDau, "w 50%, h 36!");
         
-        // Ngày bắt đầu
+        // Chọn thời gian kết thúc
         JTextField txtKetThuc = new MyTextField();
         txtKetThuc.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThoiGianHD.add(txtKetThuc, "w 50%, h 36!, wrap");
