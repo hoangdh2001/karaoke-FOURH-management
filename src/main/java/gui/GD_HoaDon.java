@@ -31,108 +31,138 @@ public class GD_HoaDon extends javax.swing.JPanel {
         initComponents();
         build_GDHoaDon();
     }
-    
-    public void build_GDHoaDon(){
+
+    public void build_GDHoaDon() {
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
         int fontSize = 16;
         Color colorBtn = new Color(184, 238, 241);
 
         lblMenu.setFont(new Font(fontName, fontStyle, fontSize));
-
-        panelForm.setPreferredSize(new Dimension(1119, 141));
-        panelForm.setLayout(new MigLayout("","[][][]","[]"));
         
         /*
-         * Begin: group Chọn thời gian bắt đầu
+        Chiều cao pnlForm là 141, chiều cao pnlThoiGianHD(có borderTitle) là 135
+        -> chênh lệch là 6(border shadow)
+        Tương tự cho pnlTimKiemHD và pnlSapXepHD
+        */
+        
+        pnlForm.setPreferredSize(new Dimension(1119, 141));
+        /*
+        Layout: 3 cột, 1 dòng
+        cột 1, dòng 1: group Chọn thời gian
+        cột 2, dòng 1: group Tìm kiếm
+        cột 3, dòng 1: group Sắp xếp
+         */
+        pnlForm.setLayout(new MigLayout("", "[][][]", "[]"));
+
+        /*
+         * Begin: group Chọn thời gian 
          */
         JPanel pnlThoiGianHD = new JPanel();
         pnlThoiGianHD.setOpaque(false);
         pnlThoiGianHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Chọn thời gian", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
+
+        /*
+        Layout: 2 cột, 2 dòng
+        cột 1, dòng 1: Ngày bắt đầu
+        cột 2, dòng 1: Ngày bắt đầu
+        cột 1+2, dòng 2: Tùy chỉnh
+         */
         pnlThoiGianHD.setLayout(new MigLayout("", "10[center] 10 [center]10", "[center]10[center]"));
-        panelForm.add(pnlThoiGianHD, "w 40%, h 135!");
+        pnlForm.add(pnlThoiGianHD, "w 40%, h 135!");
 
         // Ngày bắt đầu
         JTextField txtBatDau = new MyTextField();
         txtBatDau.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThoiGianHD.add(txtBatDau, "w 50%, h 36!");
-        
+
         // Ngày bắt đầu
         JTextField txtKetThuc = new MyTextField();
         txtKetThuc.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThoiGianHD.add(txtKetThuc, "w 50%, h 36!, wrap");
-        
+
         //Tùy chỉnh
         JComboBox<String> cmbTuyChinh = new JComboBox<>();
         cmbTuyChinh.setFont(new Font(fontName, fontStyle, fontSize));
         cmbTuyChinh.addItem("Tùy chỉnh");
-        pnlThoiGianHD.add(cmbTuyChinh,"span, w 100%, h 36!");
+        pnlThoiGianHD.add(cmbTuyChinh, "span, w 100%, h 36!");
         /*
          * End: group Chọn thời gian bắt đầu
          */
-        
-        /*
+
+ /*
          * Begin: group Tìm kiếm
          */
         JPanel pnlTimKiemHD = new JPanel();
         pnlTimKiemHD.setOpaque(false);
         pnlTimKiemHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Tìm kiếm", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
+        /*
+        Layout: 1 cột, 2 dòng
+        cột 1, dòng 1: Ô nhập dữ liệu tìm kiếm
+        cột 1, dòng 2: Chọn cột cần tìm
+         */
         pnlTimKiemHD.setLayout(new MigLayout("", "10[center]10", "[center]10[center]"));
-        panelForm.add(pnlTimKiemHD, "w 40%, h 135!");
-        
+        pnlForm.add(pnlTimKiemHD, "w 40%, h 135!");
+
         // Tìm kiếm
         JTextField txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
         pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!, wrap");
-        
+
         //Chọn cột cần tìm
         JComboBox<String> cmbCot = new JComboBox<>();
         cmbCot.setFont(new Font(fontName, fontStyle, fontSize));
         cmbCot.addItem("Chọn cột cần tìm");
-        pnlTimKiemHD.add(cmbCot,"w 100%, h 36!");
-        
-        
+        pnlTimKiemHD.add(cmbCot, "w 100%, h 36!");
+
         /*
          * End: group Tìm kiếm
          */
-        
-        /*
+ /*
          * Begin: group Sắp xếp
          */
         JPanel pnlSapXepHD = new JPanel();
         pnlSapXepHD.setOpaque(false);
         pnlSapXepHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Sắp xếp", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
+        /*
+        Layout: 1 cột, 2 dòng
+        cột 1, dòng 1: Chọn cột cần sắp xếp
+        cột 1, dòng 2: Sắp xếp từ bé đến lớn
+         */
         pnlSapXepHD.setLayout(new MigLayout("", "10[][]10", "[center]10[center]10"));
-        panelForm.add(pnlSapXepHD, "w 20%, h 135!");
-        
-        
+        pnlForm.add(pnlSapXepHD, "w 20%, h 135!");
+
         //Chọn cột cần sắp xếp
         JComboBox<String> cmbSapXep = new JComboBox<>();
         cmbSapXep.setFont(new Font(fontName, fontStyle, fontSize));
         cmbSapXep.addItem("Tất cả");
-        pnlSapXepHD.add(cmbSapXep,"span, w 100%, h 36!, wrap");
-        
+        pnlSapXepHD.add(cmbSapXep, "span, w 100%, h 36!, wrap");
+
         //Sắp xếp từ bé đến lớn
         JPanel pnlSapXepThuTu = new JPanel();
         pnlSapXepThuTu.setOpaque(false);
-        pnlSapXepThuTu.setLayout(new MigLayout("","push[]0[]0","[]"));
-        
+        /*
+        Layout: 2 cột, 1 dòng
+        cột 1, dòng 1: Checkbox
+        cột 2, dòng 1: label
+         */
+        pnlSapXepThuTu.setLayout(new MigLayout("", "push[]0[]0", "[]"));
+
         JCheckBox chkSapXepThuTu = new JCheckBox();
         chkSapXepThuTu.setOpaque(false);
         pnlSapXepThuTu.add(chkSapXepThuTu);
-        
+
         JLabel lblSapXepThuTu = new JLabel("Bé đến lớn");
         lblSapXepThuTu.setFont(new Font(fontName, fontStyle, fontSize));
         pnlSapXepThuTu.add(lblSapXepThuTu);
-        
-        pnlSapXepHD.add(pnlSapXepThuTu,"w 100%");
-        
-        
+
+        pnlSapXepHD.add(pnlSapXepThuTu, "w 100%");
+
         /*
          * End: group Sắp xếp
          */
-        
-        
+        System.out.println(pnlForm.getHeight() + "with" + pnlForm.getWidth());
+
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
@@ -146,42 +176,42 @@ public class GD_HoaDon extends javax.swing.JPanel {
     private void initComponents() {
 
         lblMenu = new javax.swing.JLabel();
-        panelForm = new gui.panel.PanelShadow();
-        panelCenter = new gui.component.PanelMap();
+        pnlForm = new gui.panel.PanelShadow();
+        pnlCenter = new gui.component.PanelMap();
 
         lblMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         lblMenu.setForeground(new java.awt.Color(4, 72, 210));
         lblMenu.setText("Quản lý hóa đơn ");
 
-        panelForm.setBackground(new java.awt.Color(255, 255, 255));
-        panelForm.setShadowOpacity(0.3F);
-        panelForm.setShadowSize(3);
-        panelForm.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlForm.setBackground(new java.awt.Color(255, 255, 255));
+        pnlForm.setShadowOpacity(0.3F);
+        pnlForm.setShadowSize(3);
+        pnlForm.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelFormLayout = new javax.swing.GroupLayout(panelForm);
-        panelForm.setLayout(panelFormLayout);
-        panelFormLayout.setHorizontalGroup(
-            panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
+        pnlForm.setLayout(pnlFormLayout);
+        pnlFormLayout.setHorizontalGroup(
+            pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1119, Short.MAX_VALUE)
         );
-        panelFormLayout.setVerticalGroup(
-            panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnlFormLayout.setVerticalGroup(
+            pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 236, Short.MAX_VALUE)
         );
 
-        panelCenter.setBackground(new java.awt.Color(255, 255, 255));
-        panelCenter.setShadowOpacity(0.3F);
-        panelCenter.setShadowSize(3);
-        panelCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
+        pnlCenter.setShadowOpacity(0.3F);
+        pnlCenter.setShadowSize(3);
+        pnlCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelCenterLayout = new javax.swing.GroupLayout(panelCenter);
-        panelCenter.setLayout(panelCenterLayout);
-        panelCenterLayout.setHorizontalGroup(
-            panelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
+        pnlCenter.setLayout(pnlCenterLayout);
+        pnlCenterLayout.setHorizontalGroup(
+            pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        panelCenterLayout.setVerticalGroup(
-            panelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnlCenterLayout.setVerticalGroup(
+            pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
@@ -189,11 +219,11 @@ public class GD_HoaDon extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblMenu)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(panelCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,16 +231,16 @@ public class GD_HoaDon extends javax.swing.JPanel {
                 .addGap(8, 8, 8)
                 .addComponent(lblMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMenu;
-    private gui.component.PanelMap panelCenter;
-    private gui.panel.PanelShadow panelForm;
+    private gui.component.PanelMap pnlCenter;
+    private gui.panel.PanelShadow pnlForm;
     // End of variables declaration//GEN-END:variables
 }
