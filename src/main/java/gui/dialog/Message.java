@@ -13,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,13 +28,11 @@ import gui.swing.button.ButtonOutLine;
 import gui.swing.icon.GoogleMaterialDesignIcons;
 import gui.swing.icon.IconFont;
 import gui.swing.icon.IconFontSwing;
-import java.awt.GraphicsEnvironment;
-import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.io.InputStream;
-import javax.swing.JOptionPane;
+
 
 public class Message extends JDialog {
 
