@@ -14,7 +14,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
@@ -36,101 +38,107 @@ public class GD_NhanVien extends javax.swing.JPanel {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
+        int font14 = 14;
         Color colorBtn = new Color(184, 238, 241);
+        Color colorLabel = new Color(47, 72, 210);
 
         lblMenu.setFont(new Font(fontName, fontPlain, font16));
 
 //        panelForm.setPreferredSize(new Dimension(1119, 341));
-        panelForm.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
+        panelForm.setLayout(new MigLayout("", "3[center] [] [center]3", "6[center]5"));
 
         /*Begin: group thông tin nhân viên*/
         JPanel pnlThongTinNV = new JPanel();
         pnlThongTinNV.setOpaque(false);
-        pnlThongTinNV.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Thông tin nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
-        pnlThongTinNV.setLayout(new MigLayout("", "10[center]10[center] 10 [center][center]10", "[center]10[center]10[center]10[center]10[center] 20[center]"));
+        pnlThongTinNV.setLayout(new MigLayout("", "10[center][center] 10 [center][center]10", "[][center]10[center]10[center]10[center]10[center] 20[center]"));
         panelForm.add(pnlThongTinNV, "w 60%, h 335!");
+        
+        JLabel lblThongTinNV = new JLabel("Thông tin nhân viên");
+        lblThongTinNV.setFont(new Font(fontName, fontPlain, font16));
+        lblThongTinNV.setForeground(colorLabel);
+        pnlThongTinNV.add(lblThongTinNV, "span, w 100%, h 30!, wrap");
 
         // Mã nhân viên
         JLabel lblMaNV = new JLabel("Mã nhân viên:");
-        lblMaNV.setFont(new Font(fontName, fontPlain, font16));
+        lblMaNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblMaNV, "align right");
 
         JTextField txtMaNV = new MyTextField();
-        txtMaNV.setFont(new Font(fontName, fontPlain, font16));
+        txtMaNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(txtMaNV, "w 80%, h 36!");
 
         //Tên nhân viên
         JLabel lblTenNV = new JLabel("Tên nhân viên:");
-        lblTenNV.setFont(new Font(fontName, fontPlain, font16));
+        lblTenNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblTenNV, "align right");
 
         JTextField txtTenNV = new MyTextField();
-        txtTenNV.setFont(new Font(fontName, fontPlain, font16));
+        txtTenNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(txtTenNV, "w 80%, h 36!, wrap");
 
         //Giới tính
         JLabel lblGioiTinh = new JLabel("Giới tính:");
-        lblGioiTinh.setFont(new Font(fontName, fontPlain, font16));
+        lblGioiTinh.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblGioiTinh, "align right");
 
         JComboBox<String> cmbGioiTinh = new JComboBox<>();
-        cmbGioiTinh.setFont(new Font(fontName, fontPlain, font16));
+        cmbGioiTinh.setFont(new Font(fontName, fontPlain, font14));
         cmbGioiTinh.addItem("Nam");
         pnlThongTinNV.add(cmbGioiTinh, "w 80%, h 36!");
 
         //Ngày sinh
         JLabel lblNgaySinh = new JLabel("Ngày sinh:");
-        lblNgaySinh.setFont(new Font(fontName, fontPlain, font16));
+        lblNgaySinh.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblNgaySinh, "align right");
 
         JTextField txtNgaySinh = new MyTextField();
-        txtNgaySinh.setFont(new Font(fontName, fontPlain, font16));
+        txtNgaySinh.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(txtNgaySinh, "w 80%, h 36!, wrap");
 
         //Số điện thoại
         JLabel lblSDT = new JLabel("Số điện thoại:");
-        lblSDT.setFont(new Font(fontName, fontPlain, font16));
+        lblSDT.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblSDT, "align right");
 
         JTextField txtSDT = new MyTextField();
-        txtSDT.setFont(new Font(fontName, fontPlain, font16));
+        txtSDT.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(txtSDT, "w 80%, h 36!");
 
         //Email
         JLabel lblEmail = new JLabel("Email:");
-        lblEmail.setFont(new Font(fontName, fontPlain, font16));
+        lblEmail.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblEmail, "align right");
 
         JTextField txtEmail = new MyTextField();
-        txtEmail.setFont(new Font(fontName, fontPlain, font16));
+        txtEmail.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(txtEmail, "w 80%, h 36!, wrap");
 
         //Địa chỉ
         JLabel lblDiaChi = new JLabel("Địa chỉ:");
-        lblDiaChi.setFont(new Font(fontName, fontPlain, font16));
+        lblDiaChi.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblDiaChi, "align right");
 
         JTextField txtDiaChi = new MyTextField();
-        txtDiaChi.setFont(new Font(fontName, fontPlain, font16));
+        txtDiaChi.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(txtDiaChi, "w 80%, h 36!");
 
         //Loại nhân viên
         JLabel lblLoaiNV = new JLabel("Loại nhân viên:");
-        lblLoaiNV.setFont(new Font(fontName, fontPlain, font16));
+        lblLoaiNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblLoaiNV, "align right");
 
         JComboBox<String> cmbLoaiNV = new JComboBox<>();
-        cmbLoaiNV.setFont(new Font(fontName, fontPlain, font16));
+        cmbLoaiNV.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNV.addItem("Nhân viên lễ tân");
         pnlThongTinNV.add(cmbLoaiNV, "w 80%, h 36!, wrap");
 
         //Ca làm
         JLabel lblCaLam = new JLabel("Ca làm:");
-        lblCaLam.setFont(new Font(fontName, fontPlain, font16));
+        lblCaLam.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblCaLam, "align right");
 
         JComboBox<String> cmbCaLam = new JComboBox<>();
-        cmbCaLam.setFont(new Font(fontName, fontPlain, font16));
+        cmbCaLam.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLam.addItem("Ca 1");
         pnlThongTinNV.add(cmbCaLam, "w 80%, h 36!, wrap");
 
@@ -142,82 +150,92 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         // Nút Thêm
         Button btnThemNV = new Button("Thêm");
-        btnThemNV.setFont(new Font(fontName, fontPlain, font16));
+        btnThemNV.setFont(new Font(fontName, fontPlain, font14));
         btnThemNV.setBackground(colorBtn);
         pnlButton.add(btnThemNV, "w 100!, h 36!, growx");
 
         // Nút Xóa
         Button btnXoaNV = new Button("Xóa");
-        btnXoaNV.setFont(new Font(fontName, fontPlain, font16));
+        btnXoaNV.setFont(new Font(fontName, fontPlain, font14));
         btnXoaNV.setBackground(colorBtn);
         pnlButton.add(btnXoaNV, "w 100!, h 36!");
 
         // Nút Sửa
         Button btnSuaNV = new Button("Sửa");
-        btnSuaNV.setFont(new Font(fontName, fontPlain, font16));
+        btnSuaNV.setFont(new Font(fontName, fontPlain, font14));
         btnSuaNV.setBackground(colorBtn);
         pnlButton.add(btnSuaNV, "w 100!, h 36!");
 
         // Nút Làm mới
         Button btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontPlain, font16));
+        btnLamMoi.setFont(new Font(fontName, fontPlain, font14));
         btnLamMoi.setBackground(colorBtn);
         pnlButton.add(btnLamMoi, "w 100!, h 36!");
         /*End: group thông tin nhân viên*/
+        
+        
+        
+        JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
+        spr.setPreferredSize(new Dimension(2, 300));
+        panelForm.add(spr);
 
 
  /*Begin: group tìm nhân viên*/
         JPanel pnlTimKiemNV = new JPanel();
         pnlTimKiemNV.setOpaque(false);
-        pnlTimKiemNV.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Thông tin nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
-        pnlTimKiemNV.setLayout(new MigLayout("", "[center][center]", "[]10[]10[]10[]10[]20[]"));
+        pnlTimKiemNV.setLayout(new MigLayout("", "[center][center]", "[][]10[]10[]10[]10[]20[]"));
         panelForm.add(pnlTimKiemNV, "w 40%, h 335!");
+        
+        JLabel lblTimKiemNV = new JLabel("Tìm nhân viên");
+        lblTimKiemNV.setFont(new Font(fontName, fontPlain, font16));
+        lblTimKiemNV.setForeground(colorLabel);
+        pnlTimKiemNV.add(lblTimKiemNV, "span, w 100%, h 30!, wrap");
 
         // Tìm kiếm
         JTextField txtTimKiem = new MyTextField();
-        txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(txtTimKiem, "span, w 100%, h 36!, wrap");
 
         //Cột cần tìm kiếm
         JComboBox<String> cmbCot = new JComboBox<>();
-        cmbCot.setFont(new Font(fontName, fontPlain, font16));
+        cmbCot.setFont(new Font(fontName, fontPlain, font14));
         cmbCot.addItem("Chọn cột cần tìm");
         pnlTimKiemNV.add(cmbCot, "span, w 100%, h 36!, wrap");
 
         //Giới tính cần tìm
         JLabel lblGioiTinhTK = new JLabel("Giới tính:");
-        lblGioiTinhTK.setFont(new Font(fontName, fontPlain, font16));
+        lblGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblGioiTinhTK, "align right");
 
         JComboBox<String> cmbGioiTinhTK = new JComboBox<>();
-        cmbGioiTinhTK.setFont(new Font(fontName, fontPlain, font16));
+        cmbGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
         cmbGioiTinhTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbGioiTinhTK, "w 80%,h 36!, wrap");
 
         //Loại nhân viên cầm tìm
         JLabel lblLoaiNVTK = new JLabel("Loại nhân viên:");
-        lblLoaiNVTK.setFont(new Font(fontName, fontPlain, font16));
+        lblLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
 
         pnlTimKiemNV.add(lblLoaiNVTK, "align right");
 
         JComboBox<String> cmbLoaiNVTK = new JComboBox<>();
-        cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font16));
+        cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNVTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbLoaiNVTK, "w 80%,h 36!, wrap");
 
         //Ca làm cần tìm
         JLabel lblCaLamTK = new JLabel("Ca làm:");
-        lblCaLamTK.setFont(new Font(fontName, fontPlain, font16));
+        lblCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblCaLamTK, "align right");
 
         JComboBox<String> cmbCaLamTK = new JComboBox<>();
-        cmbCaLamTK.setFont(new Font(fontName, fontPlain, font16));
+        cmbCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLamTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbCaLamTK, "w 80%,h 36!, wrap");
 
         //Button tìm kiếm
         Button btnTimKiem = new Button("Tìm kiếm");
-        btnTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        btnTimKiem.setFont(new Font(fontName, fontPlain, font14));
         btnTimKiem.setBackground(colorBtn);
         pnlTimKiemNV.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /* End: group tìm nhân viên*/
