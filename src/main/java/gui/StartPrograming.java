@@ -32,7 +32,7 @@ public class StartPrograming {
             e.printStackTrace();
         }
         EventQueue.invokeLater(() -> {
-            new GD_DangNhap("Đăng nhập").setVisible(true);
+            new GD_Chinh("Đăng nhập").setVisible(true);
         });
     }
 }

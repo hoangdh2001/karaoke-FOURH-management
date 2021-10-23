@@ -61,7 +61,6 @@ public class GD_SoDoPhongHat extends JPanel {
         panelForm.add(timKiemBtn, "cell 3 2, align right, w 80!, h 36!");
         
         setPreferredSize(new Dimension(getWidth(), 1500));
-        
     }
     
     @SuppressWarnings("unchecked")
@@ -99,17 +98,6 @@ public class GD_SoDoPhongHat extends JPanel {
         panelMap.setShadowSize(3);
         panelMap.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelMapLayout = new javax.swing.GroupLayout(panelMap);
-        panelMap.setLayout(panelMapLayout);
-        panelMapLayout.setHorizontalGroup(
-            panelMapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1119, Short.MAX_VALUE)
-        );
-        panelMapLayout.setVerticalGroup(
-            panelMapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 335, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,7 +116,7 @@ public class GD_SoDoPhongHat extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

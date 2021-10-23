@@ -20,17 +20,18 @@ import net.miginfocom.swing.MigLayout;
 public class MenuItem extends JPanel {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private float alpha;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private float alpha;
     private ModelMenu menu;
     private boolean open;
     private EventMenuSelected eventSelected;
     private int index;
     private int height;
     private Color foreground = Color.WHITE;
-	public ModelMenu getMenu() {
+
+    public ModelMenu getMenu() {
         return menu;
     }
 
@@ -57,23 +58,23 @@ public class MenuItem extends JPanel {
     public int getIndex() {
         return index;
     }
-    
+
     public Color getForeground() {
-		return foreground;
-	}
+        return foreground;
+    }
 
-	public void setForeground(Color foreground) {
-		this.foreground = foreground;
-	}
+    public void setForeground(Color foreground) {
+        this.foreground = foreground;
+    }
 
-	public MenuItem(ModelMenu menu, EventMenu event, EventMenuSelected eventSelected, int index, int height, Font font) {
-    	buidMenuItem();
+    public MenuItem(ModelMenu menu, EventMenu event, EventMenuSelected eventSelected, int index, int height, Font font) {
+        buidMenuItem();
         this.menu = menu;
         this.eventSelected = eventSelected;
         this.index = index;
         this.height = height;
         setOpaque(false);
-        setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "[fill, "+ height + "!]0[fill, 35!]"));
+        setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "[fill, " + height + "!]0[fill, 35!]"));
         MenuButton firstItem = new MenuButton(menu.getIcon(), menu.getMenuName(), foreground);
         firstItem.setIconTextGap(20);
         firstItem.setFont(font);
@@ -103,15 +104,15 @@ public class MenuItem extends JPanel {
             add(item);
         }
     }
-    
+
     public MenuItem(ModelMenu menu, EventMenu event, EventMenuSelected eventSelected, int index, int height) {
-    	buidMenuItem();
+        buidMenuItem();
         this.menu = menu;
         this.eventSelected = eventSelected;
         this.index = index;
         this.height = height;
         setOpaque(false);
-        setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "[fill, "+ height + "!]0[fill, 35!]"));
+        setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "[fill, " + height + "!]0[fill, 35!]"));
         MenuButton firstItem = new MenuButton(menu.getIcon(), " " + menu.getMenuName(), foreground);
         firstItem.addActionListener(new ActionListener() {
             @Override
@@ -144,12 +145,12 @@ public class MenuItem extends JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 300, Short.MAX_VALUE)
         );
     }
 

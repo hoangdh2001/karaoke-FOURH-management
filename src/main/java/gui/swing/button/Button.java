@@ -29,6 +29,7 @@ public class Button extends JButton {
     private float alpha;
     private Color effectColor = new Color(173, 173, 173);
     private boolean fillRoundRect;
+    private int borderRadius;
 
     public Color getEffectColor() {
         return effectColor;
@@ -46,6 +47,14 @@ public class Button extends JButton {
         this.fillRoundRect = fillRoundRect;
     }
 
+    public int getBorderRadius() {
+        return borderRadius;
+    }
+
+    public void setBorderRadius(int borderRadius) {
+        this.borderRadius = borderRadius;
+    }
+    
     public Button() {
         buidButton();
     }
@@ -68,10 +77,10 @@ public class Button extends JButton {
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent me) {
+            public void mousePressed(MouseEvent e) {
                 targetSize = Math.max(getWidth(), getHeight()) * 2;
                 animatSize = 0;
-                pressedPoint = me.getPoint();
+                pressedPoint = e.getPoint();
                 alpha = 0.5f;
                 if (animator.isRunning()) {
                     animator.stop();
@@ -102,7 +111,12 @@ public class Button extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
         if (fillRoundRect == true) {
-            g2.fillRoundRect(0, 0, width, height, height, height);
+            if(borderRadius > 0) {
+                g2.fillRoundRect(0, 0, width, height, borderRadius, borderRadius);
+            }
+            else {
+                g2.fillRoundRect(0, 0, width, height, height, height);
+            }
         } else {
             g2.fillRect(0, 0, width, height);
         }

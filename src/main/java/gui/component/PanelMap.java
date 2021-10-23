@@ -1,19 +1,98 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui.component;
 
+import gui.event.EventTabSelected;
 import gui.panel.PanelShadow;
+import gui.panel.TabButton;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
-/**
- *
- * @author Admin
- */
 public class PanelMap extends PanelShadow {
+
+    private JPanel pane;
+    private TabButton tabPane;
+    private JPanel roomMap;
+
     public PanelMap() {
-        
+        buildMap();
     }
-    
+
+    private void buildMap() {
+        setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(5, 2, 0, 2));
+        add(createPane(), BorderLayout.CENTER);
+        add(createTabPane(), BorderLayout.NORTH);
+    }
+
+    private JPanel createPane() {
+        pane = new JPanel();
+        pane.setLayout(new BorderLayout());
+        pane.add(createRoomMap());
+        return pane;
+    }
+
+    private JPanel createTabPane() {
+        tabPane = new TabButton();
+        tabPane.setEvent(new EventTabSelected() {
+            @Override
+            public boolean selected(int index, boolean selectedTab) {
+                tabPane.check();
+                if (index == 0) {
+                    showTabPane(createRoomMap());
+                    return true;
+                } else if (index == 1) {
+                    showTabPane(new JPanel());
+                    return true;
+                }
+                else if(index == 2) {
+                    showTabPane(new JPanel());
+                    return true;
+                }
+                else if(index == 3) {
+                    showTabPane(new JPanel());
+                    return true;
+                }
+                return false;
+            }
+        });
+        tabPane.setBackground(Color.WHITE);
+        tabPane.addTabButtonItem("Tất cả");
+        tabPane.addTabButtonItem("Tầng 1");
+        tabPane.addTabButtonItem("Tầng 2");
+        tabPane.addTabButtonItem("Tầng 3");
+        return tabPane;
+    }
+
+    private void showTabPane(Component component) {
+        pane.removeAll();
+        pane.add(component);
+        pane.repaint();
+        pane.revalidate();
+    }
+
+    private JPanel createRoomMap() {
+        roomMap = new JPanel();
+        roomMap.setBackground(Color.WHITE);
+        roomMap.setLayout(new FlowLayout(FlowLayout.LEADING, 50, 20));
+        initRoom();
+        return roomMap;
+    }
+
+    public void addRoom(Room room) {
+        room.setPreferredSize(new Dimension(200, 250));
+        roomMap.add(room);
+    }
+
+    public void initRoom() {
+        addRoom(new Room());
+        addRoom(new Room());
+        addRoom(new Room());
+        addRoom(new Room());
+        addRoom(new Room());
+        addRoom(new Room());
+    }
 }
