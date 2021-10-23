@@ -131,7 +131,7 @@ public class GD_Chinh extends JFrame {
                         content.showForm(new GD_DanhSachPhong());
                     break;
                 case 1:
-                    content.showForm(new GD_DatPhong());
+                    content.showForm(new GD_QLDatPhong());
                     break;
                 case 2:
                     content.showForm(new GD_KhachHang());
