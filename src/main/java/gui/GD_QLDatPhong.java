@@ -32,7 +32,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         buildGD_QLDatPhong();
     }
 
-    public void buildGD_QLDatPhong() {
+    private void buildGD_QLDatPhong() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
@@ -252,7 +252,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         panelShadow1.setLayout(panelShadow1Layout);
         panelShadow1Layout.setHorizontalGroup(
             panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1244, Short.MAX_VALUE)
         );
         panelShadow1Layout.setVerticalGroup(
             panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

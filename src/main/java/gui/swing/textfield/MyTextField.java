@@ -7,12 +7,21 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 
 public class MyTextField extends JTextField {
 
+    private Color backgroundColor = new Color(230, 245, 241);
+    private boolean borderLine = false;
+    private Color borderColor = new Color(0, 0, 0, 0.3f);
+    private int borderRadius = 0;
+    private Icon prefixIcon;
+    private Icon suffixIcon;
+    private String hint = "";
+    
     public String getHint() {
         return hint;
     }
@@ -46,27 +55,52 @@ public class MyTextField extends JTextField {
     public void setBackgroundColor(Color bg) {
         this.backgroundColor = bg;
     }
-    
-    private Color backgroundColor = new Color(230, 245, 241);
-    private Icon prefixIcon;
-    private Icon suffixIcon;
-    private String hint = "";
 
+    public boolean isBorderLine() {
+        return borderLine;
+    }
+
+    public void setBorderLine(boolean borderLine) {
+        this.borderLine = borderLine;
+    }
+
+    public Color getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(Color borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    public int getBorderRadius() {
+        return borderRadius;
+    }
+
+    public void setBorderRadius(int borderRadius) {
+        this.borderRadius = borderRadius;
+    }
+    
     public MyTextField() {
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(new Color(0, 0, 0, 0));
-        setForeground(Color.decode("#7A8C8D"));
-        setFont(new java.awt.Font("sansserif", 0, 13));
-        setSelectionColor(new Color(75, 175, 152));
+        
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(backgroundColor);
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);
         paintIcon(g);
+        if (borderLine) {
+            g2.setColor(backgroundColor);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
+            g2.setColor(borderColor);
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, borderRadius, borderRadius);
+        }
+        else {
+            g2.setColor(backgroundColor);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
+        }
         super.paintComponent(g);
     }
 
@@ -100,15 +134,14 @@ public class MyTextField extends JTextField {
     private void initBorder() {
         int left = 15;
         int right = 15;
-        //  5 is default
         if (prefixIcon != null) {
-            //  prefix is left
+            //  tay trái
             left = prefixIcon.getIconWidth() + 15;
         }
         if (suffixIcon != null) {
-            //  suffix is right
+            //  bên tay phải
             right = suffixIcon.getIconWidth() + 15;
         }
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, left, 10, right));
+        setBorder(BorderFactory.createEmptyBorder(10, left, 10, right));
     }
 }
