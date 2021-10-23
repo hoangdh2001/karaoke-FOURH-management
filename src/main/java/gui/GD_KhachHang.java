@@ -39,7 +39,8 @@ public class GD_KhachHang extends javax.swing.JPanel {
         Color colorBtn = new Color(184, 238, 241);
         
         pnlTop.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
-       
+        pnlTop.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
+        
        /**
         * Begin: group Thông tin khách hàng
         */        
@@ -160,9 +161,13 @@ public class GD_KhachHang extends javax.swing.JPanel {
 
         lblTitle = new javax.swing.JLabel();
         pnlTop = new gui.panel.PanelShadow();
-        panelShadow1 = new gui.panel.PanelShadow();
 
         lblTitle.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+
+        pnlBottom = new gui.panel.PanelShadow();
+
+        lblTitle.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+
         lblTitle.setForeground(new java.awt.Color(4, 72, 210));
         lblTitle.setText("Quản Lý Khách Hàng");
 
@@ -179,23 +184,25 @@ public class GD_KhachHang extends javax.swing.JPanel {
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+
             .addGap(0, 184, Short.MAX_VALUE)
         );
 
-        panelShadow1.setBackground(new java.awt.Color(255, 255, 255));
-        panelShadow1.setShadowOpacity(0.3F);
-        panelShadow1.setShadowSize(3);
-        panelShadow1.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBottom.setShadowOpacity(0.3F);
+        pnlBottom.setShadowSize(3);
+        pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-        panelShadow1.setLayout(panelShadow1Layout);
-        panelShadow1Layout.setHorizontalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
+        pnlBottom.setLayout(pnlBottomLayout);
+        pnlBottomLayout.setHorizontalGroup(
+            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        panelShadow1Layout.setVerticalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        pnlBottomLayout.setVerticalGroup(
+            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 361, Short.MAX_VALUE)
+
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -206,7 +213,12 @@ public class GD_KhachHang extends javax.swing.JPanel {
                 .addComponent(lblTitle)
                 .addContainerGap(879, Short.MAX_VALUE))
             .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(lblTitle)
+                .addGap(0, 956, Short.MAX_VALUE))
+            .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,14 +228,20 @@ public class GD_KhachHang extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(lblTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblTitle;
-    private gui.panel.PanelShadow panelShadow1;
+    private gui.panel.PanelShadow pnlBottom;
     private gui.panel.PanelShadow pnlTop;
     // End of variables declaration//GEN-END:variables
 }

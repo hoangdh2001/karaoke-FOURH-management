@@ -26,6 +26,12 @@ public class MyTextField extends JTextField {
         return hint;
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled); //To change body of generatedColor methods, choose Tools | Templates.
+        setBackground(Color.LIGHT_GRAY);
+    }
+
     public void setHint(String hint) {
         this.hint = hint;
     }
