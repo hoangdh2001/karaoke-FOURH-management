@@ -44,7 +44,16 @@ public class MyTextField extends JTextField {
         this.suffixIcon = suffixIcon;
         initBorder();
     }
-
+    
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+    
+    public void setBackgroundColor(Color bg) {
+        this.backgroundColor = bg;
+    }
+    
+    private Color backgroundColor = new Color(230, 245, 241);
     private Icon prefixIcon;
     private Icon suffixIcon;
     private String hint = "";
@@ -61,7 +70,7 @@ public class MyTextField extends JTextField {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(new Color(230, 245, 241));
+        g2.setColor(backgroundColor);
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);
         paintIcon(g);
         super.paintComponent(g);

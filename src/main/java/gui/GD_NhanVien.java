@@ -34,18 +34,16 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
     public void buildGD() {
         String fontName = "sansserif";
-        int fontStyle = Font.PLAIN;
-        int fontSize = 16;
+        int fontPlain = Font.PLAIN;
+        int font16 = 16;
         Color colorBtn = new Color(184, 238, 241);
 
-        lblMenu.setFont(new Font(fontName, fontStyle, fontSize));
+        lblMenu.setFont(new Font(fontName, fontPlain, font16));
 
-        panelForm.setPreferredSize(new Dimension(1119, 341));
+//        panelForm.setPreferredSize(new Dimension(1119, 341));
         panelForm.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
 
-        /*
-         * Begin: group thông tin nhân viên
-         */
+        /*Begin: group thông tin nhân viên*/
         JPanel pnlThongTinNV = new JPanel();
         pnlThongTinNV.setOpaque(false);
         pnlThongTinNV.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Thông tin nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
@@ -54,89 +52,89 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         // Mã nhân viên
         JLabel lblMaNV = new JLabel("Mã nhân viên:");
-        lblMaNV.setFont(new Font(fontName, fontStyle, fontSize));
+        lblMaNV.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblMaNV, "align right");
 
         JTextField txtMaNV = new MyTextField();
-        txtMaNV.setFont(new Font(fontName, fontStyle, fontSize));
+        txtMaNV.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(txtMaNV, "w 80%, h 36!");
 
         //Tên nhân viên
         JLabel lblTenNV = new JLabel("Tên nhân viên:");
-        lblTenNV.setFont(new Font(fontName, fontStyle, fontSize));
+        lblTenNV.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblTenNV, "align right");
 
         JTextField txtTenNV = new MyTextField();
-        txtTenNV.setFont(new Font(fontName, fontStyle, fontSize));
+        txtTenNV.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(txtTenNV, "w 80%, h 36!, wrap");
 
         //Giới tính
         JLabel lblGioiTinh = new JLabel("Giới tính:");
-        lblGioiTinh.setFont(new Font(fontName, fontStyle, fontSize));
+        lblGioiTinh.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblGioiTinh, "align right");
 
         JComboBox<String> cmbGioiTinh = new JComboBox<>();
-        cmbGioiTinh.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbGioiTinh.setFont(new Font(fontName, fontPlain, font16));
         cmbGioiTinh.addItem("Nam");
         pnlThongTinNV.add(cmbGioiTinh, "w 80%, h 36!");
 
         //Ngày sinh
         JLabel lblNgaySinh = new JLabel("Ngày sinh:");
-        lblNgaySinh.setFont(new Font(fontName, fontStyle, fontSize));
+        lblNgaySinh.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblNgaySinh, "align right");
 
         JTextField txtNgaySinh = new MyTextField();
-        txtNgaySinh.setFont(new Font(fontName, fontStyle, fontSize));
+        txtNgaySinh.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(txtNgaySinh, "w 80%, h 36!, wrap");
 
         //Số điện thoại
         JLabel lblSDT = new JLabel("Số điện thoại:");
-        lblSDT.setFont(new Font(fontName, fontStyle, fontSize));
+        lblSDT.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblSDT, "align right");
 
         JTextField txtSDT = new MyTextField();
-        txtSDT.setFont(new Font(fontName, fontStyle, fontSize));
+        txtSDT.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(txtSDT, "w 80%, h 36!");
 
         //Email
         JLabel lblEmail = new JLabel("Email:");
-        lblEmail.setFont(new Font(fontName, fontStyle, fontSize));
+        lblEmail.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblEmail, "align right");
 
         JTextField txtEmail = new MyTextField();
-        txtEmail.setFont(new Font(fontName, fontStyle, fontSize));
+        txtEmail.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(txtEmail, "w 80%, h 36!, wrap");
 
         //Địa chỉ
         JLabel lblDiaChi = new JLabel("Địa chỉ:");
-        lblDiaChi.setFont(new Font(fontName, fontStyle, fontSize));
+        lblDiaChi.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblDiaChi, "align right");
 
         JTextField txtDiaChi = new MyTextField();
-        txtDiaChi.setFont(new Font(fontName, fontStyle, fontSize));
+        txtDiaChi.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(txtDiaChi, "w 80%, h 36!");
 
         //Loại nhân viên
         JLabel lblLoaiNV = new JLabel("Loại nhân viên:");
-        lblLoaiNV.setFont(new Font(fontName, fontStyle, fontSize));
+        lblLoaiNV.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblLoaiNV, "align right");
 
         JComboBox<String> cmbLoaiNV = new JComboBox<>();
-        cmbLoaiNV.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbLoaiNV.setFont(new Font(fontName, fontPlain, font16));
         cmbLoaiNV.addItem("Nhân viên lễ tân");
         pnlThongTinNV.add(cmbLoaiNV, "w 80%, h 36!, wrap");
 
         //Ca làm
         JLabel lblCaLam = new JLabel("Ca làm:");
-        lblCaLam.setFont(new Font(fontName, fontStyle, fontSize));
+        lblCaLam.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinNV.add(lblCaLam, "align right");
 
         JComboBox<String> cmbCaLam = new JComboBox<>();
-        cmbCaLam.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbCaLam.setFont(new Font(fontName, fontPlain, font16));
         cmbCaLam.addItem("Ca 1");
         pnlThongTinNV.add(cmbCaLam, "w 80%, h 36!, wrap");
 
-//      Panel nút chức năng
+        /*Panel nút chức năng*/
         JPanel pnlButton = new JPanel();
         pnlButton.setOpaque(false);
         pnlButton.setLayout(new MigLayout("", "push[]20[]20[]20[]0", "push[]push"));
@@ -144,35 +142,31 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         // Nút Thêm
         Button btnThemNV = new Button("Thêm");
-        btnThemNV.setFont(new Font(fontName, fontStyle, fontSize));
+        btnThemNV.setFont(new Font(fontName, fontPlain, font16));
         btnThemNV.setBackground(colorBtn);
         pnlButton.add(btnThemNV, "w 100!, h 36!, growx");
 
         // Nút Xóa
         Button btnXoaNV = new Button("Xóa");
-        btnXoaNV.setFont(new Font(fontName, fontStyle, fontSize));
+        btnXoaNV.setFont(new Font(fontName, fontPlain, font16));
         btnXoaNV.setBackground(colorBtn);
         pnlButton.add(btnXoaNV, "w 100!, h 36!");
 
         // Nút Sửa
         Button btnSuaNV = new Button("Sửa");
-        btnSuaNV.setFont(new Font(fontName, fontStyle, fontSize));
+        btnSuaNV.setFont(new Font(fontName, fontPlain, font16));
         btnSuaNV.setBackground(colorBtn);
         pnlButton.add(btnSuaNV, "w 100!, h 36!");
 
         // Nút Làm mới
         Button btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
+        btnLamMoi.setFont(new Font(fontName, fontPlain, font16));
         btnLamMoi.setBackground(colorBtn);
         pnlButton.add(btnLamMoi, "w 100!, h 36!");
-        /*
-         * End: group thông tin nhân viên
-         */
-        
-        
-        /*
-         * Begin: group tìm nhân viên
-         */
+        /*End: group thông tin nhân viên*/
+
+
+ /*Begin: group tìm nhân viên*/
         JPanel pnlTimKiemNV = new JPanel();
         pnlTimKiemNV.setOpaque(false);
         pnlTimKiemNV.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Thông tin nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
@@ -181,70 +175,53 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         // Tìm kiếm
         JTextField txtTimKiem = new MyTextField();
-        txtTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
+        txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
         pnlTimKiemNV.add(txtTimKiem, "span, w 100%, h 36!, wrap");
 
         //Cột cần tìm kiếm
         JComboBox<String> cmbCot = new JComboBox<>();
-        cmbCot.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbCot.setFont(new Font(fontName, fontPlain, font16));
         cmbCot.addItem("Chọn cột cần tìm");
         pnlTimKiemNV.add(cmbCot, "span, w 100%, h 36!, wrap");
 
         //Giới tính cần tìm
         JLabel lblGioiTinhTK = new JLabel("Giới tính:");
-        lblGioiTinhTK.setFont(new Font(fontName, fontStyle, fontSize));
+        lblGioiTinhTK.setFont(new Font(fontName, fontPlain, font16));
         pnlTimKiemNV.add(lblGioiTinhTK, "align right");
 
         JComboBox<String> cmbGioiTinhTK = new JComboBox<>();
-        cmbGioiTinhTK.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbGioiTinhTK.setFont(new Font(fontName, fontPlain, font16));
         cmbGioiTinhTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbGioiTinhTK, "w 80%,h 36!, wrap");
 
         //Loại nhân viên cầm tìm
         JLabel lblLoaiNVTK = new JLabel("Loại nhân viên:");
-        lblLoaiNVTK.setFont(new Font(fontName, fontStyle, fontSize));
+        lblLoaiNVTK.setFont(new Font(fontName, fontPlain, font16));
 
         pnlTimKiemNV.add(lblLoaiNVTK, "align right");
 
         JComboBox<String> cmbLoaiNVTK = new JComboBox<>();
-        cmbLoaiNVTK.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font16));
         cmbLoaiNVTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbLoaiNVTK, "w 80%,h 36!, wrap");
 
         //Ca làm cần tìm
         JLabel lblCaLamTK = new JLabel("Ca làm:");
-        lblCaLamTK.setFont(new Font(fontName, fontStyle, fontSize));
+        lblCaLamTK.setFont(new Font(fontName, fontPlain, font16));
         pnlTimKiemNV.add(lblCaLamTK, "align right");
 
         JComboBox<String> cmbCaLamTK = new JComboBox<>();
-        cmbCaLamTK.setFont(new Font(fontName, fontStyle, fontSize));
+        cmbCaLamTK.setFont(new Font(fontName, fontPlain, font16));
         cmbCaLamTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbCaLamTK, "w 80%,h 36!, wrap");
 
         //Button tìm kiếm
         Button btnTimKiem = new Button("Tìm kiếm");
-        btnTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
+        btnTimKiem.setFont(new Font(fontName, fontPlain, font16));
         btnTimKiem.setBackground(colorBtn);
         pnlTimKiemNV.add(btnTimKiem, "span, align right, w 100!, h 36!");
-        /*
-         * End: group tìm nhân viên
-         */
-        
-        
-        /*
-         * Begin: group danh sách nhân viên
-         */
-        panelCenter.setLayout(new MigLayout("", "[]", "[]"));
+        /* End: group tìm nhân viên*/
 
-        JPanel subPanelCenter = new JPanel();
-        subPanelCenter.setOpaque(false);
-        subPanelCenter.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
-
-        panelCenter.add(subPanelCenter, "w 100%, h 1100");
-        /*
-         * End: group danh sách nhân viên
-         */
-        
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
@@ -259,7 +236,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         lblMenu = new javax.swing.JLabel();
         panelForm = new gui.panel.PanelShadow();
-        panelCenter = new gui.component.PanelMap();
+        panelShadow1 = new gui.panel.PanelShadow();
 
         setPreferredSize(new java.awt.Dimension(1119, 620));
 
@@ -276,27 +253,27 @@ public class GD_NhanVien extends javax.swing.JPanel {
         panelForm.setLayout(panelFormLayout);
         panelFormLayout.setHorizontalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1119, Short.MAX_VALUE)
+            .addGap(0, 1161, Short.MAX_VALUE)
         );
         panelFormLayout.setVerticalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 236, Short.MAX_VALUE)
         );
 
-        panelCenter.setBackground(new java.awt.Color(255, 255, 255));
-        panelCenter.setShadowOpacity(0.3F);
-        panelCenter.setShadowSize(3);
-        panelCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
+        panelShadow1.setBackground(new java.awt.Color(255, 255, 255));
+        panelShadow1.setShadowOpacity(0.3F);
+        panelShadow1.setShadowSize(3);
+        panelShadow1.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelCenterLayout = new javax.swing.GroupLayout(panelCenter);
-        panelCenter.setLayout(panelCenterLayout);
-        panelCenterLayout.setHorizontalGroup(
-            panelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
+        panelShadow1.setLayout(panelShadow1Layout);
+        panelShadow1Layout.setHorizontalGroup(
+            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        panelCenterLayout.setVerticalGroup(
-            panelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        panelShadow1Layout.setVerticalGroup(
+            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 343, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -307,7 +284,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblMenu)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(panelCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,15 +293,15 @@ public class GD_NhanVien extends javax.swing.JPanel {
                 .addComponent(lblMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMenu;
-    private gui.component.PanelMap panelCenter;
     private gui.panel.PanelShadow panelForm;
+    private gui.panel.PanelShadow panelShadow1;
     // End of variables declaration//GEN-END:variables
 }

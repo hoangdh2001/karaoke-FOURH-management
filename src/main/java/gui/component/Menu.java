@@ -134,13 +134,11 @@ public class Menu extends JPanel {
     
     private EventMenu getEventMenu() {
         return new EventMenu() {
+            @Override
             public boolean menuPressed(Component com, boolean open) {
                 if (enableMenu) {
-                    System.out.println(enableMenu);
                     if (isShowMenu()) {
-                        System.out.println(isShowMenu());
                         if (open) {
-                            System.out.println(open);
                             new MenuAnimation(layout, com, 50).openMenu();
                         } else {
                             new MenuAnimation(layout, com, 50).closeMenu();
