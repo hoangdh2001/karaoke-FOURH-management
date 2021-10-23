@@ -40,7 +40,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         lblMenu.setFont(new Font(fontName, fontPlain, font16));
 
-        panelForm.setPreferredSize(new Dimension(1119, 341));
+//        panelForm.setPreferredSize(new Dimension(1119, 341));
         panelForm.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
 
         /*Begin: group thông tin nhân viên*/
@@ -222,16 +222,6 @@ public class GD_NhanVien extends javax.swing.JPanel {
         pnlTimKiemNV.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /* End: group tìm nhân viên*/
 
- /*Begin: group danh sách nhân viên*/
-        panelCenter.setLayout(new MigLayout("", "[]", "[]"));
-
-        JPanel subPanelCenter = new JPanel();
-        subPanelCenter.setOpaque(false);
-        subPanelCenter.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách nhân viên", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
-
-        panelCenter.add(subPanelCenter, "w 100%, h 1100");
-        /*End: group danh sách nhân viên*/
-
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
@@ -246,7 +236,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         lblMenu = new javax.swing.JLabel();
         panelForm = new gui.panel.PanelShadow();
-        panelCenter = new gui.component.PanelMap();
+        panelShadow1 = new gui.panel.PanelShadow();
 
         setPreferredSize(new java.awt.Dimension(1119, 620));
 
@@ -263,27 +253,27 @@ public class GD_NhanVien extends javax.swing.JPanel {
         panelForm.setLayout(panelFormLayout);
         panelFormLayout.setHorizontalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1119, Short.MAX_VALUE)
+            .addGap(0, 1161, Short.MAX_VALUE)
         );
         panelFormLayout.setVerticalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 236, Short.MAX_VALUE)
         );
 
-        panelCenter.setBackground(new java.awt.Color(255, 255, 255));
-        panelCenter.setShadowOpacity(0.3F);
-        panelCenter.setShadowSize(3);
-        panelCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
+        panelShadow1.setBackground(new java.awt.Color(255, 255, 255));
+        panelShadow1.setShadowOpacity(0.3F);
+        panelShadow1.setShadowSize(3);
+        panelShadow1.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelCenterLayout = new javax.swing.GroupLayout(panelCenter);
-        panelCenter.setLayout(panelCenterLayout);
-        panelCenterLayout.setHorizontalGroup(
-            panelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
+        panelShadow1.setLayout(panelShadow1Layout);
+        panelShadow1Layout.setHorizontalGroup(
+            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        panelCenterLayout.setVerticalGroup(
-            panelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        panelShadow1Layout.setVerticalGroup(
+            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 343, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -294,7 +284,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblMenu)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(panelCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,15 +293,15 @@ public class GD_NhanVien extends javax.swing.JPanel {
                 .addComponent(lblMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMenu;
-    private gui.component.PanelMap panelCenter;
     private gui.panel.PanelShadow panelForm;
+    private gui.panel.PanelShadow panelShadow1;
     // End of variables declaration//GEN-END:variables
 }

@@ -45,7 +45,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         -> chênh lệch là 6(border shadow)
         Tương tự cho pnlTimKiemPhieu
          */
-        pnlForm.setPreferredSize(new Dimension(1119, 241));
+//        pnlForm.setPreferredSize(new Dimension(1119, 241));
         /*
         Layout: 2 cột, 1 dòng
         cột 1, dòng 1: group thông tin phiếu đặt
@@ -210,16 +210,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         pnlTimKiemPhieu.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /*End: group Tìm kiếm*/
         
-            /*Begin: group danh sách phiếu đặt phòng*/
-        pnlCenter.setLayout(new MigLayout("", "[]", "[]"));
-
-        JPanel subPanelCenter = new JPanel();
-        subPanelCenter.setOpaque(false);
-        subPanelCenter.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách phiếu đặt phòng", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
-
-        pnlCenter.add(subPanelCenter, "w 100%, h 1200");
-        /*End: group danh sách phiếu đặt phòng*/
-
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
@@ -232,44 +222,41 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblMenu = new javax.swing.JLabel();
         pnlForm = new gui.panel.PanelShadow();
-        pnlCenter = new gui.component.PanelMap();
-
-        lblMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        lblMenu.setForeground(new java.awt.Color(4, 72, 210));
-        lblMenu.setText("Quản lý đặt phòng");
+        lblMenu = new javax.swing.JLabel();
+        panelShadow1 = new gui.panel.PanelShadow();
 
         pnlForm.setBackground(new java.awt.Color(255, 255, 255));
-        pnlForm.setShadowOpacity(0.3F);
-        pnlForm.setShadowSize(3);
-        pnlForm.setShadowType(gui.dropshadow.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
         pnlForm.setLayout(pnlFormLayout);
         pnlFormLayout.setHorizontalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1119, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         pnlFormLayout.setVerticalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 236, Short.MAX_VALUE)
+            .addGap(0, 246, Short.MAX_VALUE)
         );
 
-        pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
-        pnlCenter.setShadowOpacity(0.3F);
-        pnlCenter.setShadowSize(3);
-        pnlCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
+        lblMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        lblMenu.setForeground(new java.awt.Color(4, 72, 210));
+        lblMenu.setText("Quản lý đặt phòng");
 
-        javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
-        pnlCenter.setLayout(pnlCenterLayout);
-        pnlCenterLayout.setHorizontalGroup(
-            pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelShadow1.setBackground(new java.awt.Color(255, 255, 255));
+        panelShadow1.setShadowOpacity(0.3F);
+        panelShadow1.setShadowSize(3);
+        panelShadow1.setShadowType(gui.dropshadow.ShadowType.TOP);
+
+        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
+        panelShadow1.setLayout(panelShadow1Layout);
+        panelShadow1Layout.setHorizontalGroup(
+            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        pnlCenterLayout.setVerticalGroup(
-            pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        panelShadow1Layout.setVerticalGroup(
+            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 291, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -279,25 +266,25 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
             .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblMenu)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 1145, Short.MAX_VALUE))
+            .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(8, 8, 8)
+                .addGap(7, 7, 7)
                 .addComponent(lblMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMenu;
-    private gui.component.PanelMap pnlCenter;
+    private gui.panel.PanelShadow panelShadow1;
     private gui.panel.PanelShadow pnlForm;
     // End of variables declaration//GEN-END:variables
 }
