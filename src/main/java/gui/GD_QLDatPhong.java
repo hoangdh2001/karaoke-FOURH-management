@@ -14,7 +14,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
@@ -36,27 +38,23 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
+        int font14 = 14;
+        int font12 = 12;
         Color colorBtn = new Color(184, 238, 241);
+        Color colorLabel = new Color(47, 72, 210);
 
         lblMenu.setFont(new Font(fontName, fontPlain, font16));
-
-        /*
-        Chiều cao pnlForm là 241, chiều cao pnlThongTinPhieu(có borderTitle) là 235
-        -> chênh lệch là 6(border shadow)
-        Tương tự cho pnlTimKiemPhieu
-         */
-//        pnlForm.setPreferredSize(new Dimension(1119, 241));
         /*
         Layout: 2 cột, 1 dòng
         cột 1, dòng 1: group thông tin phiếu đặt
         cột 2, dòng 1: group Tìm kiếm
          */
-        pnlForm.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
+        pnlForm.setLayout(new MigLayout("", "3[center] [center] [center]3", "6[center]5"));
 
         /*Begin: group thông tin phiếu đặt*/
         JPanel pnlThongTinPhieu = new JPanel();
         pnlThongTinPhieu.setOpaque(false);
-        pnlThongTinPhieu.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Thông tin phiếu đặt", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
+
         /*
         Layout: 4 cột, 4 dòng
         cột 1+2, dòng 1: Mã phiếu
@@ -70,62 +68,68 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         
         cột 1+2+3+4, dòng 4: Panel nút chức năng        
          */
-        pnlThongTinPhieu.setLayout(new MigLayout("", "10[center][center] 10 [center][center]10", "[center]10[center]10[center] 20[center]"));
+        pnlThongTinPhieu.setLayout(new MigLayout("", "10[center][center] 10 [center][center]10", "[][center]10[center]10[center] 20[center]"));
         pnlForm.add(pnlThongTinPhieu, "w 60%, h 235!");
+
+        JLabel lblThongTinPhieu = new JLabel("Thông tin phiếu");
+        lblThongTinPhieu.setFont(new Font(fontName, fontPlain, font16));
+        lblThongTinPhieu.setForeground(colorLabel);
+        pnlThongTinPhieu.add(lblThongTinPhieu, "span, w 100%, h 30!, wrap");
 
         // Mã phiếu
         JLabel lblMaPhieu = new JLabel("Mã phiếu:");
-        lblMaPhieu.setFont(new Font(fontName, fontPlain, font16));
+        lblMaPhieu.setFont(new Font(fontName, fontPlain, font14));
+
         pnlThongTinPhieu.add(lblMaPhieu, "align right");
 
         JTextField txtMaNV = new MyTextField();
-        txtMaNV.setFont(new Font(fontName, fontPlain, font16));
+        txtMaNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtMaNV, "w 80%, h 36!");
 
         //Tên khách hàng
         JLabel lblKhachHang = new JLabel("Khách hàng:");
-        lblKhachHang.setFont(new Font(fontName, fontPlain, font16));
+        lblKhachHang.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblKhachHang, "align right");
 
         JTextField txtTenNV = new MyTextField();
-        txtTenNV.setFont(new Font(fontName, fontPlain, font16));
+        txtTenNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtTenNV, "w 80%, h 36!, wrap");
 
         //Ngày lập phiếu
         JLabel lblNgayLap = new JLabel("Ngày lập phiếu:");
-        lblNgayLap.setFont(new Font(fontName, fontPlain, font16));
+        lblNgayLap.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblNgayLap, "align right");
 
         JTextField txtNgayLap = new MyTextField();
-        txtNgayLap.setFont(new Font(fontName, fontPlain, font16));
+        txtNgayLap.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtNgayLap, "w 80%, h 36!");
 
         //Phòng
         JLabel lblPhong = new JLabel("Phòng:");
-        lblPhong.setFont(new Font(fontName, fontPlain, font16));
+        lblPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblPhong, "align right");
 
         JTextField txtPhong = new MyTextField();
-        txtPhong.setFont(new Font(fontName, fontPlain, font16));
+        txtPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtPhong, "w 80%, h 36!, wrap");
 
         //Trạng thái
         JLabel lblTrangThai = new JLabel("Trạng thái:");
-        lblTrangThai.setFont(new Font(fontName, fontPlain, font16));
+        lblTrangThai.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblTrangThai, "align right");
 
         JComboBox<String> cmbTrangThai = new JComboBox<>();
-        cmbTrangThai.setFont(new Font(fontName, fontPlain, font16));
+        cmbTrangThai.setFont(new Font(fontName, fontPlain, font14));
         cmbTrangThai.addItem("Tất cả");
         pnlThongTinPhieu.add(cmbTrangThai, "w 80%, h 36!");
 
         //Ngày đặt
         JLabel lblNgayDat = new JLabel("Ngày đặt:");
-        lblNgayDat.setFont(new Font(fontName, fontPlain, font16));
+        lblNgayDat.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblNgayDat, "align right");
 
         JTextField txtNgayDat = new MyTextField();
-        txtNgayDat.setFont(new Font(fontName, fontPlain, font16));
+        txtNgayDat.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtNgayDat, "w 80%, h 36!, wrap");
 
         /*Panel nút chức năng*/
@@ -136,27 +140,33 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
         // Nút Sửa
         Button btnSuaNV = new Button("Sửa");
-        btnSuaNV.setFont(new Font(fontName, fontPlain, font16));
+        btnSuaNV.setFont(new Font(fontName, fontPlain, font14));
         btnSuaNV.setBackground(colorBtn);
         pnlButton.add(btnSuaNV, "w 100!, h 36!");
 
         // Nút Hủy đặt
         Button btnHuyDatPhieu = new Button("Hủy đặt");
-        btnHuyDatPhieu.setFont(new Font(fontName, fontPlain, font16));
+        btnHuyDatPhieu.setFont(new Font(fontName, fontPlain, font14));
         btnHuyDatPhieu.setBackground(colorBtn);
         pnlButton.add(btnHuyDatPhieu, "w 100!, h 36!");
 
         // Nút Làm mới
         Button btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontPlain, font16));
+        btnLamMoi.setFont(new Font(fontName, fontPlain, font14));
         btnLamMoi.setBackground(colorBtn);
         pnlButton.add(btnLamMoi, "w 100!, h 36!");
         /*End: group thông tin phiếu đặt*/
 
- /*Begin:group Tìm kiếm*/
+ /**/
+        JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
+        spr.setPreferredSize(new Dimension(20, 210));
+        pnlForm.add(spr);
+
+
+        /*Begin:group Tìm kiếm*/
         JPanel pnlTimKiemPhieu = new JPanel();
         pnlTimKiemPhieu.setOpaque(false);
-        pnlTimKiemPhieu.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Tìm kiếm", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
+
         /*
         Layout: 3 cột, 4 dòng
         cột 1+2, dòng 1: Ô tìm kiếm
@@ -170,46 +180,51 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         
         cột 1+2+3, dòng 4: Nút tìm kiếm
          */
-        pnlTimKiemPhieu.setLayout(new MigLayout("", "[center][center][center]", "[]10[]10[] 20[]"));
+        pnlTimKiemPhieu.setLayout(new MigLayout("", "[center][center][center]10", "[]5[]10[]10[] 20[]"));
         pnlForm.add(pnlTimKiemPhieu, "w 40%, h 235!");
+
+        JLabel lblTimKiem = new JLabel("Tìm kiếm");
+        lblTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        lblTimKiem.setForeground(colorLabel);
+        pnlTimKiemPhieu.add(lblTimKiem, "w 100%, h 30!, wrap");
 
         // Ô tìm kiếm
         JTextField txtTimKiem = new MyTextField();
-        txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemPhieu.add(txtTimKiem, "span 2, w 100%, h 36!");
 
         //Cột cần tìm
         JComboBox<String> cmbCotTK = new JComboBox<>();
-        cmbCotTK.setFont(new Font(fontName, fontPlain, font16));
+        cmbCotTK.setFont(new Font(fontName, fontPlain, font14));
         cmbCotTK.addItem("text");
         pnlTimKiemPhieu.add(cmbCotTK, "w 100%, h 36!, wrap");
 
         //Trạng thái
         JLabel lblTrangThaiTK = new JLabel("Trạng thái:");
-        lblTrangThaiTK.setFont(new Font(fontName, fontPlain, font16));
+        lblTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemPhieu.add(lblTrangThaiTK, "align right");
 
         JComboBox<String> cmbTrangThaiTK = new JComboBox<>();
-        cmbTrangThaiTK.setFont(new Font(fontName, fontPlain, font16));
+        cmbTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
         cmbTrangThaiTK.addItem("Tất cả");
         pnlTimKiemPhieu.add(cmbTrangThaiTK, "align left,w 100%, h 36!, wrap");
 
         // Tìm kiếm Ngày đặt
         JLabel lblNgayDaLabelTK = new JLabel("Ngày đặt");
-        lblNgayDaLabelTK.setFont(new Font(fontName, fontPlain, font16));
+        lblNgayDaLabelTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemPhieu.add(lblNgayDaLabelTK, "align right");
 
         JTextField txtNgayDatTK = new MyTextField();
-        txtNgayDatTK.setFont(new Font(fontName, fontPlain, font16));
+        txtNgayDatTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemPhieu.add(txtNgayDatTK, "w 60%, h 36!, wrap");
 
         //Button tìm kiếm
         Button btnTimKiem = new Button("Tìm kiếm");
-        btnTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        btnTimKiem.setFont(new Font(fontName, fontPlain, font14));
         btnTimKiem.setBackground(colorBtn);
         pnlTimKiemPhieu.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /*End: group Tìm kiếm*/
-        
+
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
