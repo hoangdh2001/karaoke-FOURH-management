@@ -32,7 +32,7 @@ public class GD_DanhSachPhong extends JPanel {
          buildGD();
     }
 
-    public void buildGD() {
+    private void buildGD() {
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
         int fontSize = 16;

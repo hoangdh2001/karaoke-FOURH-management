@@ -21,7 +21,7 @@
               <Component id="lblTitle" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="956" max="32767" attributes="0"/>
           </Group>
-          <Component id="pnlBottom" max="32767" attributes="0"/>
+          <Component id="panelShadow1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -31,8 +31,8 @@
               <Component id="lblTitle" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="pnlTop" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="pnlBottom" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="panelShadow1" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -74,7 +74,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="gui.panel.PanelShadow" name="pnlBottom">
+    <Container class="gui.panel.PanelShadow" name="panelShadow1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -94,7 +94,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="361" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="356" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
