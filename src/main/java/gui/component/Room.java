@@ -198,7 +198,7 @@ public class Room extends PanelShadow {
         pnlPhongTrong.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
         JLabel lblIcon = new JLabel();
-        lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
+       lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
         pnlPhongTrong.add(lblIcon);
         
         JLabel lblTenPhong = new JLabel("Phòng A1");
