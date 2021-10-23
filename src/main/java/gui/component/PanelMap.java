@@ -16,6 +16,9 @@ public class PanelMap extends PanelShadow {
     private JPanel pane;
     private TabButton tabPane;
     private JPanel roomMap;
+    private JPanel pnlRoomMap1;
+    private JPanel pnlRoomMap2;
+    private JPanel pnlRoomMap3;
 
     public PanelMap() {
         buildMap();
@@ -45,15 +48,15 @@ public class PanelMap extends PanelShadow {
                     showTabPane(createRoomMap());
                     return true;
                 } else if (index == 1) {
-                    showTabPane(new JPanel());
+                    showTabPane(createPnlRoomMap1());
                     return true;
                 }
                 else if(index == 2) {
-                    showTabPane(new JPanel());
+                    showTabPane(createPnlRoomMap2());
                     return true;
                 }
                 else if(index == 3) {
-                    showTabPane(new JPanel());
+                    showTabPane(createPnlRoomMap3());
                     return true;
                 }
                 return false;
@@ -94,5 +97,23 @@ public class PanelMap extends PanelShadow {
         addRoom(new Room());
         addRoom(new Room());
         addRoom(new Room());
+    }
+    
+    private JPanel createPnlRoomMap1() {
+        pnlRoomMap1 = new JPanel();
+        pnlRoomMap1.setBackground(Color.WHITE);
+        return pnlRoomMap1;
+    }
+    
+    private JPanel createPnlRoomMap2() {
+        pnlRoomMap2 = new JPanel();
+        pnlRoomMap2.setBackground(Color.WHITE);
+        return pnlRoomMap2;
+    }
+    
+    private JPanel createPnlRoomMap3() {
+        pnlRoomMap3 = new JPanel();
+        pnlRoomMap3.setBackground(Color.WHITE);
+        return pnlRoomMap3;
     }
 }

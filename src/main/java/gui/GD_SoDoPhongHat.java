@@ -1,6 +1,7 @@
 package gui;
 
 import gui.swing.button.Button;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,37 +24,46 @@ public class GD_SoDoPhongHat extends JPanel {
         panelForm.setPreferredSize(new Dimension(1119, 181));
         panelForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "push[center]20[center]20[]push"));
         
-        JLabel lbLoaiPhong = new JLabel("Loại phòng:");
-        lbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
-        panelForm.add(lbLoaiPhong);
-        
-        JComboBox<String> cbLoaiPhong = new JComboBox<>();
-        cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
-        panelForm.add(cbLoaiPhong, "w 20%, h 36!");
-        
-        JLabel lbTrangThai = new JLabel("Trạng thái");
-        lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
-        panelForm.add(lbTrangThai);
-        
-        JComboBox<String> cbTrangThai = new JComboBox<>();
-        cbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
-        panelForm.add(cbTrangThai, "w 20%, h 36!, wrap");
-        
         JLabel lbSdt = new JLabel("Số điện thoại");
         lbSdt.setFont(new Font("sansserif", Font.PLAIN, 12));
         panelForm.add(lbSdt);
         
-        JTextField txtSdt = new MyTextField();
+        MyTextField txtSdt = new MyTextField();
         txtSdt.setFont(new Font("sansserif", Font.PLAIN, 12));
+        txtSdt.setBorderLine(true);
+//        txtSdt.setBorderRadius(10);
         panelForm.add(txtSdt, "w 20%");
         
         JLabel lbTenPhong = new JLabel("Tên phòng:");
         lbTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         panelForm.add(lbTenPhong);
         
-        JTextField txtTenPhong = new MyTextField();
+        MyTextField txtTenPhong = new MyTextField();
+        txtTenPhong.setBorderLine(true);
         txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+//        txtTenPhong.setBorderRadius(10);
         panelForm.add(txtTenPhong, "w 20%, wrap");
+        
+        JLabel lbLoaiPhong = new JLabel("Loại phòng:");
+        lbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        panelForm.add(lbLoaiPhong);
+        
+        
+        MyComboBox<String> cbLoaiPhong = new MyComboBox<>(new String[] {"--Tất cả--", "Phòng thường", "Phòng tiệc", "Phòng vip"});
+        cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        cbLoaiPhong.setBorderLine(true);
+        cbLoaiPhong.setBorderRadius(10);
+        panelForm.add(cbLoaiPhong, "w 20%, h 30!");
+        
+        JLabel lbTrangThai = new JLabel("Trạng thái");
+        lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
+        panelForm.add(lbTrangThai);
+        
+        MyComboBox<String> cbTrangThai = new MyComboBox<>(new String[] {"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
+        cbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
+        cbTrangThai.setBorderLine(true);
+        cbTrangThai.setBorderRadius(10);
+        panelForm.add(cbTrangThai, "w 20%, h 30!, wrap");
         
         Button timKiemBtn = new Button("Tìm kiếm");
         timKiemBtn.setFont(new Font("sansserif", Font.PLAIN, 12));
@@ -86,7 +96,7 @@ public class GD_SoDoPhongHat extends JPanel {
         panelForm.setLayout(panelFormLayout);
         panelFormLayout.setHorizontalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1119, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         panelFormLayout.setVerticalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,7 +126,7 @@ public class GD_SoDoPhongHat extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
+                .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

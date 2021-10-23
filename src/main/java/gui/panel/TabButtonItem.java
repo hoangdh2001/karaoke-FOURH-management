@@ -72,6 +72,8 @@ public class TabButtonItem extends  JButton {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 selectedTab = event.selected(index, selectedTab);
+                repaint();
+                revalidate();
             }
         });
         
