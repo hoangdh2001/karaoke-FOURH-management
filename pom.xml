@@ -11,6 +11,11 @@
             <artifactId>miglayout</artifactId>
             <version>4.0</version>
         </dependency>
+         <dependency>
+            <groupId>com.jcalendar</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
         <dependency>
             <groupId>com.timing</groupId>
             <artifactId>timingframework</artifactId>
