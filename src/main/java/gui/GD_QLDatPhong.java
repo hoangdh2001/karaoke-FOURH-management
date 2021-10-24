@@ -84,7 +84,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
         pnlThongTinPhieu.add(lblMaPhieu, "align right");
 
-        JTextField txtMaNV = new MyTextField();
+        MyTextField txtMaNV = new MyTextField();
         txtMaNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtMaNV, "w 80%, h 36!");
 
@@ -93,7 +93,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblKhachHang.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblKhachHang, "align right");
 
-        JTextField txtTenNV = new MyTextField();
+        MyTextField txtTenNV = new MyTextField();
         txtTenNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtTenNV, "w 80%, h 36!, wrap");
 
@@ -111,7 +111,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblPhong, "align right");
 
-        JTextField txtPhong = new MyTextField();
+        MyTextField txtPhong = new MyTextField();
         txtPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtPhong, "w 80%, h 36!, wrap");
 
@@ -192,7 +192,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         pnlTimKiemPhieu.add(lblTimKiem, "w 100%, h 30!, wrap");
 
         // Ô tìm kiếm
-        JTextField txtTimKiem = new MyTextField();
+        MyTextField txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemPhieu.add(txtTimKiem, "span 2, w 100%, h 36!");
 
