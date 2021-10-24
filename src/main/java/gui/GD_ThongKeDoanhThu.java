@@ -6,6 +6,7 @@
 package gui;
 
 import gui.swing.button.Button;
+import gui.swing.table.TableCustom;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,8 +15,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -87,6 +90,62 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         pnlBangThongKe.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Bảng thống kê", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), Color.gray));
         pnlBangThongKe.setLayout(new MigLayout());
         pnlTop.add(pnlBangThongKe, "w 100%, h 75%, wrap");
+        
+        Object data[][]={
+                { "HD0001", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0002", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0004", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" },
+                { "HD0005", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" },
+                { "HD0006", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0007", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0008", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" },
+                { "HD0009", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" },
+                { "HD0010", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0011", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0012", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" },
+                { "HD0013", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" },
+                { "HD0014", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0015", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0016", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0017", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0018", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" },
+                { "HD0019", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" },
+                { "HD0020", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0021", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0022", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0023", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0024", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" },
+                { "HD0025", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" },
+                { "HD0026", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0027", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0028", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0029", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0030", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" },
+                { "HD0031", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" },
+                { "HD0032", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0033", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0034", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0035", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0036", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" },
+                { "HD0037", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" },
+                { "HD0038", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0039", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0040", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0041", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" },
+                { "HD0042", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" },
+                { "HD0043", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" },
+                { "HD0044", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" },
+                { "HD0045", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" }
+                
+        };
+        
+         String[] tieuDeThongKe = { "Mã Hóa Đơn", "Ngày Lập Hóa Đơn", "Tên Khách Hàng","Nhân Viên", "Tổng Tiền" };
+         DefaultTableModel modelThongKe = new DefaultTableModel(tieuDeThongKe, 0);
+        modelThongKe.setDataVector(data, tieuDeThongKe);
+        TableCustom tblThongKe = new TableCustom(modelThongKe);
+        JScrollPane scrThongKe = new JScrollPane(tblThongKe);
+        tblThongKe.fixTable(scrThongKe);
+        pnlBangThongKe.add(scrThongKe,"w 100%, h 100%");
         
         JPanel pnlTinhTong = new JPanel();
         pnlTinhTong.setOpaque(false);

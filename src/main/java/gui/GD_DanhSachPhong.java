@@ -5,6 +5,7 @@
 package gui;
 
 import gui.swing.button.Button;
+import gui.swing.table.TableCustom;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,8 +15,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -111,11 +114,70 @@ public class GD_DanhSachPhong extends JPanel {
          */
          /*Begin: group danh sách Phòng hát*/
         pnlBottom.setLayout(new MigLayout());
-
         pnlBottom.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách phòng", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), Color.gray));
-
         pnlBottom.setPreferredSize(new Dimension(1119, 1110));
         /*End: group danh sách Phòng */
+        
+        
+        Object data[][]={
+            { "PH0001", "Phòng Vip", "Sẵn sàng","LPV001", "500,000" },
+            { "PH0002", "Phòng Thường", "Đang hát","LPTH001", "300,000" },
+            { "PH0003", "Phòng Tiệc", "Đang sửa chữa","LPT001", "400,000" },
+            { "PH0004", "Phòng Thường", "Phòng đang dọn","LPTH002", "200,000" },
+            { "PH0005", "Phòng Vip", "Sẵn sàng","LPV002", "500,000" },
+            { "PH0006", "Phòng Thường", "Đang hát","LPTH003", "300,000" },
+            { "PH0007", "Phòng Tiệc", "Đang sửa chữa","LPT002", "400,000" },
+            { "PH0008", "Phòng Thường", "Phòng đang dọn","LPTH004", "200,000" },
+            { "PH0009", "Phòng Thường", "Đang hát","LPTH005", "300,000" },
+            { "PH0010", "Phòng Tiệc", "Đang sửa chữa","LPT003", "400,000" },
+            { "PH0011", "Phòng Thường", "Phòng đang dọn","LPTH006", "200,000" },
+            { "PH0012", "Phòng Vip", "Sẵn sàng","LPV003", "500,000" },
+            { "PH0013", "Phòng Thường", "Đang hát","LPTH007", "300,000" },
+            { "PH0014", "Phòng Tiệc", "Đang sửa chữa","LPT004", "400,000" },
+            { "PH0015", "Phòng Thường", "Phòng đang dọn","LPTH008", "200,000" },
+            { "PH0016", "Phòng Thường", "Đang hát","LPTH009", "300,000" },
+            { "PH0017", "Phòng Tiệc", "Đang sửa chữa","LPT005", "400,000" },
+            { "PH0018", "Phòng Thường", "Phòng đang dọn","LPTH010", "200,000" },
+            { "PH0019", "Phòng Vip", "Sẵn sàng","LPV004", "500,000" },
+            { "PH0020", "Phòng Thườngg", "Đang hát","LPTH011", "300,000" },
+            { "PH0021", "Phòng Tiệc", "Đang sửa chữa","LPT006", "400,000" },
+            { "PH0022", "Phòng Thường", "Phòng đang dọn","LPTH012", "200,000" },
+            { "PH0023", "Phòng Thường", "Đang hát","LPTH013", "300,000" },
+            { "PH0024", "Phòng Tiệc", "Đang sửa chữa","LPT007", "400,000" },
+            { "PH0025", "Phòng Thường", "Phòng đang dọn","LPTH014", "200,000" },
+            { "PH0026", "Phòng Vip", "Sẵn sàng","LPV005", "500,000" },
+            { "PH0027", "Phòng Thường", "Đang hát","LPTH015", "300,000" },
+            { "PH0028", "Phòng Tiệc", "Đang sửa chữa","LPT008", "400,000" },
+            { "PH0029", "Phòng Thường", "Phòng đang dọn","LPTH016", "200,000" },
+            { "PH0030", "Phòng Thường", "Đang hát","LPTH017", "300,000" },
+            { "PH0031", "Phòng Tiệcg", "Đang sửa chữa","LPT009", "400,000" },
+            { "PH0032", "Phòng Thường", "Phòng đang dọn","LPTH018", "200,000" },
+            { "PH0033", "Phòng Vip", "Sẵn sàng","LPV006", "500,000" },
+            { "PH0034", "Phòng Thường", "Đang hát","LPTH019", "300,000" },
+            { "PH0035", "Phòng Tiệc", "Đang sửa chữa","LPT010", "400,000" },
+            { "PH0036", "Phòng Thường", "Phòng đang dọn","LPTH020", "200,000" },
+            { "PH0037", "Phòng Thường", "Phòng đang dọn","LPTH014", "200,000" },
+            { "PH0038", "Phòng Vip", "Sẵn sàng","LPV005", "500,000" },
+            { "PH0039", "Phòng Thường", "Đang hát","LPTH015", "300,000" },
+            { "PH0040", "Phòng Tiệc", "Đang sửa chữa","LPT008", "400,000" },
+            { "PH0041", "Phòng Thường", "Phòng đang dọn","LPTH016", "200,000" },
+            { "PH0042", "Phòng Thường", "Đang hát","LPTH017", "300,000" },
+            { "PH0043", "Phòng Tiệcg", "Đang sửa chữa","LPT009", "400,000" },
+            { "PH0044", "Phòng Thường", "Phòng đang dọn","LPTH018", "200,000" },
+            { "PH0045", "Phòng Vip", "Sẵn sàng","LPV006", "500,000" },
+            { "PH0046", "Phòng Thường", "Đang hát","LPTH019", "300,000" },
+            { "PH0047", "Phòng Tiệc", "Đang sửa chữa","LPT010", "400,000" },
+            { "PH0048", "Phòng Thường", "Phòng đang dọn","LPTH020", "200,000" }
+        };
+        
+        
+         String[] tieuDePhong = { "Mã Phòng", "Tên Phòng", "Trạng Thái","Loại Phòng", "Giá Phòng" };
+         DefaultTableModel modelPhong = new DefaultTableModel(tieuDePhong, 0);
+        modelPhong.setDataVector(data, tieuDePhong);
+        TableCustom tblPhong = new TableCustom(modelPhong);
+        JScrollPane scrPhong = new JScrollPane(tblPhong);
+        tblPhong.fixTable(scrPhong);
+        pnlBottom.add(scrPhong,"w 100%, h 100%");
         
         setPreferredSize(new Dimension(1119, 1500));
     }
