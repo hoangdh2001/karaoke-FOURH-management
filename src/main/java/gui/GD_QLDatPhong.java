@@ -7,6 +7,7 @@ package gui;
 
 import com.toedter.calendar.JDateChooser;
 import gui.swing.button.Button;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -119,8 +120,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblTrangThai.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblTrangThai, "align right");
 
-        JComboBox<String> cmbTrangThai = new JComboBox<>();
+        MyComboBox<String> cmbTrangThai = new MyComboBox<>();
         cmbTrangThai.setFont(new Font(fontName, fontPlain, font14));
+        cmbTrangThai.setBorderLine(true);
         cmbTrangThai.addItem("Tất cả");
         pnlThongTinPhieu.add(cmbTrangThai, "w 80%, h 36!");
 
@@ -195,8 +197,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         pnlTimKiemPhieu.add(txtTimKiem, "span 2, w 100%, h 36!");
 
         //Cột cần tìm
-        JComboBox<String> cmbCotTK = new JComboBox<>();
+        MyComboBox<String> cmbCotTK = new MyComboBox<>();
         cmbCotTK.setFont(new Font(fontName, fontPlain, font14));
+        cmbCotTK.setBorderLine(true);
         cmbCotTK.addItem("text");
         pnlTimKiemPhieu.add(cmbCotTK, "w 100%, h 36!, wrap");
 
@@ -205,8 +208,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemPhieu.add(lblTrangThaiTK, "split 2");
 
-        JComboBox<String> cmbTrangThaiTK = new JComboBox<>();
+        MyComboBox<String> cmbTrangThaiTK = new MyComboBox<>();
         cmbTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
+        cmbTrangThaiTK.setBorderLine(true);
         cmbTrangThaiTK.addItem("Tất cả");
         pnlTimKiemPhieu.add(cmbTrangThaiTK, "span , w 100%, h 36!, wrap");
 
