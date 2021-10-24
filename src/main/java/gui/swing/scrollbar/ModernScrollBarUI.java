@@ -1,5 +1,6 @@
 package gui.swing.scrollbar;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -69,7 +70,11 @@ public class ModernScrollBarUI extends BasicScrollBarUI {
     private class ScrollBarButton extends JButton {
 
         public ScrollBarButton() {
-            setBorder(BorderFactory.createEmptyBorder());
+            setPreferredSize(new Dimension(0, 0));
+            setMinimumSize(new Dimension(0, 0));
+            setMaximumSize(new Dimension(0, 0));
+            setBackground(Color.RED);
+//            setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         }
 
         @Override

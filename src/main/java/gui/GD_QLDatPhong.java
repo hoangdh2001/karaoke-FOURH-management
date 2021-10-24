@@ -5,6 +5,7 @@
  */
 package gui;
 
+import com.toedter.calendar.JDateChooser;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
@@ -34,7 +35,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         buildGD_QLDatPhong();
     }
 
-    public void buildGD_QLDatPhong() {
+    private void buildGD_QLDatPhong() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
@@ -100,9 +101,15 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblNgayLap.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblNgayLap, "align right");
 
+<<<<<<< HEAD
         JTextField txtNgayLap = new MyTextField();
         txtNgayLap.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtNgayLap, "w 80%, h 36!");
+=======
+        JDateChooser dcsNgayLap = new JDateChooser();
+        dcsNgayLap.setFont(new Font(fontName, fontPlain, font16));
+        pnlThongTinPhieu.add(dcsNgayLap, "w 80%, h 36!");
+>>>>>>> master
 
         //Phòng
         JLabel lblPhong = new JLabel("Phòng:");
@@ -128,9 +135,15 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblNgayDat.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblNgayDat, "align right");
 
+<<<<<<< HEAD
         JTextField txtNgayDat = new MyTextField();
         txtNgayDat.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(txtNgayDat, "w 80%, h 36!, wrap");
+=======
+        JDateChooser dcsNgayDat = new JDateChooser();
+        dcsNgayDat.setFont(new Font(fontName, fontPlain, font16));
+        pnlThongTinPhieu.add(dcsNgayDat, "w 80%, h 36!, wrap");
+>>>>>>> master
 
         /*Panel nút chức năng*/
         JPanel pnlButton = new JPanel();
@@ -267,7 +280,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         panelShadow1.setLayout(panelShadow1Layout);
         panelShadow1Layout.setHorizontalGroup(
             panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1244, Short.MAX_VALUE)
         );
         panelShadow1Layout.setVerticalGroup(
             panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -34,7 +34,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         build_GDHoaDon();
     }
 
-    public void build_GDHoaDon() {
+    private void build_GDHoaDon() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
@@ -49,8 +49,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         Chiều cao pnlForm là 141, chiều cao pnlThoiGianHD(có borderTitle) là 135
         -> chênh lệch là 6(border shadow)
         Tương tự cho pnlTimKiemHD và pnlSapXepHD
-         */
-//        pnlForm.setPreferredSize(new Dimension(1119, 141));
+        */
         /*
         Layout: 3 cột, 1 dòng
         cột 1, dòng 1: group Chọn thời gian
@@ -188,8 +187,6 @@ public class GD_HoaDon extends javax.swing.JPanel {
         /*
          * End: group Sắp xếp
          */
-        System.out.println(pnlForm.getHeight() + "with" + pnlForm.getWidth());
-
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
@@ -204,7 +201,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
         lblMenu = new javax.swing.JLabel();
         pnlForm = new gui.panel.PanelShadow();
-        pnlCenter = new gui.component.PanelMap();
+        pnlCenter = new gui.panel.PanelShadow();
 
         lblMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         lblMenu.setForeground(new java.awt.Color(4, 72, 210));
@@ -219,11 +216,11 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlForm.setLayout(pnlFormLayout);
         pnlFormLayout.setHorizontalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1119, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         pnlFormLayout.setVerticalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 236, Short.MAX_VALUE)
+            .addGap(0, 180, Short.MAX_VALUE)
         );
 
         pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
@@ -239,7 +236,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 493, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -249,7 +246,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
             .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblMenu)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 986, Short.MAX_VALUE))
             .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -259,7 +256,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
                 .addComponent(lblMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -267,7 +264,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMenu;
-    private gui.component.PanelMap pnlCenter;
+    private gui.panel.PanelShadow pnlCenter;
     private gui.panel.PanelShadow pnlForm;
     // End of variables declaration//GEN-END:variables
 }
