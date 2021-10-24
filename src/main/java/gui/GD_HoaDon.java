@@ -125,6 +125,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         // Tìm kiếm
         MyTextField txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        txtTimKiem.setBorderLine(true);
         pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!, wrap");
 
         //Chọn cột cần tìm

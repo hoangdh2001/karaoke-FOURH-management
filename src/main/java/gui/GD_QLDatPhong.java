@@ -86,6 +86,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
         MyTextField txtMaNV = new MyTextField();
         txtMaNV.setFont(new Font(fontName, fontPlain, font14));
+        txtMaNV.setBorderLine(true);
         pnlThongTinPhieu.add(txtMaNV, "w 80%, h 36!");
 
         //Tên khách hàng
@@ -95,6 +96,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
         MyTextField txtTenNV = new MyTextField();
         txtTenNV.setFont(new Font(fontName, fontPlain, font14));
+        txtTenNV.setBorderLine(true);
         pnlThongTinPhieu.add(txtTenNV, "w 80%, h 36!, wrap");
 
         //Ngày lập phiếu
@@ -113,6 +115,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
         MyTextField txtPhong = new MyTextField();
         txtPhong.setFont(new Font(fontName, fontPlain, font14));
+        txtPhong.setBorderLine(true);
         pnlThongTinPhieu.add(txtPhong, "w 80%, h 36!, wrap");
 
         //Trạng thái
@@ -194,6 +197,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         // Ô tìm kiếm
         MyTextField txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
+        txtTimKiem.setBorderLine(true);
         pnlTimKiemPhieu.add(txtTimKiem, "span 2, w 100%, h 36!");
 
         //Cột cần tìm
