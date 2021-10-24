@@ -5,7 +5,9 @@
  */
 package gui;
 
+import com.toedter.calendar.JDateChooser;
 import gui.swing.button.Button;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -63,8 +65,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblMaNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblMaNV, "align right");
 
-        JTextField txtMaNV = new MyTextField();
+        MyTextField txtMaNV = new MyTextField();
         txtMaNV.setFont(new Font(fontName, fontPlain, font14));
+        txtMaNV.setBorderLine(true);
         pnlThongTinNV.add(txtMaNV, "w 80%, h 36!");
 
         //Tên nhân viên
@@ -72,8 +75,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblTenNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblTenNV, "align right");
 
-        JTextField txtTenNV = new MyTextField();
+        MyTextField txtTenNV = new MyTextField();
         txtTenNV.setFont(new Font(fontName, fontPlain, font14));
+        txtTenNV.setBorderLine(true);
         pnlThongTinNV.add(txtTenNV, "w 80%, h 36!, wrap");
 
         //Giới tính
@@ -81,8 +85,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblGioiTinh.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblGioiTinh, "align right");
 
-        JComboBox<String> cmbGioiTinh = new JComboBox<>();
+        MyComboBox<String> cmbGioiTinh = new MyComboBox<>();
         cmbGioiTinh.setFont(new Font(fontName, fontPlain, font14));
+        cmbGioiTinh.setBorderLine(true);
         cmbGioiTinh.addItem("Nam");
         pnlThongTinNV.add(cmbGioiTinh, "w 80%, h 36!");
 
@@ -91,17 +96,18 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblNgaySinh.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblNgaySinh, "align right");
 
-        JTextField txtNgaySinh = new MyTextField();
-        txtNgaySinh.setFont(new Font(fontName, fontPlain, font14));
-        pnlThongTinNV.add(txtNgaySinh, "w 80%, h 36!, wrap");
+        JDateChooser dscNgaySinh = new JDateChooser();
+        dscNgaySinh.setFont(new Font(fontName, fontPlain, font14));
+        pnlThongTinNV.add(dscNgaySinh, "w 80%, h 36!, wrap");
 
         //Số điện thoại
         JLabel lblSDT = new JLabel("Số điện thoại:");
         lblSDT.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblSDT, "align right");
 
-        JTextField txtSDT = new MyTextField();
+        MyTextField txtSDT = new MyTextField();
         txtSDT.setFont(new Font(fontName, fontPlain, font14));
+        txtSDT.setBorderLine(true);
         pnlThongTinNV.add(txtSDT, "w 80%, h 36!");
 
         //Email
@@ -109,8 +115,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblEmail.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblEmail, "align right");
 
-        JTextField txtEmail = new MyTextField();
+        MyTextField txtEmail = new MyTextField();
         txtEmail.setFont(new Font(fontName, fontPlain, font14));
+        txtEmail.setBorderLine(true);
         pnlThongTinNV.add(txtEmail, "w 80%, h 36!, wrap");
 
         //Địa chỉ
@@ -118,8 +125,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblDiaChi.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblDiaChi, "align right");
 
-        JTextField txtDiaChi = new MyTextField();
+        MyTextField txtDiaChi = new MyTextField();
         txtDiaChi.setFont(new Font(fontName, fontPlain, font14));
+        txtDiaChi.setBorderLine(true);
         pnlThongTinNV.add(txtDiaChi, "w 80%, h 36!");
 
         //Loại nhân viên
@@ -127,8 +135,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblLoaiNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblLoaiNV, "align right");
 
-        JComboBox<String> cmbLoaiNV = new JComboBox<>();
+        MyComboBox<String> cmbLoaiNV = new MyComboBox<>();
         cmbLoaiNV.setFont(new Font(fontName, fontPlain, font14));
+        cmbLoaiNV.setBorderLine(true);
         cmbLoaiNV.addItem("Nhân viên lễ tân");
         pnlThongTinNV.add(cmbLoaiNV, "w 80%, h 36!, wrap");
 
@@ -137,8 +146,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblCaLam.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblCaLam, "align right");
 
-        JComboBox<String> cmbCaLam = new JComboBox<>();
+        MyComboBox<String> cmbCaLam = new MyComboBox<>();
         cmbCaLam.setFont(new Font(fontName, fontPlain, font14));
+        cmbCaLam.setBorderLine(true);
         cmbCaLam.addItem("Ca 1");
         pnlThongTinNV.add(cmbCaLam, "w 80%, h 36!, wrap");
 
@@ -183,7 +193,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
  /*Begin: group tìm nhân viên*/
         JPanel pnlTimKiemNV = new JPanel();
         pnlTimKiemNV.setOpaque(false);
-        pnlTimKiemNV.setLayout(new MigLayout("", "[center][center]", "[][]10[]10[]10[]10[]20[]"));
+        pnlTimKiemNV.setLayout(new MigLayout("", "10[center][center]10", "[][]10[]10[]10[]10[]20[]"));
         panelForm.add(pnlTimKiemNV, "w 40%, h 335!");
         
         JLabel lblTimKiemNV = new JLabel("Tìm nhân viên");
@@ -192,13 +202,15 @@ public class GD_NhanVien extends javax.swing.JPanel {
         pnlTimKiemNV.add(lblTimKiemNV, "span, w 100%, h 30!, wrap");
 
         // Tìm kiếm
-        JTextField txtTimKiem = new MyTextField();
+        MyTextField txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
+        txtTimKiem.setBorderLine(true);
         pnlTimKiemNV.add(txtTimKiem, "span, w 100%, h 36!, wrap");
 
         //Cột cần tìm kiếm
-        JComboBox<String> cmbCot = new JComboBox<>();
+        MyComboBox<String> cmbCot = new MyComboBox<>();
         cmbCot.setFont(new Font(fontName, fontPlain, font14));
+        cmbCot.setBorderLine(true);
         cmbCot.addItem("Chọn cột cần tìm");
         pnlTimKiemNV.add(cmbCot, "span, w 100%, h 36!, wrap");
 
@@ -207,8 +219,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblGioiTinhTK, "align right");
 
-        JComboBox<String> cmbGioiTinhTK = new JComboBox<>();
+        MyComboBox<String> cmbGioiTinhTK = new MyComboBox<>();
         cmbGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
+        cmbGioiTinhTK.setBorderLine(true);
         cmbGioiTinhTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbGioiTinhTK, "w 80%,h 36!, wrap");
 
@@ -218,8 +231,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         pnlTimKiemNV.add(lblLoaiNVTK, "align right");
 
-        JComboBox<String> cmbLoaiNVTK = new JComboBox<>();
+        MyComboBox<String> cmbLoaiNVTK = new MyComboBox<>();
         cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
+        cmbLoaiNVTK.setBorderLine(true);
         cmbLoaiNVTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbLoaiNVTK, "w 80%,h 36!, wrap");
 
@@ -228,8 +242,9 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblCaLamTK, "align right");
 
-        JComboBox<String> cmbCaLamTK = new JComboBox<>();
+        MyComboBox<String> cmbCaLamTK = new MyComboBox<>();
         cmbCaLamTK.setFont(new Font(fontName, fontPlain, font14));
+        cmbCaLamTK.setBorderLine(true);
         cmbCaLamTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbCaLamTK, "w 80%,h 36!, wrap");
 
