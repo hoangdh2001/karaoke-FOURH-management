@@ -5,17 +5,19 @@
  */
 package gui;
 
+import com.toedter.calendar.JDateChooser;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
+import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -36,10 +38,13 @@ public class GD_HoaDon extends javax.swing.JPanel {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
+        int font14 = 14;
         Color colorBtn = new Color(184, 238, 241);
+        Color colorLabel = new Color(47, 72, 210);
+        int separatorHeight = 110;
 
         lblMenu.setFont(new Font(fontName, fontPlain, font16));
-        
+
         /*
         Chiều cao pnlForm là 141, chiều cao pnlThoiGianHD(có borderTitle) là 135
         -> chênh lệch là 6(border shadow)
@@ -51,14 +56,14 @@ public class GD_HoaDon extends javax.swing.JPanel {
         cột 2, dòng 1: group Tìm kiếm
         cột 3, dòng 1: group Sắp xếp
          */
-        pnlForm.setLayout(new MigLayout("", "[][][]", "[]"));
+        pnlForm.setLayout(new MigLayout("", "[][][][][]", "[]"));
 
         /*
          * Begin: group Chọn thời gian 
          */
         JPanel pnlThoiGianHD = new JPanel();
         pnlThoiGianHD.setOpaque(false);
-        pnlThoiGianHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Chọn thời gian", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
+//        pnlThoiGianHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Chọn thời gian", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
 
         /*
         Layout: 2 cột, 2 dòng
@@ -66,73 +71,100 @@ public class GD_HoaDon extends javax.swing.JPanel {
         cột 2, dòng 1: Ngày bắt đầu
         cột 1+2, dòng 2: Tùy chỉnh
          */
-        pnlThoiGianHD.setLayout(new MigLayout("", "10[center] 10 [center]10", "[center]10[center]"));
+        pnlThoiGianHD.setLayout(new MigLayout("", "10[center] 10 [center]10", "[][center]10[center]"));
         pnlForm.add(pnlThoiGianHD, "w 40%, h 135!");
 
+        JLabel lblChonThoiGian = new JLabel("Chọn thời gian");
+        lblChonThoiGian.setFont(new Font(fontName, fontPlain, font16));
+        lblChonThoiGian.setForeground(colorLabel);
+        pnlThoiGianHD.add(lblChonThoiGian, "span, w 100%, h 30!, wrap");
+
         // Chọn thời gian bắt đầu
-        JTextField txtBatDau = new MyTextField();
-        txtBatDau.setFont(new Font(fontName, fontPlain, font16));
-        pnlThoiGianHD.add(txtBatDau, "w 50%, h 36!");
-        
+        JDateChooser dscBatDau = new JDateChooser();
+        dscBatDau.setFont(new Font(fontName, fontPlain, font16));
+        pnlThoiGianHD.add(dscBatDau, "w 50%, h 36!");
+
         // Chọn thời gian kết thúc
-        JTextField txtKetThuc = new MyTextField();
-        txtKetThuc.setFont(new Font(fontName, fontPlain, font16));
-        pnlThoiGianHD.add(txtKetThuc, "w 50%, h 36!, wrap");
+        JDateChooser dscKetThuc = new JDateChooser();
+        dscKetThuc.setFont(new Font(fontName, fontPlain, font16));
+        pnlThoiGianHD.add(dscKetThuc, "w 50%, h 36!, wrap");
 
         //Tùy chỉnh
-        JComboBox<String> cmbTuyChinh = new JComboBox<>();
+        MyComboBox<String> cmbTuyChinh = new MyComboBox<>();
         cmbTuyChinh.setFont(new Font(fontName, fontPlain, font16));
+        cmbTuyChinh.setBorderLine(true);
         cmbTuyChinh.addItem("Tùy chỉnh");
         pnlThoiGianHD.add(cmbTuyChinh, "span, w 100%, h 36!");
         /*
          * End: group Chọn thời gian bắt đầu
          */
 
- /*
+        JSeparator spr1 = new JSeparator(SwingConstants.VERTICAL);
+        spr1.setPreferredSize(new Dimension(2, separatorHeight));
+        pnlForm.add(spr1);
+        
+        /* 
          * Begin: group Tìm kiếm
          */
         JPanel pnlTimKiemHD = new JPanel();
         pnlTimKiemHD.setOpaque(false);
-        pnlTimKiemHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Tìm kiếm", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
+//        pnlTimKiemHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Tìm kiếm", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
         /*
         Layout: 1 cột, 2 dòng
         cột 1, dòng 1: Ô nhập dữ liệu tìm kiếm
         cột 1, dòng 2: Chọn cột cần tìm
          */
-        pnlTimKiemHD.setLayout(new MigLayout("", "10[center]10", "[center]10[center]"));
+        pnlTimKiemHD.setLayout(new MigLayout("", "[]10[center]10", "[][center]10[center]"));
         pnlForm.add(pnlTimKiemHD, "w 40%, h 135!");
 
+        JLabel lblTimKiem = new JLabel("Tìm kiếm");
+        lblTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        lblTimKiem.setForeground(colorLabel);
+        pnlTimKiemHD.add(lblTimKiem, "span, w 100%, h 30!, wrap");
+
         // Tìm kiếm
-        JTextField txtTimKiem = new MyTextField();
+        MyTextField txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        txtTimKiem.setBorderLine(true);
         pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!, wrap");
 
         //Chọn cột cần tìm
-        JComboBox<String> cmbCot = new JComboBox<>();
+        MyComboBox<String> cmbCot = new MyComboBox<>();
         cmbCot.setFont(new Font(fontName, fontPlain, font16));
+        cmbCot.setBorderLine(true);
         cmbCot.addItem("Chọn cột cần tìm");
         pnlTimKiemHD.add(cmbCot, "w 100%, h 36!");
 
         /*
          * End: group Tìm kiếm
          */
- /*
+        JSeparator spr2 = new JSeparator(SwingConstants.VERTICAL);
+        spr2.setPreferredSize(new Dimension(2, separatorHeight));
+        pnlForm.add(spr2);
+        
+        /*
          * Begin: group Sắp xếp
          */
         JPanel pnlSapXepHD = new JPanel();
         pnlSapXepHD.setOpaque(false);
-        pnlSapXepHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Sắp xếp", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
+//        pnlSapXepHD.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Sắp xếp", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18), Color.gray));
         /*
         Layout: 1 cột, 2 dòng
         cột 1, dòng 1: Chọn cột cần sắp xếp
         cột 1, dòng 2: Sắp xếp từ bé đến lớn
          */
-        pnlSapXepHD.setLayout(new MigLayout("", "10[][]10", "[center]10[center]10"));
+        pnlSapXepHD.setLayout(new MigLayout("", "10[][]10", "[][center]10[center]10"));
         pnlForm.add(pnlSapXepHD, "w 20%, h 135!");
+        
+        JLabel lblSapXep = new JLabel("Sắp xếp");
+        lblSapXep.setFont(new Font(fontName, fontPlain, font16));
+        lblSapXep.setForeground(colorLabel);
+        pnlSapXepHD.add(lblSapXep, "span, w 100%, h 30!, wrap");
 
         //Chọn cột cần sắp xếp
-        JComboBox<String> cmbSapXep = new JComboBox<>();
+        MyComboBox<String> cmbSapXep = new MyComboBox<>();
         cmbSapXep.setFont(new Font(fontName, fontPlain, font16));
+        cmbSapXep.setBorderLine(true);
         cmbSapXep.addItem("Tất cả");
         pnlSapXepHD.add(cmbSapXep, "span, w 100%, h 36!, wrap");
 
