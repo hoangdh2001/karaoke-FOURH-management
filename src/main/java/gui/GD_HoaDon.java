@@ -5,11 +5,12 @@
  */
 package gui;
 
+import com.toedter.calendar.JDateChooser;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -17,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -80,18 +80,19 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlThoiGianHD.add(lblChonThoiGian, "span, w 100%, h 30!, wrap");
 
         // Chọn thời gian bắt đầu
-        JTextField txtBatDau = new MyTextField();
-        txtBatDau.setFont(new Font(fontName, fontPlain, font16));
-        pnlThoiGianHD.add(txtBatDau, "w 50%, h 36!");
+        JDateChooser dscBatDau = new JDateChooser();
+        dscBatDau.setFont(new Font(fontName, fontPlain, font16));
+        pnlThoiGianHD.add(dscBatDau, "w 50%, h 36!");
 
         // Chọn thời gian kết thúc
-        JTextField txtKetThuc = new MyTextField();
-        txtKetThuc.setFont(new Font(fontName, fontPlain, font16));
-        pnlThoiGianHD.add(txtKetThuc, "w 50%, h 36!, wrap");
+        JDateChooser dscKetThuc = new JDateChooser();
+        dscKetThuc.setFont(new Font(fontName, fontPlain, font16));
+        pnlThoiGianHD.add(dscKetThuc, "w 50%, h 36!, wrap");
 
         //Tùy chỉnh
-        JComboBox<String> cmbTuyChinh = new JComboBox<>();
+        MyComboBox<String> cmbTuyChinh = new MyComboBox<>();
         cmbTuyChinh.setFont(new Font(fontName, fontPlain, font16));
+        cmbTuyChinh.setBorderLine(true);
         cmbTuyChinh.addItem("Tùy chỉnh");
         pnlThoiGianHD.add(cmbTuyChinh, "span, w 100%, h 36!");
         /*
@@ -122,13 +123,14 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlTimKiemHD.add(lblTimKiem, "span, w 100%, h 30!, wrap");
 
         // Tìm kiếm
-        JTextField txtTimKiem = new MyTextField();
+        MyTextField txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
         pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!, wrap");
 
         //Chọn cột cần tìm
-        JComboBox<String> cmbCot = new JComboBox<>();
+        MyComboBox<String> cmbCot = new MyComboBox<>();
         cmbCot.setFont(new Font(fontName, fontPlain, font16));
+        cmbCot.setBorderLine(true);
         cmbCot.addItem("Chọn cột cần tìm");
         pnlTimKiemHD.add(cmbCot, "w 100%, h 36!");
 
@@ -159,8 +161,9 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlSapXepHD.add(lblSapXep, "span, w 100%, h 30!, wrap");
 
         //Chọn cột cần sắp xếp
-        JComboBox<String> cmbSapXep = new JComboBox<>();
+        MyComboBox<String> cmbSapXep = new MyComboBox<>();
         cmbSapXep.setFont(new Font(fontName, fontPlain, font16));
+        cmbSapXep.setBorderLine(true);
         cmbSapXep.addItem("Tất cả");
         pnlSapXepHD.add(cmbSapXep, "span, w 100%, h 36!, wrap");
 
