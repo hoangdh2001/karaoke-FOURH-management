@@ -101,15 +101,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblNgayLap.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblNgayLap, "align right");
 
-<<<<<<< HEAD
-        JTextField txtNgayLap = new MyTextField();
-        txtNgayLap.setFont(new Font(fontName, fontPlain, font14));
-        pnlThongTinPhieu.add(txtNgayLap, "w 80%, h 36!");
-=======
         JDateChooser dcsNgayLap = new JDateChooser();
         dcsNgayLap.setFont(new Font(fontName, fontPlain, font16));
         pnlThongTinPhieu.add(dcsNgayLap, "w 80%, h 36!");
->>>>>>> master
 
         //Phòng
         JLabel lblPhong = new JLabel("Phòng:");
@@ -135,15 +129,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblNgayDat.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblNgayDat, "align right");
 
-<<<<<<< HEAD
-        JTextField txtNgayDat = new MyTextField();
-        txtNgayDat.setFont(new Font(fontName, fontPlain, font14));
-        pnlThongTinPhieu.add(txtNgayDat, "w 80%, h 36!, wrap");
-=======
-        JDateChooser dcsNgayDat = new JDateChooser();
-        dcsNgayDat.setFont(new Font(fontName, fontPlain, font16));
-        pnlThongTinPhieu.add(dcsNgayDat, "w 80%, h 36!, wrap");
->>>>>>> master
+        JDateChooser dscNgayDat = new JDateChooser();
+        dscNgayDat.setFont(new Font(fontName, fontPlain, font16));
+        pnlThongTinPhieu.add(dscNgayDat, "w 80%, h 36!, wrap");
 
         /*Panel nút chức năng*/
         JPanel pnlButton = new JPanel();
@@ -213,23 +201,23 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         pnlTimKiemPhieu.add(cmbCotTK, "w 100%, h 36!, wrap");
 
         //Trạng thái
-        JLabel lblTrangThaiTK = new JLabel("Trạng thái:");
+        JLabel lblTrangThaiTK = new JLabel("Trạng thái");
         lblTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
-        pnlTimKiemPhieu.add(lblTrangThaiTK, "align right");
+        pnlTimKiemPhieu.add(lblTrangThaiTK, "split 2");
 
         JComboBox<String> cmbTrangThaiTK = new JComboBox<>();
         cmbTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
         cmbTrangThaiTK.addItem("Tất cả");
-        pnlTimKiemPhieu.add(cmbTrangThaiTK, "align left,w 100%, h 36!, wrap");
+        pnlTimKiemPhieu.add(cmbTrangThaiTK, "span , w 100%, h 36!, wrap");
 
         // Tìm kiếm Ngày đặt
-        JLabel lblNgayDaLabelTK = new JLabel("Ngày đặt");
+        JLabel lblNgayDaLabelTK = new JLabel("   Ngày đặt");
         lblNgayDaLabelTK.setFont(new Font(fontName, fontPlain, font14));
-        pnlTimKiemPhieu.add(lblNgayDaLabelTK, "align right");
+        pnlTimKiemPhieu.add(lblNgayDaLabelTK, "split 3");
 
-        JTextField txtNgayDatTK = new MyTextField();
-        txtNgayDatTK.setFont(new Font(fontName, fontPlain, font14));
-        pnlTimKiemPhieu.add(txtNgayDatTK, "w 60%, h 36!, wrap");
+        JDateChooser dscNgayDatTK = new JDateChooser();
+        dscNgayDatTK.setFont(new Font(fontName, fontPlain, font14));
+        pnlTimKiemPhieu.add(dscNgayDatTK, "span , w 60%, h 36!, wrap");
 
         //Button tìm kiếm
         Button btnTimKiem = new Button("Tìm kiếm");
