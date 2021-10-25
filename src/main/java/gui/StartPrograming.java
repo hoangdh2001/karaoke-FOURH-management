@@ -35,7 +35,10 @@ public class StartPrograming {
 
 //            new GD_DangNhap("Đăng nhập").setVisible(true);
             new GD_Chinh("Quản lý karaoke fourh").setVisible(true);
+//            new GD_DangNhap("Đăng nhập").setVisible(true);
 
+            new GD_TiepNhanDatPhong().setVisible(true);
+//              new GD_LapHoaDon().setVisible(true);
         });
     }
 }
