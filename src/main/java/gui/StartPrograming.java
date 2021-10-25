@@ -35,9 +35,9 @@ public class StartPrograming {
 //            new GD_DangNhap("Đăng nhập").setVisible(true);
 //            new GD_Chinh("Chinh").setVisible(true);
 
-//            new GD_CuaSoDatPhong().setVisible(true);
-
-            new GD_Chinh("Đăng nhập").setVisible(true);
+            new GD_TiepNhanDatPhong().setVisible(true);
+//              new GD_LapHoaDon().setVisible(true);
+//            new GD_Chinh("Đăng nhập").setVisible(true);
         });
     }
 }

@@ -1,70 +1,56 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package gui;
 
 import gui.panel.PanelShadow;
-import gui.swing.scrollbar.ScrollBarCustom;
-import gui.swing.table.SpinnerEditor;
-import gui.swing.table.TableCustom;
+import gui.swing.button.Button;
 import gui.swing.table.TableCustomCheckBox;
 import gui.swing.table.TableCustomRadio;
 import gui.swing.textfield.MyTextField;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import net.miginfocom.swing.MigLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 
 /**
  *
  * @author 84975
  */
-public class GD_CuaSoDatPhong extends JFrame {
-
-    /**
-     * Creates new form GD_CuaSoDatPhong
-     */
-    private TableCustomCheckBox table;
+public class GD_CuaSoDatPhong extends javax.swing.JDialog {
+private TableCustomCheckBox table;
     private JPanel pnlLoc;
     private JPanel pnlDanhSachPhong;
     private JPanel pnlInfo;
-    private JPanel pnlAction;
+    private JPanel pnlHieuChinh;
     private String fontName = "sansserif";
     private int fontStyle = Font.PLAIN;
     private int fontSize = 16;
     Color colorBtn = new Color(184, 238, 241);
-    
+
+    /**
+     * Creates new form GD_CuaSoDatPhong2
+     */
     public GD_CuaSoDatPhong() {
+        setModal(true);
         initComponents();
-        setSize(new Dimension(1300,500));
+        setSize(new Dimension(1350,550));
         setLocation(150, 150);
         setTitle("Đổi phòng");
         initForm();
+        
     }
 
     /**
@@ -78,20 +64,17 @@ public class GD_CuaSoDatPhong extends JFrame {
 
         MainPanel = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
-
-        MainPanel.setDoubleBuffered(false);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 688, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 373, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -108,10 +91,54 @@ public class GD_CuaSoDatPhong extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GD_CuaSoDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GD_CuaSoDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GD_CuaSoDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GD_CuaSoDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
 
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                GD_CuaSoDatPhong dialog = new GD_CuaSoDatPhong();
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+                
+            }
+        });
+    }
+
+    
     public void initOldRoomInfo(){
         pnlLoc = new JPanel();
-        pnlLoc.setLayout(new MigLayout("","[][]","10[]5"));
+        pnlLoc.setLayout(new MigLayout("","28[][]","10[]5"));
         pnlLoc.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2),
                 "Phòng cũ",
                 TitledBorder.LEFT,
@@ -122,51 +149,51 @@ public class GD_CuaSoDatPhong extends JFrame {
         
         JLabel lblTenPhong = new JLabel("Ngày giờ đặt :");
         lblTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlLoc.add(lblTenPhong, "align left");
+        pnlLoc.add(lblTenPhong, "align right");
 
         JTextField txtTenPhong = new MyTextField();
         txtTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
         txtTenPhong.setEnabled(false);
-        pnlLoc.add(txtTenPhong, "w 100:300:400, h 36! , wrap");
+        pnlLoc.add(txtTenPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblLoaiPhong = new JLabel("Loại phòng :");
         lblLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlLoc.add(lblLoaiPhong, "align left");
+        pnlLoc.add(lblLoaiPhong, "align right");
 
         JTextField txtLoaiPhong = new MyTextField();
         txtLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
         txtLoaiPhong.setEnabled(false);
-        pnlLoc.add(txtLoaiPhong, "w 100:300:400, h 36! , wrap");
+        pnlLoc.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGiaPhong = new JLabel("Giá phòng :");
         lblGiaPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlLoc.add(lblGiaPhong, "align left");
+        pnlLoc.add(lblGiaPhong, "align right");
 
         JTextField txtGiaPhong = new MyTextField();
         txtGiaPhong.setFont(new Font(fontName, fontStyle, fontSize));
         txtGiaPhong.setEnabled(false);
-        pnlLoc.add(txtGiaPhong, "w 100:300:400, h 36! , wrap");
+        pnlLoc.add(txtGiaPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGioDaHat = new JLabel("Giờ đã hát :");
         lblGioDaHat.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlLoc.add(lblGioDaHat, "align left");
+        pnlLoc.add(lblGioDaHat, "align right");
 
         JTextField txtGioDaHat = new MyTextField();
         txtGioDaHat.setFont(new Font(fontName, fontStyle, fontSize));
         txtGioDaHat.setEnabled(false);
         
-        pnlLoc.add(txtGioDaHat, "w 100:300:400, h 36! , wrap");
+        pnlLoc.add(txtGioDaHat, "w 100:260:350, h 36! , wrap");
         
         JLabel lblTongTienCu = new JLabel("Tổng tiền :");
         lblTongTienCu.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlLoc.add(lblTongTienCu, "align left");
+        pnlLoc.add(lblTongTienCu, "align right");
 
         JTextField txtTongTienCu = new MyTextField();
         txtTongTienCu.setFont(new Font(fontName, fontStyle, fontSize));
         txtTongTienCu.setEnabled(false);
-        pnlLoc.add(txtTongTienCu, "w 100:300:400, h 36! , wrap");
         
-        pnlInfo.add(pnlLoc,"w 30%,h 100%");
+        pnlLoc.add(txtTongTienCu, "w 100:260:300, h 36! , wrap");
+        pnlInfo.add(pnlLoc,"w 35%,h 100%");
         pnlLoc.setBackground(Color.WHITE);  
 
     }
@@ -194,28 +221,28 @@ public class GD_CuaSoDatPhong extends JFrame {
 //                { "101", "Do Cao Hoc", "7000",new JRadioButton() },              
 //        };
         
-//        Object data[][] = { 
-//                { "101",0, "Tran Van Minh", "6000",new JRadioButton() }, 
-//                { "102",0, "Phan Van Tai", "8000",new JRadioButton()  }, 
-//                { "101",0, "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101",0, "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101",0, "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", 0,"Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", 0,"Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", 0,"Do Cao Hoc", "7000",new JRadioButton() },              
-//        };
+        Object data[][] = { 
+                { "101", "Tran Van Minh", "6000",new JRadioButton() }, 
+                { "102", "Phan Van Tai", "8000",new JRadioButton()  }, 
+                { "101","Do Cao Hoc", "7000",new JRadioButton() },
+                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
+                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
+                { "101","Do Cao Hoc", "7000",new JRadioButton() },
+                { "101","Do Cao Hoc", "7000",new JRadioButton() },
+                { "101","Do Cao Hoc", "7000",new JRadioButton() },              
+        };
         
 //        
-        Object data[][] = { 
-                { "101", "Tran Van Minh", "6000",new JCheckBox() }, 
-                { "102", "Phan Van Tai", "8000",new JCheckBox()  }, 
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },              
-        };
+//        Object data[][] = { 
+//                { "101", "Tran Van Minh", "6000",new JCheckBox() }, 
+//                { "102", "Phan Van Tai", "8000",new JCheckBox()  }, 
+//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
+//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
+//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
+//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
+//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
+//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },              
+//        };
         
 //        Object data[][] = { 
 //                { "101",0, "Tran Van Minh", "6000"}, 
@@ -232,9 +259,9 @@ public class GD_CuaSoDatPhong extends JFrame {
         String col[] = {"Tên phòng","Loại phòng","Giá phòng/Giờ","Chon"};
         DefaultTableModel model = new DefaultTableModel(col,0);
         model.setDataVector(data, col);
-        TableCustomCheckBox table = new TableCustomCheckBox(model);
+//        TableCustomCheckBox table = new TableCustomCheckBox(model);
 //        TableCustom table = new TableCustom(model);
-//        TableCustomRadio table = new TableCustomRadio(model);
+        TableCustomRadio table = new TableCustomRadio(model);
 //Spinner
 //        TableColumnModel tcm = table.getColumnModel();
 //        TableColumn tc = tcm.getColumn(1);
@@ -250,7 +277,62 @@ public class GD_CuaSoDatPhong extends JFrame {
         System.err.println(table.getRowCount());
         table.fixTable(sp);
         pnlDanhSachPhong.add(sp,"w 100%,h 100%");
-        pnlInfo.add(pnlDanhSachPhong,"w 70%,h 100%");
+        pnlInfo.add(pnlDanhSachPhong,"w 65%,h 100%");
+    }
+    
+    public void initNewRoomInfo(){
+        pnlHieuChinh = new PanelShadow();
+        pnlHieuChinh.setBackground(Color.WHITE);
+        pnlHieuChinh.setLayout(new MigLayout("", "30[]20[]","10[]5"));
+        
+        JPanel pnlThongTin = new JPanel();
+        pnlThongTin.setLayout(new MigLayout("","[]","10[]5"));
+        
+        JLabel lblKhachHang = new JLabel("Khách Hàng :");
+        lblKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
+        pnlThongTin.add(lblKhachHang, "align right");
+
+        JTextField txtKhachHang = new MyTextField();
+        txtKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
+        txtKhachHang.setEnabled(false);
+        pnlThongTin.add(txtKhachHang, "w 100:260:350, h 36! , wrap");
+        
+        JLabel lblLoaiPhong = new JLabel("Loại phòng mới :");
+        lblLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        pnlThongTin.add(lblLoaiPhong, "align right");
+
+        JTextField txtLoaiPhong = new MyTextField();
+        txtLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        txtLoaiPhong.setEnabled(false);
+        
+        pnlThongTin.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
+        
+        JLabel lblGioDatDau = new JLabel("Giờ bắt đầu :");
+        lblGioDatDau.setFont(new Font(fontName, fontStyle, fontSize));
+        pnlThongTin.add(lblGioDatDau, "align right");
+
+        JTextField txtGioBatDau = new MyTextField();
+        txtGioBatDau.setFont(new Font(fontName, fontStyle, fontSize));
+        txtGioBatDau.setEnabled(false);
+        pnlThongTin.add(txtGioBatDau, "w 100:260:350, h 36! , wrap");
+        
+        pnlThongTin.setBackground(Color.WHITE);
+           
+        JPanel pnlButton = new JPanel();
+        pnlButton.setLayout(new MigLayout("","push[]10[]20","push[]10"));
+        pnlButton.setBackground(Color.WHITE);
+        Button btnHuy = new Button("Hủy đổi phòng");
+        btnHuy.setFont(new Font(fontName, fontStyle, fontSize));
+        btnHuy.setBackground(colorBtn);
+        Button btnDoiPhong = new Button("đổi phòng");
+        btnDoiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        btnDoiPhong.setBackground(colorBtn);
+        
+        pnlButton.add(btnHuy,"h 36!");
+        pnlButton.add(btnDoiPhong,"h 36!");
+        
+        pnlHieuChinh.add(pnlThongTin,"w 40%");
+        pnlHieuChinh.add(pnlButton,"w 60%,h 80%");
     }
     
     public void initForm(){
@@ -261,15 +343,12 @@ public class GD_CuaSoDatPhong extends JFrame {
         pnlInfo.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]10"));
         initOldRoomInfo();
         initNewRoom();
+        initNewRoomInfo();
         pnlInfo.setBackground(Color.WHITE);
-        
-        pnlAction = new JPanel();
-        pnlAction.setBackground(Color.LIGHT_GRAY);
-            
-        MainPanel.add(pnlInfo,"w 100%,h 30%,wrap");
-        MainPanel.add(pnlAction,"w 100%,h 340");
-    }
     
+        MainPanel.add(pnlInfo,"w 100%,h 30%,wrap");
+        MainPanel.add(pnlHieuChinh,"w 100%,h 240");
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
     // End of variables declaration//GEN-END:variables
