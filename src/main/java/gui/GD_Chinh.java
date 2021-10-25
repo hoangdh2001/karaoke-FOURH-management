@@ -179,7 +179,7 @@ public class GD_Chinh extends JFrame {
 	content.setBackground(new Color(245, 245, 245));
 	content.showForm(new GD_SoDoPhongHat());
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
         sp.getVerticalScrollBar().setUnitIncrement(16);
         sp.setBorder(null);

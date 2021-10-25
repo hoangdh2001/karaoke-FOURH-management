@@ -6,14 +6,23 @@
 package gui;
 
 import com.toedter.calendar.JDateChooser;
+import entity.KhachHang;
+import entity.PhieuDatPhong;
+import entity.Phong;
+import entity.TrangThaiPhieuDat;
 import gui.swing.button.Button;
+import gui.swing.table2.EventAction;
+import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.sql.Date;
+import java.time.LocalDate;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -24,22 +33,57 @@ import net.miginfocom.swing.MigLayout;
  * @author NGUYENHUNG
  */
 public class GD_QLDatPhong extends javax.swing.JPanel {
-
     /**
      * Creates new form GD_QLDatPhong
      */
     public GD_QLDatPhong() {
         initComponents();
         buildGD_QLDatPhong();
+        initData();
+        table.fixTable(sp);
+    }
+
+    private void initData() {
+//        , "1", "25/10/2021", "Đỗ Huy Hoàng", "Nguyễn Hưng", "Phòng A1", "25/10/2021", TrangThaiPhieuDat.DANG_DOI
+        KhachHang khachHang = new KhachHang();
+        khachHang.setTenKhachHang("Đỗ Huy Hoàng");
+        Phong phong = new Phong();
+        phong.setTenPhong("Phòng A1");
+        EventAction event = new EventAction() {
+            @Override
+            public void delete(Object obj) {
+                PhieuDatPhong pdp = (PhieuDatPhong) obj;
+                JOptionPane.showMessageDialog(null, "Delete " + pdp.getMaPhieuDat());
+            }
+
+            @Override
+            public void update(Object obj) {
+                PhieuDatPhong pdp = (PhieuDatPhong) obj;
+                JOptionPane.showMessageDialog(null, "Update " + pdp.getMaPhieuDat());
+            }
+        };
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
+        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
     }
 
     private void buildGD_QLDatPhong() {
+        buildPanelForm();
+        setPreferredSize(new Dimension(getWidth(), 720));
+    }
+    
+    private void buildPanelForm() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
         Color colorBtn = new Color(184, 238, 241);
-
-        lblMenu.setFont(new Font(fontName, fontPlain, font16));
 
         /*
         Chiều cao pnlForm là 241, chiều cao pnlThongTinPhieu(có borderTitle) là 235
@@ -210,10 +254,8 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         btnTimKiem.setBackground(colorBtn);
         pnlTimKiemPhieu.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /*End: group Tìm kiếm*/
-        
-        setPreferredSize(new Dimension(getWidth(), 1500));
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -225,9 +267,17 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
         pnlForm = new gui.panel.PanelShadow();
         lblMenu = new javax.swing.JLabel();
-        panelShadow1 = new gui.panel.PanelShadow();
+        pnlCenter = new gui.panel.PanelShadow();
+        sp = new javax.swing.JScrollPane();
+        table = new gui.swing.table2.MyTable();
+        lbl = new javax.swing.JLabel();
+
+        setOpaque(false);
 
         pnlForm.setBackground(new java.awt.Color(255, 255, 255));
+        pnlForm.setShadowOpacity(0.3F);
+        pnlForm.setShadowSize(3);
+        pnlForm.setShadowType(gui.dropshadow.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
         pnlForm.setLayout(pnlFormLayout);
@@ -244,21 +294,48 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         lblMenu.setForeground(new java.awt.Color(4, 72, 210));
         lblMenu.setText("Quản lý đặt phòng");
 
-        panelShadow1.setBackground(new java.awt.Color(255, 255, 255));
-        panelShadow1.setShadowOpacity(0.3F);
-        panelShadow1.setShadowSize(3);
-        panelShadow1.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
+        pnlCenter.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        pnlCenter.setShadowOpacity(0.3F);
+        pnlCenter.setShadowSize(3);
+        pnlCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlCenter.setLayout(new java.awt.BorderLayout(10, 10));
 
-        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-        panelShadow1.setLayout(panelShadow1Layout);
-        panelShadow1Layout.setHorizontalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1244, Short.MAX_VALUE)
-        );
-        panelShadow1Layout.setVerticalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
-        );
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", "Mã phiếu", "Ngày lập phiếu", "Khách hàng", "Phòng", "Ngày đặt", "Trạng thái", "Tiền cọc", ""
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        sp.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
+            table.getColumnModel().getColumn(3).setResizable(false);
+            table.getColumnModel().getColumn(4).setResizable(false);
+            table.getColumnModel().getColumn(5).setResizable(false);
+            table.getColumnModel().getColumn(6).setResizable(false);
+            table.getColumnModel().getColumn(7).setResizable(false);
+            table.getColumnModel().getColumn(8).setResizable(false);
+        }
+
+        pnlCenter.add(sp, java.awt.BorderLayout.CENTER);
+
+        lbl.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        lbl.setForeground(new java.awt.Color(4, 72, 210));
+        lbl.setText("Phiếu đặt phòng");
+        pnlCenter.add(lbl, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -267,25 +344,28 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
             .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblMenu)
-                .addGap(0, 1145, Short.MAX_VALUE))
-            .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 1103, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(7, 7, 7)
+                .addGap(8, 8, 8)
                 .addComponent(lblMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel lbl;
     private javax.swing.JLabel lblMenu;
-    private gui.panel.PanelShadow panelShadow1;
+    private gui.panel.PanelShadow pnlCenter;
     private gui.panel.PanelShadow pnlForm;
+    private javax.swing.JScrollPane sp;
+    private gui.swing.table2.MyTable table;
     // End of variables declaration//GEN-END:variables
 }

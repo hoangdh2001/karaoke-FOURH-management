@@ -1,5 +1,7 @@
 package gui.component;
 
+import gui.dropshadow.ShadowType;
+import gui.panel.PanelShadow;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -14,7 +16,7 @@ import javax.swing.LayoutStyle;
 
 import gui.swing.image.ImageAvatar;
 
-public class Header extends JPanel {
+public class Header extends PanelShadow {
 
     /**
      *
@@ -31,6 +33,10 @@ public class Header extends JPanel {
 
 
     private void buidHeader() {
+        setShadowOpacity(0.3f);
+        setShadowType(ShadowType.BOT);
+        setShadowSize(3);
+        
         setLayout(null);
         setBackground(new Color(255, 255, 255));
         add(createUserName());
