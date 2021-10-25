@@ -5,7 +5,6 @@
 package gui;
 
 import gui.swing.button.Button;
-import gui.swing.table.AbstractTableModel;
 import gui.swing.table.TableCustom;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
@@ -16,7 +15,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -38,8 +36,7 @@ public class GD_KhachHang extends javax.swing.JPanel {
         buildGD();
     }
 
-     private void buildGD(){
-        
+    private void buildGD(){
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
         int fontSize = 16;

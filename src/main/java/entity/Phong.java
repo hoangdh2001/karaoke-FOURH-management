@@ -15,6 +15,7 @@ public class Phong {
 	@Column(columnDefinition = "nvarchar(255)", nullable = false)
 	private String tenPhong;
         @Enumerated(EnumType.STRING)
+        @Column(columnDefinition = "nvarchar(255)")
 	private TrangThaiPhong trangThai;
 	@ManyToOne
 	@JoinColumn(name = "maLoaiPhong", nullable = false)
