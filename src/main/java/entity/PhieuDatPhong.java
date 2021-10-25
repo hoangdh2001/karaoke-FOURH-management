@@ -130,19 +130,25 @@ public class PhieuDatPhong {
     }
 
     /**
-     * @return the ngayTao
-     */
-    public Date getNgayTao() {
-        return ngayTao;
-    }
-
-    /**
      * @param ngayDat the ngayDat to set
      */
     public void setNgayDat(Date ngayDat) {
         this.ngayDat = ngayDat;
     }
-
+    
+    /**
+     * @return the ngayTao
+     */
+    public Date getNgayTao() {
+        return ngayTao;
+    }
+    /**
+     * @param ngayTao 
+     */
+    public void setNgayTao(Date ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+    
     /**
      * @return the tienCoc
      */

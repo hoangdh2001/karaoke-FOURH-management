@@ -89,7 +89,6 @@ public class MyTextField extends JTextField {
     public MyTextField() {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(new Color(0, 0, 0, 0));
-        
     }
 
     @Override

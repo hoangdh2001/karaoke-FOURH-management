@@ -14,7 +14,8 @@ import entity.TrangThaiPhieuDat;
  */
 public class CellTicketStatus extends javax.swing.JPanel {
 
-    /** Creates new form CellTicketStatus */
+    /** Creates new form CellTicketStatus
+     * @param trangThai */
     public CellTicketStatus(TrangThaiPhieuDat trangThai) {
         initComponents();
         lblStatus.setText(trangThai.getTrangThai());

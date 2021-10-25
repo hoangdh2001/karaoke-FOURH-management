@@ -1,15 +1,16 @@
 package gui;
 
+import entity.TrangThaiPhong;
+import gui.component.PanelStatus;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.JComboBox;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 
@@ -21,8 +22,9 @@ public class GD_SoDoPhongHat extends JPanel {
     }
     
     private void buildGD() {
-        panelForm.setPreferredSize(new Dimension(getWidth(), 181));
-        panelForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "push[center]20[center]20[]push"));
+        
+        panelForm.setPreferredSize(new Dimension(getWidth(), 250));
+        panelForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "20[center]20[center]20[]push"));
         
         JLabel lbSdt = new JLabel("Số điện thoại");
         lbSdt.setFont(new Font("sansserif", Font.PLAIN, 12));
@@ -67,10 +69,27 @@ public class GD_SoDoPhongHat extends JPanel {
         
         Button timKiemBtn = new Button("Tìm kiếm");
         timKiemBtn.setFont(new Font("sansserif", Font.PLAIN, 12));
+        timKiemBtn.setBorderline(true);
+        timKiemBtn.setBorderRadius(5);
         timKiemBtn.setBackground(new Color(184, 238, 241));
         panelForm.add(timKiemBtn, "cell 3 2, align right, w 80!, h 36!");
         
+        panelForm.add(createPaneStatus(), "pos 0al 1al 100% n, h 50!");
+        
         setPreferredSize(new Dimension(getWidth(), 1500));
+    }
+    
+    private JPanel createPaneStatus() {
+        JPanel pnlStatus = new JPanel();
+        pnlStatus.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(0, 0, 0, 0.1f)));
+        pnlStatus.setOpaque(false);
+        pnlStatus.setLayout(new MigLayout("fill", "", ""));
+        TrangThaiPhong[] trangThai = TrangThaiPhong.values();
+        for (TrangThaiPhong trangThai1 : trangThai) {
+            PanelStatus pn = new PanelStatus(trangThai1);
+            pnlStatus.add(pn);
+        }
+        return pnlStatus;
     }
     
     @SuppressWarnings("unchecked")
@@ -78,7 +97,7 @@ public class GD_SoDoPhongHat extends JPanel {
     private void initComponents() {
 
         lblMenu = new javax.swing.JLabel();
-        panelForm = new gui.panel.PanelShadow();
+        panelForm = new gui.swing.panel.PanelShadow();
         panelMap = new gui.component.PanelMap();
 
         setOpaque(false);
@@ -113,10 +132,8 @@ public class GD_SoDoPhongHat extends JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(lblMenu)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblMenu)
+            .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, 1055, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +150,7 @@ public class GD_SoDoPhongHat extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMenu;
-    private gui.panel.PanelShadow panelForm;
+    private gui.swing.panel.PanelShadow panelForm;
     private gui.component.PanelMap panelMap;
     // End of variables declaration//GEN-END:variables
 }

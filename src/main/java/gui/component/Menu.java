@@ -157,7 +157,7 @@ public class Menu extends JPanel {
         cmdMenu.addActionListener(evt);
     }
     
-    public void hideallMenu() {
+    public void hideAllMenu() {
         for (Component com : pane.getComponents()) {
             MenuItem item = (MenuItem) com;
             if (item.isOpen()) {

@@ -12,7 +12,9 @@ import entity.Phong;
 import entity.TrangThaiPhieuDat;
 import gui.swing.button.Button;
 import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import gui.swing.table2.MyTable;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -59,9 +61,12 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
             }
 
             @Override
-            public void update(Object obj) {
-                PhieuDatPhong pdp = (PhieuDatPhong) obj;
-                JOptionPane.showMessageDialog(null, "Update " + pdp.getMaPhieuDat());
+            public void update(ModelAction action) {
+                PhieuDatPhong pdp = (PhieuDatPhong) action.getObj();
+                pdp.setNgayDat(Date.valueOf(table.getValueAt(table.getSelectedRow(), 5).toString()));
+                pdp.setTienCoc(Double.valueOf(table.getValueAt(table.getSelectedRow(), 7).toString()));
+                action.setObj(pdp);
+                System.out.println(pdp);
             }
         };
         table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
@@ -170,6 +175,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         MyComboBox<String> cmbTrangThai = new MyComboBox<>();
         cmbTrangThai.setFont(new Font(fontName, fontPlain, font14));
         cmbTrangThai.setBorderLine(true);
+        cmbTrangThai.setBorderRadius(10);
         cmbTrangThai.addItem("Tất cả");
         pnlThongTinPhieu.add(cmbTrangThai, "w 80%, h 36!");
 
@@ -249,6 +255,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         cmbCotTK.setFont(new Font(fontName, fontPlain, font14));
         cmbCotTK.setBorderLine(true);
         cmbCotTK.addItem("text");
+        cmbCotTK.setBorderRadius(10);
         pnlTimKiemPhieu.add(cmbCotTK, "w 100%, h 36!, wrap");
 
         //Trạng thái
@@ -260,6 +267,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         cmbTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
         cmbTrangThaiTK.setBorderLine(true);
         cmbTrangThaiTK.addItem("Tất cả");
+        cmbTrangThaiTK.setBorderRadius(10);
         pnlTimKiemPhieu.add(cmbTrangThaiTK, "span , w 100%, h 36!, wrap");
 
         // Tìm kiếm Ngày đặt
@@ -288,14 +296,18 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlForm = new gui.panel.PanelShadow();
         lblMenu = new javax.swing.JLabel();
-        pnlCenter = new gui.panel.PanelShadow();
+        pnlForm = new gui.swing.panel.PanelShadow();
+        pnlCenter = new gui.swing.panel.PanelShadow();
+        jLabel1 = new javax.swing.JLabel();
         sp = new javax.swing.JScrollPane();
         table = new gui.swing.table2.MyTable();
-        lbl = new javax.swing.JLabel();
 
         setOpaque(false);
+
+        lblMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        lblMenu.setForeground(new java.awt.Color(4, 72, 210));
+        lblMenu.setText("Quản lý đặt phòng");
 
         pnlForm.setBackground(new java.awt.Color(255, 255, 255));
         pnlForm.setShadowOpacity(0.3F);
@@ -310,12 +322,8 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         );
         pnlFormLayout.setVerticalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 246, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
-
-        lblMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        lblMenu.setForeground(new java.awt.Color(4, 72, 210));
-        lblMenu.setText("Quản lý đặt phòng");
 
         pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
         pnlCenter.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
@@ -324,16 +332,21 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         pnlCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
         pnlCenter.setLayout(new java.awt.BorderLayout(10, 10));
 
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(4, 72, 210));
+        jLabel1.setText("Phiếu đặt phòng");
+        pnlCenter.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "", "Mã phiếu", "Ngày lập phiếu", "Khách hàng", "Phòng", "Ngày đặt", "Trạng thái", "Tiền cọc", ""
+                "", "Mã phiếu đặt", "Ngày lập phiếu", "Khách hàng", "Phòng", "Ngày đặt", "Trạng thái", "Tiền cọc", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true
+                false, false, false, false, true, true, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -355,17 +368,13 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
         pnlCenter.add(sp, java.awt.BorderLayout.CENTER);
 
-        lbl.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        lbl.setForeground(new java.awt.Color(4, 72, 210));
-        lbl.setText("Phiếu đặt phòng");
-        pnlCenter.add(lbl, java.awt.BorderLayout.PAGE_START);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlForm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addGap(1, 1, 1)
                 .addComponent(lblMenu)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 1103, Short.MAX_VALUE)
@@ -378,16 +387,16 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lbl;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblMenu;
-    private gui.panel.PanelShadow pnlCenter;
-    private gui.panel.PanelShadow pnlForm;
+    private gui.swing.panel.PanelShadow pnlCenter;
+    private gui.swing.panel.PanelShadow pnlForm;
     private javax.swing.JScrollPane sp;
     private gui.swing.table2.MyTable table;
     // End of variables declaration//GEN-END:variables

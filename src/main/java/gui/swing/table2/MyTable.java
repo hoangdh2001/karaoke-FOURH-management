@@ -5,12 +5,12 @@
  */
 package gui.swing.table2;
 
+import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Component;
-import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,9 +24,7 @@ import javax.swing.table.TableCellEditor;
  * @author Admin
  */
 public class MyTable extends JTable {
-
-    private Map<Class, Integer> map;
-
+    private ModelAction action;
     public MyTable() {
         setShowHorizontalLines(true);
         setGridColor(new Color(230, 230, 230));
@@ -74,7 +72,7 @@ public class MyTable extends JTable {
                     }
                     return cell;
                 } else if(o instanceof ModelAction) {
-                    ModelAction action = (ModelAction) o;
+                    action = (ModelAction) o;
                     CellAction cell = new CellAction(action);
                     if (selected) {
                         cell.setBackground(new Color(239, 244, 255));
@@ -109,12 +107,13 @@ public class MyTable extends JTable {
             return super.getCellEditor(row, col);
         }
     }
-    
+
+
     public void addRow(Object[] row) {
         DefaultTableModel model = (DefaultTableModel) getModel();
         model.addRow(row);
     }
-    
+
     public void fixTable(JScrollPane scroll) {
         scroll.getViewport().setBackground(Color.WHITE);
         scroll.setVerticalScrollBar(new ScrollBarCustom());

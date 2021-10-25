@@ -1,8 +1,8 @@
 package gui.component;
 
 import gui.event.EventTabSelected;
-import gui.panel.PanelShadow;
-import gui.panel.TabButton;
+import gui.swing.panel.PanelShadow;
+import gui.swing.panel.TabButton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;

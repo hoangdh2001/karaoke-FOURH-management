@@ -26,6 +26,8 @@ import entity.NhaCungCap;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
+import entity.TrangThaiPhieuDat;
+import entity.TrangThaiPhong;
 
 public class App {
 	public static void main(String[] args) {
@@ -51,6 +53,8 @@ public class App {
 				.addAnnotatedClass(LoHang.class)
 				.addAnnotatedClass(DiaChi.class)
 				.addAnnotatedClass(DiaChiMau.class)
+                                .addAnnotatedClass(TrangThaiPhieuDat.class)
+                                .addAnnotatedClass(TrangThaiPhong.class)
 				.getMetadataBuilder()
 				.build();
 		SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
