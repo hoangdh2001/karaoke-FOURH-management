@@ -2,7 +2,7 @@ package gui.component;
 
 import entity.HoaDon;
 import entity.Phong;
-import gui.panel.PanelShadow;
+import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -20,6 +20,7 @@ import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
+import gui.swing.scrollbar.ScrollBarCustom;
 import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 
@@ -97,7 +98,7 @@ public class GD_Chinh extends JFrame {
                 }
                 menu.setEnableMenu(false);
                 if (menu.isShowMenu()) {
-                    menu.hideallMenu();
+                    menu.hideAllMenu();
                 }
             }
         });
@@ -178,10 +179,13 @@ public class GD_Chinh extends JFrame {
 	content = new Content();
 	content.setBackground(new Color(245, 245, 245));
 	content.showForm(new GD_SoDoPhongHat());
-        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        sp.getViewport().setBackground(Color.WHITE);
+        sp.setVerticalScrollBar(new ScrollBarCustom());
+        JPanel p = new JPanel();
+        p.setBackground(Color.WHITE);
+        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(16);
+        sp.getVerticalScrollBar().setUnitIncrement(30);
         sp.setBorder(null);
 	return sp;
     }

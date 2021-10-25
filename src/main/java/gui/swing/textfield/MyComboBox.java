@@ -8,12 +8,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.ListCellRenderer;
 
 public class MyComboBox<E> extends JComboBox {
 
@@ -73,7 +71,6 @@ public class MyComboBox<E> extends JComboBox {
         setBackground(new Color(0, 0, 0, 0));
         setForeground(Color.decode("#7A8C8D"));
         setFont(new java.awt.Font("sansserif", 0, 13));
-//        initBorder();
 
         for (Component component : this.getComponents()) {
             if (component instanceof AbstractButton) {
@@ -109,12 +106,5 @@ public class MyComboBox<E> extends JComboBox {
         Image icon = ((ImageIcon) arrowIcon).getImage();
         int y = (getHeight() - arrowIcon.getIconHeight()) / 2;
         g2.drawImage(icon, getWidth() - arrowIcon.getIconWidth() - 10, y, this);
-    }
-
-    private void initBorder() {
-        int left = 0;
-        int right = 0;
-        right = arrowIcon.getIconWidth() + 5;
-        setBorder(BorderFactory.createEmptyBorder(10, left, 10, right));
     }
 }

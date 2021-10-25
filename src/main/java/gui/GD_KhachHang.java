@@ -230,8 +230,8 @@ public class GD_KhachHang extends javax.swing.JPanel {
     private void initComponents() {
 
         lblTitle = new javax.swing.JLabel();
-        pnlTop = new gui.panel.PanelShadow();
-        pnlBottom = new gui.panel.PanelShadow();
+        pnlTop = new gui.swing.panel.PanelShadow();
+        pnlBottom = new gui.swing.panel.PanelShadow();
 
         lblTitle.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         lblTitle.setForeground(new java.awt.Color(4, 72, 210));
@@ -294,7 +294,7 @@ public class GD_KhachHang extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblTitle;
-    private gui.panel.PanelShadow pnlBottom;
-    private gui.panel.PanelShadow pnlTop;
+    private gui.swing.panel.PanelShadow pnlBottom;
+    private gui.swing.panel.PanelShadow pnlTop;
     // End of variables declaration//GEN-END:variables
 }

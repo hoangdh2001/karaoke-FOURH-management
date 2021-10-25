@@ -1,5 +1,9 @@
 package gui.swing.table2;
 
+import entity.HoaDon;
+import entity.PhieuDatPhong;
+import entity.TrangThaiPhieuDat;
+
 public class ModelAction {
     private EventAction event;
     private Object obj;
@@ -27,6 +31,4 @@ public class ModelAction {
 
     public ModelAction() {
     }
-
-    
 }

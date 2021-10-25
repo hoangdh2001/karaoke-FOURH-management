@@ -268,8 +268,8 @@ public class GD_NhanVien extends javax.swing.JPanel {
     private void initComponents() {
 
         lblMenu = new javax.swing.JLabel();
-        panelForm = new gui.panel.PanelShadow();
-        panelShadow1 = new gui.panel.PanelShadow();
+        panelForm = new gui.swing.panel.PanelShadow();
+        panelShadow1 = new gui.swing.panel.PanelShadow();
 
         setPreferredSize(new java.awt.Dimension(1119, 620));
 
@@ -334,7 +334,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMenu;
-    private gui.panel.PanelShadow panelForm;
-    private gui.panel.PanelShadow panelShadow1;
+    private gui.swing.panel.PanelShadow panelForm;
+    private gui.swing.panel.PanelShadow panelShadow1;
     // End of variables declaration//GEN-END:variables
 }

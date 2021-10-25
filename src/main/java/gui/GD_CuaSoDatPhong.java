@@ -4,7 +4,7 @@
  */
 package gui;
 
-import gui.panel.PanelShadow;
+import gui.swing.panel.PanelShadow;
 import gui.swing.scrollbar.ScrollBarCustom;
 import gui.swing.table.SpinnerEditor;
 import gui.swing.table.TableCustom;

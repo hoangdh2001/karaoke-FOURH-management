@@ -19,12 +19,9 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="panelForm" max="32767" attributes="0"/>
-          <Group type="102" attributes="0">
-              <Component id="lblMenu" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-          <Component id="panelMap" max="32767" attributes="0"/>
+          <Component id="panelForm" alignment="0" max="32767" attributes="0"/>
+          <Component id="lblMenu" alignment="0" min="-2" max="-2" attributes="0"/>
+          <Component id="panelMap" alignment="0" pref="1055" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -52,7 +49,7 @@
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; ph&#xf2;ng / S&#x1a1; &#x111;&#x1ed3; ph&#xf2;ng h&#xe1;t"/>
       </Properties>
     </Component>
-    <Container class="gui.panel.PanelShadow" name="panelForm">
+    <Container class="gui.swing.panel.PanelShadow" name="panelForm">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>

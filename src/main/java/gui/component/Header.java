@@ -1,7 +1,7 @@
 package gui.component;
 
 import gui.dropshadow.ShadowType;
-import gui.panel.PanelShadow;
+import gui.swing.panel.PanelShadow;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;

@@ -187,9 +187,9 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlTop = new gui.panel.PanelShadow();
+        pnlTop = new gui.swing.panel.PanelShadow();
         lblTitle = new javax.swing.JLabel();
-        pnlBottom = new gui.panel.PanelShadow();
+        pnlBottom = new gui.swing.panel.PanelShadow();
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
@@ -253,7 +253,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblTitle;
-    private gui.panel.PanelShadow pnlBottom;
-    private gui.panel.PanelShadow pnlTop;
+    private gui.swing.panel.PanelShadow pnlBottom;
+    private gui.swing.panel.PanelShadow pnlTop;
     // End of variables declaration//GEN-END:variables
 }

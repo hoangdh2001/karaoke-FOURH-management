@@ -4,5 +4,5 @@ public interface EventAction {
 
     public void delete(Object obj);
 
-    public void update(Object obj);
+    public void update(ModelAction action);
 }
