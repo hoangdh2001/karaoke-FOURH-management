@@ -21,15 +21,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
-/**
- *
- * @author Hao
- */
 public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 
-    /**
-     * Creates new form GD_ThongKeDoanhThu
-     */
     public GD_ThongKeDoanhThu() {
         initComponents();
         buildGD();

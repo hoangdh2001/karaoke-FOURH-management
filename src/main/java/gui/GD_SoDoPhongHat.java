@@ -21,7 +21,7 @@ public class GD_SoDoPhongHat extends JPanel {
     }
     
     private void buildGD() {
-        panelForm.setPreferredSize(new Dimension(1119, 181));
+        panelForm.setPreferredSize(new Dimension(getWidth(), 181));
         panelForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "push[center]20[center]20[]push"));
         
         JLabel lbSdt = new JLabel("Số điện thoại");

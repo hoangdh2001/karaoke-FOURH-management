@@ -2,6 +2,8 @@ package entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,8 +14,8 @@ public class Phong {
 	private String maPhong;
 	@Column(columnDefinition = "nvarchar(255)", nullable = false)
 	private String tenPhong;
-	@Column(columnDefinition = "nvarchar(255)", nullable = false)
-	private String trangThai;
+        @Enumerated(EnumType.STRING)
+	private TrangThaiPhong trangThai;
 	@ManyToOne
 	@JoinColumn(name = "maLoaiPhong", nullable = false)
 	private LoaiPhong loaiPhong;
@@ -23,7 +25,7 @@ public class Phong {
 	 * @param trangThai
 	 * @param loaiPhong
 	 */
-	public Phong(String maPhong, String tenPhong, String trangThai, LoaiPhong loaiPhong) {
+	public Phong(String maPhong, String tenPhong, TrangThaiPhong trangThai, LoaiPhong loaiPhong) {
 		this.maPhong = maPhong;
 		this.tenPhong = tenPhong;
 		this.trangThai = trangThai;
@@ -61,13 +63,13 @@ public class Phong {
 	/**
 	 * @return the trangThai
 	 */
-	public String getTrangThai() {
+	public TrangThaiPhong getTrangThai() {
 		return trangThai;
 	}
 	/**
 	 * @param trangThai the trangThai to set
 	 */
-	public void setTrangThai(String trangThai) {
+	public void setTrangThai(TrangThaiPhong trangThai) {
 		this.trangThai = trangThai;
 	}
 	/**
