@@ -22,7 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -42,14 +43,17 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private JPanel pnlKhachHang;
     private JPanel pnlThongTinPhong;
     private String fontName = "sansserif";
-    private int fontStyle = Font.PLAIN;
-    private int fontSize = 16;
-    Color colorBtn = new Color(184, 238, 241);
+    private int fontPlain = Font.PLAIN;
+    private int font16 = 16;
+    private int font14 = 14;
+    private int font12 = 12;
+    private Color colorBtn = new Color(184, 238, 241);
+    private Color colorLabel = new Color(47, 72, 210);
     public GD_TiepNhanDatPhong() {
         super();
         setModal(true);
         initComponents();
-        setSize(new Dimension(1350,650));
+        setSize(new Dimension(1300,650));
         setLocation(150, 150);
         initForm();
         setTitle("Giao phòng");
@@ -130,25 +134,13 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     public void initSetTheRoom(){
         pnlDanhSachPhieu = new JPanel();
         pnlDanhSachPhieu.setOpaque(false);
-        pnlDanhSachPhieu.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2),
-                "Phiếu đặt phòng",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                new Font("sansserif", Font.PLAIN, 18),
-                Color.gray)
-        );
         pnlDanhSachPhieu.setLayout(new MigLayout("","[]","10[]10"));
-            pnlDanhSachPhieu.setBackground(Color.WHITE);    
-//        Object data[][] = { 
-//                { "101", "Tran Van Minh", "6000",new JRadioButton() }, 
-//                { "102", "Phan Van Tai", "8000",new JRadioButton()  }, 
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },              
-//        };
+        pnlDanhSachPhieu.setBackground(Color.WHITE); 
+            
+        JLabel lblDanhSachPhieu = new JLabel("Thông tin phiếu");
+        lblDanhSachPhieu.setFont(new Font(fontName, fontPlain, font16));
+        lblDanhSachPhieu.setForeground(colorLabel);
+        pnlDanhSachPhieu.add(lblDanhSachPhieu, "span, w 100%, h 30!, wrap");
         
         Object data[][] = { 
                 { "101","Do Cao Hoc", "7000","7:30am"}, 
@@ -165,32 +157,29 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         TableCustom table = new TableCustom(model);
         JScrollPane sp = new JScrollPane(table);
 //test
-//        table.addEvent(new ActionListener(){
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.out.println("1");
-//            }  
-//        });
-//        System.err.println(table.getRowCount());
         table.fixTable(sp);
         
         table.addRow(new Object[]{ "them","Do Cao Hoc", "7000","7:30am"});
         pnlDanhSachPhieu.add(sp,"w 100%,h 100%");
+        
         pnlInfoTop.add(pnlDanhSachPhieu,"w 35%,h 100%");
+        
+        JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
+        spr.setPreferredSize(new Dimension(20, 230));
+        pnlInfoTop.add(spr);
     }
     
     public void initService(){
         pnlDanhSachDichVu = new JPanel();
         pnlDanhSachDichVu.setOpaque(false);
-        pnlDanhSachDichVu.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2),
-                "Dịch vụ",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                new Font("sansserif", Font.PLAIN, 18),
-                Color.gray)
-        );
+        
         pnlDanhSachDichVu.setLayout(new MigLayout("","[]","10[]10"));
-            pnlDanhSachDichVu.setBackground(Color.WHITE); 
+        pnlDanhSachDichVu.setBackground(Color.WHITE); 
+        
+        JLabel lblDanhSachDV = new JLabel("Dịch vụ");
+        lblDanhSachDV.setFont(new Font(fontName, fontPlain, font16));
+        lblDanhSachDV.setForeground(colorLabel);
+        pnlDanhSachDichVu.add(lblDanhSachDV, "span, w 100%, h 30!, wrap");
             
         Object data[][] = { 
                 { "101", "Tran Van Minh", "6000",new JCheckBox() }, 
@@ -239,45 +228,52 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         
         pnlDanhSachDichVu.add(spSelected,"w 60%,h 100%");
         pnlDanhSachDichVu.add(sp,"w 60%,h 100%");
+        
         pnlInfoTop.add(pnlDanhSachDichVu,"w 65%,h 100%");
     }
     
     public void initCustomer(){
         pnlKhachHang = new JPanel();
         pnlKhachHang.setLayout(new MigLayout("","28[][]20","10[]5"));
-        pnlKhachHang.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2),
-                "Thông tin khách hàng",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                new Font("sansserif", Font.PLAIN, 18),
-                Color.GRAY)
-        );
+        
+        JLabel lblTTKhachHang = new JLabel("Thông tin khách hàng");
+        lblTTKhachHang.setFont(new Font(fontName, fontPlain, font16));
+        lblTTKhachHang.setForeground(colorLabel);
+        pnlKhachHang.add(lblTTKhachHang, "span, w 100%, h 30!, wrap");
         
         JLabel lblSdt= new JLabel("Số điện thoại :");
-        lblSdt.setFont(new Font(fontName, fontStyle, fontSize));
+        lblSdt.setFont(new Font(fontName, fontPlain, font14));
         pnlKhachHang.add(lblSdt, "align right");
 
-        JTextField txtSdt = new MyTextField();
-        txtSdt.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtSdt = new MyTextField();
+        txtSdt.setFont(new Font(fontName, fontPlain, font14));
+        txtSdt.setBorderLine(true);
         pnlKhachHang.add(txtSdt, "w 100:260:300, h 36! , wrap");
         
         JLabel lblTenKhachHang = new JLabel("Tên khách hàng :");
-        lblTenKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
+        lblTenKhachHang.setFont(new Font(fontName, fontPlain, font14));
         pnlKhachHang.add(lblTenKhachHang, "align right");
 
-        JTextField txtTenKhachHang = new MyTextField();
-        txtTenKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtTenKhachHang = new MyTextField();
+        txtTenKhachHang.setFont(new Font(fontName, fontPlain, font14));
+        txtTenKhachHang.setBorderLine(true);
         pnlKhachHang.add(txtTenKhachHang, "w 100:260:300, h 36! , wrap");
         
         JLabel lblCCCD = new JLabel("Số thẻ căn cước :");
-        lblCCCD.setFont(new Font(fontName, fontStyle, fontSize));
+        lblCCCD.setFont(new Font(fontName, fontPlain, font14));
         pnlKhachHang.add(lblCCCD, "align right");
 
-        JTextField txtCCCD = new MyTextField();
-        txtCCCD.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtCCCD = new MyTextField();
+        txtCCCD.setFont(new Font(fontName, fontPlain, font14));
+        txtCCCD.setBorderLine(true);
         pnlKhachHang.add(txtCCCD, "w 100:260:300, h 36! , wrap");
         
         pnlInfoBottom.add(pnlKhachHang,"w 35%,h 100%");
+        
+        JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
+        spr.setPreferredSize(new Dimension(20, 230));
+        pnlInfoBottom.add(spr);
+        
         pnlKhachHang.setBackground(Color.WHITE);  
 
     }
@@ -287,52 +283,53 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlThongTinPhong.setBackground(Color.WHITE);
         pnlThongTinPhong.setLayout(new MigLayout("","28[][]","10[]5"));
         
-        pnlThongTinPhong.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2),
-                "Thông tin phòng",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                new Font("sansserif", Font.PLAIN, 18),
-                Color.GRAY)
-        );
+        JLabel lblTTPhong = new JLabel("Thông tin phòng");
+        lblTTPhong.setFont(new Font(fontName, fontPlain, font16));
+        lblTTPhong.setForeground(colorLabel);
+        pnlThongTinPhong.add(lblTTPhong, "span, w 100%, h 30!, wrap");
         
         JPanel pnlThongTin = new JPanel();
         pnlThongTin.setLayout(new MigLayout("","[][]20","0[]10"));
         
         JLabel lblTenPhong = new JLabel("Tên phòng :");
-        lblTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblTenPhong, "align right");
 
-        JTextField txtKhachHang = new MyTextField();
-        txtKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
-        txtKhachHang.setEnabled(false);
-        pnlThongTin.add(txtKhachHang, "w 100:260:350, h 36! , wrap");
+        MyTextField txtTenPhong = new MyTextField();
+        txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
+        txtTenPhong.setEnabled(false);
+        txtTenPhong.setBorderLine(true);
+        pnlThongTin.add(txtTenPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblLoaiPhong = new JLabel("Loại Phòng :");
-        lblLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        lblLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblLoaiPhong, "align right");
 
-        JTextField txtLoaiPhong = new MyTextField();
-        txtLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtLoaiPhong = new MyTextField();
+        txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         txtLoaiPhong.setEnabled(false);
+        txtLoaiPhong.setBorderLine(true);
         pnlThongTin.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGia = new JLabel("Giá phòng/giờ :");
-        lblGia.setFont(new Font(fontName, fontStyle, fontSize));
+        lblGia.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblGia, "align right");
 
-        JTextField txtGia = new MyTextField();
-        txtGia.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtGia = new MyTextField();
+        txtGia.setFont(new Font(fontName, fontPlain, font14));
         txtGia.setEnabled(false);
+        txtGia.setBorderLine(true);
         
         pnlThongTin.add(txtGia, "w 100:260:350, h 36! , wrap");
         
         JLabel lblNhanVien = new JLabel("Nhân viên :");
-        lblNhanVien.setFont(new Font(fontName, fontStyle, fontSize));
+        lblNhanVien.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblNhanVien, "align right");
 
-        JTextField txtNhanVien= new MyTextField();
-        txtNhanVien.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtNhanVien= new MyTextField();
+        txtNhanVien.setFont(new Font(fontName, fontPlain, font14));
         txtNhanVien.setEnabled(false);
+        txtNhanVien.setBorderLine(true);
         pnlThongTin.add(txtNhanVien, "w 100:260:350, h 36! , wrap");
         
         pnlThongTin.setBackground(Color.WHITE);
@@ -340,11 +337,13 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         JPanel pnlButton = new JPanel();
         pnlButton.setLayout(new MigLayout("","push[]10[]20","push[]20"));
         pnlButton.setBackground(Color.WHITE);
+        
         Button btnHuy = new Button("Giao phòng");
-        btnHuy.setFont(new Font(fontName, fontStyle, fontSize));
+        btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
+        
         Button btnDoiPhong = new Button("Thoát");
-        btnDoiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        btnDoiPhong.setFont(new Font(fontName, fontPlain, font14));
         btnDoiPhong.setBackground(colorBtn);
         
         pnlButton.add(btnHuy,"h 36!");
@@ -359,10 +358,11 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         mainPanel.setLayout(new MigLayout("","20[center]20"));
 //        MainPanel.setBackground(Color.WHITE);
         
+        setResizable(false);
         pnlInfoTop = new PanelShadow();
         pnlInfoTop.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]20"));
         pnlInfoBottom = new PanelShadow();
-        pnlInfoBottom.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]20"));
+        pnlInfoBottom.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]10"));
         
         initSetTheRoom();
         initService();
