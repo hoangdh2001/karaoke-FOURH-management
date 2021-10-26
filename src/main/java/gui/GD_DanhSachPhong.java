@@ -6,7 +6,9 @@ package gui;
 
 import gui.swing.button.Button;
 import gui.swing.table.TableCustom;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -33,6 +35,7 @@ public class GD_DanhSachPhong extends JPanel {
      public GD_DanhSachPhong(){
          initComponents();
          buildGD();
+         tblPhong.fixTable(scrPhong);
     }
 
     private void buildGD() {
@@ -57,8 +60,10 @@ public class GD_DanhSachPhong extends JPanel {
         lblMaPhong.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThongTin.add(lblMaPhong, "align right");
         
-        JTextField txtMaPhong = new MyTextField();
+        
+        MyTextField txtMaPhong = new MyTextField();
         txtMaPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        txtMaPhong.setBorderLine(true);
         pnlThongTin.add(txtMaPhong, "w 30%, h 36!");
         
         //Loại phòng
@@ -66,9 +71,10 @@ public class GD_DanhSachPhong extends JPanel {
         lblLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThongTin.add(lblLoaiPhong, "align right");
         
-        JComboBox<String> cmbLoaiPhong = new JComboBox<>();
+        MyComboBox<String> cmbLoaiPhong= new MyComboBox<>(new String[] {"--Loại phòng--", "Phòng thường", "Phòng tiệc", "Phòng vip"});
         cmbLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbLoaiPhong.addItem("Loại phòng");
+        cmbLoaiPhong.setBorderLine(true);
+        cmbLoaiPhong.setBorderRadius(10);
         pnlThongTin.add(cmbLoaiPhong, "w 30%, h 36!, wrap");
         
         //Tên phòng
@@ -76,9 +82,10 @@ public class GD_DanhSachPhong extends JPanel {
         lblTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThongTin.add(lblTenPhong, "align right");
         
-        JTextField txtTenPhong = new MyTextField();
+        MyTextField txtTenPhong = new MyTextField();
         txtTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(txtTenPhong, "w 30%, h 36!, wrap");
+        txtTenPhong.setBorderLine(true);
+        pnlThongTin.add(txtTenPhong, "w 30%, h 36!");
         
         //   Panel nút chức năng
         JPanel pnlButton = new JPanel();
@@ -113,72 +120,29 @@ public class GD_DanhSachPhong extends JPanel {
          * end: group thông tin phòng hát
          */
          /*Begin: group danh sách Phòng hát*/
-        pnlBottom.setLayout(new MigLayout());
-        pnlBottom.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách phòng", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), Color.gray));
+        //pnlBottom.setLayout(new MigLayout());
+        pnlBottom.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách phòng", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18),  new Color(4, 72, 210)));
         pnlBottom.setPreferredSize(new Dimension(1119, 1110));
         /*End: group danh sách Phòng */
         
-        
-        Object data[][]={
-            { "PH0001", "Phòng Vip", "Sẵn sàng","LPV001", "500,000" },
-            { "PH0002", "Phòng Thường", "Đang hát","LPTH001", "300,000" },
-            { "PH0003", "Phòng Tiệc", "Đang sửa chữa","LPT001", "400,000" },
-            { "PH0004", "Phòng Thường", "Phòng đang dọn","LPTH002", "200,000" },
-            { "PH0005", "Phòng Vip", "Sẵn sàng","LPV002", "500,000" },
-            { "PH0006", "Phòng Thường", "Đang hát","LPTH003", "300,000" },
-            { "PH0007", "Phòng Tiệc", "Đang sửa chữa","LPT002", "400,000" },
-            { "PH0008", "Phòng Thường", "Phòng đang dọn","LPTH004", "200,000" },
-            { "PH0009", "Phòng Thường", "Đang hát","LPTH005", "300,000" },
-            { "PH0010", "Phòng Tiệc", "Đang sửa chữa","LPT003", "400,000" },
-            { "PH0011", "Phòng Thường", "Phòng đang dọn","LPTH006", "200,000" },
-            { "PH0012", "Phòng Vip", "Sẵn sàng","LPV003", "500,000" },
-            { "PH0013", "Phòng Thường", "Đang hát","LPTH007", "300,000" },
-            { "PH0014", "Phòng Tiệc", "Đang sửa chữa","LPT004", "400,000" },
-            { "PH0015", "Phòng Thường", "Phòng đang dọn","LPTH008", "200,000" },
-            { "PH0016", "Phòng Thường", "Đang hát","LPTH009", "300,000" },
-            { "PH0017", "Phòng Tiệc", "Đang sửa chữa","LPT005", "400,000" },
-            { "PH0018", "Phòng Thường", "Phòng đang dọn","LPTH010", "200,000" },
-            { "PH0019", "Phòng Vip", "Sẵn sàng","LPV004", "500,000" },
-            { "PH0020", "Phòng Thườngg", "Đang hát","LPTH011", "300,000" },
-            { "PH0021", "Phòng Tiệc", "Đang sửa chữa","LPT006", "400,000" },
-            { "PH0022", "Phòng Thường", "Phòng đang dọn","LPTH012", "200,000" },
-            { "PH0023", "Phòng Thường", "Đang hát","LPTH013", "300,000" },
-            { "PH0024", "Phòng Tiệc", "Đang sửa chữa","LPT007", "400,000" },
-            { "PH0025", "Phòng Thường", "Phòng đang dọn","LPTH014", "200,000" },
-            { "PH0026", "Phòng Vip", "Sẵn sàng","LPV005", "500,000" },
-            { "PH0027", "Phòng Thường", "Đang hát","LPTH015", "300,000" },
-            { "PH0028", "Phòng Tiệc", "Đang sửa chữa","LPT008", "400,000" },
-            { "PH0029", "Phòng Thường", "Phòng đang dọn","LPTH016", "200,000" },
-            { "PH0030", "Phòng Thường", "Đang hát","LPTH017", "300,000" },
-            { "PH0031", "Phòng Tiệcg", "Đang sửa chữa","LPT009", "400,000" },
-            { "PH0032", "Phòng Thường", "Phòng đang dọn","LPTH018", "200,000" },
-            { "PH0033", "Phòng Vip", "Sẵn sàng","LPV006", "500,000" },
-            { "PH0034", "Phòng Thường", "Đang hát","LPTH019", "300,000" },
-            { "PH0035", "Phòng Tiệc", "Đang sửa chữa","LPT010", "400,000" },
-            { "PH0036", "Phòng Thường", "Phòng đang dọn","LPTH020", "200,000" },
-            { "PH0037", "Phòng Thường", "Phòng đang dọn","LPTH014", "200,000" },
-            { "PH0038", "Phòng Vip", "Sẵn sàng","LPV005", "500,000" },
-            { "PH0039", "Phòng Thường", "Đang hát","LPTH015", "300,000" },
-            { "PH0040", "Phòng Tiệc", "Đang sửa chữa","LPT008", "400,000" },
-            { "PH0041", "Phòng Thường", "Phòng đang dọn","LPTH016", "200,000" },
-            { "PH0042", "Phòng Thường", "Đang hát","LPTH017", "300,000" },
-            { "PH0043", "Phòng Tiệcg", "Đang sửa chữa","LPT009", "400,000" },
-            { "PH0044", "Phòng Thường", "Phòng đang dọn","LPTH018", "200,000" },
-            { "PH0045", "Phòng Vip", "Sẵn sàng","LPV006", "500,000" },
-            { "PH0046", "Phòng Thường", "Đang hát","LPTH019", "300,000" },
-            { "PH0047", "Phòng Tiệc", "Đang sửa chữa","LPT010", "400,000" },
-            { "PH0048", "Phòng Thường", "Phòng đang dọn","LPTH020", "200,000" }
-        };
-        
-        
-         String[] tieuDePhong = { "Mã Phòng", "Tên Phòng", "Trạng Thái","Loại Phòng", "Giá Phòng" };
-         DefaultTableModel modelPhong = new DefaultTableModel(tieuDePhong, 0);
-        modelPhong.setDataVector(data, tieuDePhong);
-        TableCustom tblPhong = new TableCustom(modelPhong);
-        JScrollPane scrPhong = new JScrollPane(tblPhong);
-        tblPhong.fixTable(scrPhong);
-        pnlBottom.add(scrPhong,"w 100%, h 100%");
-        
+
+        tblPhong.addRow(new Object[]{"", "PH0001", "Phòng Vip", "Sẵn sàng","Phòng Vip", "500,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0002", "Phòng Thường", "Đang hát","Phòng Thường", "300,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0003", "Phòng Tiệc", "Đang sửa chữa","Phòng Tiệc", "400,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0004", "Phòng Thường", "Phòng đang dọn","Phòng Thường", "200,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0005", "Phòng Vip", "Sẵn sàng","Phòng Vip", "500,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0006", "Phòng Thường", "Đang hát","Phòng Thường", "300,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0007", "Phòng Tiệc", "Đang sửa chữa","Phòng Tiệc", "400,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0008", "Phòng Thường", "Phòng đang dọn","Phòng Thường", "200,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0009", "Phòng Thường", "Đang hát","Phòng Thường", "300,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0010", "Phòng Tiệc", "Đang sửa chữa", "Phòng Tiệc", "400,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0011", "Phòng Thường", "Phòng đang dọn","Phòng Thường", "200,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0012", "Phòng Vip", "Sẵn sàng","Phòng Vip", "500,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0013", "Phòng Thường", "Đang hát","Phòng Thường", "300,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0014", "Phòng Tiệc", "Đang sửa chữa","Phòng Tiệc", "400,000" }); 
+        tblPhong.addRow(new Object[]{"", "PH0015", "Phòng Thường", "Phòng đang dọn","Phòng Thường", "200,000" }); 
+           
+        setOpaque(false);
         setPreferredSize(new Dimension(1119, 1500));
     }
 
@@ -193,6 +157,8 @@ public class GD_DanhSachPhong extends JPanel {
 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
+        scrPhong = new javax.swing.JScrollPane();
+        tblPhong = new gui.swing.table2.MyTable();
         lblTitle = new javax.swing.JLabel();
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
@@ -216,15 +182,42 @@ public class GD_DanhSachPhong extends JPanel {
         pnlBottom.setShadowSize(3);
         pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
 
+        tblPhong.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", "Mã phòng", "Tên phòng", "Trạng thái", "Loại phòng", "Giá phòng"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        scrPhong.setViewportView(tblPhong);
+        if (tblPhong.getColumnModel().getColumnCount() > 0) {
+            tblPhong.getColumnModel().getColumn(0).setResizable(false);
+            tblPhong.getColumnModel().getColumn(1).setResizable(false);
+            tblPhong.getColumnModel().getColumn(2).setResizable(false);
+            tblPhong.getColumnModel().getColumn(3).setResizable(false);
+            tblPhong.getColumnModel().getColumn(4).setResizable(false);
+            tblPhong.getColumnModel().getColumn(5).setResizable(false);
+        }
+        tblPhong.getAccessibleContext().setAccessibleParent(pnlBottom);
+
         javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
         pnlBottom.setLayout(pnlBottomLayout);
         pnlBottomLayout.setHorizontalGroup(
             pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(scrPhong, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         pnlBottomLayout.setVerticalGroup(
             pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 348, Short.MAX_VALUE)
+            .addComponent(scrPhong, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
         );
 
         lblTitle.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
@@ -239,7 +232,7 @@ public class GD_DanhSachPhong extends JPanel {
             .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblTitle)
-                .addGap(0, 1019, Short.MAX_VALUE))
+                .addGap(0, 827, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,5 +251,7 @@ public class GD_DanhSachPhong extends JPanel {
     private javax.swing.JLabel lblTitle;
     private gui.swing.panel.PanelShadow pnlBottom;
     private gui.swing.panel.PanelShadow pnlTop;
+    private javax.swing.JScrollPane scrPhong;
+    private gui.swing.table2.MyTable tblPhong;
     // End of variables declaration//GEN-END:variables
 }
