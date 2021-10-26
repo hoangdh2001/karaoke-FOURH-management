@@ -15,9 +15,11 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
+import gui.component.Header;
 import gui.component.Menu;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
+import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
 import gui.swing.scrollbar.ScrollBarCustom;
@@ -90,18 +92,6 @@ public class GD_Chinh extends JFrame {
         animator.setDeceleration(0.5f); // giảm tốc 50%
         animator.setAcceleration(0.5f); // tăng tốc 50% suy ra bình thường
         // Khi click vào nút menu sẽ mở menu rộng ra
-        menu.addMenuEvent(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (!animator.isRunning()) {
-                    animator.start();
-                }
-                menu.setEnableMenu(false);
-                if (menu.isShowMenu()) {
-                    menu.hideAllMenu();
-                }
-            }
-        });
         return background;
     }
     /**
@@ -111,6 +101,35 @@ public class GD_Chinh extends JFrame {
      */
     private Header createHeader() {
 	header = new Header();
+        header.addEvent(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if(!animator.isRunning()) {
+                    animator.start();
+                }
+                menu.setEnableMenu(false);
+                if(menu.isShowMenu()) {
+                    menu.hideAllMenu();
+                }
+            }
+        });
+        EventMenuSelected eventSelected = new EventMenuSelected() {
+            @Override
+            public void menuSelected(int menuIndex, int subMenuIndex) {
+                System.out.println("Menu index: " + menuIndex + ", SubMenuIndex: " + subMenuIndex);
+            }
+        };
+        header.addEvent2(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                String[] menuItem = {"Hồ sơ", "Xin chào", "Chao xìn", "Đăng xuất"};
+                DropMenu dropMenu = new DropMenu(GD_Chinh.this, 0, eventSelected, menuItem);
+                int x = GD_Chinh.this.getX() + 1308;
+                int y = GD_Chinh.this.getY()  + 55;
+                dropMenu.setLocation(x, y);
+                dropMenu.setVisible(true);
+            }
+        });
 	return header;
     }
     /**

@@ -9,8 +9,7 @@ public enum TrangThaiPhong {
     DAT_TRUOC ("Đặt trước", new Color(60, 141, 188)),
     BAN ("Bẩn", new Color(241, 202, 53)),
     DANG_DON ("Đang dọn", new Color(100, 100, 109)),
-    DANG_SUA ("Đang sửa", Color.GRAY),
-    HONG ("Hỏng", Color.ORANGE);
+    DANG_SUA ("Đang sửa", Color.GRAY);
     
     private final String trangThai;
     private final Color color;

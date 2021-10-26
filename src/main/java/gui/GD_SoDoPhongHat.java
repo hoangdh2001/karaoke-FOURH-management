@@ -23,8 +23,8 @@ public class GD_SoDoPhongHat extends JPanel {
     
     private void buildGD() {
         
-        panelForm.setPreferredSize(new Dimension(getWidth(), 250));
-        panelForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "20[center]20[center]20[]push"));
+        panelForm.setPreferredSize(new Dimension(getWidth(), 265));
+        panelForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
         
         JLabel lbSdt = new JLabel("Số điện thoại");
         lbSdt.setFont(new Font("sansserif", Font.PLAIN, 12));
@@ -76,7 +76,22 @@ public class GD_SoDoPhongHat extends JPanel {
         
         panelForm.add(createPaneStatus(), "pos 0al 1al 100% n, h 50!");
         
+        panelForm.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
+        
         setPreferredSize(new Dimension(getWidth(), 1500));
+    }
+    
+    private JPanel createPanelTitle() {
+        JPanel pnlTitle = new JPanel();
+        pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
+        pnlTitle.setOpaque(false);
+        pnlTitle.setLayout(new MigLayout("fill", "", ""));
+        JLabel lblTitle = new JLabel();
+        lblTitle.setText("Sơ đồ phòng hát");
+        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
+        lblTitle.setForeground(new Color(68, 68, 68));
+        pnlTitle.add(lblTitle);
+        return  pnlTitle;
     }
     
     private JPanel createPaneStatus() {
@@ -96,19 +111,14 @@ public class GD_SoDoPhongHat extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblMenu = new javax.swing.JLabel();
         panelForm = new gui.swing.panel.PanelShadow();
         panelMap = new gui.component.PanelMap();
 
         setOpaque(false);
 
-        lblMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        lblMenu.setForeground(new java.awt.Color(4, 72, 210));
-        lblMenu.setText("Quản lý phòng / Sơ đồ phòng hát");
-
         panelForm.setBackground(new java.awt.Color(255, 255, 255));
         panelForm.setShadowOpacity(0.3F);
-        panelForm.setShadowSize(3);
+        panelForm.setShadowSize(2);
         panelForm.setShadowType(gui.dropshadow.ShadowType.TOP);
 
         javax.swing.GroupLayout panelFormLayout = new javax.swing.GroupLayout(panelForm);
@@ -119,12 +129,12 @@ public class GD_SoDoPhongHat extends JPanel {
         );
         panelFormLayout.setVerticalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 236, Short.MAX_VALUE)
+            .addGap(0, 235, Short.MAX_VALUE)
         );
 
         panelMap.setBackground(new java.awt.Color(255, 255, 255));
         panelMap.setShadowOpacity(0.3F);
-        panelMap.setShadowSize(3);
+        panelMap.setShadowSize(2);
         panelMap.setShadowType(gui.dropshadow.ShadowType.TOP);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -132,24 +142,19 @@ public class GD_SoDoPhongHat extends JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblMenu)
             .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, 1055, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(lblMenu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblMenu;
     private gui.swing.panel.PanelShadow panelForm;
     private gui.component.PanelMap panelMap;
     // End of variables declaration//GEN-END:variables

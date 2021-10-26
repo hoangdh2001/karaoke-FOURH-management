@@ -16,15 +16,11 @@ import gui.event.EventMenu;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
 import gui.model.ModelMenu;
-import gui.swing.button.Button;
 import gui.swing.menu.MenuAnimation;
 import gui.swing.menu.MenuItem;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Cursor;
-import java.awt.Image;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
 public class Menu extends JPanel {
@@ -38,7 +34,6 @@ public class Menu extends JPanel {
     private EventShowPopupMenu eventShowPopup;
     private boolean enableMenu = true;
     private boolean showMenu = true;
-    private JButton cmdMenu;
     private MigLayout layout;
     private JButton cmdLogout;
     private PaneExit paneExit;
@@ -52,7 +47,6 @@ public class Menu extends JPanel {
         setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "5[]5[]push[60]0"));
         setBackground(new Color(35, 35, 35));
         setOpaque(false);
-        add(createCmdMenu(), "pos 1al 0al 100% 50, height 50!");
         add(createCmdLogout(), "pos 1al 1al 100% 100, height 60!");
         add(createPaneName());
         add(createPane(), "h 680!");
@@ -70,17 +64,6 @@ public class Menu extends JPanel {
         paneTitle = new PaneTitle();
         paneTitle.setAlpha(1f);
         return paneTitle;
-    }
-    
-    private JButton createCmdMenu() {
-        Image image = new ImageIcon(getClass().getResource("/icon/menu.png")).getImage();
-        cmdMenu = new Button();
-        cmdMenu.setBackground(new Color(0, 0, 0, 0));
-        cmdMenu.setBorder(new EmptyBorder(5, 12, 5, 12));
-        cmdMenu.setFocusable(false);
-        cmdMenu.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        cmdMenu.setIcon(new ImageIcon(image));
-        return cmdMenu;
     }
     
     private JScrollPane createPane() {
@@ -151,10 +134,6 @@ public class Menu extends JPanel {
                 return false;
             }
         };
-    }
-    
-    public void addMenuEvent(ActionListener evt) {
-        cmdMenu.addActionListener(evt);
     }
     
     public void hideAllMenu() {

@@ -10,6 +10,7 @@ public enum TrangThaiPhieuDat {
     
     private final String trangThai;
     private final Color statusColor;
+    
     private TrangThaiPhieuDat(String trangThai, Color statusColor) {    
         this.trangThai = trangThai;
         this.statusColor = statusColor;

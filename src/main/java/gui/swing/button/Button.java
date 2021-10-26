@@ -28,7 +28,7 @@ public class Button extends JButton {
     private Point pressedPoint;
     private float alpha;
     private Color effectColor = new Color(173, 173, 173);
-    private boolean borderline;
+    private boolean borderline = false;
     private int borderRadius = 0;
     private Color borderColor = new Color(0, 0, 0, 0.3f);
 
@@ -119,8 +119,6 @@ public class Button extends JButton {
             }
             else {
                 g2.fillRoundRect(0, 0, width, height, height, height);
-                g2.setColor(borderColor);
-                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, borderRadius, borderRadius);
             }
         } else {
             g2.fillRoundRect(0, 0, width, height, borderRadius, borderRadius);

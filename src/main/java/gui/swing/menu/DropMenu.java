@@ -1,55 +1,33 @@
 package gui.swing.menu;
 
+import gui.event.EventMenuSelected;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.GroupLayout;
-
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-import gui.event.EventMenuSelected;
-
-public class PopupMenu extends javax.swing.JDialog {
-
+public class DropMenu extends javax.swing.JDialog {
     private Animator animator;
     private boolean show = true;
-    private Color background = new Color(50, 50, 50);
-
-    public Color getBackgroundPane() {
-        return background;
-    }
-
-    public void setBackgroundPane(Color bg) {
-        this.background = bg;
-        panel.setBackground(bg);
-    }
-
-    public PopupMenu(java.awt.Frame parent, int index, EventMenuSelected eventSelected, Color fg, String... subMenu) {
+    public DropMenu(java.awt.Frame parent, int index , EventMenuSelected eventSelected, String... menuItem) {
         super(parent, false);
         initComponents();
-        buidPopupMenu(index, eventSelected, fg, subMenu);
+        buildDropMenu(index, eventSelected, menuItem);
     }
-
-    public PopupMenu(java.awt.Frame parent, int index, EventMenuSelected eventSelected, String... subMenu) {
-        super(parent, false);
-        initComponents();
-        buidPopupMenu(index, eventSelected, Color.BLACK, subMenu);
-    }
-
-    private void buidPopupMenu(int index, EventMenuSelected eventSelected, Color fg, String... subMenu) {
+    
+    private void buildDropMenu(int index , EventMenuSelected eventSelected, String... menuItem) {
         setOpacity(0f);
         setBackground(new Color(0, 0, 0, 0));
-        panel.setLayout(new MigLayout("fill, wrap", "8[fill, 120]0", "0[35, fill]0[35, fill]0"));
+        panel.setLayout(new MigLayout("fill, wrap", "5[fill, 120]0", "15[35, fill]0[35, fill]0[35, fill]0[35, fill]8"));
         int subMenuIndex = -1;
-        for (String st : subMenu) {
+        for (String st : menuItem) {
             MenuButton item = new MenuButton(st, true);
-            item.setForeground(fg);
             item.setIndex(++subMenuIndex);
+            item.setEffectColor(Color.yellow);
             item.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -58,7 +36,7 @@ public class PopupMenu extends javax.swing.JDialog {
                 }
             });
             panel.add(item);
-            setSize(new Dimension(150, 35 * subMenu.length));
+            setSize(new Dimension(120, 35 * menuItem.length));
         }
         TimingTarget target = new TimingTargetAdapter() {
             @Override
@@ -81,7 +59,7 @@ public class PopupMenu extends javax.swing.JDialog {
         animator.setResolution(0);
         animator.setAcceleration(0.5f);
     }
-
+    
     @Override
     public void setVisible(boolean bln) {
         super.setVisible(bln);
@@ -89,7 +67,7 @@ public class PopupMenu extends javax.swing.JDialog {
             animator.start();
         }
     }
-
+    
     private void closeMenu() {
         if (animator.isRunning()) {
             animator.stop();
@@ -97,55 +75,57 @@ public class PopupMenu extends javax.swing.JDialog {
         show = false;
         animator.start();
     }
-
+    
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel = new PanelPopup();
-
-        panel.setBackground(background);
+        panel = new gui.swing.menu.PanelPopupShadow();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            @Override
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
             }
-
-            @Override
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
                 formWindowLostFocus(evt);
             }
         });
 
-        GroupLayout panelLayout = new GroupLayout(panel);
+        panel.setBackground(new java.awt.Color(255, 255, 255));
+        panel.setType(gui.swing.menu.PanelPopupShadow.PopupType.TOP);
+
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
-                panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGap(0, 200, Short.MAX_VALUE)
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 155, Short.MAX_VALUE)
         );
         panelLayout.setVerticalGroup(
-                panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 130, Short.MAX_VALUE)
         );
 
-        GroupLayout layout = new GroupLayout(getContentPane());
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
-    }
+    }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowLostFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowLostFocus
         closeMenu();
-    }
+    }//GEN-LAST:event_formWindowLostFocus
 
-    private PanelPopup panel;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private gui.swing.menu.PanelPopupShadow panel;
+    // End of variables declaration//GEN-END:variables
+
 }

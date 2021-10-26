@@ -19,6 +19,14 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 public class ButtonBadges extends JButton {
+    
+    private Animator animator;
+    private int targetSize;
+    private float animatSize;
+    private Point pressedPoint;
+    private float alpha;
+    private Color effectColor = new Color(173, 173, 173);
+    private int badges;
 
     public int getBadges() {
         return badges;
@@ -35,15 +43,7 @@ public class ButtonBadges extends JButton {
     public void setEffectColor(Color effectColor) {
         this.effectColor = effectColor;
     }
-
-    private Animator animator;
-    private int targetSize;
-    private float animatSize;
-    private Point pressedPoint;
-    private float alpha;
-    private Color effectColor = new Color(173, 173, 173);
-    private int badges;
-
+    
     public ButtonBadges() {
         setContentAreaFilled(false);
         setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -77,7 +77,7 @@ public class ButtonBadges extends JButton {
     }
 
     @Override
-    protected void paintComponent(Graphics grphcs) {
+    protected void paintComponent(Graphics g) {
         int width = getWidth();
         int height = getHeight();
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -91,17 +91,17 @@ public class ButtonBadges extends JButton {
             g2.fillOval((int) (pressedPoint.x - animatSize / 2), (int) (pressedPoint.y - animatSize / 2), (int) animatSize, (int) animatSize);
         }
         g2.dispose();
-        grphcs.drawImage(img, 0, 0, null);
-        super.paintComponent(grphcs);
+        g.drawImage(img, 0, 0, null);
+        super.paintComponent(g);
     }
 
     @Override
-    public void paint(Graphics grphcs) {
-        super.paint(grphcs);
+    public void paint(Graphics g) {
+        super.paint(g);
         if (badges > 0) {
             String value = badges > 9 ? "+9" : badges + "";
             int width = getWidth();
-            Graphics2D g2 = (Graphics2D) grphcs;
+            Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             FontMetrics ft = g2.getFontMetrics();
             Rectangle2D r2 = ft.getStringBounds(value, g2);
