@@ -6,6 +6,7 @@ package gui;
 
 import gui.swing.button.Button;
 import gui.swing.table.TableCustom;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,84 +42,79 @@ public class GD_DanhSachPhong extends JPanel {
         int fontSize = 16;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setPreferredSize(new Dimension(1119, 200));
-        pnlTop.setLayout(new MigLayout());
+        pnlTop.setPreferredSize(new Dimension(getWidth(), 265));
+        pnlTop.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
         
         /**
          * Begin: group thông tin phòng
          */
-        JPanel pnlThongTin = new JPanel();
-        pnlThongTin.setOpaque(false);
-        pnlThongTin.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "push[center]20[center]20[]push"));
-        pnlTop.add(pnlThongTin,"w 100%,h 70%, wrap");
         
-        //Mã phòng
-        JLabel lblMaPhong = new JLabel("Mã phòng:");
-        lblMaPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(lblMaPhong, "align right");
+        // Mã phòng
+        JLabel lblTenPhong = new JLabel("Tên phòng:");
+        lblTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        pnlTop.add(lblTenPhong);
         
-        JTextField txtMaPhong = new MyTextField();
-        txtMaPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(txtMaPhong, "w 30%, h 36!");
-        
-        //Loại phòng
-        JLabel lblLoaiPhong = new JLabel("Loại phòng:");
-        lblLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(lblLoaiPhong, "align right");
-        
-        JComboBox<String> cmbLoaiPhong = new JComboBox<>();
-        cmbLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbLoaiPhong.addItem("Loại phòng");
-        pnlThongTin.add(cmbLoaiPhong, "w 30%, h 36!, wrap");
+        MyTextField txtMaPhong = new MyTextField();
+        txtMaPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        txtMaPhong.setBorderLine(true);
+        pnlTop.add(txtMaPhong, "w 20%");
         
         //Tên phòng
-        JLabel lblTenPhong = new JLabel("Tên phòng:");
-        lblTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(lblTenPhong, "align right");
+        JLabel lblLoaiPhong = new JLabel("Loại phòng");
+        lblLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        pnlTop.add(lblLoaiPhong);
         
-        JTextField txtTenPhong = new MyTextField();
-        txtTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(txtTenPhong, "w 30%, h 36!, wrap");
+        MyComboBox<String> cmbLoaiPhong = new MyComboBox<>(new String[] {"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
+        cmbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        cmbLoaiPhong.setBorderLine(true);
+        cmbLoaiPhong.setBorderRadius(10);
+        pnlTop.add(cmbLoaiPhong, "w 20%, h 30!");
         
-        //   Panel nút chức năng
-        JPanel pnlButton = new JPanel();
-        pnlButton.setOpaque(false);
-        pnlButton.setLayout(new MigLayout());
-        pnlTop.add(pnlButton, "align right,w 50%, h 30%");
-
-        // Nút Thêm
-        Button btnThemPhong = new Button("Thêm");
-        btnThemPhong .setFont(new Font(fontName, fontStyle, fontSize));
-        btnThemPhong .setBackground(colorBtn);
-        pnlButton.add(btnThemPhong , "w 100!, h 36!, gap 0 20px");//, growx
-
-        // Nút Xóa
-        Button btnXoaPhong  = new Button("Xóa");
-        btnXoaPhong .setFont(new Font(fontName, fontStyle, fontSize));
-        btnXoaPhong .setBackground(colorBtn);
-        pnlButton.add(btnXoaPhong , "w 100!, h 36!, gap 0 20px");
-
-        // Nút Sửa
-        Button btnSuaPhong  = new Button("Sửa");
-        btnSuaPhong .setFont(new Font(fontName, fontStyle, fontSize));
-        btnSuaPhong .setBackground(colorBtn);
-        pnlButton.add(btnSuaPhong , "w 100!, h 36!, gap 0 20px");
-
-        // Nút Làm mới
-        Button btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
-        btnLamMoi.setBackground(colorBtn);
-        pnlButton.add(btnLamMoi, "w 100!, h 36!");
+        
+//        //   Panel nút chức năng
+//        JPanel pnlButton = new JPanel();
+//        pnlButton.setOpaque(false);
+//        pnlButton.setLayout(new MigLayout());
+//        pnlTop.add(pnlButton, "align right,w 50%, h 30%");
+//
+//        // Nút Thêm
+//        Button btnThemPhong = new Button("Thêm");
+//        btnThemPhong .setFont(new Font(fontName, fontStyle, fontSize));
+//        btnThemPhong .setBackground(colorBtn);
+//        pnlButton.add(btnThemPhong , "w 100!, h 36!, gap 0 20px");//, growx
+//
+//        // Nút Xóa
+//        Button btnXoaPhong  = new Button("Xóa");
+//        btnXoaPhong .setFont(new Font(fontName, fontStyle, fontSize));
+//        btnXoaPhong .setBackground(colorBtn);
+//        pnlButton.add(btnXoaPhong , "w 100!, h 36!, gap 0 20px");
+//
+//        // Nút Sửa
+//        Button btnSuaPhong  = new Button("Sửa");
+//        btnSuaPhong .setFont(new Font(fontName, fontStyle, fontSize));
+//        btnSuaPhong .setBackground(colorBtn);
+//        pnlButton.add(btnSuaPhong , "w 100!, h 36!, gap 0 20px");
+//
+//        // Nút Làm mới
+//        Button btnLamMoi = new Button("Làm mới");
+//        btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
+//        btnLamMoi.setBackground(colorBtn);
+//        pnlButton.add(btnLamMoi, "w 100!, h 36!");
         /**
          * end: group thông tin phòng hát
          */
          /*Begin: group danh sách Phòng hát*/
-        pnlBottom.setLayout(new MigLayout());
-        pnlBottom.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách phòng", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), Color.gray));
-        pnlBottom.setPreferredSize(new Dimension(1119, 1110));
         /*End: group danh sách Phòng */
         
         
+        
+        
+        pnlTop.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
+        
+        setPreferredSize(new Dimension(getWidth(), 1500));
+    }
+    
+    private void initData() {
         Object data[][]={
             { "PH0001", "Phòng Vip", "Sẵn sàng","LPV001", "500,000" },
             { "PH0002", "Phòng Thường", "Đang hát","LPTH001", "300,000" },
@@ -169,17 +165,19 @@ public class GD_DanhSachPhong extends JPanel {
             { "PH0047", "Phòng Tiệc", "Đang sửa chữa","LPT010", "400,000" },
             { "PH0048", "Phòng Thường", "Phòng đang dọn","LPTH020", "200,000" }
         };
-        
-        
-         String[] tieuDePhong = { "Mã Phòng", "Tên Phòng", "Trạng Thái","Loại Phòng", "Giá Phòng" };
-         DefaultTableModel modelPhong = new DefaultTableModel(tieuDePhong, 0);
-        modelPhong.setDataVector(data, tieuDePhong);
-        TableCustom tblPhong = new TableCustom(modelPhong);
-        JScrollPane scrPhong = new JScrollPane(tblPhong);
-        tblPhong.fixTable(scrPhong);
-        pnlBottom.add(scrPhong,"w 100%, h 100%");
-        
-        setPreferredSize(new Dimension(1119, 1500));
+    }
+    
+    private JPanel createPanelTitle() {
+        JPanel pnlTitle = new JPanel();
+        pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
+        pnlTitle.setOpaque(false);
+        pnlTitle.setLayout(new MigLayout("fill", "", ""));
+        JLabel lblTitle = new JLabel();
+        lblTitle.setText("Danh sách phòng hát");
+        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
+        lblTitle.setForeground(new Color(68, 68, 68));
+        pnlTitle.add(lblTitle);
+        return  pnlTitle;
     }
 
     /**
@@ -193,43 +191,67 @@ public class GD_DanhSachPhong extends JPanel {
 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
-        lblTitle = new javax.swing.JLabel();
+        sp = new javax.swing.JScrollPane();
+        table = new gui.swing.table2.MyTable();
+        jLabel1 = new javax.swing.JLabel();
+
+        setOpaque(false);
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
-        pnlTop.setShadowSize(3);
+        pnlTop.setShadowSize(2);
         pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1119, Short.MAX_VALUE)
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 214, Short.MAX_VALUE)
+            .addGap(0, 122, Short.MAX_VALUE)
         );
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBottom.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
         pnlBottom.setShadowOpacity(0.3F);
-        pnlBottom.setShadowSize(3);
+        pnlBottom.setShadowSize(2);
         pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
-        pnlBottom.setLayout(pnlBottomLayout);
-        pnlBottomLayout.setHorizontalGroup(
-            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        pnlBottomLayout.setVerticalGroup(
-            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 348, Short.MAX_VALUE)
-        );
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        lblTitle.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        lblTitle.setForeground(new java.awt.Color(4, 72, 210));
-        lblTitle.setText("Danh Sách Phòng");
+            },
+            new String [] {
+                "", "Mã phòng", "Tên phòng", "Trạng thái", "Giá phòng", ""
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        sp.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
+            table.getColumnModel().getColumn(3).setResizable(false);
+            table.getColumnModel().getColumn(4).setResizable(false);
+            table.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        pnlBottom.add(sp, java.awt.BorderLayout.CENTER);
+
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(4, 72, 210));
+        jLabel1.setText("Danh sách phòng");
+        pnlBottom.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -237,26 +259,22 @@ public class GD_DanhSachPhong extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(lblTitle)
-                .addGap(0, 1019, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel jLabel1;
     private gui.swing.panel.PanelShadow pnlBottom;
     private gui.swing.panel.PanelShadow pnlTop;
+    private javax.swing.JScrollPane sp;
+    private gui.swing.table2.MyTable table;
     // End of variables declaration//GEN-END:variables
 }

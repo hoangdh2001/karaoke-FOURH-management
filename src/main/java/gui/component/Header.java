@@ -73,6 +73,7 @@ public class Header extends PanelShadow {
     private void initComponents() {
 
         avatar = new gui.swing.image.ImageAvatar();
+        labelRound1 = new gui.swing.label.LabelRound();
         lblName = new javax.swing.JLabel();
         lblRole = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -87,6 +88,11 @@ public class Header extends PanelShadow {
         setShadowType(gui.dropshadow.ShadowType.BOT);
 
         avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/avatar.png"))); // NOI18N
+
+        labelRound1.setBackground(new java.awt.Color(0, 204, 0));
+        labelRound1.setBorderRadius(10);
+        avatar.add(labelRound1);
+        labelRound1.setBounds(30, 30, 10, 10);
 
         lblName.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         lblName.setForeground(new java.awt.Color(127, 127, 127));
@@ -171,6 +177,7 @@ public class Header extends PanelShadow {
     private gui.swing.button.ButtonBadges btnDropMenu;
     private gui.swing.button.Button btnOpenMenu;
     private javax.swing.JSeparator jSeparator1;
+    private gui.swing.label.LabelRound labelRound1;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblRole;

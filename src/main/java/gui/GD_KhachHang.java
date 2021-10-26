@@ -6,6 +6,7 @@ package gui;
 
 import gui.swing.button.Button;
 import gui.swing.table.TableCustom;
+import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -39,11 +40,10 @@ public class GD_KhachHang extends javax.swing.JPanel {
     private void buildGD(){
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
-        int fontSize = 16;
+        int fontSize = 12;
         Color colorBtn = new Color(184, 238, 241);
         
         pnlTop.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
-        pnlTop.setPreferredSize(new Dimension(1119,250 ));
         
        /**
         * Begin: group Thông tin khách hàng
@@ -52,15 +52,16 @@ public class GD_KhachHang extends javax.swing.JPanel {
         pnlThongTinKH.setOpaque(false);
         pnlThongTinKH.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Thông tin khách hàng", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), Color.gray));
         pnlThongTinKH.setLayout(new MigLayout("", "10[center]10[center] 10 [center][center]10", "[center]10[center]10[center]15[center]"));
-        pnlTop.add(pnlThongTinKH, "w 65%, h 240!");
+        pnlTop.add(pnlThongTinKH, "w 65%, h 90%");
         
         //Mã khách hàng
         JLabel lblMaKH = new JLabel("Mã khách hàng:");
         lblMaKH.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThongTinKH.add(lblMaKH, "align right");
         
-        JTextField txtMaKH = new MyTextField();
+        MyTextField txtMaKH = new MyTextField();
         txtMaKH.setFont(new Font(fontName, fontStyle, fontSize));
+        txtMaKH.setBorderLine(true);
         pnlThongTinKH.add(txtMaKH, "w 80%, h 36!");
         
         //Tên khách hàng
@@ -68,8 +69,9 @@ public class GD_KhachHang extends javax.swing.JPanel {
         lblTenKH.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThongTinKH.add(lblTenKH, "align right");
         
-        JTextField txtTenKH = new MyTextField();
+        MyTextField txtTenKH = new MyTextField();
         txtTenKH.setFont(new Font(fontName, fontStyle, fontSize));
+        txtTenKH.setBorderLine(true);
         pnlThongTinKH.add(txtTenKH, "w 80%, h 36!, wrap");
         
         //Căn cước công dân của khách hàng
@@ -77,8 +79,9 @@ public class GD_KhachHang extends javax.swing.JPanel {
         lblCCCD.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThongTinKH.add(lblCCCD, "align right");
         
-        JTextField txtCCCD = new MyTextField();
+        MyTextField txtCCCD = new MyTextField();
         txtCCCD.setFont(new Font("sansserif", Font.PLAIN, 12));
+        txtCCCD.setBorderLine(true);
         pnlThongTinKH.add(txtCCCD, "w 80%, h 36!");
         
         //Số điện thoại của khách hàng
@@ -86,18 +89,10 @@ public class GD_KhachHang extends javax.swing.JPanel {
         lblSDT.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThongTinKH.add(lblSDT, "align right");
         
-        JTextField txtSDT = new MyTextField();
+        MyTextField txtSDT = new MyTextField();
         txtSDT.setFont(new Font(fontName, fontStyle, fontSize));
+        txtSDT.setBorderLine(true);
         pnlThongTinKH.add(txtSDT, "w 80%, h 36!, wrap");
-        
-        //Địa chỉ của khách hàng
-        JLabel lblDiaChi = new JLabel("Địa chỉ:");
-        lblDiaChi.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTinKH.add(lblDiaChi, "align right");
-        
-        JTextField txtDiaChi = new MyTextField();
-        txtDiaChi.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTinKH.add(txtDiaChi, "w 80%, h 36!, wrap");
         
         //Panel nút chức năng
         JPanel pnlButton = new JPanel();
@@ -109,19 +104,25 @@ public class GD_KhachHang extends javax.swing.JPanel {
         Button btnXoaKH = new Button("Xóa");
         btnXoaKH.setFont(new Font(fontName, fontStyle, fontSize));
         btnXoaKH.setBackground(colorBtn);
+        btnXoaKH.setBorderline(true);
+        btnXoaKH.setBorderRadius(5);
         pnlButton.add(btnXoaKH, "w 100!, h 36!,growx");
 
         // Nút Sửa
         Button btnSuaKH = new Button("Sửa");
         btnSuaKH.setFont(new Font(fontName, fontStyle, fontSize));
         btnSuaKH.setBackground(colorBtn);
-        pnlButton.add(btnSuaKH, "w 100!, h 36!");
+        btnSuaKH.setBorderline(true);
+        btnSuaKH.setBorderRadius(5);
+        pnlButton.add(btnSuaKH, "w 80!, h 36!");
 
         // Nút Làm mới
         Button btnLamMoi = new Button("Làm mới");
         btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
         btnLamMoi.setBackground(colorBtn);
-        pnlButton.add(btnLamMoi, "w 100!, h 36!");
+        btnLamMoi.setBorderline(true);
+        btnLamMoi.setBorderRadius(5);
+        pnlButton.add(btnLamMoi, "w 80!, h 36!");
         /**
          * End: group thông tin khách hàng
          */
@@ -133,24 +134,29 @@ public class GD_KhachHang extends javax.swing.JPanel {
         pnlTimKiemKH.setOpaque(false);
         pnlTimKiemKH.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Tìm kiếm", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), Color.gray));
         pnlTimKiemKH.setLayout(new MigLayout("", "[center][center]", ""));//[]10[]10[]10[]10[]20[]
-        pnlTop.add(pnlTimKiemKH, "w 35%, h 240!");
+        pnlTop.add(pnlTimKiemKH, "w 35%, h 90%");
       
         /*Ô nhập thông tin tìm kiếm*/
-        JTextField txtTimKiem = new MyTextField();
+        MyTextField txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
+        txtTimKiem.setBorderLine(true);
         pnlTimKiemKH.add(txtTimKiem, "w 50%, h 36!");
        
         /*Chọn thông thêm tiêu chí để lọc thông tin*/
-        JComboBox<String> cmbTimKiem = new JComboBox<>();
+        MyComboBox<String> cmbTimKiem = new MyComboBox<>();
         cmbTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
         cmbTimKiem.addItem("--Chọn--");
-        pnlTimKiemKH.add(cmbTimKiem, "w 40%,h 36!, wrap");
+        cmbTimKiem.setBorderLine(true);
+        cmbTimKiem.setBorderRadius(10);
+        pnlTimKiemKH.add(cmbTimKiem, "w 40%,h 30!, wrap");
         
         /*Click vào button để tìm kiếm*/
         Button btnTimKiem = new Button("Tìm kiếm");
         btnTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
         btnTimKiem.setBackground(colorBtn);
-        pnlTimKiemKH.add(btnTimKiem,"pos 0.9al 0.75al n n,w 100!, h 36!");//pos 0.9al 0.75al n n
+        btnTimKiem.setBorderline(true);
+        btnTimKiem.setBorderRadius(5);
+        pnlTimKiemKH.add(btnTimKiem,"pos 0.9al 0.75al n n,w 80!, h 36!");//pos 0.9al 0.75al n n
         
         
         
@@ -247,7 +253,7 @@ public class GD_KhachHang extends javax.swing.JPanel {
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 212, Short.MAX_VALUE)
+            .addGap(0, 144, Short.MAX_VALUE)
         );
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
@@ -263,7 +269,7 @@ public class GD_KhachHang extends javax.swing.JPanel {
         );
         pnlBottomLayout.setVerticalGroup(
             pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 356, Short.MAX_VALUE)
+            .addGap(0, 424, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
