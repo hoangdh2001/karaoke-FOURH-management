@@ -5,15 +5,16 @@
  */
 package gui.swing.table2;
 
-import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -83,7 +84,6 @@ public class MyTable extends JTable {
                 }
                 else {
                     Component com = super.getTableCellRendererComponent(jtable, o, selected, bln1, i, i1);
-//                    com.setBackground(Color.WHITE);
                     setBorder(noFocusBorder);
                     if (selected) {
                         com.setBackground(new Color(239, 244, 255));
@@ -107,8 +107,7 @@ public class MyTable extends JTable {
             return super.getCellEditor(row, col);
         }
     }
-
-
+    
     public void addRow(Object[] row) {
         DefaultTableModel model = (DefaultTableModel) getModel();
         model.addRow(row);

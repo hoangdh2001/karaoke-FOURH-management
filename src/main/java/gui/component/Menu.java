@@ -16,15 +16,11 @@ import gui.event.EventMenu;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
 import gui.model.ModelMenu;
-import gui.swing.button.Button;
 import gui.swing.menu.MenuAnimation;
 import gui.swing.menu.MenuItem;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Cursor;
-import java.awt.Image;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
 public class Menu extends JPanel {

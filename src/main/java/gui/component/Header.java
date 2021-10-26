@@ -7,17 +7,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Header extends PanelShadow {
-
     private final SimpleDateFormat dfDate = new SimpleDateFormat("dd-MM-yyyy");
     private final SimpleDateFormat dfTime = new SimpleDateFormat("hh:MM:ss");
     private Thread thread;
     private boolean start = true;
-    private ActionListener event;
-    
     public void addEvent(ActionListener event) {
         btnOpenMenu.addActionListener(event);
     }
-
+    
+    public void addEvent2(ActionListener event) {
+        btnDropMenu.addActionListener(event);
+    }
+    
     public Header() {
         initComponents();
         setShadowOpacity(0.3f);
@@ -52,6 +53,8 @@ public class Header extends PanelShadow {
             System.out.println(e);
         }
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,15 +72,14 @@ public class Header extends PanelShadow {
         lblDate = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
         btnOpenMenu = new gui.swing.button.Button();
+        btnDropMenu = new gui.swing.button.ButtonBadges();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setShadowOpacity(0.3F);
+        setShadowSize(2);
+        setShadowType(gui.dropshadow.ShadowType.BOT);
 
-        avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/add_male_user_60px.png"))); // NOI18N
-        avatar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                openInfo(evt);
-            }
-        });
+        avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/avatar.png"))); // NOI18N
 
         lblName.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         lblName.setForeground(new java.awt.Color(127, 127, 127));
@@ -98,6 +100,8 @@ public class Header extends PanelShadow {
 
         btnOpenMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu.png"))); // NOI18N
 
+        btnDropMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/expand_arrow_15px.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,7 +109,7 @@ public class Header extends PanelShadow {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 671, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 676, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDate)
                     .addGroup(layout.createSequentialGroup()
@@ -117,13 +121,14 @@ public class Header extends PanelShadow {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblName, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblRole, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addComponent(avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(btnDropMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(avatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -140,19 +145,23 @@ public class Header extends PanelShadow {
                                 .addComponent(lblTime))
                             .addComponent(jSeparator1))))
                 .addGap(7, 7, 7))
+            .addComponent(avatar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnDropMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void openInfo(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openInfo
-    }//GEN-LAST:event_openInfo
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.swing.image.ImageAvatar avatar;
+    private gui.swing.button.ButtonBadges btnDropMenu;
     private gui.swing.button.Button btnOpenMenu;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblDate;

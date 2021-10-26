@@ -9,13 +9,13 @@ public class CellAction extends javax.swing.JPanel {
 
     public CellAction(ModelAction data) {
         initComponents();
-        btnDelete.addActionListener(new ActionListener() {
+        btnEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 data.getEvent().update(data);
             }
         });
-        btnEdit.addActionListener(new ActionListener() {
+        btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 data.getEvent().delete(data.getObj());

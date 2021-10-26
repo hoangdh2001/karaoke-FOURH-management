@@ -18,18 +18,18 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 public class MenuButton extends JButton {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int index;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int index;
     private Animator animator;
     private int targetSize;
     private float animatSize;
     private Point pressedPoint;
     private float alpha;
     private Color effectColor = new Color(255, 255, 255, 150);
-    
-	public int getIndex() {
+
+    public int getIndex() {
         return index;
     }
 
@@ -37,6 +37,22 @@ public class MenuButton extends JButton {
         this.index = index;
     }
 
+    public Color getEffectColor() {
+        return effectColor;
+    }
+
+    public void setEffectColor(Color effectColor) {
+        this.effectColor = effectColor;
+    }
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+    
     public MenuButton(Icon icon, String text, Color foreground) {
         super(text);
         setIcon(icon);

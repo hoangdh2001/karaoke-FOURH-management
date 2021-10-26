@@ -13,7 +13,6 @@ import entity.TrangThaiPhieuDat;
 import gui.swing.button.Button;
 import gui.swing.table2.EventAction;
 import gui.swing.table2.ModelAction;
-import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
@@ -21,15 +20,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.Date;
 import java.time.LocalDate;
-import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -45,6 +41,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         buildGD_QLDatPhong();
         initData();
         table.fixTable(sp);
+        setSizeComlumnTable();
     }
 
     private void initData() {
@@ -285,6 +282,15 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         btnTimKiem.setBackground(colorBtn);
         pnlTimKiemPhieu.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /*End: group Tìm kiếm*/
+    }
+    
+    private void setSizeComlumnTable() {
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(0).setMinWidth(50);
+        table.getColumnModel().getColumn(0).setMaxWidth(50);
+        table.getColumnModel().getColumn(table.getColumnCount() - 1).setPreferredWidth(100);
+        table.getColumnModel().getColumn(table.getColumnCount() - 1).setMaxWidth(100);
+        table.getColumnModel().getColumn(table.getColumnCount() - 1).setMinWidth(100);
     }
     
     /**
