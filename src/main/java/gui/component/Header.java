@@ -1,7 +1,9 @@
 package gui.component;
 
 import gui.dropshadow.ShadowType;
+import gui.event.EventShowPopupMenu;
 import gui.swing.panel.PanelShadow;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,8 +17,13 @@ public class Header extends PanelShadow {
         btnOpenMenu.addActionListener(event);
     }
     
-    public void addEvent2(ActionListener event) {
-        btnDropMenu.addActionListener(event);
+    public void addEvent2(EventShowPopupMenu event) {
+        btnDropMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.showPopup(btnDropMenu);
+            }
+        });
     }
     
     public Header() {
@@ -109,7 +116,7 @@ public class Header extends PanelShadow {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 676, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 661, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDate)
                     .addGroup(layout.createSequentialGroup()
@@ -125,7 +132,7 @@ public class Header extends PanelShadow {
                 .addComponent(avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(btnDropMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)

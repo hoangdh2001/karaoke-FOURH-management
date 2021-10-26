@@ -10,9 +10,9 @@ public class KhachHang {
 	private String maKhachHang;
 	@Column(columnDefinition = "nvarchar(255)", nullable = false)
 	private String tenKhachHang;
-	@Column(name = "cccd", nullable = false, unique = true)
+	@Column(columnDefinition = "char(12)", name = "cccd", nullable = false, unique = true)
 	private String canCuocCD;
-	@Column(name = "sdt")
+	@Column(columnDefinition = "char(10)", name = "sdt")
 	private String soDienThoai;
 	/**
 	 * @param maKhachHang
