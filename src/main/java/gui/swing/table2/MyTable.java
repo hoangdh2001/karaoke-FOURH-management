@@ -41,20 +41,8 @@ public class MyTable extends JTable {
         setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selected, boolean bln1, int i, int i1) {
-                if (o instanceof TrangThaiPhong) {
-                    TrangThaiPhong type = (TrangThaiPhong) o;
-                    CellRoomStatus cell = new CellRoomStatus(type);
-                    if (selected) {
-                        cell.setBackground(new Color(239, 244, 255));
-                        cell.setForeground(new Color(15, 89, 140));
-                    } else {
-                        cell.setBackground(Color.WHITE);
-                        cell.setForeground(new Color(102, 102, 102));
-                    }
-                    return cell;
-                } else if(o instanceof TrangThaiPhieuDat) {
-                    TrangThaiPhieuDat type = (TrangThaiPhieuDat) o;
-                    CellTicketStatus cell = new CellTicketStatus(type);
+                if (o instanceof TrangThaiPhong | o instanceof TrangThaiPhieuDat) {
+                    CellStatus cell = new CellStatus(o);
                     if (selected) {
                         cell.setBackground(new Color(239, 244, 255));
                         cell.setForeground(new Color(15, 89, 140));

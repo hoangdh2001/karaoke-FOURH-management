@@ -4,8 +4,13 @@
  */
 package gui;
 
+import entity.LoaiPhong;
+import entity.Phong;
+import entity.TrangThaiPhong;
 import gui.swing.button.Button;
 import gui.swing.table.TableCustom;
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
@@ -14,6 +19,7 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,6 +40,8 @@ public class GD_DanhSachPhong extends JPanel {
      public GD_DanhSachPhong(){
          initComponents();
          buildGD();
+         initData();
+         table.fixTable(sp);
     }
 
     private void buildGD() {
@@ -42,7 +50,6 @@ public class GD_DanhSachPhong extends JPanel {
         int fontSize = 16;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setPreferredSize(new Dimension(getWidth(), 265));
         pnlTop.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
         
         /**
@@ -111,60 +118,58 @@ public class GD_DanhSachPhong extends JPanel {
         
         pnlTop.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
         
-        setPreferredSize(new Dimension(getWidth(), 1500));
     }
     
     private void initData() {
-        Object data[][]={
-            { "PH0001", "Phòng Vip", "Sẵn sàng","LPV001", "500,000" },
-            { "PH0002", "Phòng Thường", "Đang hát","LPTH001", "300,000" },
-            { "PH0003", "Phòng Tiệc", "Đang sửa chữa","LPT001", "400,000" },
-            { "PH0004", "Phòng Thường", "Phòng đang dọn","LPTH002", "200,000" },
-            { "PH0005", "Phòng Vip", "Sẵn sàng","LPV002", "500,000" },
-            { "PH0006", "Phòng Thường", "Đang hát","LPTH003", "300,000" },
-            { "PH0007", "Phòng Tiệc", "Đang sửa chữa","LPT002", "400,000" },
-            { "PH0008", "Phòng Thường", "Phòng đang dọn","LPTH004", "200,000" },
-            { "PH0009", "Phòng Thường", "Đang hát","LPTH005", "300,000" },
-            { "PH0010", "Phòng Tiệc", "Đang sửa chữa","LPT003", "400,000" },
-            { "PH0011", "Phòng Thường", "Phòng đang dọn","LPTH006", "200,000" },
-            { "PH0012", "Phòng Vip", "Sẵn sàng","LPV003", "500,000" },
-            { "PH0013", "Phòng Thường", "Đang hát","LPTH007", "300,000" },
-            { "PH0014", "Phòng Tiệc", "Đang sửa chữa","LPT004", "400,000" },
-            { "PH0015", "Phòng Thường", "Phòng đang dọn","LPTH008", "200,000" },
-            { "PH0016", "Phòng Thường", "Đang hát","LPTH009", "300,000" },
-            { "PH0017", "Phòng Tiệc", "Đang sửa chữa","LPT005", "400,000" },
-            { "PH0018", "Phòng Thường", "Phòng đang dọn","LPTH010", "200,000" },
-            { "PH0019", "Phòng Vip", "Sẵn sàng","LPV004", "500,000" },
-            { "PH0020", "Phòng Thườngg", "Đang hát","LPTH011", "300,000" },
-            { "PH0021", "Phòng Tiệc", "Đang sửa chữa","LPT006", "400,000" },
-            { "PH0022", "Phòng Thường", "Phòng đang dọn","LPTH012", "200,000" },
-            { "PH0023", "Phòng Thường", "Đang hát","LPTH013", "300,000" },
-            { "PH0024", "Phòng Tiệc", "Đang sửa chữa","LPT007", "400,000" },
-            { "PH0025", "Phòng Thường", "Phòng đang dọn","LPTH014", "200,000" },
-            { "PH0026", "Phòng Vip", "Sẵn sàng","LPV005", "500,000" },
-            { "PH0027", "Phòng Thường", "Đang hát","LPTH015", "300,000" },
-            { "PH0028", "Phòng Tiệc", "Đang sửa chữa","LPT008", "400,000" },
-            { "PH0029", "Phòng Thường", "Phòng đang dọn","LPTH016", "200,000" },
-            { "PH0030", "Phòng Thường", "Đang hát","LPTH017", "300,000" },
-            { "PH0031", "Phòng Tiệcg", "Đang sửa chữa","LPT009", "400,000" },
-            { "PH0032", "Phòng Thường", "Phòng đang dọn","LPTH018", "200,000" },
-            { "PH0033", "Phòng Vip", "Sẵn sàng","LPV006", "500,000" },
-            { "PH0034", "Phòng Thường", "Đang hát","LPTH019", "300,000" },
-            { "PH0035", "Phòng Tiệc", "Đang sửa chữa","LPT010", "400,000" },
-            { "PH0036", "Phòng Thường", "Phòng đang dọn","LPTH020", "200,000" },
-            { "PH0037", "Phòng Thường", "Phòng đang dọn","LPTH014", "200,000" },
-            { "PH0038", "Phòng Vip", "Sẵn sàng","LPV005", "500,000" },
-            { "PH0039", "Phòng Thường", "Đang hát","LPTH015", "300,000" },
-            { "PH0040", "Phòng Tiệc", "Đang sửa chữa","LPT008", "400,000" },
-            { "PH0041", "Phòng Thường", "Phòng đang dọn","LPTH016", "200,000" },
-            { "PH0042", "Phòng Thường", "Đang hát","LPTH017", "300,000" },
-            { "PH0043", "Phòng Tiệcg", "Đang sửa chữa","LPT009", "400,000" },
-            { "PH0044", "Phòng Thường", "Phòng đang dọn","LPTH018", "200,000" },
-            { "PH0045", "Phòng Vip", "Sẵn sàng","LPV006", "500,000" },
-            { "PH0046", "Phòng Thường", "Đang hát","LPTH019", "300,000" },
-            { "PH0047", "Phòng Tiệc", "Đang sửa chữa","LPT010", "400,000" },
-            { "PH0048", "Phòng Thường", "Phòng đang dọn","LPTH020", "200,000" }
+        LoaiPhong loaiPhong = new LoaiPhong();
+        loaiPhong.setTenLoaiPhong("Phòng thường");
+        EventAction eventAction = new EventAction() {
+            @Override
+            public void delete(Object obj) {
+                Phong phong = (Phong) obj;
+                JOptionPane.showMessageDialog(null, "Delete" + phong.getMaPhong());
+            }
+
+            @Override
+            public void update(ModelAction action) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
         };
+        
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DANG_HAT, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DANG_SUA, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DAT_TRUOC, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.BAN, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DANG_HAT, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DAT_TRUOC, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DAT_TRUOC, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DANG_SUA, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
+        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
     }
     
     private JPanel createPanelTitle() {
