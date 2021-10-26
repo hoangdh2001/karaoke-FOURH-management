@@ -2,126 +2,49 @@ package gui.component;
 
 import gui.dropshadow.ShadowType;
 import gui.swing.panel.PanelShadow;
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.LayoutStyle;
-
-import gui.swing.image.ImageAvatar;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Header extends PanelShadow {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-    private JLabel role;
-    private JLabel userName;
-    private ImageAvatar avartar;
-    private JSeparator separator;
+    private final SimpleDateFormat dfDate = new SimpleDateFormat("dd-MM-yyyy");
+    private final SimpleDateFormat dfTime = new SimpleDateFormat("hh:MM:ss");
     private Thread thread;
-    private JLabel lblTime;
+    private boolean start = true;
+    private ActionListener event;
+    
+    public void addEvent(ActionListener event) {
+        btnOpenMenu.addActionListener(event);
+    }
 
     public Header() {
-        buidHeader();
-    }
-
-
-    private void buidHeader() {
+        initComponents();
         setShadowOpacity(0.3f);
-        setShadowType(ShadowType.BOT);
         setShadowSize(2);
-        
-        setLayout(null);
-        setBackground(new Color(255, 255, 255));
-        add(createUserName());
-        add(createRole());
-        add(createAvartar());
-        add(createSeparator());
-        add(createDate());
-        GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 362, Short.MAX_VALUE)
-                                .addGap(3, 3, 3)
-                                .addComponent(lblTime, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(separator, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(userName, GroupLayout.Alignment.TRAILING)
-                                        .addComponent(role, GroupLayout.Alignment.TRAILING))
-                                .addGap(10)
-                                .addComponent(avartar, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(userName)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(role))
-                                        .addComponent(avartar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(separator))
-                                .addContainerGap())
-        );
+        setShadowType(ShadowType.BOT);
+        initTime();
     }
 
-    private JLabel createUserName() {
-        userName = new JLabel("Đỗ Huy Hoàng");
-        userName.setFont(new Font("sansserif", 1, 12));
-        userName.setForeground(new Color(127, 127, 127));
-        return userName;
-    }
-
-    private JLabel createRole() {
-        role = new JLabel("Manager");
-        role.setForeground(new Color(127, 127, 127));
-        return role;
-    }
-
-    private ImageAvatar createAvartar() {
-        avartar = new ImageAvatar();
-        avartar.setIcon(new ImageIcon(getClass().getResource("/icon/add_male_user_60px.png")));
-        return avartar;
-    }
-
-    private JSeparator createSeparator() {
-        separator = new JSeparator();
-        separator.setOrientation(JSeparator.VERTICAL);
-        return separator;
-    }
-    
     private void initTime() {
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                
+                while (start) {
+                    time();
+                    repaint();
+                    sleep();
+                }
             }
         });
+        thread.start();
     }
-    
-    private JLabel createDate() {
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        lblTime = new JLabel(df.format(new Date()));
-        lblTime.setForeground(new Color(127, 127, 127));
-        return lblTime;
+
+    private void time() {
+        lblDate.setText(dfDate.format(new Date()));
+        lblTime.setText(dfTime.format(new Date()));
     }
-    
+
     private void sleep() {
         try {
             Thread.sleep(1000);
@@ -129,4 +52,112 @@ public class Header extends PanelShadow {
             System.out.println(e);
         }
     }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        avatar = new gui.swing.image.ImageAvatar();
+        lblName = new javax.swing.JLabel();
+        lblRole = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        lblDate = new javax.swing.JLabel();
+        lblTime = new javax.swing.JLabel();
+        btnOpenMenu = new gui.swing.button.Button();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/add_male_user_60px.png"))); // NOI18N
+        avatar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                openInfo(evt);
+            }
+        });
+
+        lblName.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblName.setForeground(new java.awt.Color(127, 127, 127));
+        lblName.setText("Đỗ Huy Hoàng");
+
+        lblRole.setForeground(new java.awt.Color(127, 127, 127));
+        lblRole.setText("Quản lý");
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        lblDate.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblDate.setForeground(new java.awt.Color(127, 127, 127));
+        lblDate.setText("26-10-2021");
+
+        lblTime.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        lblTime.setForeground(new java.awt.Color(127, 127, 127));
+        lblTime.setText("08:30:40");
+
+        btnOpenMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu.png"))); // NOI18N
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 671, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDate)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(lblTime)))
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblName, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblRole, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addComponent(avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(avatar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblRole))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblDate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblTime))
+                            .addComponent(jSeparator1))))
+                .addGap(7, 7, 7))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void openInfo(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openInfo
+    }//GEN-LAST:event_openInfo
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private gui.swing.image.ImageAvatar avatar;
+    private gui.swing.button.Button btnOpenMenu;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblDate;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblRole;
+    private javax.swing.JLabel lblTime;
+    // End of variables declaration//GEN-END:variables
 }

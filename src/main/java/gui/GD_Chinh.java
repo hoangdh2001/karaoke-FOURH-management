@@ -15,7 +15,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
-import gui.component.Header2;
+import gui.component.Header;
 import gui.component.Menu;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
@@ -32,7 +32,7 @@ public class GD_Chinh extends JFrame {
     private static final long serialVersionUID = 1L;
     private Animator animator; // thực thi animation
     private Menu menu; // thành phân nav kiểu menu chọn nội dung hiện thị
-    private Header2 header; // thành phần header hiện thi thông tin nhân viên
+    private Header header; // thành phần header hiện thi thông tin nhân viên
     private Content content; // thành phần content chứa nội dung
     public GD_Chinh(String title) {
 	super(title);
@@ -91,18 +91,6 @@ public class GD_Chinh extends JFrame {
         animator.setDeceleration(0.5f); // giảm tốc 50%
         animator.setAcceleration(0.5f); // tăng tốc 50% suy ra bình thường
         // Khi click vào nút menu sẽ mở menu rộng ra
-        menu.addMenuEvent(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (!animator.isRunning()) {
-                    animator.start();
-                }
-                menu.setEnableMenu(false);
-                if (menu.isShowMenu()) {
-                    menu.hideAllMenu();
-                }
-            }
-        });
         return background;
     }
     /**
@@ -110,8 +98,20 @@ public class GD_Chinh extends JFrame {
      * Thời gian
      * @return JPanel header
      */
-    private Header2 createHeader() {
-	header = new Header2();
+    private Header createHeader() {
+	header = new Header();
+        header.addEvent(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if(!animator.isRunning()) {
+                    animator.start();
+                }
+                menu.setEnableMenu(false);
+                if(menu.isShowMenu()) {
+                    menu.hideAllMenu();
+                }
+            }
+        });
 	return header;
     }
     /**
