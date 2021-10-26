@@ -122,7 +122,7 @@ public class GD_Chinh extends JFrame {
         header.addEvent2(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                String[] menuItem = {"Your profile", "Xin chào", "Chao xìn"};
+                String[] menuItem = {"Hồ sơ", "Xin chào", "Chao xìn", "Đăng xuất"};
                 DropMenu dropMenu = new DropMenu(GD_Chinh.this, 0, eventSelected, menuItem);
                 int x = GD_Chinh.this.getX() + 1308;
                 int y = GD_Chinh.this.getY()  + 55;

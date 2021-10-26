@@ -22,7 +22,7 @@ public class DropMenu extends javax.swing.JDialog {
     private void buildDropMenu(int index , EventMenuSelected eventSelected, String... menuItem) {
         setOpacity(0f);
         setBackground(new Color(0, 0, 0, 0));
-        panel.setLayout(new MigLayout("fill, wrap", "5[fill, 120]0", "15[35, fill]0[35, fill]0[35, fill]8"));
+        panel.setLayout(new MigLayout("fill, wrap", "5[fill, 120]0", "15[35, fill]0[35, fill]0[35, fill]0[35, fill]8"));
         int subMenuIndex = -1;
         for (String st : menuItem) {
             MenuButton item = new MenuButton(st, true);
