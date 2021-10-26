@@ -28,6 +28,7 @@ public class PhieuDatPhong {
     private Date ngayDat;
     private Date ngayTao;
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "nvarchar(255)")
     private TrangThaiPhieuDat trangThai;
     @Column(columnDefinition = "money")
     private double tienCoc;

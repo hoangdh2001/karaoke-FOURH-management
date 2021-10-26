@@ -17,6 +17,7 @@ import gui.component.Content;
 import gui.component.Header;
 import gui.component.Header;
 import gui.component.Menu;
+import gui.dialog.DL_ThongTinNhanVien;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
@@ -116,15 +117,27 @@ public class GD_Chinh extends JFrame {
         EventMenuSelected eventSelected = new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
-                System.out.println("Menu index: " + menuIndex + ", SubMenuIndex: " + subMenuIndex);
+                if(subMenuIndex == 0) {
+                    new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
+                }
+                if(subMenuIndex == 3) {
+                    new GD_DangNhap("Đăng nhập").setVisible(true);
+                    dispose();
+                }
             }
         };
-        header.addEvent2(new ActionListener() {
+        
+        header.addEvent2(new EventShowPopupMenu() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void showPopup(Component com) {
                 String[] menuItem = {"Hồ sơ", "Xin chào", "Chao xìn", "Đăng xuất"};
                 DropMenu dropMenu = new DropMenu(GD_Chinh.this, 0, eventSelected, menuItem);
-                int x = GD_Chinh.this.getX() + 1308;
+                int x;
+                if(menu.isShowMenu()) {
+                    x = GD_Chinh.this.getX() + com.getX() + 160;
+                } else {
+                    x = GD_Chinh.this.getX() + com.getX() - 20;
+                }
                 int y = GD_Chinh.this.getY()  + 55;
                 dropMenu.setLocation(x, y);
                 dropMenu.setVisible(true);
