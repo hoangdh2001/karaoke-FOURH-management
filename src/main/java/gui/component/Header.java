@@ -4,17 +4,18 @@ import gui.dropshadow.ShadowType;
 import gui.swing.panel.PanelShadow;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.LayoutStyle;
 
 import gui.swing.image.ImageAvatar;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Header extends PanelShadow {
 
@@ -26,6 +27,8 @@ public class Header extends PanelShadow {
     private JLabel userName;
     private ImageAvatar avartar;
     private JSeparator separator;
+    private Thread thread;
+    private JLabel lblTime;
 
     public Header() {
         buidHeader();
@@ -35,7 +38,7 @@ public class Header extends PanelShadow {
     private void buidHeader() {
         setShadowOpacity(0.3f);
         setShadowType(ShadowType.BOT);
-        setShadowSize(3);
+        setShadowSize(2);
         
         setLayout(null);
         setBackground(new Color(255, 255, 255));
@@ -43,6 +46,7 @@ public class Header extends PanelShadow {
         add(createRole());
         add(createAvartar());
         add(createSeparator());
+        add(createDate());
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -51,6 +55,7 @@ public class Header extends PanelShadow {
                                 .addContainerGap()
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 362, Short.MAX_VALUE)
                                 .addGap(3, 3, 3)
+                                .addComponent(lblTime, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(separator, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -80,14 +85,12 @@ public class Header extends PanelShadow {
         userName = new JLabel("Đỗ Huy Hoàng");
         userName.setFont(new Font("sansserif", 1, 12));
         userName.setForeground(new Color(127, 127, 127));
-        userName.setBounds(900, 10, 100, 20);
         return userName;
     }
 
     private JLabel createRole() {
         role = new JLabel("Manager");
         role.setForeground(new Color(127, 127, 127));
-        role.setBounds(900, 20, 100, 20);
         return role;
     }
 
@@ -101,5 +104,29 @@ public class Header extends PanelShadow {
         separator = new JSeparator();
         separator.setOrientation(JSeparator.VERTICAL);
         return separator;
+    }
+    
+    private void initTime() {
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                
+            }
+        });
+    }
+    
+    private JLabel createDate() {
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        lblTime = new JLabel(df.format(new Date()));
+        lblTime.setForeground(new Color(127, 127, 127));
+        return lblTime;
+    }
+    
+    private void sleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
     }
 }

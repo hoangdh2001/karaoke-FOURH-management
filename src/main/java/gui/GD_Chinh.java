@@ -15,6 +15,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
+import gui.component.Header2;
 import gui.component.Menu;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
@@ -31,7 +32,7 @@ public class GD_Chinh extends JFrame {
     private static final long serialVersionUID = 1L;
     private Animator animator; // thực thi animation
     private Menu menu; // thành phân nav kiểu menu chọn nội dung hiện thị
-    private Header header; // thành phần header hiện thi thông tin nhân viên
+    private Header2 header; // thành phần header hiện thi thông tin nhân viên
     private Content content; // thành phần content chứa nội dung
     public GD_Chinh(String title) {
 	super(title);
@@ -109,8 +110,8 @@ public class GD_Chinh extends JFrame {
      * Thời gian
      * @return JPanel header
      */
-    private Header createHeader() {
-	header = new Header();
+    private Header2 createHeader() {
+	header = new Header2();
 	return header;
     }
     /**
