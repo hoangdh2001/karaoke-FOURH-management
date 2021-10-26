@@ -20,7 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
@@ -29,24 +31,27 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author 84975
  */
-public class GD_CuaSoDatPhong extends javax.swing.JDialog {
+public class GD_DoiPhong extends javax.swing.JDialog {
 private TableCustomCheckBox table;
     private JPanel pnlLoc;
     private JPanel pnlDanhSachPhong;
     private JPanel pnlInfo;
     private JPanel pnlHieuChinh;
     private String fontName = "sansserif";
-    private int fontStyle = Font.PLAIN;
-    private int fontSize = 16;
-    Color colorBtn = new Color(184, 238, 241);
+    private int fontPlain = Font.PLAIN;
+    private int font16 = 16;
+    private int font14 = 14;
+    private int font12 = 12;
+    private Color colorBtn = new Color(184, 238, 241);
+    private Color colorLabel = new Color(47, 72, 210);
 
     /**
      * Creates new form GD_CuaSoDatPhong2
      */
-    public GD_CuaSoDatPhong() {
+    public GD_DoiPhong() {
         setModal(true);
         initComponents();
-        setSize(new Dimension(1350,550));
+        setSize(new Dimension(1350,540));
         setLocation(150, 150);
         setTitle("Đổi phòng");
         initForm();
@@ -108,21 +113,23 @@ private TableCustomCheckBox table;
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GD_CuaSoDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GD_DoiPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GD_CuaSoDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GD_DoiPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GD_CuaSoDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GD_DoiPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GD_CuaSoDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GD_DoiPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GD_CuaSoDatPhong dialog = new GD_CuaSoDatPhong();
+                GD_DoiPhong dialog = new GD_DoiPhong();
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -138,88 +145,85 @@ private TableCustomCheckBox table;
     
     public void initOldRoomInfo(){
         pnlLoc = new JPanel();
-        pnlLoc.setLayout(new MigLayout("","28[][]","10[]5"));
-        pnlLoc.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2),
-                "Phòng cũ",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                new Font("sansserif", Font.PLAIN, 18),
-                Color.GRAY)
-        );
+        pnlLoc.setLayout(new MigLayout("","30[][]","10[]5"));
+        
+        JLabel lblPhongCu = new JLabel("Phòng cũ");
+        lblPhongCu.setFont(new Font(fontName, fontPlain, font16));
+        lblPhongCu.setForeground(colorLabel);
+        pnlLoc.add(lblPhongCu, "span, w 100%, h 30!, wrap");
         
         JLabel lblTenPhong = new JLabel("Ngày giờ đặt :");
-        lblTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblTenPhong, "align right");
 
-        JTextField txtTenPhong = new MyTextField();
-        txtTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtTenPhong = new MyTextField();
+        txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
         txtTenPhong.setEnabled(false);
+        txtTenPhong.setBorderLine(true);
         pnlLoc.add(txtTenPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblLoaiPhong = new JLabel("Loại phòng :");
-        lblLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        lblLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblLoaiPhong, "align right");
 
-        JTextField txtLoaiPhong = new MyTextField();
-        txtLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtLoaiPhong = new MyTextField();
+        txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         txtLoaiPhong.setEnabled(false);
+        txtLoaiPhong.setBorderLine(true);
         pnlLoc.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGiaPhong = new JLabel("Giá phòng :");
-        lblGiaPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        lblGiaPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblGiaPhong, "align right");
 
-        JTextField txtGiaPhong = new MyTextField();
-        txtGiaPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtGiaPhong = new MyTextField();
+        txtGiaPhong.setFont(new Font(fontName, fontPlain, font14));
         txtGiaPhong.setEnabled(false);
+        txtGiaPhong.setBorderLine(true);
         pnlLoc.add(txtGiaPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGioDaHat = new JLabel("Giờ đã hát :");
-        lblGioDaHat.setFont(new Font(fontName, fontStyle, fontSize));
+        lblGioDaHat.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblGioDaHat, "align right");
 
-        JTextField txtGioDaHat = new MyTextField();
-        txtGioDaHat.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtGioDaHat = new MyTextField();
+        txtGioDaHat.setFont(new Font(fontName, fontPlain, font14));
         txtGioDaHat.setEnabled(false);
+        txtGioDaHat.setBorderLine(true);
         
         pnlLoc.add(txtGioDaHat, "w 100:260:350, h 36! , wrap");
         
         JLabel lblTongTienCu = new JLabel("Tổng tiền :");
-        lblTongTienCu.setFont(new Font(fontName, fontStyle, fontSize));
+        lblTongTienCu.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblTongTienCu, "align right");
 
-        JTextField txtTongTienCu = new MyTextField();
-        txtTongTienCu.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtTongTienCu = new MyTextField();
+        txtTongTienCu.setFont(new Font(fontName, fontPlain, font14));
         txtTongTienCu.setEnabled(false);
+        txtTongTienCu.setBorderLine(true);
+       
         
         pnlLoc.add(txtTongTienCu, "w 100:260:300, h 36! , wrap");
         pnlInfo.add(pnlLoc,"w 35%,h 100%");
         pnlLoc.setBackground(Color.WHITE);  
+        
+        JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
+        spr.setPreferredSize(new Dimension(20, 250));
+        pnlInfo.add(spr);
 
     }
     
     public void initNewRoom(){
         pnlDanhSachPhong = new JPanel();
         pnlDanhSachPhong.setOpaque(false);
-        pnlDanhSachPhong.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2),
-                "Thông tin phòng có thể đổi",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                new Font("sansserif", Font.PLAIN, 18),
-                Color.gray)
-        );
+        
         pnlDanhSachPhong.setLayout(new MigLayout("","[]","10[]10"));
             pnlDanhSachPhong.setBackground(Color.WHITE);    
-//        Object data[][] = { 
-//                { "101", "Tran Van Minh", "6000",new JRadioButton() }, 
-//                { "102", "Phan Van Tai", "8000",new JRadioButton()  }, 
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-//                { "101", "Do Cao Hoc", "7000",new JRadioButton() },              
-//        };
+            
+        JLabel lblPhongMoi = new JLabel("Thông tin các phòng có thể đổi");
+        lblPhongMoi.setFont(new Font(fontName, fontPlain, font16));
+        lblPhongMoi.setForeground(colorLabel);
+        pnlDanhSachPhong.add(lblPhongMoi, "span, w 100%, h 30!, wrap");
         
         Object data[][] = { 
                 { "101", "Tran Van Minh", "6000",new JRadioButton() }, 
@@ -281,39 +285,38 @@ private TableCustomCheckBox table;
     }
     
     public void initNewRoomInfo(){
-        pnlHieuChinh = new PanelShadow();
-        pnlHieuChinh.setBackground(Color.WHITE);
-        pnlHieuChinh.setLayout(new MigLayout("", "30[]20[]","10[]5"));
-        
+
         JPanel pnlThongTin = new JPanel();
-        pnlThongTin.setLayout(new MigLayout("","[]","10[]5"));
+        pnlThongTin.setLayout(new MigLayout("","15[][]","10[]5"));
         
         JLabel lblKhachHang = new JLabel("Khách Hàng :");
-        lblKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
+        lblKhachHang.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblKhachHang, "align right");
 
-        JTextField txtKhachHang = new MyTextField();
-        txtKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtKhachHang = new MyTextField();
+        txtKhachHang.setFont(new Font(fontName, fontPlain, font14));
         txtKhachHang.setEnabled(false);
+        txtKhachHang.setBorderLine(true);
         pnlThongTin.add(txtKhachHang, "w 100:260:350, h 36! , wrap");
         
         JLabel lblLoaiPhong = new JLabel("Loại phòng mới :");
-        lblLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        lblLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblLoaiPhong, "align right");
 
-        JTextField txtLoaiPhong = new MyTextField();
-        txtLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtLoaiPhong = new MyTextField();
+        txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         txtLoaiPhong.setEnabled(false);
-        
+        txtLoaiPhong.setBorderLine(true);
         pnlThongTin.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGioDatDau = new JLabel("Giờ bắt đầu :");
-        lblGioDatDau.setFont(new Font(fontName, fontStyle, fontSize));
+        lblGioDatDau.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblGioDatDau, "align right");
 
-        JTextField txtGioBatDau = new MyTextField();
-        txtGioBatDau.setFont(new Font(fontName, fontStyle, fontSize));
+        MyTextField txtGioBatDau = new MyTextField();
+        txtGioBatDau.setFont(new Font(fontName, fontPlain, font14));
         txtGioBatDau.setEnabled(false);
+        txtGioBatDau.setBorderLine(true);
         pnlThongTin.add(txtGioBatDau, "w 100:260:350, h 36! , wrap");
         
         pnlThongTin.setBackground(Color.WHITE);
@@ -322,10 +325,10 @@ private TableCustomCheckBox table;
         pnlButton.setLayout(new MigLayout("","push[]10[]20","push[]10"));
         pnlButton.setBackground(Color.WHITE);
         Button btnHuy = new Button("Hủy đổi phòng");
-        btnHuy.setFont(new Font(fontName, fontStyle, fontSize));
+        btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
         Button btnDoiPhong = new Button("đổi phòng");
-        btnDoiPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        btnDoiPhong.setFont(new Font(fontName, fontPlain, font14));
         btnDoiPhong.setBackground(colorBtn);
         
         pnlButton.add(btnHuy,"h 36!");
@@ -336,15 +339,22 @@ private TableCustomCheckBox table;
     }
     
     public void initForm(){
-        MainPanel.setLayout(new MigLayout("","20[center]20"));
+        MainPanel.setLayout(new MigLayout("","20[center]10"));
 //        MainPanel.setBackground(Color.WHITE);
         
         pnlInfo = new PanelShadow();
-        pnlInfo.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]10"));
+        pnlInfo.setLayout(new MigLayout("", "20[center][center]20", "20[]10"));
+        pnlInfo.setBackground(Color.WHITE);
+        
+        pnlHieuChinh = new PanelShadow();
+        pnlHieuChinh.setLayout(new MigLayout("", "20[]20[]","10[]"));
+        pnlHieuChinh.setBackground(Color.WHITE);
+        
+        
         initOldRoomInfo();
         initNewRoom();
         initNewRoomInfo();
-        pnlInfo.setBackground(Color.WHITE);
+        
     
         MainPanel.add(pnlInfo,"w 100%,h 30%,wrap");
         MainPanel.add(pnlHieuChinh,"w 100%,h 240");
