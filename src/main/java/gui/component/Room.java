@@ -97,9 +97,8 @@ public class Room extends PanelShadow {
         pop.addSeparator();
         pop.add(mniDonPhong);
         pop.add(mniSuaPhong);
-        showPanel(buildPhongTrong());
         setComponentPopupMenu(pop);
-//        checkTrangThai();
+        checkTrangThai();
     }
 
     private void checkTrangThai() {
@@ -150,21 +149,21 @@ public class Room extends PanelShadow {
         lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
         pnlDangHat.add(lblIcon);
 
-        JLabel lblTenPhong = new JLabel("Phòng A1");
+        JLabel lblTenPhong = new JLabel();
         lblTenPhong.setFont(new Font(fontName, fontStyle, 24));
         lblTenPhong.setForeground(Color.WHITE);
-//        lblTenPhong.setText(hoaDon.getPhong().getTenPhong());
+        lblTenPhong.setText(phong.getTenPhong());
         pnlDangHat.add(lblTenPhong);
 
-        JLabel lblLoaiPhong = new JLabel("Phòng thường");
+        JLabel lblLoaiPhong = new JLabel();
         lblLoaiPhong.setFont(new Font(fontName, fontStyle, 14));
         lblLoaiPhong.setForeground(Color.WHITE);
-//        lblLoaiPhong.setText(hoaDon.getPhong().getLoaiPhong().getTenLoaiPhong());
+        lblLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         pnlDangHat.add(lblLoaiPhong);
 
-        JLabel lblTrangThai = new JLabel("Đang hát");
+        JLabel lblTrangThai = new JLabel();
         lblTrangThai.setForeground(Color.WHITE);
-//        lblTrangThai.setText(hoaDon.getPhong().getTrangThai());
+        lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
         pnlDangHat.add(lblTrangThai);
 
@@ -230,25 +229,25 @@ public class Room extends PanelShadow {
         pnlPhongTrong.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
         JLabel lblIcon = new JLabel();
-       lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
+        lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
         pnlPhongTrong.add(lblIcon);
         
-        JLabel lblTenPhong = new JLabel("Phòng A1");
+        JLabel lblTenPhong = new JLabel();
         lblTenPhong.setForeground(Color.WHITE);
         lblTenPhong.setFont(new Font(fontName, fontStyle, 24));
-//        lblTenPhong.setText(phong.getTenPhong());
+        lblTenPhong.setText(phong.getTenPhong());
         pnlPhongTrong.add(lblTenPhong);
         
-        JLabel lblLoaiPhong = new JLabel("Phòng thường");
+        JLabel lblLoaiPhong = new JLabel();
         lblLoaiPhong.setForeground(Color.WHITE);
         lblLoaiPhong.setFont(new Font(fontName, fontStyle, 14));
-//        lblLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
+        lblLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         pnlPhongTrong.add(lblLoaiPhong);
         
-        JLabel lblTrangThai = new JLabel("Phòng trống");
+        JLabel lblTrangThai = new JLabel();
         lblTrangThai.setForeground(Color.WHITE);
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
-//        lblTrangThai.setText(phong.getTrangThai());
+        lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongTrong.add(lblTrangThai);
         
         Button btnDat = new Button("Đặt", true);
@@ -278,27 +277,28 @@ public class Room extends PanelShadow {
         mniSuaPhong.setEnabled(false);
         pnlPhongSua = new JPanel();
         pnlPhongSua.setBackground(TrangThaiPhong.DANG_SUA.getColor());
-        pnlPhongSua.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]90[]push"));
+        pnlPhongSua.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
         JLabel lblIcon = new JLabel();
         lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
         pnlPhongSua.add(lblIcon);
         
-        JLabel lblTenPhong = new JLabel("Phòng A1");
+        JLabel lblTenPhong = new JLabel();
         lblTenPhong.setForeground(Color.WHITE);
         lblTenPhong.setFont(new Font(fontName, fontStyle, 24));
-//        lblTenPhong.setText(phong.getTenPhong());
+        lblTenPhong.setText(phong.getTenPhong());
         pnlPhongSua.add(lblTenPhong);
         
-        JLabel lblLoaiPhong = new JLabel("Phòng thường");
+        JLabel lblLoaiPhong = new JLabel();
         lblLoaiPhong.setFont(new Font(fontName, fontStyle, 14));
         lblLoaiPhong.setForeground(Color.WHITE);
+        lblLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         pnlPhongSua.add(lblLoaiPhong);
         
-        JLabel lblTrangThai = new JLabel("Đang sửa phòng");
+        JLabel lblTrangThai = new JLabel();
         lblTrangThai.setForeground(Color.WHITE);
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
-//        lblTrangThai.setText(phong.getTrangThai());
+        lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongSua.add(lblTrangThai);
         
         Button btnSuaXong = new Button("Sửa xong", true);
@@ -330,21 +330,22 @@ public class Room extends PanelShadow {
         lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
         pnlPhongBan.add(lblIcon);
         
-        JLabel lblTenPhong = new JLabel("Phòng A1");
+        JLabel lblTenPhong = new JLabel();
         lblTenPhong.setForeground(Color.WHITE);
         lblTenPhong.setFont(new Font(fontName, fontStyle, 24));
-//        lblTenPhong.setText(phong.getTenPhong());
+        lblTenPhong.setText(phong.getTenPhong());
         pnlPhongBan.add(lblTenPhong);
         
-        JLabel lblLoaiPhong = new JLabel("Phòng thường");
+        JLabel lblLoaiPhong = new JLabel();
         lblLoaiPhong.setFont(new Font(fontName, fontStyle, 14));
         lblLoaiPhong.setForeground(Color.WHITE);
+        lblLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         pnlPhongBan.add(lblLoaiPhong);
         
-        JLabel lblTrangThai = new JLabel("Phòng bẩn");
+        JLabel lblTrangThai = new JLabel();
         lblTrangThai.setForeground(Color.WHITE);
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
-//        lblTrangThai.setText(phong.getTrangThai());
+        lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongBan.add(lblTrangThai);
         
         Button btnDonPhong = new Button("Dọn phòng", true);
@@ -376,21 +377,22 @@ public class Room extends PanelShadow {
         lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
         pnlPhongDangDon.add(lblIcon);
         
-        JLabel lblTenPhong = new JLabel("Phòng A1");
+        JLabel lblTenPhong = new JLabel();
         lblTenPhong.setForeground(Color.WHITE);
         lblTenPhong.setFont(new Font(fontName, fontStyle, 24));
-//        lblTenPhong.setText(phong.getTenPhong());
+        lblTenPhong.setText(phong.getTenPhong());
         pnlPhongDangDon.add(lblTenPhong);
         
-        JLabel lblLoaiPhong = new JLabel("Phòng thường");
+        JLabel lblLoaiPhong = new JLabel();
         lblLoaiPhong.setFont(new Font(fontName, fontStyle, 14));
         lblLoaiPhong.setForeground(Color.WHITE);
+        lblLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         pnlPhongDangDon.add(lblLoaiPhong);
         
-        JLabel lblTrangThai = new JLabel("Đang dọn phòng");
+        JLabel lblTrangThai = new JLabel();
         lblTrangThai.setForeground(Color.WHITE);
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
-//        lblTrangThai.setText(phong.getTrangThai());
+        lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongDangDon.add(lblTrangThai);
         
         Button btnDonXong = new Button("Dọn xong", true);
@@ -422,21 +424,22 @@ public class Room extends PanelShadow {
         lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
         pnlPhongDatTruoc.add(lblIcon);
         
-        JLabel lblTenPhong = new JLabel("Phòng A1");
+        JLabel lblTenPhong = new JLabel();
         lblTenPhong.setForeground(Color.WHITE);
         lblTenPhong.setFont(new Font(fontName, fontStyle, 24));
-//        lblTenPhong.setText(phong.getTenPhong());
+        lblTenPhong.setText(phong.getTenPhong());
         pnlPhongDatTruoc.add(lblTenPhong);
         
-        JLabel lblLoaiPhong = new JLabel("Phòng thường");
+        JLabel lblLoaiPhong = new JLabel();
         lblLoaiPhong.setFont(new Font(fontName, fontStyle, 14));
         lblLoaiPhong.setForeground(Color.WHITE);
+        lblLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         pnlPhongDatTruoc.add(lblLoaiPhong);
         
         JLabel lblTrangThai = new JLabel("Đã đặt trước");
         lblTrangThai.setForeground(Color.WHITE);
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
-//        lblTrangThai.setText(phong.getTrangThai());
+        lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongDatTruoc.add(lblTrangThai);
         
         JLabel lblKhachHang = new JLabel("Đỗ Huy Hoàng");

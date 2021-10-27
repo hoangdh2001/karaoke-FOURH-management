@@ -219,7 +219,7 @@ public class GD_Chinh extends JFrame {
         sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(30);
+        sp.getVerticalScrollBar().setUnitIncrement(100);
         sp.setBorder(null);
 	return sp;
     }

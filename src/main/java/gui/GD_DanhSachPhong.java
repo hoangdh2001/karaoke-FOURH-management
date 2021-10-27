@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package gui;
 
+import dao.Phong_DAO;
 import entity.LoaiPhong;
 import entity.Phong;
 import entity.TrangThaiPhong;
@@ -16,6 +13,7 @@ import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -28,16 +26,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
-/**
- *
- * @author Hao
- */
 public class GD_DanhSachPhong extends JPanel {
-
-    /**
-     * Creates new form GD_DanhSachPhong
-     */
+    private Phong_DAO phong_DAO;
      public GD_DanhSachPhong(){
+         phong_DAO = new Phong_DAO();
          initComponents();
          buildGD();
          initData();
@@ -135,41 +127,11 @@ public class GD_DanhSachPhong extends JPanel {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
+        List<Phong> dsPhong = phong_DAO.getDsPhong();
+        dsPhong.forEach((phong) -> {
+            table.addRow(phong.convertToRowTable(eventAction));
+        });
         
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DANG_HAT, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DANG_SUA, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DAT_TRUOC, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.BAN, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DANG_HAT, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DAT_TRUOC, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DAT_TRUOC, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.DANG_SUA, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
-        table.addRow(new Phong("PH0001", "Phòng A1", TrangThaiPhong.TRONG, loaiPhong).convertToRowTable(eventAction));
     }
     
     private JPanel createPanelTitle() {
@@ -230,11 +192,11 @@ public class GD_DanhSachPhong extends JPanel {
 
             },
             new String [] {
-                "", "Mã phòng", "Tên phòng", "Trạng thái", "Giá phòng", ""
+                "", "Mã phòng", "Tên phòng", "Tầng", "Trạng thái", "Giá phòng", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -249,6 +211,7 @@ public class GD_DanhSachPhong extends JPanel {
             table.getColumnModel().getColumn(3).setResizable(false);
             table.getColumnModel().getColumn(4).setResizable(false);
             table.getColumnModel().getColumn(5).setResizable(false);
+            table.getColumnModel().getColumn(6).setResizable(false);
         }
 
         pnlBottom.add(sp, java.awt.BorderLayout.CENTER);

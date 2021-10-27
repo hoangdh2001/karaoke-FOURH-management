@@ -20,5 +20,6 @@ public class StartPrograming {
 //            new GD_Chinh("Quản lý karaoke fourh").setVisible(true);
 
         });
+        
     }
 }

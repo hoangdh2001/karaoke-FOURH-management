@@ -31,6 +31,7 @@ public class Phong {
     @ManyToOne
     @JoinColumn(name = "maLoaiPhong", nullable = false)
     private LoaiPhong loaiPhong;
+    private int tang;
 
     /**
      * @param maPhong
@@ -38,11 +39,12 @@ public class Phong {
      * @param trangThai
      * @param loaiPhong
      */
-    public Phong(String maPhong, String tenPhong, TrangThaiPhong trangThai, LoaiPhong loaiPhong) {
+    public Phong(String maPhong, String tenPhong, TrangThaiPhong trangThai, LoaiPhong loaiPhong, int tang) {
         this.maPhong = maPhong;
         this.tenPhong = tenPhong;
         this.trangThai = trangThai;
         this.loaiPhong = loaiPhong;
+        this.tang = tang;
     }
 
     /**
@@ -107,6 +109,20 @@ public class Phong {
         this.loaiPhong = loaiPhong;
     }
 
+    /**
+     * @return the tang
+     */
+    public int getTang() {
+        return tang;
+    }
+    
+    /**
+     * @param tang the tang to set
+     */
+    public void setTang(int tang) {
+        this.tang = tang;
+    }
+    
     @Override
     public String toString() {
         return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", trangThai=" + trangThai + ", loaiPhong="
@@ -114,6 +130,6 @@ public class Phong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
-        return new Object[]{"", maPhong, tenPhong, trangThai, loaiPhong.getTenLoaiPhong(), new ModelAction(this, event)};
+        return new Object[]{"", maPhong, tenPhong, tang, trangThai, loaiPhong.getTenLoaiPhong(), new ModelAction(this, event)};
     }
 }

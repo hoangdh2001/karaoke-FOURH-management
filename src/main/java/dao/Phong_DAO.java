@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import service.PhongService;
+import util.HibernateUtil;
 
 /**
  *
@@ -20,8 +21,9 @@ public class Phong_DAO implements PhongService {
 
     private SessionFactory sessionFactory;
 
-    public Phong_DAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public Phong_DAO() {
+        HibernateUtil util = HibernateUtil.getInstance();
+        this.sessionFactory = util.getSessionFactory();
     }
 
     @Override

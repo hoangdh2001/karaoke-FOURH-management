@@ -13,7 +13,6 @@ import java.awt.FlowLayout;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import util.HibernateUtil;
 
 public class PanelMap extends PanelShadow {
 
@@ -26,8 +25,7 @@ public class PanelMap extends PanelShadow {
     private Phong_DAO phong_DAO;
 
     public PanelMap() {
-        HibernateUtil util = HibernateUtil.getInstance();
-        phong_DAO = new Phong_DAO(util.getSessionFactory());
+        phong_DAO = new Phong_DAO();
         buildMap();
     }
 
@@ -96,9 +94,15 @@ public class PanelMap extends PanelShadow {
     }
 
     public void initRoom() {
-        
 //        addRoom(new Room());
 //        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        
 //        addRoom(new Room());
 //        addRoom(new Room());
 //        addRoom(new Room());
