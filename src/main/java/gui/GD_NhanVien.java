@@ -47,13 +47,13 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblMenu.setFont(new Font(fontName, fontPlain, font16));
 
 //        panelForm.setPreferredSize(new Dimension(1119, 341));
-        panelForm.setLayout(new MigLayout("", "3[center] [] [center]3", "6[center]5"));
+        pnlForm.setLayout(new MigLayout("", "3[center] [] [center]3", "6[center]5"));
 
         /*Begin: group thông tin nhân viên*/
         JPanel pnlThongTinNV = new JPanel();
         pnlThongTinNV.setOpaque(false);
         pnlThongTinNV.setLayout(new MigLayout("", "10[center][center] 10 [center][center]10", "[][center]10[center]10[center]10[center]10[center] 20[center]"));
-        panelForm.add(pnlThongTinNV, "w 60%, h 335!");
+        pnlForm.add(pnlThongTinNV, "w 60%, h 335!");
         
         JLabel lblThongTinNV = new JLabel("Thông tin nhân viên");
         lblThongTinNV.setFont(new Font(fontName, fontPlain, font16));
@@ -187,14 +187,14 @@ public class GD_NhanVien extends javax.swing.JPanel {
         
         JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
         spr.setPreferredSize(new Dimension(2, 300));
-        panelForm.add(spr);
+        pnlForm.add(spr);
 
 
  /*Begin: group tìm nhân viên*/
         JPanel pnlTimKiemNV = new JPanel();
         pnlTimKiemNV.setOpaque(false);
         pnlTimKiemNV.setLayout(new MigLayout("", "10[center][center]10", "[][]10[]10[]10[]10[]20[]"));
-        panelForm.add(pnlTimKiemNV, "w 40%, h 335!");
+        pnlForm.add(pnlTimKiemNV, "w 40%, h 335!");
         
         JLabel lblTimKiemNV = new JLabel("Tìm nhân viên");
         lblTimKiemNV.setFont(new Font(fontName, fontPlain, font16));
@@ -268,8 +268,11 @@ public class GD_NhanVien extends javax.swing.JPanel {
     private void initComponents() {
 
         lblMenu = new javax.swing.JLabel();
-        panelForm = new gui.swing.panel.PanelShadow();
-        panelShadow1 = new gui.swing.panel.PanelShadow();
+        pnlForm = new gui.swing.panel.PanelShadow();
+        pnlCenter = new gui.swing.panel.PanelShadow();
+        lblCenter = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCenter = new gui.swing.table2.MyTable();
 
         setPreferredSize(new java.awt.Dimension(1119, 620));
 
@@ -277,47 +280,91 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblMenu.setForeground(new java.awt.Color(4, 72, 210));
         lblMenu.setText("Quản lý nhân viên");
 
-        panelForm.setBackground(new java.awt.Color(255, 255, 255));
-        panelForm.setShadowOpacity(0.3F);
-        panelForm.setShadowSize(3);
-        panelForm.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlForm.setBackground(new java.awt.Color(255, 255, 255));
+        pnlForm.setShadowOpacity(0.3F);
+        pnlForm.setShadowSize(3);
+        pnlForm.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelFormLayout = new javax.swing.GroupLayout(panelForm);
-        panelForm.setLayout(panelFormLayout);
-        panelFormLayout.setHorizontalGroup(
-            panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
+        pnlForm.setLayout(pnlFormLayout);
+        pnlFormLayout.setHorizontalGroup(
+            pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1119, Short.MAX_VALUE)
         );
-        panelFormLayout.setVerticalGroup(
-            panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnlFormLayout.setVerticalGroup(
+            pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 270, Short.MAX_VALUE)
         );
 
-        panelShadow1.setBackground(new java.awt.Color(255, 255, 255));
-        panelShadow1.setShadowOpacity(0.3F);
-        panelShadow1.setShadowSize(3);
-        panelShadow1.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
+        pnlCenter.setShadowOpacity(0.3F);
+        pnlCenter.setShadowSize(3);
+        pnlCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-        panelShadow1.setLayout(panelShadow1Layout);
-        panelShadow1Layout.setHorizontalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        lblCenter.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        lblCenter.setForeground(new java.awt.Color(4, 72, 210));
+        lblCenter.setText("Danh sách nhân viên");
+
+        tblCenter.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Email", "Ca làm", "Loại nhân viên"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblCenter);
+        if (tblCenter.getColumnModel().getColumnCount() > 0) {
+            tblCenter.getColumnModel().getColumn(0).setResizable(false);
+            tblCenter.getColumnModel().getColumn(1).setResizable(false);
+            tblCenter.getColumnModel().getColumn(2).setResizable(false);
+            tblCenter.getColumnModel().getColumn(3).setResizable(false);
+            tblCenter.getColumnModel().getColumn(4).setResizable(false);
+            tblCenter.getColumnModel().getColumn(5).setResizable(false);
+            tblCenter.getColumnModel().getColumn(6).setResizable(false);
+            tblCenter.getColumnModel().getColumn(7).setResizable(false);
+            tblCenter.getColumnModel().getColumn(8).setResizable(false);
+            tblCenter.getColumnModel().getColumn(9).setResizable(false);
+        }
+
+        javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
+        pnlCenter.setLayout(pnlCenterLayout);
+        pnlCenterLayout.setHorizontalGroup(
+            pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCenterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
-        panelShadow1Layout.setVerticalGroup(
-            panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 309, Short.MAX_VALUE)
+        pnlCenterLayout.setVerticalGroup(
+            pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCenterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblCenter, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblMenu)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,16 +372,19 @@ public class GD_NhanVien extends javax.swing.JPanel {
                 .addGap(8, 8, 8)
                 .addComponent(lblMenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCenter;
     private javax.swing.JLabel lblMenu;
-    private gui.swing.panel.PanelShadow panelForm;
-    private gui.swing.panel.PanelShadow panelShadow1;
+    private gui.swing.panel.PanelShadow pnlCenter;
+    private gui.swing.panel.PanelShadow pnlForm;
+    private gui.swing.table2.MyTable tblCenter;
     // End of variables declaration//GEN-END:variables
 }
