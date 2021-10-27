@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.swing.JCheckBox;
 
 @Entity
 public class PhieuDatPhong {
@@ -184,6 +185,6 @@ public class PhieuDatPhong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
-        return new Object[]{"", maPhieuDat, ngayTao, khachHang.getTenKhachHang(), phong.getTenPhong(), ngayDat, trangThai, tienCoc, new ModelAction(this, event)};
+        return new Object[]{JCheckBox.class, maPhieuDat, ngayTao, khachHang.getTenKhachHang(), phong.getTenPhong(), ngayDat, trangThai, tienCoc, new ModelAction(this, event)};
     }
 }

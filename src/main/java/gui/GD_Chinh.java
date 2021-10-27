@@ -66,7 +66,7 @@ public class GD_Chinh extends JFrame {
 		
 	background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
 	background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
-	background.add(createContent(), "w 100%, h 100%"); // content full
+	background.add(createContent()); // content full
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -219,7 +219,7 @@ public class GD_Chinh extends JFrame {
         sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(100);
+        sp.getVerticalScrollBar().setUnitIncrement(50);
         sp.setBorder(null);
 	return sp;
     }

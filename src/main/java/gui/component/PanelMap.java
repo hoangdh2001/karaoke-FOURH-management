@@ -3,16 +3,18 @@ package gui.component;
 import dao.Phong_DAO;
 import entity.Phong;
 import gui.event.EventTabSelected;
+import gui.swing.layout.WrapLayout;
 import gui.swing.panel.PanelShadow;
 import gui.swing.panel.TabButton;
+import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 public class PanelMap extends PanelShadow {
@@ -22,6 +24,7 @@ public class PanelMap extends PanelShadow {
     private JPanel roomMap;
     private List<JPanel> panels = new ArrayList<>();
     private Phong_DAO phong_DAO;
+    private JScrollPane sp;
 
     public PanelMap() {
         phong_DAO = new Phong_DAO();
@@ -35,11 +38,21 @@ public class PanelMap extends PanelShadow {
         add(createPane(), BorderLayout.CENTER);
     }
 
-    private JPanel createPane() {
+    private JScrollPane createPane() {
+        sp = new JScrollPane();
         pane = new JPanel();
         pane.setLayout(new BorderLayout());
+        pane.setOpaque(false);
         pane.add(createRoomMap());
-        return pane;
+        sp.getViewport().setBackground(Color.WHITE);
+        sp.setVerticalScrollBar(new ScrollBarCustom());
+        JPanel p = new JPanel();
+        p.setOpaque(false);
+        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+        sp.setViewportView(pane);
+        sp.getVerticalScrollBar().setUnitIncrement(50);
+        sp.setBorder(null);
+        return sp;
     }
 
     private JPanel createTabPane() {
@@ -48,6 +61,7 @@ public class PanelMap extends PanelShadow {
             @Override
             public boolean selected(int index, boolean selectedTab) {
                 showTabPane(panels.get(index));
+                sp.getVerticalScrollBar().setValue(0);
                 tabPane.check();
                 return true;
             }
@@ -66,8 +80,8 @@ public class PanelMap extends PanelShadow {
 
     private JPanel createRoomMap() {
         roomMap = new JPanel();
-        roomMap.setBackground(Color.WHITE);
-        roomMap.setLayout(new FlowLayout(FlowLayout.LEADING, 50, 20));
+        roomMap.setOpaque(false);
+        roomMap.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
         tabPane.addTabButtonItem("Tất cả");
         panels.add(roomMap);
         initRoom();
@@ -82,17 +96,7 @@ public class PanelMap extends PanelShadow {
     public void initRoom() {
         int i = 0;
         List<Phong> dsPhong = phong_DAO.getDsPhong();
-//        dsPhong.forEach(phong -> {
-//            if(i != phong.getTang()) {
-//                JPanel tabFloor = createTabFloor(i);
-//                panels.add(tabFloor);
-//                addRoom(tabFloor, new Room(phong));
-//            }
-//            addRoom(roomMap, new Room(phong));
-//            i = phong.getTang();
-//        });
         for (int j = 0; j < dsPhong.size(); j++) {
-            System.out.println(i);
             Phong phong = dsPhong.get(j);
             if(i != phong.getTang()) {
                 JPanel tabFloor = createTabFloor(phong.getTang());
@@ -101,14 +105,13 @@ public class PanelMap extends PanelShadow {
             addRoom(panels.get(phong.getTang()), new Room(phong));
             addRoom(roomMap, new Room(phong));
             i = phong.getTang();
-            System.out.println(i);
         }
     }
     private JPanel createTabFloor(int tang) {
         JPanel tabFloor = new JPanel();
-        tabFloor.setBackground(Color.WHITE);
-        tabFloor.setLayout(new FlowLayout(FlowLayout.LEADING, 50, 20));
-        tabPane.addTabButtonItem("Tầng" + tang);
+        tabFloor.setOpaque(false);
+        tabFloor.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
+        tabPane.addTabButtonItem("Tầng " + tang);
         return tabFloor;
     }
 }

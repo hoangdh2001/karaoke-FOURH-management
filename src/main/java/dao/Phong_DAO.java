@@ -6,6 +6,7 @@
 package dao;
 
 import entity.Phong;
+import entity.TrangThaiPhong;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -108,7 +109,20 @@ public class Phong_DAO implements PhongService {
         session.close();
         return null;
     }
-    
-    
 
+    @Override
+    public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select count(*) from Phong where trangThai = '"+ trangThai +"'";
+        int soLuong = 0;
+        try {
+            tr.begin();
+            soLuong = (Integer) session.createNativeQuery(sql).getSingleResult();
+            tr.commit();
+        } catch (NumberFormatException e) {
+            tr.rollback();
+        }
+        return soLuong;
+    }
 }

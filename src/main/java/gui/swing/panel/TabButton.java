@@ -51,11 +51,15 @@ public class TabButton extends  JPanel {
     }
     
     public void check() {
-        for (TabButtonItem tabButtonItem : tabButtonItems) {
+        tabButtonItems.stream().map(tabButtonItem -> {
             tabButtonItem.setSelectedTab(false);
+            return tabButtonItem;
+        }).map(tabButtonItem -> {
             tabButtonItem.repaint();
+            return tabButtonItem;
+        }).forEachOrdered(tabButtonItem -> {
             tabButtonItem.revalidate();
-        }
+        });
     }
 
     @Override
