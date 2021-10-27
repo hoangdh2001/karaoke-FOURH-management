@@ -1,4 +1,4 @@
-/src/main/resource/hibernate.cfg.xml
+/src/main/resources/hibernate.cfg.xml
 targer/
 lib/
 pom.xml
