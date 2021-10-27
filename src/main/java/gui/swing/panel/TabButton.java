@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui.panel;
+package gui.swing.panel;
 
 import gui.event.EventTabSelected;
 import java.awt.Color;
@@ -49,6 +49,7 @@ public class TabButton extends  JPanel {
         revalidate();
         tabButtonItems.add(tabButtonItem);
     }
+    
     public void check() {
         for (TabButtonItem tabButtonItem : tabButtonItems) {
             tabButtonItem.setSelectedTab(false);

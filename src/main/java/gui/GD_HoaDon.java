@@ -204,8 +204,8 @@ public class GD_HoaDon extends javax.swing.JPanel {
     private void initComponents() {
 
         lblMenu = new javax.swing.JLabel();
-        pnlForm = new gui.panel.PanelShadow();
-        pnlCenter = new gui.panel.PanelShadow();
+        pnlForm = new gui.swing.panel.PanelShadow();
+        pnlCenter = new gui.swing.panel.PanelShadow();
 
         lblMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         lblMenu.setForeground(new java.awt.Color(4, 72, 210));
@@ -268,7 +268,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMenu;
-    private gui.panel.PanelShadow pnlCenter;
-    private gui.panel.PanelShadow pnlForm;
+    private gui.swing.panel.PanelShadow pnlCenter;
+    private gui.swing.panel.PanelShadow pnlForm;
     // End of variables declaration//GEN-END:variables
 }

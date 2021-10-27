@@ -1,4 +1,4 @@
-package gui.panel;
+package gui.swing.panel;
 
 import gui.dropshadow.*;
 import java.awt.Color;
@@ -9,6 +9,11 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 public class PanelShadow extends JPanel {
+    
+    private ShadowType shadowType = ShadowType.CENTER;
+    private int shadowSize = 6;
+    private float shadowOpacity = 0.5f;
+    private Color shadowColor = Color.BLACK;
 
     public ShadowType getShadowType() {
         return shadowType;
@@ -42,23 +47,18 @@ public class PanelShadow extends JPanel {
         this.shadowColor = shadowColor;
     }
 
-    private ShadowType shadowType = ShadowType.CENTER;
-    private int shadowSize = 6;
-    private float shadowOpacity = 0.5f;
-    private Color shadowColor = Color.BLACK;
-
     public PanelShadow() {
         setOpaque(false);
     }
 
     @Override
-    protected void paintComponent(Graphics grphcs) {
-        createShadow(grphcs);
-        super.paintComponent(grphcs);
+    protected void paintComponent(Graphics g) {
+        createShadow(g);
+        super.paintComponent(g);
     }
 
-    private void createShadow(Graphics grphcs) {
-        Graphics2D g2 = (Graphics2D) grphcs;
+    private void createShadow(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
         int size = shadowSize * 2;
         int x = 0;
         int y = 0;
@@ -88,12 +88,10 @@ public class PanelShadow extends JPanel {
             y = shadowSize;
         }
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = img.createGraphics();
-        g.setColor(getBackground());
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.fillRoundRect(0, 0, width, height, 0, 0);
-//        g.fillOval(0, 0, width, width);
-        //  Create Shadow
+        Graphics2D g2d = img.createGraphics();
+        g2d.setColor(getBackground());
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.fillRoundRect(0, 0, width, height, 5, 5);
         ShadowRenderer render = new ShadowRenderer(shadowSize, shadowOpacity, shadowColor);
         g2.drawImage(render.createShadow(img), 0, 0, null);
         g2.drawImage(img, x, y, null);

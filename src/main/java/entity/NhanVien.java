@@ -25,11 +25,11 @@ public class NhanVien {
 	@ManyToOne
 	@JoinColumn(name = "maCa")
 	private CaLam caLam;
-	@Column(name = "cccd", unique = true)
+	@Column(columnDefinition = "char(12)", name = "cccd", unique = true)
 	private String canCuocCD;
 	private boolean gioiTinh;
 	private Date ngaySinh;
-	@Column(name = "sdt", nullable = false, unique = true)
+	@Column(columnDefinition = "char(10)",name = "sdt", nullable = false, unique = true)
 	private String soDienThoai;
 	@Column(nullable = false, unique = true)
 	private String email;

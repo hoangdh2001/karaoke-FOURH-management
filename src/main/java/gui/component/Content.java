@@ -1,6 +1,7 @@
 package gui.component;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
@@ -16,9 +17,9 @@ public class Content extends JPanel {
     private static final long serialVersionUID = 1L;
 
     public Content() {
-        setOpaque(false);
-        setLayout(new MigLayout("fill", "0[fill]0", "[fill]"));
+        setLayout(new BorderLayout());
         setBorder(new EmptyBorder(10, 20, 10, 20));
+        setBackground(new Color(236, 240, 245));
     }
 
     public void showForm(Component form) {

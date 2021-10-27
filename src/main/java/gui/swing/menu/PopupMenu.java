@@ -19,28 +19,28 @@ public class PopupMenu extends javax.swing.JDialog {
     private Animator animator;
     private boolean show = true;
     private Color background = new Color(50, 50, 50);
-    
+
     public Color getBackgroundPane() {
-		return background;
-	}
+        return background;
+    }
 
-	public void setBackgroundPane(Color bg) {
-		this.background = bg;
-		panel.setBackground(bg);
-	}
+    public void setBackgroundPane(Color bg) {
+        this.background = bg;
+        panel.setBackground(bg);
+    }
 
-	public PopupMenu(java.awt.Frame parent, int index, EventMenuSelected eventSelected, Color fg, String... subMenu) {
+    public PopupMenu(java.awt.Frame parent, int index, EventMenuSelected eventSelected, Color fg, String... subMenu) {
         super(parent, false);
         initComponents();
         buidPopupMenu(index, eventSelected, fg, subMenu);
     }
-    
+
     public PopupMenu(java.awt.Frame parent, int index, EventMenuSelected eventSelected, String... subMenu) {
         super(parent, false);
         initComponents();
         buidPopupMenu(index, eventSelected, Color.BLACK, subMenu);
     }
-    
+
     private void buidPopupMenu(int index, EventMenuSelected eventSelected, Color fg, String... subMenu) {
         setOpacity(0f);
         setBackground(new Color(0, 0, 0, 0));
@@ -102,14 +102,17 @@ public class PopupMenu extends javax.swing.JDialog {
     private void initComponents() {
 
         panel = new PanelPopup();
-        
+
         panel.setBackground(background);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            @Override
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
             }
+
+            @Override
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
                 formWindowLostFocus(evt);
             }
@@ -118,23 +121,23 @@ public class PopupMenu extends javax.swing.JDialog {
         GroupLayout panelLayout = new GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
-            panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+                panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGap(0, 200, Short.MAX_VALUE)
         );
         panelLayout.setVerticalGroup(
-            panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+                panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE)
         );
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

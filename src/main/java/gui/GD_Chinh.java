@@ -15,11 +15,15 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
+import gui.component.Header;
 import gui.component.Menu;
+import gui.dialog.DL_ThongTinNhanVien;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
+import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
+import gui.swing.scrollbar.ScrollBarCustom;
 import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 
@@ -43,6 +47,7 @@ public class GD_Chinh extends JFrame {
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setContentPane(createBackground());
         setMinimumSize(new Dimension(1200, 500));
+        setState(MAXIMIZED_BOTH);
 	pack();
 	setLocationRelativeTo(null);
 		
@@ -89,18 +94,6 @@ public class GD_Chinh extends JFrame {
         animator.setDeceleration(0.5f); // giảm tốc 50%
         animator.setAcceleration(0.5f); // tăng tốc 50% suy ra bình thường
         // Khi click vào nút menu sẽ mở menu rộng ra
-        menu.addMenuEvent(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (!animator.isRunning()) {
-                    animator.start();
-                }
-                menu.setEnableMenu(false);
-                if (menu.isShowMenu()) {
-                    menu.hideallMenu();
-                }
-            }
-        });
         return background;
     }
     /**
@@ -110,6 +103,47 @@ public class GD_Chinh extends JFrame {
      */
     private Header createHeader() {
 	header = new Header();
+        header.addEvent(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if(!animator.isRunning()) {
+                    animator.start();
+                }
+                menu.setEnableMenu(false);
+                if(menu.isShowMenu()) {
+                    menu.hideAllMenu();
+                }
+            }
+        });
+        EventMenuSelected eventSelected = new EventMenuSelected() {
+            @Override
+            public void menuSelected(int menuIndex, int subMenuIndex) {
+                if(subMenuIndex == 0) {
+                    new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
+                }
+                if(subMenuIndex == 3) {
+                    new GD_DangNhap("Đăng nhập").setVisible(true);
+                    dispose();
+                }
+            }
+        };
+        
+        header.addEvent2(new EventShowPopupMenu() {
+            @Override
+            public void showPopup(Component com) {
+                String[] menuItem = {"Hồ sơ", "Xin chào", "Chao xìn", "Đăng xuất"};
+                DropMenu dropMenu = new DropMenu(GD_Chinh.this, 0, eventSelected, menuItem);
+                int x;
+                if(menu.isShowMenu()) {
+                    x = GD_Chinh.this.getX() + com.getX() + 160;
+                } else {
+                    x = GD_Chinh.this.getX() + com.getX() - 20;
+                }
+                int y = GD_Chinh.this.getY()  + 55;
+                dropMenu.setLocation(x, y);
+                dropMenu.setVisible(true);
+            }
+        });
 	return header;
     }
     /**
@@ -178,10 +212,14 @@ public class GD_Chinh extends JFrame {
 	content = new Content();
 	content.setBackground(new Color(245, 245, 245));
 	content.showForm(new GD_SoDoPhongHat());
+        sp.getViewport().setBackground(Color.WHITE);
+        sp.setVerticalScrollBar(new ScrollBarCustom());
+        JPanel p = new JPanel();
+        p.setBackground(Color.WHITE);
+        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(16);
+        sp.getVerticalScrollBar().setUnitIncrement(100);
         sp.setBorder(null);
 	return sp;
     }

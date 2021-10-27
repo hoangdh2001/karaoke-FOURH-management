@@ -28,8 +28,9 @@ public class Button extends JButton {
     private Point pressedPoint;
     private float alpha;
     private Color effectColor = new Color(173, 173, 173);
-    private boolean fillRoundRect;
-    private int borderRadius;
+    private boolean borderline = false;
+    private int borderRadius = 0;
+    private Color borderColor = new Color(0, 0, 0, 0.3f);
 
     public Color getEffectColor() {
         return effectColor;
@@ -39,12 +40,12 @@ public class Button extends JButton {
         this.effectColor = effectColor;
     }
 
-    public boolean isFillRoundRect() {
-        return fillRoundRect;
+    public boolean isBorderline() {
+        return borderline;
     }
 
-    public void setFillRoundRect(boolean fillRoundRect) {
-        this.fillRoundRect = fillRoundRect;
+    public void setBorderline(boolean borderline) {
+        this.borderline = borderline;
     }
 
     public int getBorderRadius() {
@@ -66,7 +67,7 @@ public class Button extends JButton {
 
     public Button(String text, boolean fillRoundRect) {
         super(text);
-        setFillRoundRect(fillRoundRect);
+        setBorderline(fillRoundRect);
         buidButton();
     }
 
@@ -110,15 +111,17 @@ public class Button extends JButton {
         Graphics2D g2 = img.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
-        if (fillRoundRect == true) {
+        if (borderline == true) {
             if(borderRadius > 0) {
                 g2.fillRoundRect(0, 0, width, height, borderRadius, borderRadius);
+                g2.setColor(borderColor);
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, borderRadius, borderRadius);
             }
             else {
                 g2.fillRoundRect(0, 0, width, height, height, height);
             }
         } else {
-            g2.fillRect(0, 0, width, height);
+            g2.fillRoundRect(0, 0, width, height, borderRadius, borderRadius);
         }
         if (pressedPoint != null) {
             g2.setColor(effectColor);

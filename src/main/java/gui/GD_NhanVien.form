@@ -54,7 +54,7 @@
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; nh&#xe2;n vi&#xea;n"/>
       </Properties>
     </Component>
-    <Container class="gui.panel.PanelShadow" name="panelForm">
+    <Container class="gui.swing.panel.PanelShadow" name="panelForm">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -79,7 +79,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="gui.panel.PanelShadow" name="panelShadow1">
+    <Container class="gui.swing.panel.PanelShadow" name="panelShadow1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>

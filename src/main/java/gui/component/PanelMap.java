@@ -1,13 +1,17 @@
 package gui.component;
 
+import dao.Phong_DAO;
+import entity.Phong;
 import gui.event.EventTabSelected;
-import gui.panel.PanelShadow;
-import gui.panel.TabButton;
+import gui.swing.panel.PanelShadow;
+import gui.swing.panel.TabButton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -16,19 +20,19 @@ public class PanelMap extends PanelShadow {
     private JPanel pane;
     private TabButton tabPane;
     private JPanel roomMap;
-    private JPanel pnlRoomMap1;
-    private JPanel pnlRoomMap2;
-    private JPanel pnlRoomMap3;
+    private List<JPanel> panels = new ArrayList<>();
+    private Phong_DAO phong_DAO;
 
     public PanelMap() {
+        phong_DAO = new Phong_DAO();
         buildMap();
     }
 
     private void buildMap() {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(5, 2, 0, 2));
-        add(createPane(), BorderLayout.CENTER);
         add(createTabPane(), BorderLayout.NORTH);
+        add(createPane(), BorderLayout.CENTER);
     }
 
     private JPanel createPane() {
@@ -43,30 +47,13 @@ public class PanelMap extends PanelShadow {
         tabPane.setEvent(new EventTabSelected() {
             @Override
             public boolean selected(int index, boolean selectedTab) {
+                showTabPane(panels.get(index));
                 tabPane.check();
-                if (index == 0) {
-                    showTabPane(createRoomMap());
-                    return true;
-                } else if (index == 1) {
-                    showTabPane(createPnlRoomMap1());
-                    return true;
-                }
-                else if(index == 2) {
-                    showTabPane(createPnlRoomMap2());
-                    return true;
-                }
-                else if(index == 3) {
-                    showTabPane(createPnlRoomMap3());
-                    return true;
-                }
-                return false;
+                return true;
             }
         });
         tabPane.setBackground(Color.WHITE);
-        tabPane.addTabButtonItem("Tất cả");
-        tabPane.addTabButtonItem("Tầng 1");
-        tabPane.addTabButtonItem("Tầng 2");
-        tabPane.addTabButtonItem("Tầng 3");
+        
         return tabPane;
     }
 
@@ -81,39 +68,39 @@ public class PanelMap extends PanelShadow {
         roomMap = new JPanel();
         roomMap.setBackground(Color.WHITE);
         roomMap.setLayout(new FlowLayout(FlowLayout.LEADING, 50, 20));
+        tabPane.addTabButtonItem("Tất cả");
+        panels.add(roomMap);
         initRoom();
         return roomMap;
     }
 
-    public void addRoom(Room room) {
+    public void addRoom(JPanel panel, Room room) {
         room.setPreferredSize(new Dimension(200, 250));
-        roomMap.add(room);
+        panel.add(room);
     }
 
     public void initRoom() {
-        addRoom(new Room());
-        addRoom(new Room());
-        addRoom(new Room());
-        addRoom(new Room());
-        addRoom(new Room());
-        addRoom(new Room());
+        int i = 0;
+        List<Phong> dsPhong = phong_DAO.getDsPhong();
+
+        for (int j = 0; j < dsPhong.size(); j++) {
+           
+            Phong phong = dsPhong.get(j);
+            if(i != phong.getTang()) {
+                JPanel tabFloor = createTabFloor(phong.getTang());
+                panels.add(tabFloor);
+            }
+            addRoom(panels.get(phong.getTang()), new Room(phong));
+            addRoom(roomMap, new Room(phong));
+            i = phong.getTang();
+            
+        }
     }
-    
-    private JPanel createPnlRoomMap1() {
-        pnlRoomMap1 = new JPanel();
-        pnlRoomMap1.setBackground(Color.WHITE);
-        return pnlRoomMap1;
-    }
-    
-    private JPanel createPnlRoomMap2() {
-        pnlRoomMap2 = new JPanel();
-        pnlRoomMap2.setBackground(Color.WHITE);
-        return pnlRoomMap2;
-    }
-    
-    private JPanel createPnlRoomMap3() {
-        pnlRoomMap3 = new JPanel();
-        pnlRoomMap3.setBackground(Color.WHITE);
-        return pnlRoomMap3;
+    private JPanel createTabFloor(int tang) {
+        JPanel tabFloor = new JPanel();
+        tabFloor.setBackground(Color.WHITE);
+        tabFloor.setLayout(new FlowLayout(FlowLayout.LEADING, 50, 20));
+        tabPane.addTabButtonItem("Tầng" + tang);
+        return tabFloor;
     }
 }
