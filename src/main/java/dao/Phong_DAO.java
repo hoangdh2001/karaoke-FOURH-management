@@ -90,4 +90,25 @@ public class Phong_DAO implements PhongService {
         return null;
     }
 
+    @Override
+    public List<Integer> getDsTang() {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select distinct tang from Phong";
+        try {
+            tr.begin();
+            List<Integer> dsTang = session
+                    .createNamedQuery(sql)
+                    .getResultList();
+            tr.commit();
+            return  dsTang;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        session.close();
+        return null;
+    }
+    
+    
+
 }

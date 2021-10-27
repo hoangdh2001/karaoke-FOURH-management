@@ -9,4 +9,5 @@ public interface PhongService {
     public boolean deletePhong(String maPhong);
     public Phong getPhong(String maPhong);
     public List<Phong> getDsPhong();
+    public List<Integer> getDsTang();
 }
