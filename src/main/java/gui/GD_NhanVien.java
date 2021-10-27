@@ -6,12 +6,16 @@
 package gui;
 
 import com.toedter.calendar.JDateChooser;
+import dao.NhanVien_DAO;
+import entity.DiaChi;
+import entity.NhanVien;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -28,12 +32,14 @@ import net.miginfocom.swing.MigLayout;
  */
 public class GD_NhanVien extends javax.swing.JPanel {
 
-    /**
-     * Creates new form GD_NhanVien
-     */
+    private NhanVien_DAO nhanVien_DAO;
+
     public GD_NhanVien() {
+        nhanVien_DAO = new NhanVien_DAO();
         initComponents();
         buildGD();
+        buildPanelCenter();
+        getDataNhanVien();
     }
 
     public void buildGD() {
@@ -54,7 +60,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         pnlThongTinNV.setOpaque(false);
         pnlThongTinNV.setLayout(new MigLayout("", "10[center][center] 10 [center][center]10", "[][center]10[center]10[center]10[center]10[center] 20[center]"));
         pnlForm.add(pnlThongTinNV, "w 60%, h 335!");
-        
+
         JLabel lblThongTinNV = new JLabel("Thông tin nhân viên");
         lblThongTinNV.setFont(new Font(fontName, fontPlain, font16));
         lblThongTinNV.setForeground(colorLabel);
@@ -182,20 +188,18 @@ public class GD_NhanVien extends javax.swing.JPanel {
         btnLamMoi.setBackground(colorBtn);
         pnlButton.add(btnLamMoi, "w 100!, h 36!");
         /*End: group thông tin nhân viên*/
-        
-        
-        
+
         JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
         spr.setPreferredSize(new Dimension(2, 300));
         pnlForm.add(spr);
 
 
- /*Begin: group tìm nhân viên*/
+        /*Begin: group tìm nhân viên*/
         JPanel pnlTimKiemNV = new JPanel();
         pnlTimKiemNV.setOpaque(false);
         pnlTimKiemNV.setLayout(new MigLayout("", "10[center][center]10", "[][]10[]10[]10[]10[]20[]"));
         pnlForm.add(pnlTimKiemNV, "w 40%, h 335!");
-        
+
         JLabel lblTimKiemNV = new JLabel("Tìm nhân viên");
         lblTimKiemNV.setFont(new Font(fontName, fontPlain, font16));
         lblTimKiemNV.setForeground(colorLabel);
@@ -258,6 +262,26 @@ public class GD_NhanVien extends javax.swing.JPanel {
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
+    private void buildPanelCenter() {
+        Object[] row = {"1", "h", "h", "h", "h", "h", "h", "h", "h", "h"};
+        tblCenter.addRow(row);
+
+    }
+
+    private void getDataNhanVien() {
+
+        nhanVien_DAO.getNhanViens().forEach(i -> {
+            System.out.println(i.getMaNhanVien());
+            String diaChi = i.getDiaChi().getSoNha() + "," + i.getDiaChi().getTenDuong()
+                    + "," + i.getDiaChi().getXaPhuong() + "," + i.getDiaChi().getQuanHuyen() + "," + i.getDiaChi().getTinhThanh();
+
+            tblCenter.addRow(new Object[]{"1", i.getMaNhanVien(), i.getTenNhanVien(), i.isGioiTinh() == true ? "Nữ":"Nam" ,
+                i.getNgaySinh(), i.getSoDienThoai(), diaChi, i.getEmail(),
+                i.getCaLam().getMaCa(), i.getLoaiNhanVien().getTenLoaiNV()});
+        });
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -310,11 +334,11 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
             },
             new String [] {
-                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Email", "Ca làm", "Loại nhân viên"
+                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Email", "Ca làm", "Loại nhân viên", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -333,6 +357,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
             tblCenter.getColumnModel().getColumn(7).setResizable(false);
             tblCenter.getColumnModel().getColumn(8).setResizable(false);
             tblCenter.getColumnModel().getColumn(9).setResizable(false);
+            tblCenter.getColumnModel().getColumn(10).setResizable(false);
         }
 
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);

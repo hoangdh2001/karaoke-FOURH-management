@@ -12,8 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "getDSNhanVien", query = "select nv from NhanVien nv")
+})
 public class NhanVien {
 	@Id
 	private String maNhanVien;
