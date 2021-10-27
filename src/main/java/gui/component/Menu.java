@@ -19,8 +19,6 @@ import gui.model.ModelMenu;
 import gui.swing.menu.MenuAnimation;
 import gui.swing.menu.MenuItem;
 import gui.swing.scrollbar.ScrollBarCustom;
-import java.awt.Cursor;
-import javax.swing.JButton;
 import net.miginfocom.swing.MigLayout;
 
 public class Menu extends JPanel {
@@ -35,8 +33,6 @@ public class Menu extends JPanel {
     private boolean enableMenu = true;
     private boolean showMenu = true;
     private MigLayout layout;
-    private JButton cmdLogout;
-    private PaneExit paneExit;
     private PaneTitle paneTitle;
     
     public Menu() {
@@ -47,17 +43,8 @@ public class Menu extends JPanel {
         setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "5[]5[]push[60]0"));
         setBackground(new Color(35, 35, 35));
         setOpaque(false);
-        add(createCmdLogout(), "pos 1al 1al 100% 100, height 60!");
         add(createPaneName());
         add(createPane(), "h 680!");
-        add(createPaneExit());
-        
-    }
-    
-    private PaneExit createPaneExit() {
-        paneExit = new PaneExit();
-        paneExit.setAlpha(1f);
-        return paneExit;
     }
     
     private PaneTitle createPaneName() {
@@ -79,24 +66,6 @@ public class Menu extends JPanel {
         layout = new MigLayout("wrap, fillx, insets 0", "[fill]", "[]0[]");
         pane.setLayout(layout);
         return sp;
-    }
-    
-    private JButton createCmdLogout() {
-        cmdLogout = new JButton() {
-            @Override
-            protected void paintComponent(Graphics grphcs) {
-                Graphics2D g2 = (Graphics2D) grphcs;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(65, 152, 216));
-                g2.fillRoundRect(10, 10, getWidth() - 20, getHeight() - 20, 20, 20);
-                super.paintComponent(grphcs);
-            }
-        };
-        cmdLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        cmdLogout.setContentAreaFilled(false);
-        cmdLogout.setFocusable(false);
-        cmdLogout.setIcon(new ImageIcon(getClass().getResource("/icon/exit.png")));
-        return cmdLogout;
     }
     
     public void initMenuItem() {
@@ -169,7 +138,6 @@ public class Menu extends JPanel {
     
     public void setAlpha(float alpha) {
         paneTitle.setAlpha(alpha);
-        paneExit.setAlpha(alpha);
     }
     
     @Override

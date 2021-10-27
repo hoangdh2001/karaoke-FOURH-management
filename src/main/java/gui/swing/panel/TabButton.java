@@ -49,6 +49,7 @@ public class TabButton extends  JPanel {
         revalidate();
         tabButtonItems.add(tabButtonItem);
     }
+    
     public void check() {
         for (TabButtonItem tabButtonItem : tabButtonItems) {
             tabButtonItem.setSelectedTab(false);

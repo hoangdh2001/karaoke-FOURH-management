@@ -47,6 +47,7 @@ public class GD_Chinh extends JFrame {
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setContentPane(createBackground());
         setMinimumSize(new Dimension(1200, 500));
+        setState(MAXIMIZED_BOTH);
 	pack();
 	setLocationRelativeTo(null);
 		
@@ -216,8 +217,9 @@ public class GD_Chinh extends JFrame {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(30);
+        sp.getVerticalScrollBar().setUnitIncrement(100);
         sp.setBorder(null);
 	return sp;
     }
