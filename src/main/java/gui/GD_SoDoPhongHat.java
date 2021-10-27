@@ -12,6 +12,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -67,7 +71,11 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
         panelForm.add(lbTrangThai);
 
-        MyComboBox<String> cbTrangThai = new MyComboBox<>(new String[]{"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
+        MyComboBox<String> cbTrangThai = new MyComboBox<>();
+        cbTrangThai.addItem("--Tất cả--");
+        for (TrangThaiPhong value : TrangThaiPhong.values()) {
+            cbTrangThai.addItem(value.getTrangThai());
+        }
         cbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
         cbTrangThai.setBorderLine(true);
         cbTrangThai.setBorderRadius(10);
@@ -78,14 +86,19 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         timKiemBtn.setBorderline(true);
         timKiemBtn.setBorderRadius(5);
         timKiemBtn.setBackground(new Color(184, 238, 241));
+        timKiemBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                
+            }
+        });
         panelForm.add(timKiemBtn, "cell 3 2, align right, w 80!, h 36!");
 
         panelForm.add(createPaneStatus(), "pos 0al 1al 100% n, h 50!");
 
         panelForm.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
-        
-
     }
+    
 
     private JPanel createPanelTitle() {
         JPanel pnlTitle = new JPanel();
