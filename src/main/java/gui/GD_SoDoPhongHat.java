@@ -33,6 +33,7 @@ public class GD_SoDoPhongHat extends JPanel {
         MyTextField txtSdt = new MyTextField();
         txtSdt.setFont(new Font("sansserif", Font.PLAIN, 12));
         txtSdt.setBorderLine(true);
+//        txtSdt.setBorderRadius(10);
         panelForm.add(txtSdt, "w 20%");
         
         JLabel lbTenPhong = new JLabel("Tên phòng:");
@@ -42,11 +43,13 @@ public class GD_SoDoPhongHat extends JPanel {
         MyTextField txtTenPhong = new MyTextField();
         txtTenPhong.setBorderLine(true);
         txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+//        txtTenPhong.setBorderRadius(10);
         panelForm.add(txtTenPhong, "w 20%, wrap");
         
         JLabel lbLoaiPhong = new JLabel("Loại phòng:");
         lbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         panelForm.add(lbLoaiPhong);
+        
         
         MyComboBox<String> cbLoaiPhong = new MyComboBox<>(new String[] {"--Tất cả--", "Phòng thường", "Phòng tiệc", "Phòng vip"});
         cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
