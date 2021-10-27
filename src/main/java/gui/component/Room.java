@@ -2,6 +2,7 @@ package gui.component;
 
 import entity.HoaDon;
 import entity.Phong;
+import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import java.awt.BorderLayout;
@@ -42,13 +43,13 @@ public class Room extends PanelShadow {
     private JPanel pnlPhongBan;
     private JPanel pnlPhongDangDon;
     private JPanel pnlPhongDatTruoc;
-    private final JMenuItem mniKhachVaoHat;
-    private final JMenuItem mniThanhToan;
-    private final JMenuItem mniDoiPhong;
-    private final JMenuItem mniThemDichVu;
-    private final JMenuItem mniDatPhong;
-    private final JMenuItem mniDonPhong;
-    private final JMenuItem mniSuaPhong;
+    private JMenuItem mniKhachVaoHat;
+    private JMenuItem mniThanhToan;
+    private JMenuItem mniDoiPhong;
+    private JMenuItem mniThemDichVu;
+    private JMenuItem mniDatPhong;
+    private JMenuItem mniDonPhong;
+    private JMenuItem mniSuaPhong;
 
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -66,7 +67,16 @@ public class Room extends PanelShadow {
         this.phong = phong;
     }
 
+    public Room(Phong phong) {
+        this.phong = phong;
+        buildRoom();
+    }
+    
     public Room() {
+        buildRoom();
+    }
+    
+    private void buildRoom() {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(5, 5, 5, 5));
         JPopupMenu pop = new JPopupMenu();
@@ -87,12 +97,34 @@ public class Room extends PanelShadow {
         pop.addSeparator();
         pop.add(mniDonPhong);
         pop.add(mniSuaPhong);
+        showPanel(buildPhongTrong());
         setComponentPopupMenu(pop);
-        add(buildPhongTrong());
+//        checkTrangThai();
     }
 
     private void checkTrangThai() {
-
+        if(null != phong.getTrangThai()) switch (phong.getTrangThai()) {
+            case TRONG:
+                showPanel(buildPhongTrong());
+                break;
+            case DANG_HAT:
+                showPanel(buildPhongDangHaT());
+                break;
+            case DAT_TRUOC:
+                showPanel(buildPhongDatTruoc());
+                break;
+            case BAN:
+                showPanel(buildPhongBan());
+                break;
+            case DANG_DON:
+                showPanel(buildPhongDangDon());
+                break;
+            case DANG_SUA:
+                showPanel(buildPhongSua());
+                break;
+            default:
+                break;
+        }
     }
 
     private void showPanel(JPanel pane) {
@@ -102,7 +134,7 @@ public class Room extends PanelShadow {
         revalidate();
     }
 
-    private JPanel buildRoomDangHaT() {
+    private JPanel buildPhongDangHaT() {
         mniKhachVaoHat.setEnabled(false);
         mniThanhToan.setEnabled(true);
         mniDoiPhong.setEnabled(true);
@@ -111,7 +143,7 @@ public class Room extends PanelShadow {
         mniDonPhong.setEnabled(false);
         mniSuaPhong.setEnabled(false);
         pnlDangHat = new JPanel();
-        pnlDangHat.setBackground(Color.RED);
+        pnlDangHat.setBackground(TrangThaiPhong.DANG_HAT.getColor());
         pnlDangHat.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]5[]5[]5[]push"));
 
         JLabel lblIcon = new JLabel();
@@ -194,7 +226,7 @@ public class Room extends PanelShadow {
         mniDonPhong.setEnabled(true);
         mniSuaPhong.setEnabled(true);
         pnlPhongTrong = new JPanel();
-        pnlPhongTrong.setBackground(new Color(0, 166, 90));
+        pnlPhongTrong.setBackground(TrangThaiPhong.TRONG.getColor());
         pnlPhongTrong.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
         JLabel lblIcon = new JLabel();
@@ -245,7 +277,7 @@ public class Room extends PanelShadow {
         mniDonPhong.setEnabled(false);
         mniSuaPhong.setEnabled(false);
         pnlPhongSua = new JPanel();
-        pnlPhongSua.setBackground(Color.GRAY);
+        pnlPhongSua.setBackground(TrangThaiPhong.DANG_SUA.getColor());
         pnlPhongSua.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]90[]push"));
         
         JLabel lblIcon = new JLabel();
@@ -291,7 +323,7 @@ public class Room extends PanelShadow {
         mniSuaPhong.setEnabled(false);
         
         pnlPhongBan = new JPanel();
-        pnlPhongBan.setBackground(new Color(241, 202, 53 ));
+        pnlPhongBan.setBackground(TrangThaiPhong.BAN.getColor());
         pnlPhongBan.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
         JLabel lblIcon = new JLabel();
@@ -337,7 +369,7 @@ public class Room extends PanelShadow {
         mniSuaPhong.setEnabled(false);
         
         pnlPhongDangDon = new JPanel();
-        pnlPhongDangDon.setBackground(new Color(100, 100, 109));
+        pnlPhongDangDon.setBackground(TrangThaiPhong.DANG_DON.getColor());
         pnlPhongDangDon.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
         JLabel lblIcon = new JLabel();
@@ -383,7 +415,7 @@ public class Room extends PanelShadow {
         mniSuaPhong.setEnabled(false);
         
         pnlPhongDatTruoc = new JPanel();
-        pnlPhongDatTruoc.setBackground(new Color(60, 141, 188));
+        pnlPhongDatTruoc.setBackground(TrangThaiPhong.DAT_TRUOC.getColor());
         pnlPhongDatTruoc.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]5[]5[]50[]push"));
         
         JLabel lblIcon = new JLabel();

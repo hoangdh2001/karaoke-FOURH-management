@@ -108,51 +108,10 @@ public class GD_SoDoPhongHat extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelForm = new gui.swing.panel.PanelShadow();
-        panelMap = new gui.component.PanelMap();
-
         setOpaque(false);
-
-        panelForm.setBackground(new java.awt.Color(255, 255, 255));
-        panelForm.setShadowOpacity(0.3F);
-        panelForm.setShadowSize(2);
-        panelForm.setShadowType(gui.dropshadow.ShadowType.TOP);
-
-        javax.swing.GroupLayout panelFormLayout = new javax.swing.GroupLayout(panelForm);
-        panelForm.setLayout(panelFormLayout);
-        panelFormLayout.setHorizontalGroup(
-            panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        panelFormLayout.setVerticalGroup(
-            panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 235, Short.MAX_VALUE)
-        );
-
-        panelMap.setBackground(new java.awt.Color(255, 255, 255));
-        panelMap.setShadowOpacity(0.3F);
-        panelMap.setShadowSize(2);
-        panelMap.setShadowType(gui.dropshadow.ShadowType.TOP);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, 1055, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelMap, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE))
-        );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.swing.panel.PanelShadow panelForm;
-    private gui.component.PanelMap panelMap;
     // End of variables declaration//GEN-END:variables
 }

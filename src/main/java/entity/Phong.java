@@ -2,6 +2,7 @@ package entity;
 
 import gui.swing.table2.EventAction;
 import gui.swing.table2.ModelAction;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,10 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Phong")
 @NamedQueries({
-    @NamedQuery(name = "getDsPhong", query = "select * from Phong")
+    @NamedQuery(name = "getDsPhong", query = "select p from Phong p")
 })
 public class Phong {
 

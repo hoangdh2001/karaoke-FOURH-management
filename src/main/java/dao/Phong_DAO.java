@@ -81,10 +81,10 @@ public class Phong_DAO implements PhongService {
             return dsPhong;
 
         } catch (Exception e) {
+            System.out.println(e);
             tr.rollback();
         }
         session.close();
-
         return null;
     }
 

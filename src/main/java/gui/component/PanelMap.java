@@ -1,5 +1,7 @@
 package gui.component;
 
+import dao.Phong_DAO;
+import entity.Phong;
 import gui.event.EventTabSelected;
 import gui.swing.panel.PanelShadow;
 import gui.swing.panel.TabButton;
@@ -8,8 +10,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import util.HibernateUtil;
 
 public class PanelMap extends PanelShadow {
 
@@ -19,8 +23,11 @@ public class PanelMap extends PanelShadow {
     private JPanel pnlRoomMap1;
     private JPanel pnlRoomMap2;
     private JPanel pnlRoomMap3;
+    private Phong_DAO phong_DAO;
 
     public PanelMap() {
+        HibernateUtil util = HibernateUtil.getInstance();
+        phong_DAO = new Phong_DAO(util.getSessionFactory());
         buildMap();
     }
 
@@ -50,12 +57,10 @@ public class PanelMap extends PanelShadow {
                 } else if (index == 1) {
                     showTabPane(createPnlRoomMap1());
                     return true;
-                }
-                else if(index == 2) {
+                } else if (index == 2) {
                     showTabPane(createPnlRoomMap2());
                     return true;
-                }
-                else if(index == 3) {
+                } else if (index == 3) {
                     showTabPane(createPnlRoomMap3());
                     return true;
                 }
@@ -91,26 +96,32 @@ public class PanelMap extends PanelShadow {
     }
 
     public void initRoom() {
-        addRoom(new Room());
-        addRoom(new Room());
-        addRoom(new Room());
-        addRoom(new Room());
-        addRoom(new Room());
-        addRoom(new Room());
+        
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+//        addRoom(new Room());
+        List<Phong> dsPhong = phong_DAO.getDsPhong();
+        System.out.println(dsPhong.size());
+        dsPhong.forEach(phong -> {
+            addRoom(new Room(phong));
+        });
     }
-    
+
     private JPanel createPnlRoomMap1() {
         pnlRoomMap1 = new JPanel();
         pnlRoomMap1.setBackground(Color.WHITE);
         return pnlRoomMap1;
     }
-    
+
     private JPanel createPnlRoomMap2() {
         pnlRoomMap2 = new JPanel();
         pnlRoomMap2.setBackground(Color.WHITE);
         return pnlRoomMap2;
     }
-    
+
     private JPanel createPnlRoomMap3() {
         pnlRoomMap3 = new JPanel();
         pnlRoomMap3.setBackground(Color.WHITE);

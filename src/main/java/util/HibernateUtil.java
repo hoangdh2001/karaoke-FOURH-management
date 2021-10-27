@@ -28,7 +28,6 @@ import entity.TrangThaiPhong;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.SessionFactoryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
 
@@ -37,49 +36,51 @@ import org.hibernate.service.ServiceRegistry;
  * @author Admin
  */
 public class HibernateUtil {
+
     private SessionFactory sessionFactory;
     private static HibernateUtil instance = null;
+
     private HibernateUtil() {
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-				.configure()
-				.build();
-		Metadata metadata = new MetadataSources(serviceRegistry)
-				.addAnnotatedClass(CaLam.class)
-				.addAnnotatedClass(ChiTietHoaDon_PK.class)
-				.addAnnotatedClass(ChiTietHoaDon.class)
-				.addAnnotatedClass(HoaDon.class)
-				.addAnnotatedClass(KhachHang.class)
-				.addAnnotatedClass(LoaiDichVu.class)
-				.addAnnotatedClass(LoaiNhanVien.class)
-				.addAnnotatedClass(LoaiPhong.class)
-				.addAnnotatedClass(MatHang.class)
-				.addAnnotatedClass(NhanVien.class)
-				.addAnnotatedClass(PhieuDatPhong.class)
-				.addAnnotatedClass(Phong.class)
-				.addAnnotatedClass(NhaCungCap.class)
-				.addAnnotatedClass(ChiTietNhapHang.class)
-				.addAnnotatedClass(ChiTietNhapHang_PK.class)
-				.addAnnotatedClass(LoHang.class)
-				.addAnnotatedClass(DiaChi.class)
-				.addAnnotatedClass(DiaChiMau.class)
-                                .addAnnotatedClass(TrangThaiPhieuDat.class)
-                                .addAnnotatedClass(TrangThaiPhong.class)
-				.getMetadataBuilder()
-				.build();
-                sessionFactory = metadata.getSessionFactoryBuilder().unwrap(SessionFactoryBuilder.class).build();
+                .configure()
+                .build();
+        Metadata metadata = new MetadataSources(serviceRegistry)
+                .addAnnotatedClass(CaLam.class)
+                .addAnnotatedClass(ChiTietHoaDon_PK.class)
+                .addAnnotatedClass(ChiTietHoaDon.class)
+                .addAnnotatedClass(HoaDon.class)
+                .addAnnotatedClass(KhachHang.class)
+                .addAnnotatedClass(LoaiDichVu.class)
+                .addAnnotatedClass(LoaiNhanVien.class)
+                .addAnnotatedClass(LoaiPhong.class)
+                .addAnnotatedClass(MatHang.class)
+                .addAnnotatedClass(NhanVien.class)
+                .addAnnotatedClass(PhieuDatPhong.class)
+                .addAnnotatedClass(Phong.class)
+                .addAnnotatedClass(NhaCungCap.class)
+                .addAnnotatedClass(ChiTietNhapHang.class)
+                .addAnnotatedClass(ChiTietNhapHang_PK.class)
+                .addAnnotatedClass(LoHang.class)
+                .addAnnotatedClass(DiaChi.class)
+                .addAnnotatedClass(DiaChiMau.class)
+                .addAnnotatedClass(TrangThaiPhieuDat.class)
+                .addAnnotatedClass(TrangThaiPhong.class)
+                .getMetadataBuilder()
+                .build();
+        sessionFactory = metadata.getSessionFactoryBuilder().build();
     }
-    
+
     public synchronized static HibernateUtil getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new HibernateUtil();
         }
-        return  instance;
+        return instance;
     }
-    
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-    
+
     public void close() {
         sessionFactory.close();
     }
