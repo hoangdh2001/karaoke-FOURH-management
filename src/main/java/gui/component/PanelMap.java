@@ -82,17 +82,9 @@ public class PanelMap extends PanelShadow {
     public void initRoom() {
         int i = 0;
         List<Phong> dsPhong = phong_DAO.getDsPhong();
-//        dsPhong.forEach(phong -> {
-//            if(i != phong.getTang()) {
-//                JPanel tabFloor = createTabFloor(i);
-//                panels.add(tabFloor);
-//                addRoom(tabFloor, new Room(phong));
-//            }
-//            addRoom(roomMap, new Room(phong));
-//            i = phong.getTang();
-//        });
+
         for (int j = 0; j < dsPhong.size(); j++) {
-            System.out.println(i);
+           
             Phong phong = dsPhong.get(j);
             if(i != phong.getTang()) {
                 JPanel tabFloor = createTabFloor(phong.getTang());
@@ -101,7 +93,7 @@ public class PanelMap extends PanelShadow {
             addRoom(panels.get(phong.getTang()), new Room(phong));
             addRoom(roomMap, new Room(phong));
             i = phong.getTang();
-            System.out.println(i);
+            
         }
     }
     private JPanel createTabFloor(int tang) {
