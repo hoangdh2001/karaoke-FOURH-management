@@ -1,0 +1,5 @@
+/src/main/resources/hibernate.cfg.xml
+lib/
+target/
+pom.xml
+README.md
