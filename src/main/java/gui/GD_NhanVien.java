@@ -15,6 +15,8 @@ import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -30,9 +32,30 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author NGUYE
  */
-public class GD_NhanVien extends javax.swing.JPanel {
+public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
     private NhanVien_DAO nhanVien_DAO;
+    private MyTextField txtMaNV;
+    private MyTextField txtTenNV;
+    private MyComboBox<String> cmbGioiTinh;
+    private JDateChooser dscNgaySinh;
+    private MyTextField txtSDT;
+    private MyTextField txtEmail;
+    private MyTextField txtDiaChi;
+    private MyComboBox<String> cmbLoaiNV;
+    private MyComboBox<String> cmbCaLam;
+
+    private Button btnThemNV;
+    private Button btnXoaNV;
+    private Button btnSuaNV;
+    private Button btnLamMoi;
+
+    private MyTextField txtTimKiem;
+    private MyComboBox<Object> cmbCot;
+    private MyComboBox<Object> cmbGioiTinhTK;
+    private MyComboBox<Object> cmbLoaiNVTK;
+    private MyComboBox<Object> cmbCaLamTK;
+    private Button btnTimKiem;
 
     public GD_NhanVien() {
         nhanVien_DAO = new NhanVien_DAO();
@@ -71,7 +94,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblMaNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblMaNV, "align right");
 
-        MyTextField txtMaNV = new MyTextField();
+        txtMaNV = new MyTextField();
         txtMaNV.setFont(new Font(fontName, fontPlain, font14));
         txtMaNV.setBorderLine(true);
         pnlThongTinNV.add(txtMaNV, "w 80%, h 36!");
@@ -81,7 +104,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblTenNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblTenNV, "align right");
 
-        MyTextField txtTenNV = new MyTextField();
+        txtTenNV = new MyTextField();
         txtTenNV.setFont(new Font(fontName, fontPlain, font14));
         txtTenNV.setBorderLine(true);
         pnlThongTinNV.add(txtTenNV, "w 80%, h 36!, wrap");
@@ -91,10 +114,11 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblGioiTinh.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblGioiTinh, "align right");
 
-        MyComboBox<String> cmbGioiTinh = new MyComboBox<>();
+        cmbGioiTinh = new MyComboBox<>();
         cmbGioiTinh.setFont(new Font(fontName, fontPlain, font14));
         cmbGioiTinh.setBorderLine(true);
         cmbGioiTinh.addItem("Nam");
+        cmbGioiTinh.addItem("Nữ");
         pnlThongTinNV.add(cmbGioiTinh, "w 80%, h 36!");
 
         //Ngày sinh
@@ -102,7 +126,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblNgaySinh.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblNgaySinh, "align right");
 
-        JDateChooser dscNgaySinh = new JDateChooser();
+        dscNgaySinh = new JDateChooser();
         dscNgaySinh.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(dscNgaySinh, "w 80%, h 36!, wrap");
 
@@ -111,7 +135,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblSDT.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblSDT, "align right");
 
-        MyTextField txtSDT = new MyTextField();
+        txtSDT = new MyTextField();
         txtSDT.setFont(new Font(fontName, fontPlain, font14));
         txtSDT.setBorderLine(true);
         pnlThongTinNV.add(txtSDT, "w 80%, h 36!");
@@ -121,7 +145,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblEmail.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblEmail, "align right");
 
-        MyTextField txtEmail = new MyTextField();
+        txtEmail = new MyTextField();
         txtEmail.setFont(new Font(fontName, fontPlain, font14));
         txtEmail.setBorderLine(true);
         pnlThongTinNV.add(txtEmail, "w 80%, h 36!, wrap");
@@ -131,7 +155,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblDiaChi.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblDiaChi, "align right");
 
-        MyTextField txtDiaChi = new MyTextField();
+        txtDiaChi = new MyTextField();
         txtDiaChi.setFont(new Font(fontName, fontPlain, font14));
         txtDiaChi.setBorderLine(true);
         pnlThongTinNV.add(txtDiaChi, "w 80%, h 36!");
@@ -141,10 +165,14 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblLoaiNV.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblLoaiNV, "align right");
 
-        MyComboBox<String> cmbLoaiNV = new MyComboBox<>();
+        cmbLoaiNV = new MyComboBox<>();
         cmbLoaiNV.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNV.setBorderLine(true);
         cmbLoaiNV.addItem("Nhân viên lễ tân");
+        cmbLoaiNV.addItem("Nhân viên phục vụ");
+        cmbLoaiNV.addItem("Nhân viên kê toán");
+        cmbLoaiNV.addItem("Nhân viên kĩ thuật");
+        cmbLoaiNV.addItem("Người quản lý");
         pnlThongTinNV.add(cmbLoaiNV, "w 80%, h 36!, wrap");
 
         //Ca làm
@@ -152,10 +180,14 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblCaLam.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinNV.add(lblCaLam, "align right");
 
-        MyComboBox<String> cmbCaLam = new MyComboBox<>();
+        cmbCaLam = new MyComboBox<>();
         cmbCaLam.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLam.setBorderLine(true);
         cmbCaLam.addItem("Ca 1");
+        cmbCaLam.addItem("Ca 2");
+        cmbCaLam.addItem("Ca 3");
+        cmbCaLam.addItem("Ca 4");
+        cmbCaLam.addItem("Ca 5");
         pnlThongTinNV.add(cmbCaLam, "w 80%, h 36!, wrap");
 
         /*Panel nút chức năng*/
@@ -165,27 +197,31 @@ public class GD_NhanVien extends javax.swing.JPanel {
         pnlThongTinNV.add(pnlButton, "span , w 100%, h 36!");
 
         // Nút Thêm
-        Button btnThemNV = new Button("Thêm");
+        btnThemNV = new Button("Thêm");
         btnThemNV.setFont(new Font(fontName, fontPlain, font14));
         btnThemNV.setBackground(colorBtn);
+        btnThemNV.addActionListener(this);
         pnlButton.add(btnThemNV, "w 100!, h 36!, growx");
 
         // Nút Xóa
-        Button btnXoaNV = new Button("Xóa");
+        btnXoaNV = new Button("Xóa");
         btnXoaNV.setFont(new Font(fontName, fontPlain, font14));
         btnXoaNV.setBackground(colorBtn);
+        btnXoaNV.addActionListener(this);
         pnlButton.add(btnXoaNV, "w 100!, h 36!");
 
         // Nút Sửa
-        Button btnSuaNV = new Button("Sửa");
+        btnSuaNV = new Button("Sửa");
         btnSuaNV.setFont(new Font(fontName, fontPlain, font14));
         btnSuaNV.setBackground(colorBtn);
+        btnSuaNV.addActionListener(this);
         pnlButton.add(btnSuaNV, "w 100!, h 36!");
 
         // Nút Làm mới
-        Button btnLamMoi = new Button("Làm mới");
+        btnLamMoi = new Button("Làm mới");
         btnLamMoi.setFont(new Font(fontName, fontPlain, font14));
         btnLamMoi.setBackground(colorBtn);
+        btnLamMoi.addActionListener(this);
         pnlButton.add(btnLamMoi, "w 100!, h 36!");
         /*End: group thông tin nhân viên*/
 
@@ -206,13 +242,13 @@ public class GD_NhanVien extends javax.swing.JPanel {
         pnlTimKiemNV.add(lblTimKiemNV, "span, w 100%, h 30!, wrap");
 
         // Tìm kiếm
-        MyTextField txtTimKiem = new MyTextField();
+        txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
         txtTimKiem.setBorderLine(true);
         pnlTimKiemNV.add(txtTimKiem, "span, w 100%, h 36!, wrap");
 
         //Cột cần tìm kiếm
-        MyComboBox<String> cmbCot = new MyComboBox<>();
+        cmbCot = new MyComboBox<>();
         cmbCot.setFont(new Font(fontName, fontPlain, font14));
         cmbCot.setBorderLine(true);
         cmbCot.addItem("Chọn cột cần tìm");
@@ -223,10 +259,12 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblGioiTinhTK, "align right");
 
-        MyComboBox<String> cmbGioiTinhTK = new MyComboBox<>();
+        cmbGioiTinhTK = new MyComboBox<>();
         cmbGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
         cmbGioiTinhTK.setBorderLine(true);
         cmbGioiTinhTK.addItem("Tất cả");
+        cmbGioiTinhTK.addItem("Nam");
+        cmbGioiTinhTK.addItem("Nữ");
         pnlTimKiemNV.add(cmbGioiTinhTK, "w 80%,h 36!, wrap");
 
         //Loại nhân viên cầm tìm
@@ -235,10 +273,15 @@ public class GD_NhanVien extends javax.swing.JPanel {
 
         pnlTimKiemNV.add(lblLoaiNVTK, "align right");
 
-        MyComboBox<String> cmbLoaiNVTK = new MyComboBox<>();
+        cmbLoaiNVTK = new MyComboBox<>();
         cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNVTK.setBorderLine(true);
         cmbLoaiNVTK.addItem("Tất cả");
+        cmbLoaiNVTK.addItem("Nhân viên lễ tân");
+        cmbLoaiNVTK.addItem("Nhân viên phục vụ");
+        cmbLoaiNVTK.addItem("Nhân viên kê toán");
+        cmbLoaiNVTK.addItem("Nhân viên kĩ thuật");
+        cmbLoaiNVTK.addItem("Người quản lý");
         pnlTimKiemNV.add(cmbLoaiNVTK, "w 80%,h 36!, wrap");
 
         //Ca làm cần tìm
@@ -246,16 +289,17 @@ public class GD_NhanVien extends javax.swing.JPanel {
         lblCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblCaLamTK, "align right");
 
-        MyComboBox<String> cmbCaLamTK = new MyComboBox<>();
+        cmbCaLamTK = new MyComboBox<>();
         cmbCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLamTK.setBorderLine(true);
         cmbCaLamTK.addItem("Tất cả");
         pnlTimKiemNV.add(cmbCaLamTK, "w 80%,h 36!, wrap");
 
         //Button tìm kiếm
-        Button btnTimKiem = new Button("Tìm kiếm");
+        btnTimKiem = new Button("Tìm kiếm");
         btnTimKiem.setFont(new Font(fontName, fontPlain, font14));
         btnTimKiem.setBackground(colorBtn);
+        btnTimKiem.addActionListener(this);
         pnlTimKiemNV.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /* End: group tìm nhân viên*/
 
@@ -271,11 +315,11 @@ public class GD_NhanVien extends javax.swing.JPanel {
     private void getDataNhanVien() {
 
         nhanVien_DAO.getNhanViens().forEach(i -> {
-            System.out.println(i.getMaNhanVien());
+//            System.out.println(i.getMaNhanVien());
             String diaChi = i.getDiaChi().getSoNha() + "," + i.getDiaChi().getTenDuong()
                     + "," + i.getDiaChi().getXaPhuong() + "," + i.getDiaChi().getQuanHuyen() + "," + i.getDiaChi().getTinhThanh();
 
-            tblCenter.addRow(new Object[]{"1", i.getMaNhanVien(), i.getTenNhanVien(), i.isGioiTinh() == true ? "Nữ":"Nam" ,
+            tblCenter.addRow(new Object[]{"1", i.getMaNhanVien(), i.getTenNhanVien(), i.isGioiTinh() == true ? "Nữ" : "Nam",
                 i.getNgaySinh(), i.getSoDienThoai(), diaChi, i.getEmail(),
                 i.getCaLam().getMaCa(), i.getLoaiNhanVien().getTenLoaiNV()});
         });
@@ -338,7 +382,7 @@ public class GD_NhanVien extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, true, false, false, false, true, true, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -412,4 +456,24 @@ public class GD_NhanVien extends javax.swing.JPanel {
     private gui.swing.panel.PanelShadow pnlForm;
     private gui.swing.table2.MyTable tblCenter;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object object = e.getSource();
+
+        if (object.equals(btnThemNV)) {
+            System.out.println("Them nhân viên");
+        } else if (object.equals(btnXoaNV)) {
+            System.out.println("Xoa nhân viên");
+
+        } else if (object.equals(btnSuaNV)) {
+            System.out.println("Sua nhân viên");
+
+        } else if (object.equals(btnLamMoi)) {
+            System.out.println("Làm mới nhân viên");
+
+        } else if (object.equals(btnTimKiem)) {
+
+        }
+    }
 }

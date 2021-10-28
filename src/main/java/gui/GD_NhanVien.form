@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1119, 620]"/>
@@ -141,12 +141,12 @@
                   <Table columnCount="11" rowCount="0">
                     <Column editable="false" title="" type="java.lang.Object"/>
                     <Column editable="false" title="M&#xe3; nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
-                    <Column editable="false" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
+                    <Column editable="true" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
                     <Column editable="false" title="Gi&#x1edb;i t&#xed;nh" type="java.lang.Object"/>
                     <Column editable="false" title="Ng&#xe0;y sinh" type="java.lang.Object"/>
                     <Column editable="false" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
-                    <Column editable="false" title="&#x110;&#x1ecb;a ch&#x1ec9;" type="java.lang.Object"/>
-                    <Column editable="false" title="Email" type="java.lang.Object"/>
+                    <Column editable="true" title="&#x110;&#x1ecb;a ch&#x1ec9;" type="java.lang.Object"/>
+                    <Column editable="true" title="Email" type="java.lang.Object"/>
                     <Column editable="false" title="Ca l&#xe0;m" type="java.lang.Object"/>
                     <Column editable="false" title="Lo&#x1ea1;i nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
                     <Column editable="false" title="" type="java.lang.Object"/>
