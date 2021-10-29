@@ -35,7 +35,7 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  *
- * @author NGUYE
+ * @author NGUYENHUNG
  */
 public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
@@ -78,9 +78,12 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         buildGD();
         loadDataToTable();
         loadDataToForm();
-        generateMaNhanVien();
+        setSizeColumnTable();
     }
 
+    /**
+     * Xây dựng giao diện quản lý nhân viên
+     */
     public void buildGD() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
@@ -305,11 +308,12 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         pnlTimKiemNV.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /* End: group tìm nhân viên*/
 
+        tblCenter.fixTable(jScrollPane1);
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
     /**
-     * lấy dữ liệu lên bảng danh sách nhân viên
+     * lấy dữ liệu lên Bảng danh sách nhân viên
      */
     private void loadDataToTable() {
 
@@ -323,21 +327,30 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
             String caLam = i.getCaLam().getGioBatDau() + "-" + i.getCaLam().getGioKetThuc();
             String gioiTinh = i.isGioiTinh() == true ? "Nữ" : "Nam";
             tblCenter.addRow(new Object[]{"1", i.getMaNhanVien(), i.getTenNhanVien(), gioiTinh,
-                i.getNgaySinh(), i.getSoDienThoai(), diaChi, i.getEmail(), caLam, lnv});
+                i.getNgaySinh(), i.getSoDienThoai(), i.getCanCuocCD(), diaChi, i.getEmail(), caLam, lnv});
 
         }
     }
 
+    /**
+     * Lấy dữ liệu lên form nhân viên
+     */
     private void loadDataToForm() {
-        listLoaiNhanVien = loaiNhanVien_DAO.getLoaiNhanViens();
+        //lấy nhân viên cuối danh sách
+        NhanVien nhanVienLast = listNhanVien.get(listNhanVien.size() - 1);
 
+        String idNew = generateId(nhanVienLast.getMaNhanVien());
+        txtMaNV.setText(idNew);
+
+        // load dữ liệu lên combobox Loại Nhân Viên và combobox Loại Nhân Viên(tìm kiếm)
+        listLoaiNhanVien = loaiNhanVien_DAO.getLoaiNhanViens();
         for (LoaiNhanVien lnv : listLoaiNhanVien) {
             cmbLoaiNV.addItem(lnv.getTenLoaiNV());
             cmbLoaiNVTK.addItem(lnv.getTenLoaiNV());
         }
 
+        // load dữ liệu lên combobox Ca Làm và combobox Ca Làm(tìm kiếm)
         listCaLam = caLam_DAO.getCaLams();
-
         for (CaLam cl : listCaLam) {
             cmbCaLam.addItem(cl.getGioBatDau() + "-" + cl.getGioKetThuc());
             cmbCaLamTK.addItem(cl.getGioBatDau() + "-" + cl.getGioKetThuc());
@@ -346,13 +359,14 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
     }
 
     /**
-     * Thuật toán tạo mã nhân viên tự động
+     * Thuật toán tạo mã tăng tự động
+     *
+     * @param idCurrent mã hiện tại
+     * @return idNew mã được tăng lên 1 Ví dụ: idCurrent= "NV0001" ->
+     * idNew="NV0002"
      */
-    private void generateMaNhanVien() {
-        NhanVien nhanVienLast = listNhanVien.get(listNhanVien.size() - 1);
-
-        String idLast = nhanVienLast.getMaNhanVien();
-        String[] idSplit = idLast.split(""); // tách các chữ số trong id ra thành từng phần tử của mảng
+    private String generateId(String idCurrent) {
+        String[] idSplit = idCurrent.split(""); // tách các chữ số trong id ra thành từng phần tử của mảng
 
         int i = 2; //vị trí chia mã nhân viên ra làm 2 phần, ví dụ NV0038 -> phần đầu: NV00 ; phần đuôi:38
         while (i != idSplit.length) {
@@ -374,9 +388,34 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         }
 
         tail_id = Integer.toString(Integer.parseInt(tail_id) + 1); // tăng id lên 1
-        String idNew = head_id + tail_id;
-        txtMaNV.setText(idNew);
-//        System.out.println("ma nhan vien moi " + head_id_String + tail_id_String);
+        return head_id + tail_id;
+    }
+
+    private void setSizeColumnTable() {
+        //chọn
+        tblCenter.getColumnModel().getColumn(0).setPreferredWidth(5);
+        //mã nhân viên
+        tblCenter.getColumnModel().getColumn(1).setPreferredWidth(10);
+        //tên nhân viên
+        tblCenter.getColumnModel().getColumn(2).setPreferredWidth(10);
+        //giới tính
+        tblCenter.getColumnModel().getColumn(3).setPreferredWidth(10);
+        //ngày sinh
+        tblCenter.getColumnModel().getColumn(4).setPreferredWidth(10);
+        //số điện thoại
+        tblCenter.getColumnModel().getColumn(5).setPreferredWidth(10);
+        //căn cước CD
+        tblCenter.getColumnModel().getColumn(6).setPreferredWidth(20);
+        //địa chỉ
+        tblCenter.getColumnModel().getColumn(7).setPreferredWidth(100);
+        //email
+        tblCenter.getColumnModel().getColumn(8).setPreferredWidth(100);
+        //ca làm
+        tblCenter.getColumnModel().getColumn(9).setPreferredWidth(20);
+        //loại nhân viên
+        tblCenter.getColumnModel().getColumn(10).setPreferredWidth(20);
+        //Người quản lý
+        tblCenter.getColumnModel().getColumn(11).setPreferredWidth(100);
     }
 
     /**
@@ -431,11 +470,11 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
             },
             new String [] {
-                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Email", "Ca làm", "Loại nhân viên", ""
+                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Căn cước công dân", "Địa chỉ", "Email", "Ca làm", "Loại nhân viên", "Người quản lý", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false, true, true, false, false, false
+                false, false, true, false, false, false, true, true, true, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -455,6 +494,8 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
             tblCenter.getColumnModel().getColumn(8).setResizable(false);
             tblCenter.getColumnModel().getColumn(9).setResizable(false);
             tblCenter.getColumnModel().getColumn(10).setResizable(false);
+            tblCenter.getColumnModel().getColumn(11).setResizable(false);
+            tblCenter.getColumnModel().getColumn(12).setResizable(false);
         }
 
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
