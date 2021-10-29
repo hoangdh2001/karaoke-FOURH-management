@@ -6,7 +6,10 @@
 package gui;
 
 import com.toedter.calendar.JDateChooser;
+import dao.CaLam_DAO;
+import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
+import entity.CaLam;
 import entity.DiaChi;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
@@ -37,6 +40,9 @@ import net.miginfocom.swing.MigLayout;
 public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
     private NhanVien_DAO nhanVien_DAO;
+    private LoaiNhanVien_DAO loaiNhanVien_DAO;
+    private CaLam_DAO caLam_DAO;
+
     private MyTextField txtMaNV;
     private MyTextField txtTenNV;
     private MyComboBox<String> cmbGioiTinh;
@@ -59,14 +65,19 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
     private MyComboBox<Object> cmbCaLamTK;
     private Button btnTimKiem;
 
-    private List<NhanVien> listNhanViens;
+    private List<NhanVien> listNhanVien;
+    private List<LoaiNhanVien> listLoaiNhanVien;
+    private List<CaLam> listCaLam;
 
     public GD_NhanVien() {
         nhanVien_DAO = new NhanVien_DAO();
+        loaiNhanVien_DAO = new LoaiNhanVien_DAO();
+        caLam_DAO = new CaLam_DAO();
+
         initComponents();
         buildGD();
-        buildPanelCenter();
-        getDataNhanVien();
+        loadDataToTable();
+        loadDataToForm();
         generateMaNhanVien();
     }
 
@@ -174,11 +185,6 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         cmbLoaiNV = new MyComboBox<>();
         cmbLoaiNV.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNV.setBorderLine(true);
-        cmbLoaiNV.addItem("Nhân viên lễ tân");
-        cmbLoaiNV.addItem("Nhân viên phục vụ");
-        cmbLoaiNV.addItem("Nhân viên kê toán");
-        cmbLoaiNV.addItem("Nhân viên kĩ thuật");
-        cmbLoaiNV.addItem("Người quản lý");
         pnlThongTinNV.add(cmbLoaiNV, "w 80%, h 36!, wrap");
 
         //Ca làm
@@ -189,11 +195,6 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         cmbCaLam = new MyComboBox<>();
         cmbCaLam.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLam.setBorderLine(true);
-        cmbCaLam.addItem("Ca 1");
-        cmbCaLam.addItem("Ca 2");
-        cmbCaLam.addItem("Ca 3");
-        cmbCaLam.addItem("Ca 4");
-        cmbCaLam.addItem("Ca 5");
         pnlThongTinNV.add(cmbCaLam, "w 80%, h 36!, wrap");
 
         /*Panel nút chức năng*/
@@ -283,11 +284,6 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNVTK.setBorderLine(true);
         cmbLoaiNVTK.addItem("Tất cả");
-        cmbLoaiNVTK.addItem("Nhân viên lễ tân");
-        cmbLoaiNVTK.addItem("Nhân viên phục vụ");
-        cmbLoaiNVTK.addItem("Nhân viên kê toán");
-        cmbLoaiNVTK.addItem("Nhân viên kĩ thuật");
-        cmbLoaiNVTK.addItem("Người quản lý");
         pnlTimKiemNV.add(cmbLoaiNVTK, "w 80%,h 36!, wrap");
 
         //Ca làm cần tìm
@@ -312,17 +308,14 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
-    private void buildPanelCenter() {
-        Object[] row = {"1", "h", "h", "h", "h", "h", "h", "h", "h", "h"};
-        tblCenter.addRow(row);
+    /**
+     * lấy dữ liệu lên bảng danh sách nhân viên
+     */
+    private void loadDataToTable() {
 
-    }
+        listNhanVien = nhanVien_DAO.getNhanViens();
 
-    private void getDataNhanVien() {
-
-        listNhanViens = nhanVien_DAO.getNhanViens();
-
-        for (NhanVien i : listNhanViens) {
+        for (NhanVien i : listNhanVien) {
             String diaChi = i.getDiaChi().getSoNha() + "," + i.getDiaChi().getTenDuong()
                     + "," + i.getDiaChi().getXaPhuong() + "," + i.getDiaChi().getQuanHuyen() + "," + i.getDiaChi().getTinhThanh();
             String lnv = i.getLoaiNhanVien().getTenLoaiNV();
@@ -335,18 +328,37 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         }
     }
 
+    private void loadDataToForm() {
+        listLoaiNhanVien = loaiNhanVien_DAO.getLoaiNhanViens();
+
+        for (LoaiNhanVien lnv : listLoaiNhanVien) {
+            cmbLoaiNV.addItem(lnv.getTenLoaiNV());
+            cmbLoaiNVTK.addItem(lnv.getTenLoaiNV());
+        }
+
+        listCaLam = caLam_DAO.getCaLams();
+
+        for (CaLam cl : listCaLam) {
+            cmbCaLam.addItem(cl.getGioBatDau() + "-" + cl.getGioKetThuc());
+            cmbCaLamTK.addItem(cl.getGioBatDau() + "-" + cl.getGioKetThuc());
+        }
+
+    }
+
     /**
      * Thuật toán tạo mã nhân viên tự động
      */
     private void generateMaNhanVien() {
-        NhanVien nhanVienLast = listNhanViens.get(listNhanViens.size() - 1);
+        NhanVien nhanVienLast = listNhanVien.get(listNhanVien.size() - 1);
 
         String idLast = nhanVienLast.getMaNhanVien();
         String[] idSplit = idLast.split(""); // tách các chữ số trong id ra thành từng phần tử của mảng
 
         int i = 2; //vị trí chia mã nhân viên ra làm 2 phần, ví dụ NV0038 -> phần đầu: NV00 ; phần đuôi:38
         while (i != idSplit.length) {
-            if (!idSplit[i].equals("0")) break;
+            if (!idSplit[i].equals("0")) {
+                break;
+            }
             i++;
         }
 
@@ -517,4 +529,5 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
         }
     }
+
 }

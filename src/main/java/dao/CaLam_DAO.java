@@ -5,44 +5,45 @@
  */
 package dao;
 
-import entity.LoaiNhanVien;
+import entity.CaLam;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import service.LoaiNhanVienService;
+import service.CaLamService;
 import util.HibernateUtil;
 
 /**
  *
  * @author NGUYE
  */
-public class LoaiNhanVien_DAO implements LoaiNhanVienService {
+public class CaLam_DAO implements CaLamService {
 
     private SessionFactory sessionFactory;
 
-    public LoaiNhanVien_DAO() {
+    public CaLam_DAO() {
         HibernateUtil hibernateUtil = HibernateUtil.getInstance();
         this.sessionFactory = hibernateUtil.getSessionFactory();
     }
 
     @Override
-    public List<LoaiNhanVien> getLoaiNhanViens() {
+    public List<CaLam> getCaLams() {
+
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.getTransaction();
 
         try {
             transaction.begin();
-            List<LoaiNhanVien> loaiNhanViens = session.createNamedQuery("getLoaiNhanViens", LoaiNhanVien.class).getResultList();
-
+            List<CaLam> caLams = session.createNamedQuery("getCaLams", CaLam.class).getResultList();
             transaction.commit();
 
-            return loaiNhanViens;
+            return caLams;
+
         } catch (Exception e) {
             e.printStackTrace();
             transaction.rollback();
-        }
 
+        }
         return null;
     }
 
