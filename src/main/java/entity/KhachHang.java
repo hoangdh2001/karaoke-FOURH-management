@@ -3,8 +3,15 @@ package entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "KhachHang")
+@NamedQueries({
+    @NamedQuery(name = "getDSKhachHang", query = "select kh from KhachHang kh")
+})
 public class KhachHang {
 	@Id
 	private String maKhachHang;
