@@ -8,6 +8,7 @@ package gui;
 import com.toedter.calendar.JDateChooser;
 import dao.NhanVien_DAO;
 import entity.DiaChi;
+import entity.LoaiNhanVien;
 import entity.NhanVien;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
@@ -17,6 +18,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -57,12 +59,15 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
     private MyComboBox<Object> cmbCaLamTK;
     private Button btnTimKiem;
 
+    private List<NhanVien> listNhanViens;
+
     public GD_NhanVien() {
         nhanVien_DAO = new NhanVien_DAO();
         initComponents();
         buildGD();
         buildPanelCenter();
         getDataNhanVien();
+        generateMaNhanVien();
     }
 
     public void buildGD() {
@@ -97,6 +102,7 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         txtMaNV = new MyTextField();
         txtMaNV.setFont(new Font(fontName, fontPlain, font14));
         txtMaNV.setBorderLine(true);
+        txtMaNV.setEditable(false);
         pnlThongTinNV.add(txtMaNV, "w 80%, h 36!");
 
         //Tên nhân viên
@@ -314,16 +320,51 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
     private void getDataNhanVien() {
 
-        nhanVien_DAO.getNhanViens().forEach(i -> {
-//            System.out.println(i.getMaNhanVien());
+        listNhanViens = nhanVien_DAO.getNhanViens();
+
+        for (NhanVien i : listNhanViens) {
             String diaChi = i.getDiaChi().getSoNha() + "," + i.getDiaChi().getTenDuong()
                     + "," + i.getDiaChi().getXaPhuong() + "," + i.getDiaChi().getQuanHuyen() + "," + i.getDiaChi().getTinhThanh();
+            String lnv = i.getLoaiNhanVien().getTenLoaiNV();
 
-            tblCenter.addRow(new Object[]{"1", i.getMaNhanVien(), i.getTenNhanVien(), i.isGioiTinh() == true ? "Nữ" : "Nam",
-                i.getNgaySinh(), i.getSoDienThoai(), diaChi, i.getEmail(),
-                i.getCaLam().getMaCa(), i.getLoaiNhanVien().getTenLoaiNV()});
-        });
+            String caLam = i.getCaLam().getGioBatDau() + "-" + i.getCaLam().getGioKetThuc();
+            String gioiTinh = i.isGioiTinh() == true ? "Nữ" : "Nam";
+            tblCenter.addRow(new Object[]{"1", i.getMaNhanVien(), i.getTenNhanVien(), gioiTinh,
+                i.getNgaySinh(), i.getSoDienThoai(), diaChi, i.getEmail(), caLam, lnv});
 
+        }
+    }
+
+    /**
+     * Thuật toán tạo mã nhân viên tự động
+     */
+    private void generateMaNhanVien() {
+        NhanVien nhanVienLast = listNhanViens.get(listNhanViens.size() - 1);
+
+        String idLast = nhanVienLast.getMaNhanVien();
+        String[] idSplit = idLast.split(""); // tách các chữ số trong id ra thành từng phần tử của mảng
+
+        int i = 2; //vị trí chia mã nhân viên ra làm 2 phần, ví dụ NV0038 -> phần đầu: NV00 ; phần đuôi:38
+        while (i != idSplit.length) {
+            if (!idSplit[i].equals("0")) break;
+            i++;
+        }
+
+        String head_id = "NV"; // phần đầu của mã nhân viên mới
+        String tail_id = ""; // phần đuôi của mã nhân viên mới
+        for (int j = 2; j < idSplit.length; j++) {
+
+            if (j < i) {
+                head_id += idSplit[j];
+            } else {
+                tail_id += idSplit[j];
+            }
+        }
+
+        tail_id = Integer.toString(Integer.parseInt(tail_id) + 1); // tăng id lên 1
+        String idNew = head_id + tail_id;
+        txtMaNV.setText(idNew);
+//        System.out.println("ma nhan vien moi " + head_id_String + tail_id_String);
     }
 
     /**
