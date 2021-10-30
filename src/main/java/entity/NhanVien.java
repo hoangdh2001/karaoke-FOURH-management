@@ -3,6 +3,8 @@ package entity;
 import gui.swing.table2.EventAction;
 import gui.swing.table2.ModelAction;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,12 +47,12 @@ public class NhanVien {
     private DiaChi diaChi;
     @Column(nullable = false)
     private byte[] matKhau;
-    @OneToMany
-    @Transient
-    private List<NhanVien> dsNhanVien;
-    @ManyToOne
-    @JoinColumn(name = "maQuanLy")
-    private NhanVien quanLy;
+//    @OneToMany
+//    @Transient
+//    private List<NhanVien> dsNhanVien;
+//    @ManyToOne
+//    @JoinColumn(name = "maQuanLy")
+//    private NhanVien quanLy;
 
     /**
      * @param maNhanVien
@@ -77,8 +79,8 @@ public class NhanVien {
         this.email = email;
         this.diaChi = diaChi;
         this.matKhau = matKhau;
+//        this.dsNhanVien = new ArrayList<NhanVien>();
     }
-    
 
     /**
      *
@@ -97,6 +99,7 @@ public class NhanVien {
         this.soDienThoai = soDienThoai;
         this.email = email;
         this.diaChi = diaChi;
+//        this.dsNhanVien = new ArrayList<NhanVien>();
     }
 
     /**
@@ -260,10 +263,12 @@ public class NhanVien {
                 + soDienThoai + ", email=" + email + ", diaChi=" + diaChi + ", matKhau=" + Arrays.toString(matKhau)
                 + "]";
     }
-    
+
     public Object[] convertToRowTable(EventAction event) {
-        String diaChiString = diaChi.getSoNha() + diaChi.getTenDuong()+diaChi.getXaPhuong()+diaChi.getQuanHuyen()+diaChi.getTinhThanh();
-        String caLamString = caLam.getGioBatDau()+"-"+caLam.getGioKetThuc();
-        return new Object[]{"", maNhanVien, tenNhanVien, gioiTinh == true?"Nữ":"Nam", ngaySinh, soDienThoai, canCuocCD, diaChiString, email, caLamString, loaiNhanVien.getTenLoaiNV(), quanLy, new ModelAction(this, event)};
+        String diaChiString = diaChi.getSoNha() + ", " + diaChi.getTenDuong() + ", " + diaChi.getXaPhuong() + ", " + diaChi.getQuanHuyen() + ", " + diaChi.getTinhThanh();
+        String caLamString = caLam.getGioBatDau() + "-" + caLam.getGioKetThuc();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        
+        return new Object[]{"", maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai, canCuocCD, diaChiString, email, caLamString, loaiNhanVien.getTenLoaiNV(), new ModelAction(this, event)};
     }
 }

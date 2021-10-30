@@ -27,8 +27,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Date;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -46,7 +50,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author NGUYENHUNG
  */
-public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
+public class GD_NhanVien extends javax.swing.JPanel implements ActionListener, MouseListener {
 
     private NhanVien_DAO nhanVien_DAO;
     private LoaiNhanVien_DAO loaiNhanVien_DAO;
@@ -61,6 +65,7 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
     private MyTextField txtDiaChi;
     private MyComboBox<String> cmbLoaiNV;
     private MyComboBox<String> cmbCaLam;
+    private MyTextField txtCCCD;
 
     private Button btnThemNV;
     private Button btnXoaNV;
@@ -77,6 +82,8 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
     private List<NhanVien> listNhanVien;
     private List<LoaiNhanVien> listLoaiNhanVien;
     private List<CaLam> listCaLam;
+
+    private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     public GD_NhanVien() {
         nhanVien_DAO = new NhanVien_DAO();
@@ -159,6 +166,7 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
         dscNgaySinh = new JDateChooser();
         dscNgaySinh.setFont(new Font(fontName, fontPlain, font14));
+        dscNgaySinh.setDateFormatString("dd-MM-yyyy");
         pnlThongTinNV.add(dscNgaySinh, "w 80%, h 36!, wrap");
 
         //Số điện thoại
@@ -209,7 +217,17 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         cmbCaLam = new MyComboBox<>();
         cmbCaLam.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLam.setBorderLine(true);
-        pnlThongTinNV.add(cmbCaLam, "w 80%, h 36!, wrap");
+        pnlThongTinNV.add(cmbCaLam, "w 80%, h 36!");
+
+        //Căn cước công dân
+        JLabel lblCCCD = new JLabel("CCCD:");
+        lblCCCD.setFont(new Font(fontName, fontPlain, font14));
+        pnlThongTinNV.add(lblCCCD, "align right");
+
+        txtCCCD = new MyTextField();
+        txtCCCD.setFont(new Font(fontName, fontPlain, font14));
+        txtCCCD.setBorderLine(true);
+        pnlThongTinNV.add(txtCCCD, "w 80%, h 36!, wrap");
 
         /*Panel nút chức năng*/
         JPanel pnlButton = new JPanel();
@@ -319,7 +337,16 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         pnlTimKiemNV.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /* End: group tìm nhân viên*/
 
-        
+        tblCenter.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = tblCenter.getSelectedRow();
+                System.out.println(row);
+                loadDataRowToForm();
+
+            }
+
+        });
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
@@ -342,10 +369,11 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
                 NhanVien nhanVien = (NhanVien) action.getObj();
                 action.setObj(nhanVien);
             }
+
         };
 
         for (NhanVien i : listNhanVien) {
-            tblCenter.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(),i.getMatKhau()).convertToRowTable(event));
+            tblCenter.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
         }
     }
 
@@ -373,6 +401,28 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
             cmbCaLamTK.addItem(cl.getGioBatDau() + "-" + cl.getGioKetThuc());
         }
 
+    }
+
+    private void loadDataRowToForm() {
+        int row = tblCenter.getSelectedRow();
+        txtMaNV.setText(tblCenter.getValueAt(row, 1).toString());
+        txtTenNV.setText(tblCenter.getValueAt(row, 2).toString());
+        cmbGioiTinh.setSelectedItem(tblCenter.getValueAt(row, 3).toString());
+
+        String dateString = tblCenter.getValueAt(row, 4).toString();
+        String[] dateSplit = dateString.split("-");
+        String date = dateSplit[2] + "-" + dateSplit[1] + "-" + dateSplit[0];
+
+        Date date2 = Date.valueOf(date);
+        dscNgaySinh.setDate(date2);
+
+        txtSDT.setText(tblCenter.getValueAt(row, 5).toString());
+        txtCCCD.setText(tblCenter.getValueAt(row, 6).toString());
+        txtDiaChi.setText(tblCenter.getValueAt(row, 7).toString());
+        txtEmail.setText(tblCenter.getValueAt(row, 8).toString());
+
+        cmbCaLam.setSelectedItem(tblCenter.getValueAt(row, 9).toString());
+        cmbLoaiNV.setSelectedItem(tblCenter.getValueAt(row, 10).toString());
     }
 
     /**
@@ -414,9 +464,13 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         tblCenter.getColumnModel().getColumn(0).setMaxWidth(50);
         tblCenter.getColumnModel().getColumn(0).setMinWidth(50);
         //mã nhân viên
-        tblCenter.getColumnModel().getColumn(1).setPreferredWidth(10);
+        tblCenter.getColumnModel().getColumn(1).setPreferredWidth(110);
+        tblCenter.getColumnModel().getColumn(1).setMaxWidth(110);
+        tblCenter.getColumnModel().getColumn(1).setMinWidth(110);
         //tên nhân viên
-        tblCenter.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tblCenter.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tblCenter.getColumnModel().getColumn(2).setMaxWidth(150);
+        tblCenter.getColumnModel().getColumn(2).setMinWidth(120);
         //giới tính
         tblCenter.getColumnModel().getColumn(3).setPreferredWidth(80);
         tblCenter.getColumnModel().getColumn(3).setMaxWidth(80);
@@ -435,12 +489,47 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         tblCenter.getColumnModel().getColumn(9).setPreferredWidth(20);
         //loại nhân viên
         tblCenter.getColumnModel().getColumn(10).setPreferredWidth(20);
-        //Người quản lý
-        tblCenter.getColumnModel().getColumn(11).setPreferredWidth(100);
-        //Edit
-        tblCenter.getColumnModel().getColumn(12).setPreferredWidth(80);
-        tblCenter.getColumnModel().getColumn(12).setMaxWidth(80);
-        tblCenter.getColumnModel().getColumn(12).setMinWidth(80);
+        //edit        
+        tblCenter.getColumnModel().getColumn(11).setPreferredWidth(80);
+        tblCenter.getColumnModel().getColumn(11).setMaxWidth(80);
+        tblCenter.getColumnModel().getColumn(11).setMinWidth(80);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object object = e.getSource();
+
+        if (object.equals(btnThemNV)) {
+            System.out.println("Them nhân viên");
+        } else if (object.equals(btnXoaNV)) {
+            System.out.println("Xoa nhân viên");
+
+        } else if (object.equals(btnSuaNV)) {
+            System.out.println("Sua nhân viên");
+
+        } else if (object.equals(btnLamMoi)) {
+            clearForm();
+
+        } else if (object.equals(btnTimKiem)) {
+
+        }
+    }
+
+    private void clearForm() {
+        NhanVien nhanVienLast = listNhanVien.get(listNhanVien.size() - 1);
+        String idNew = generateId(nhanVienLast.getMaNhanVien());
+        txtMaNV.setText(idNew);
+
+        txtTenNV.setText("");
+        cmbGioiTinh.setSelectedIndex(0);
+        dscNgaySinh.setDate(null);
+        txtSDT.setText("");
+        txtDiaChi.setText("");
+        txtCCCD.setText("");
+        txtEmail.setText("");
+        cmbCaLam.setSelectedIndex(0);
+        cmbLoaiNV.setSelectedIndex(0);
+        txtTenNV.requestFocus();
     }
 
     /**
@@ -495,11 +584,11 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
             },
             new String [] {
-                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Căn cước công dân", "Địa chỉ", "Email", "Ca làm", "Loại nhân viên", "Người quản lý", ""
+                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "CCCD", "Địa chỉ", "Email", "Ca làm", "Loại nhân viên", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false, true, true, true, false, false, true, false
+                false, false, true, false, false, false, true, true, true, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -520,7 +609,6 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
             tblCenter.getColumnModel().getColumn(9).setResizable(false);
             tblCenter.getColumnModel().getColumn(10).setResizable(false);
             tblCenter.getColumnModel().getColumn(11).setResizable(false);
-            tblCenter.getColumnModel().getColumn(12).setResizable(false);
         }
 
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
@@ -577,23 +665,28 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        Object object = e.getSource();
+    public void mouseClicked(MouseEvent e) {
 
-        if (object.equals(btnThemNV)) {
-            System.out.println("Them nhân viên");
-        } else if (object.equals(btnXoaNV)) {
-            System.out.println("Xoa nhân viên");
+    }
 
-        } else if (object.equals(btnSuaNV)) {
-            System.out.println("Sua nhân viên");
+    @Override
+    public void mousePressed(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-        } else if (object.equals(btnLamMoi)) {
-            System.out.println("Làm mới nhân viên");
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-        } else if (object.equals(btnTimKiem)) {
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-        }
+    @Override
+    public void mouseExited(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
