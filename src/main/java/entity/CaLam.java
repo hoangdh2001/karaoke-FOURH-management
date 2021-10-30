@@ -5,8 +5,13 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "getCaLams", query = "select cl from CaLam cl")
+})
 public class CaLam {
 
     @Id
