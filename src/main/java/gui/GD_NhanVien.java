@@ -11,9 +11,15 @@ import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
 import entity.CaLam;
 import entity.DiaChi;
+import entity.KhachHang;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
+import entity.PhieuDatPhong;
+import entity.Phong;
+import entity.TrangThaiPhieuDat;
 import gui.swing.button.Button;
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
@@ -21,11 +27,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -78,6 +87,8 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         buildGD();
         loadDataToTable();
         loadDataToForm();
+        tblCenter.fixTable(jScrollPane1);
+        tblCenter.setFont(new Font("Arial", Font.PLAIN, 14));
         setSizeColumnTable();
     }
 
@@ -308,7 +319,7 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         pnlTimKiemNV.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /* End: group tìm nhân viên*/
 
-        tblCenter.fixTable(jScrollPane1);
+        
         setPreferredSize(new Dimension(getWidth(), 1500));
     }
 
@@ -319,16 +330,22 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
         listNhanVien = nhanVien_DAO.getNhanViens();
 
+        EventAction event = new EventAction() {
+            @Override
+            public void delete(Object obj) {
+                NhanVien nhanVien = (NhanVien) obj;
+                JOptionPane.showMessageDialog(null, "Delete" + nhanVien.getMaNhanVien());
+            }
+
+            @Override
+            public void update(ModelAction action) {
+                NhanVien nhanVien = (NhanVien) action.getObj();
+                action.setObj(nhanVien);
+            }
+        };
+
         for (NhanVien i : listNhanVien) {
-            String diaChi = i.getDiaChi().getSoNha() + "," + i.getDiaChi().getTenDuong()
-                    + "," + i.getDiaChi().getXaPhuong() + "," + i.getDiaChi().getQuanHuyen() + "," + i.getDiaChi().getTinhThanh();
-            String lnv = i.getLoaiNhanVien().getTenLoaiNV();
-
-            String caLam = i.getCaLam().getGioBatDau() + "-" + i.getCaLam().getGioKetThuc();
-            String gioiTinh = i.isGioiTinh() == true ? "Nữ" : "Nam";
-            tblCenter.addRow(new Object[]{"1", i.getMaNhanVien(), i.getTenNhanVien(), gioiTinh,
-                i.getNgaySinh(), i.getSoDienThoai(), i.getCanCuocCD(), diaChi, i.getEmail(), caLam, lnv});
-
+            tblCenter.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(),i.getMatKhau()).convertToRowTable(event));
         }
     }
 
@@ -393,13 +410,17 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
 
     private void setSizeColumnTable() {
         //chọn
-        tblCenter.getColumnModel().getColumn(0).setPreferredWidth(5);
+        tblCenter.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tblCenter.getColumnModel().getColumn(0).setMaxWidth(50);
+        tblCenter.getColumnModel().getColumn(0).setMinWidth(50);
         //mã nhân viên
         tblCenter.getColumnModel().getColumn(1).setPreferredWidth(10);
         //tên nhân viên
-        tblCenter.getColumnModel().getColumn(2).setPreferredWidth(10);
+        tblCenter.getColumnModel().getColumn(2).setPreferredWidth(100);
         //giới tính
-        tblCenter.getColumnModel().getColumn(3).setPreferredWidth(10);
+        tblCenter.getColumnModel().getColumn(3).setPreferredWidth(80);
+        tblCenter.getColumnModel().getColumn(3).setMaxWidth(80);
+        tblCenter.getColumnModel().getColumn(3).setMinWidth(80);
         //ngày sinh
         tblCenter.getColumnModel().getColumn(4).setPreferredWidth(10);
         //số điện thoại
@@ -407,7 +428,7 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         //căn cước CD
         tblCenter.getColumnModel().getColumn(6).setPreferredWidth(20);
         //địa chỉ
-        tblCenter.getColumnModel().getColumn(7).setPreferredWidth(100);
+        tblCenter.getColumnModel().getColumn(7).setPreferredWidth(200);
         //email
         tblCenter.getColumnModel().getColumn(8).setPreferredWidth(100);
         //ca làm
@@ -416,6 +437,10 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener {
         tblCenter.getColumnModel().getColumn(10).setPreferredWidth(20);
         //Người quản lý
         tblCenter.getColumnModel().getColumn(11).setPreferredWidth(100);
+        //Edit
+        tblCenter.getColumnModel().getColumn(12).setPreferredWidth(80);
+        tblCenter.getColumnModel().getColumn(12).setMaxWidth(80);
+        tblCenter.getColumnModel().getColumn(12).setMinWidth(80);
     }
 
     /**
