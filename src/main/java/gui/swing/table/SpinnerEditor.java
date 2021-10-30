@@ -41,7 +41,6 @@ public class SpinnerEditor extends DefaultCellEditor {
             textField = editor.getTextField();
             textField.addFocusListener( new FocusListener() {
                 public void focusGained( FocusEvent fe ) {
-                    System.err.println("Got focus");
                     //textField.setSelectionStart(0);
                     //textField.setSelectionEnd(1);
                     SwingUtilities.invokeLater( new Runnable() {
@@ -99,7 +98,6 @@ public class SpinnerEditor extends DefaultCellEditor {
         }
 
         public boolean stopCellEditing() {
-            System.err.println("Stopping edit");
             try {
                 editor.commitEdit();
                 spinner.commitEdit();

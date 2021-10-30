@@ -10,6 +10,7 @@ import entity.TrangThaiPhong;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -63,7 +64,7 @@ public class MyTable extends JTable {
                         cell.setForeground(new Color(102, 102, 102));
                     }
                     return cell;
-                } else if(i1 == 0) {
+                } else if(o instanceof Class) {
                     CellCheckBox cell = new CellCheckBox();
                     cell.select(selected);
                     if (selected) {

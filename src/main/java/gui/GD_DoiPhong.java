@@ -8,36 +8,35 @@ import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import gui.swing.table.TableCustomCheckBox;
 import gui.swing.table.TableCustomRadio;
+import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author 84975
  */
 public class GD_DoiPhong extends javax.swing.JDialog {
-private TableCustomCheckBox table;
     private JPanel pnlLoc;
     private JPanel pnlDanhSachPhong;
     private JPanel pnlInfo;
     private JPanel pnlHieuChinh;
     private String fontName = "sansserif";
+    
+    private MyTable table;
+    
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
     private int font14 = 14;
@@ -51,11 +50,12 @@ private TableCustomCheckBox table;
     public GD_DoiPhong() {
         setModal(true);
         initComponents();
-        setSize(new Dimension(1350,540));
+        setSize(new Dimension(1350,560));
+        setResizable(false);
         setLocation(150, 150);
         setTitle("Đổi phòng");
         initForm();
-        
+        addAction();
     }
 
     /**
@@ -145,14 +145,14 @@ private TableCustomCheckBox table;
     
     public void initOldRoomInfo(){
         pnlLoc = new JPanel();
-        pnlLoc.setLayout(new MigLayout("","30[][]","10[]5"));
+        pnlLoc.setLayout(new MigLayout("","33[][]","10[]10"));
         
         JLabel lblPhongCu = new JLabel("Phòng cũ");
         lblPhongCu.setFont(new Font(fontName, fontPlain, font16));
         lblPhongCu.setForeground(colorLabel);
         pnlLoc.add(lblPhongCu, "span, w 100%, h 30!, wrap");
         
-        JLabel lblTenPhong = new JLabel("Ngày giờ đặt :");
+        JLabel lblTenPhong = new JLabel("Tên phòng :");
         lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblTenPhong, "align right");
 
@@ -160,26 +160,34 @@ private TableCustomCheckBox table;
         txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
         txtTenPhong.setEnabled(false);
         txtTenPhong.setBorderLine(true);
+        txtTenPhong.setBorderRadius(5);
+        
         pnlLoc.add(txtTenPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblLoaiPhong = new JLabel("Loại phòng :");
         lblLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlLoc.add(lblLoaiPhong, "align right");
 
         MyTextField txtLoaiPhong = new MyTextField();
         txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         txtLoaiPhong.setEnabled(false);
         txtLoaiPhong.setBorderLine(true);
+        txtLoaiPhong.setBorderRadius(5);
+        
         pnlLoc.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGiaPhong = new JLabel("Giá phòng :");
         lblGiaPhong.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlLoc.add(lblGiaPhong, "align right");
 
         MyTextField txtGiaPhong = new MyTextField();
         txtGiaPhong.setFont(new Font(fontName, fontPlain, font14));
         txtGiaPhong.setEnabled(false);
         txtGiaPhong.setBorderLine(true);
+        txtGiaPhong.setBorderRadius(5);
+        
         pnlLoc.add(txtGiaPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGioDaHat = new JLabel("Giờ đã hát :");
@@ -190,6 +198,7 @@ private TableCustomCheckBox table;
         txtGioDaHat.setFont(new Font(fontName, fontPlain, font14));
         txtGioDaHat.setEnabled(false);
         txtGioDaHat.setBorderLine(true);
+        txtGioDaHat.setBorderRadius(5);
         
         pnlLoc.add(txtGioDaHat, "w 100:260:350, h 36! , wrap");
         
@@ -201,7 +210,7 @@ private TableCustomCheckBox table;
         txtTongTienCu.setFont(new Font(fontName, fontPlain, font14));
         txtTongTienCu.setEnabled(false);
         txtTongTienCu.setBorderLine(true);
-       
+        txtTongTienCu.setBorderRadius(5);
         
         pnlLoc.add(txtTongTienCu, "w 100:260:300, h 36! , wrap");
         pnlInfo.add(pnlLoc,"w 35%,h 100%");
@@ -217,7 +226,7 @@ private TableCustomCheckBox table;
         pnlDanhSachPhong = new JPanel();
         pnlDanhSachPhong.setOpaque(false);
         
-        pnlDanhSachPhong.setLayout(new MigLayout("","[]","10[]10"));
+        pnlDanhSachPhong.setLayout(new MigLayout("","[]","10[][]16"));
             pnlDanhSachPhong.setBackground(Color.WHITE);    
             
         JLabel lblPhongMoi = new JLabel("Thông tin các phòng có thể đổi");
@@ -226,59 +235,52 @@ private TableCustomCheckBox table;
         pnlDanhSachPhong.add(lblPhongMoi, "span, w 100%, h 30!, wrap");
         
         Object data[][] = { 
-                { "101", "Tran Van Minh", "6000",new JRadioButton() }, 
-                { "102", "Phan Van Tai", "8000",new JRadioButton()  }, 
-                { "101","Do Cao Hoc", "7000",new JRadioButton() },
-                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-                { "101", "Do Cao Hoc", "7000",new JRadioButton() },
-                { "101","Do Cao Hoc", "7000",new JRadioButton() },
-                { "101","Do Cao Hoc", "7000",new JRadioButton() },
-                { "101","Do Cao Hoc", "7000",new JRadioButton() },              
+                { "101", "Tran Van Minh", "6000",false}, 
+                { "102", "Phan Van Tai", "8000",false}, 
+                { "101","Do Cao Hoc", "7000",false},
+                { "101", "Do Cao Hoc", "7000",false},
+                { "101", "Do Cao Hoc", "7000",false},
+                { "101","Do Cao Hoc", "7000",false},
+                { "101","Do Cao Hoc", "7000",false},
+                { "101","Do Cao Hoc", "7000",false},              
         };
-        
-//        
-//        Object data[][] = { 
-//                { "101", "Tran Van Minh", "6000",new JCheckBox() }, 
-//                { "102", "Phan Van Tai", "8000",new JCheckBox()  }, 
-//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-//                { "101", "Do Cao Hoc", "7000",new JCheckBox() },              
-//        };
-        
-//        Object data[][] = { 
-//                { "101",0, "Tran Van Minh", "6000"}, 
-//                { "102",0, "Phan Van Tai", "8000"}, 
-//                { "101",0, "Do Cao Hoc", "7000"},             
-//        };
-// 
-//        JTable jt = new JTable(data, column);
-//        jt.setBounds(30, 40, 200, 300);
-// 
-//        JScrollPane sp = new JScrollPane(jt);
-//        pnlDanhSachPhong.add(sp);
  
         String col[] = {"Tên phòng","Loại phòng","Giá phòng/Giờ","Chon"};
-        DefaultTableModel model = new DefaultTableModel(col,0);
-        model.setDataVector(data, col);
-//        TableCustomCheckBox table = new TableCustomCheckBox(model);
-//        TableCustom table = new TableCustom(model);
-        TableCustomRadio table = new TableCustomRadio(model);
-//Spinner
-//        TableColumnModel tcm = table.getColumnModel();
-//        TableColumn tc = tcm.getColumn(1);
-//        tc.setCellEditor(new SpinnerEditor());
+        DefaultTableModel model = new DefaultTableModel(
+            data,
+            new String [] {
+            "Tên phòng","Loại phòng","Giá phòng/Giờ","Chọn"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false,true
+            }; 
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        table = new MyTable(){
+			public Class getColumnClass(int column) {
+				switch (column) {
+				case 0:
+					return String.class;
+				case 1:
+					return String.class;
+				case 2:
+					return String.class;
+				case 3:
+					return String.class;
+				default:
+					return Boolean.class;
+				}
+			}
+        };
+    
+        table.setModel(model);
+        
         JScrollPane sp = new JScrollPane(table);
-//test
-        table.addEvent(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("1");
-            }  
-        });
-        System.err.println(table.getRowCount());
+
         table.fixTable(sp);
         pnlDanhSachPhong.add(sp,"w 100%,h 100%");
         pnlInfo.add(pnlDanhSachPhong,"w 65%,h 100%");
@@ -287,7 +289,7 @@ private TableCustomCheckBox table;
     public void initNewRoomInfo(){
 
         JPanel pnlThongTin = new JPanel();
-        pnlThongTin.setLayout(new MigLayout("","15[][]","10[]5"));
+        pnlThongTin.setLayout(new MigLayout("","[][]","20[]10[]10[]"));
         
         JLabel lblKhachHang = new JLabel("Khách Hàng :");
         lblKhachHang.setFont(new Font(fontName, fontPlain, font14));
@@ -297,6 +299,8 @@ private TableCustomCheckBox table;
         txtKhachHang.setFont(new Font(fontName, fontPlain, font14));
         txtKhachHang.setEnabled(false);
         txtKhachHang.setBorderLine(true);
+        txtKhachHang.setBorderRadius(5);
+        
         pnlThongTin.add(txtKhachHang, "w 100:260:350, h 36! , wrap");
         
         JLabel lblLoaiPhong = new JLabel("Loại phòng mới :");
@@ -307,6 +311,8 @@ private TableCustomCheckBox table;
         txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         txtLoaiPhong.setEnabled(false);
         txtLoaiPhong.setBorderLine(true);
+        txtLoaiPhong.setBorderRadius(5);
+        
         pnlThongTin.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGioDatDau = new JLabel("Giờ bắt đầu :");
@@ -315,8 +321,9 @@ private TableCustomCheckBox table;
 
         MyTextField txtGioBatDau = new MyTextField();
         txtGioBatDau.setFont(new Font(fontName, fontPlain, font14));
-        txtGioBatDau.setEnabled(false);
         txtGioBatDau.setBorderLine(true);
+        txtGioBatDau.setBorderRadius(5);
+        
         pnlThongTin.add(txtGioBatDau, "w 100:260:350, h 36! , wrap");
         
         pnlThongTin.setBackground(Color.WHITE);
@@ -324,12 +331,16 @@ private TableCustomCheckBox table;
         JPanel pnlButton = new JPanel();
         pnlButton.setLayout(new MigLayout("","push[]10[]20","push[]10"));
         pnlButton.setBackground(Color.WHITE);
+        
         Button btnHuy = new Button("Hủy đổi phòng");
         btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
+        btnHuy.setBorderRadius(5);
+        
         Button btnDoiPhong = new Button("đổi phòng");
         btnDoiPhong.setFont(new Font(fontName, fontPlain, font14));
         btnDoiPhong.setBackground(colorBtn);
+        btnDoiPhong.setBorderRadius(5);
         
         pnlButton.add(btnHuy,"h 36!");
         pnlButton.add(btnDoiPhong,"h 36!");
@@ -358,6 +369,36 @@ private TableCustomCheckBox table;
     
         MainPanel.add(pnlInfo,"w 100%,h 30%,wrap");
         MainPanel.add(pnlHieuChinh,"w 100%,h 240");
+    }
+    
+    public void addAction(){
+        table.addMouseListener(new action());
+    }
+    
+    private class action implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if(e.getSource().equals(table)){
+                System.out.println(table.getModel().getValueAt(0,3));
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;

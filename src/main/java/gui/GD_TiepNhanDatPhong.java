@@ -10,6 +10,7 @@ import gui.swing.table.SpinnerEditor;
 import gui.swing.table.TableCustom;
 import gui.swing.table.TableCustomCheckBox;
 import gui.swing.table.TableCustomRadio;
+import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,7 +42,12 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private JPanel pnlInfoTop;
     private JPanel pnlInfoBottom;
     private JPanel pnlKhachHang;
-    private JPanel pnlThongTinPhong;
+    private JPanel pnlThongTinKhachHang;
+    
+    private MyTable tableDichVu;
+    private MyTable tableDichVuDaChon;
+    private MyTable tablePhieuDatPhong;
+    
     private String fontName = "sansserif";
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
@@ -51,12 +57,10 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private Color colorLabel = new Color(47, 72, 210);
     public GD_TiepNhanDatPhong() {
         super();
+        setTitle("Giao phòng");
         setModal(true);
         initComponents();
-        setSize(new Dimension(1300,650));
-        setLocation(150, 150);
         initForm();
-        setTitle("Giao phòng");
     }
     
     @SuppressWarnings("unchecked")
@@ -142,24 +146,52 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblDanhSachPhieu.setForeground(colorLabel);
         pnlDanhSachPhieu.add(lblDanhSachPhieu, "span, w 100%, h 30!, wrap");
         
-        Object data[][] = { 
+        Object dataPhieu[][] = { 
                 { "101","Do Cao Hoc", "7000","7:30am"}, 
                 { "101","Do Cao Hoc", "7000","11:30am"}, 
                 { "101", "Tran Van Minh", "6000","1:30pm"}, 
                 { "102", "Phan Van Tai", "8000","5:30pm"}, 
-                { "101","Do Cao Hoc", "7000","9:30pm"},   
-                
+                { "101","Do Cao Hoc", "7000","9:30pm"},              
         };
  
         String col[] = {"Mã phiếu","Khách hàng","Ngày đặt","Giờ"};
-        DefaultTableModel model = new DefaultTableModel(col,0);
-        model.setDataVector(data, col);
-        TableCustom table = new TableCustom(model);
-        JScrollPane sp = new JScrollPane(table);
-//test
-        table.fixTable(sp);
+        DefaultTableModel model = new DefaultTableModel(
+            dataPhieu,
+            col
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false,true
+            }; 
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
         
-        table.addRow(new Object[]{ "them","Do Cao Hoc", "7000","7:30am"});
+        tablePhieuDatPhong = new MyTable(){
+			public Class getColumnClass(int column) {
+				switch (column) {
+				case 0:
+					return String.class;
+				case 1:
+					return String.class;
+				case 2:
+					return String.class;
+				case 3:
+					return String.class;
+				case 4:
+					return String.class;
+				default:
+					return Boolean.class;
+				}
+                        }
+        };
+    
+        tablePhieuDatPhong.setModel(model);
+        
+        JScrollPane sp = new JScrollPane(tablePhieuDatPhong);
+
+        tablePhieuDatPhong.fixTable(sp);
+   
         pnlDanhSachPhieu.add(sp,"w 100%,h 100%");
         
         pnlInfoTop.add(pnlDanhSachPhieu,"w 35%,h 100%");
@@ -180,51 +212,100 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblDanhSachDV.setFont(new Font(fontName, fontPlain, font16));
         lblDanhSachDV.setForeground(colorLabel);
         pnlDanhSachDichVu.add(lblDanhSachDV, "span, w 100%, h 30!, wrap");
-            
-        Object data[][] = { 
-                { "101", "Tran Van Minh", "6000",new JCheckBox() }, 
-                { "102", "Phan Van Tai", "8000",new JCheckBox()  }, 
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },
-                { "101", "Do Cao Hoc", "7000",new JCheckBox() },              
+//chua chon
+        Object dataDicVu[][] = { 
+                { "101", "Tran Van Minh", "6000",JCheckBox.class}, 
+                { "102", "Phan Van Tai", "8000",JCheckBox.class}, 
+                { "101","Do Cao Hoc", "7000",JCheckBox.class},
+                { "101", "Do Cao Hoc", "7000",JCheckBox.class},
+                { "101", "Do Cao Hoc", "7000",JCheckBox.class},
+                { "101","Do Cao Hoc", "7000",JCheckBox.class},
+                { "101","Do Cao Hoc", "7000",JCheckBox.class},
+                { "101","Do Cao Hoc", "7000",JCheckBox.class},              
         };
-        
  
         String col[] = {"Tên","Số lượng","Giá","Chọn"};
-        DefaultTableModel model = new DefaultTableModel(col,0);
-        model.setDataVector(data, col);
-        TableCustomCheckBox table = new TableCustomCheckBox(model);
-        JScrollPane sp = new JScrollPane(table);
-//test
-        table.addEvent(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("1");
-            }  
-        });
-        table.fixTable(sp);
+        DefaultTableModel model = new DefaultTableModel(
+            dataDicVu,
+            col
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false,true
+            }; 
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
         
+        tableDichVu = new MyTable(){
+			public Class getColumnClass(int column) {
+				switch (column) {
+				case 0:
+					return String.class;
+				case 1:
+					return String.class;
+				case 2:
+					return String.class;
+				case 3:
+					return String.class;
+				default:
+					return Boolean.class;
+				}
+			}
+        };
+    
+        tableDichVu.setModel(model);
+        tableDichVu.getColumnModel().getColumn(3).setPreferredWidth(20);
         
+        JScrollPane sp = new JScrollPane(tableDichVu);
+
+        tableDichVu.fixTable(sp);
+//Da chon sp
         Object dataSelected[][] = { 
                 {  "Tran Van Minh",0, "6000"}, 
                 {  "Phan Van Tai",0, "8000"}, 
-                {  "Do Cao Hoc",0, "7000"},             
+                {  "Do Cao Hoc",0, "7000"},  
+                {  "Tran Van Minh",0, "6000"}, 
+                {  "Phan Van Tai",0, "8000"}, 
+                {  "Do Cao Hoc",0, "7000"},
+        };
+        String colSelected[] = {"Tên","Số lượng","Giá"};
+        
+        DefaultTableModel modelSelected = new DefaultTableModel(
+            dataSelected,
+            colSelected
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false
+            }; 
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         };
         
-        String colSelected[] = {"Tên","Số lượng","Giá"};
-        DefaultTableModel modelSelected = new DefaultTableModel(colSelected,0);
-        modelSelected.setDataVector(dataSelected, colSelected);
-        TableCustom tableSelected = new TableCustom(modelSelected);
+        tableDichVuDaChon = new MyTable(){
+			public Class getColumnClass(int column) {
+				switch (column) {
+				case 0:
+					return String.class;
+				case 1:
+					return String.class;
+				case 2:
+					return String.class;
+				default:
+					return Boolean.class;
+				}
+			}
+        };
+    
+        tableDichVuDaChon.setModel(modelSelected);
         
-        TableColumnModel tcm = tableSelected.getColumnModel();
+        TableColumnModel tcm = tableDichVuDaChon.getColumnModel();
         TableColumn tc = tcm.getColumn(1);
         tc.setCellEditor(new SpinnerEditor());
         
-        JScrollPane spSelected = new JScrollPane(tableSelected);
-        tableSelected.fixTable(spSelected);
+        JScrollPane spSelected = new JScrollPane(tableDichVuDaChon);
+        tableDichVuDaChon.fixTable(spSelected);
         
         pnlDanhSachDichVu.add(spSelected,"w 60%,h 100%");
         pnlDanhSachDichVu.add(sp,"w 60%,h 100%");
@@ -232,9 +313,75 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlInfoTop.add(pnlDanhSachDichVu,"w 65%,h 100%");
     }
     
+    public void initRoom(){
+        JPanel pnlThongTin = new JPanel();
+        pnlThongTin.setLayout(new MigLayout("","10[][]20","20[]10[]10[]10[]10[]10"));
+
+        JLabel lblTTPhong = new JLabel("Thông tin phòng");
+        lblTTPhong.setFont(new Font(fontName, fontPlain, font16));
+        lblTTPhong.setForeground(colorLabel);
+        
+        pnlThongTin.add(lblTTPhong, "span, w 100%, h 30!, wrap");        
+        
+        JLabel lblTenPhong = new JLabel("Tên phòng :");
+        lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
+        pnlThongTin.add(lblTenPhong, "align right");
+
+        MyTextField txtTenPhong = new MyTextField();
+        txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
+        txtTenPhong.setEnabled(false);
+        txtTenPhong.setBorderLine(true);
+        txtTenPhong.setBorderRadius(5);
+        pnlThongTin.add(txtTenPhong, "w 100:260:350, h 36! , wrap");
+        
+        JLabel lblLoaiPhong = new JLabel("Loại Phòng :");
+        lblLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
+        pnlThongTin.add(lblLoaiPhong, "align right");
+
+        MyTextField txtLoaiPhong = new MyTextField();
+        txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
+        txtLoaiPhong.setEnabled(false);
+        txtLoaiPhong.setBorderLine(true);
+        txtLoaiPhong.setBorderRadius(5);
+        pnlThongTin.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
+        
+        JLabel lblGia = new JLabel("Giá phòng/giờ :");
+        lblGia.setFont(new Font(fontName, fontPlain, font14));
+        pnlThongTin.add(lblGia, "align right");
+
+        MyTextField txtGia = new MyTextField();
+        txtGia.setFont(new Font(fontName, fontPlain, font14));
+        txtGia.setEnabled(false);
+        txtGia.setBorderRadius(5);
+        txtGia.setBorderLine(true);
+        
+        pnlThongTin.add(txtGia, "w 100:260:350, h 36! , wrap");
+        
+        JLabel lblNhanVien = new JLabel("Nhân viên :");
+        lblNhanVien.setFont(new Font(fontName, fontPlain, font14));
+        pnlThongTin.add(lblNhanVien, "align right");
+
+        MyTextField txtNhanVien= new MyTextField();
+        txtNhanVien.setFont(new Font(fontName, fontPlain, font14));
+        txtNhanVien.setEnabled(false);
+        txtNhanVien.setBorderLine(true);
+        txtNhanVien.setBorderRadius(5);
+        pnlThongTin.add(txtNhanVien, "w 100:260:350, h 36! , wrap");
+        
+        pnlThongTin.setBackground(Color.WHITE);
+        pnlInfoBottom.add(pnlThongTin,"w 35%,h 100%");
+        
+        JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
+        spr.setPreferredSize(new Dimension(20, 230));
+        pnlInfoBottom.add(spr); 
+
+    }
+    
     public void initCustomer(){
+        
         pnlKhachHang = new JPanel();
-        pnlKhachHang.setLayout(new MigLayout("","28[][]20","10[]5"));
+        pnlKhachHang.setBackground(Color.WHITE);
+        pnlKhachHang.setLayout(new MigLayout("","10[][]","20[]10[]10[]10[]"));
         
         JLabel lblTTKhachHang = new JLabel("Thông tin khách hàng");
         lblTTKhachHang.setFont(new Font(fontName, fontPlain, font16));
@@ -248,6 +395,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         MyTextField txtSdt = new MyTextField();
         txtSdt.setFont(new Font(fontName, fontPlain, font14));
         txtSdt.setBorderLine(true);
+        txtSdt.setBorderRadius(5);
         pnlKhachHang.add(txtSdt, "w 100:260:300, h 36! , wrap");
         
         JLabel lblTenKhachHang = new JLabel("Tên khách hàng :");
@@ -257,6 +405,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         MyTextField txtTenKhachHang = new MyTextField();
         txtTenKhachHang.setFont(new Font(fontName, fontPlain, font14));
         txtTenKhachHang.setBorderLine(true);
+        txtTenKhachHang.setBorderRadius(5);
         pnlKhachHang.add(txtTenKhachHang, "w 100:260:300, h 36! , wrap");
         
         JLabel lblCCCD = new JLabel("Số thẻ căn cước :");
@@ -266,109 +415,49 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         MyTextField txtCCCD = new MyTextField();
         txtCCCD.setFont(new Font(fontName, fontPlain, font14));
         txtCCCD.setBorderLine(true);
+        txtCCCD.setBorderRadius(5);
         pnlKhachHang.add(txtCCCD, "w 100:260:300, h 36! , wrap");
-        
-        pnlInfoBottom.add(pnlKhachHang,"w 35%,h 100%");
-        
-        JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
-        spr.setPreferredSize(new Dimension(20, 230));
-        pnlInfoBottom.add(spr);
-        
-        pnlKhachHang.setBackground(Color.WHITE);  
 
-    }
-    
-    public void initRoom(){
-        pnlThongTinPhong = new JPanel();
-        pnlThongTinPhong.setBackground(Color.WHITE);
-        pnlThongTinPhong.setLayout(new MigLayout("","28[][]","10[]5"));
-        
-        JLabel lblTTPhong = new JLabel("Thông tin phòng");
-        lblTTPhong.setFont(new Font(fontName, fontPlain, font16));
-        lblTTPhong.setForeground(colorLabel);
-        pnlThongTinPhong.add(lblTTPhong, "span, w 100%, h 30!, wrap");
-        
-        JPanel pnlThongTin = new JPanel();
-        pnlThongTin.setLayout(new MigLayout("","[][]20","0[]10"));
-        
-        JLabel lblTenPhong = new JLabel("Tên phòng :");
-        lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
-        pnlThongTin.add(lblTenPhong, "align right");
-
-        MyTextField txtTenPhong = new MyTextField();
-        txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
-        txtTenPhong.setEnabled(false);
-        txtTenPhong.setBorderLine(true);
-        pnlThongTin.add(txtTenPhong, "w 100:260:350, h 36! , wrap");
-        
-        JLabel lblLoaiPhong = new JLabel("Loại Phòng :");
-        lblLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
-        pnlThongTin.add(lblLoaiPhong, "align right");
-
-        MyTextField txtLoaiPhong = new MyTextField();
-        txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
-        txtLoaiPhong.setEnabled(false);
-        txtLoaiPhong.setBorderLine(true);
-        pnlThongTin.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
-        
-        JLabel lblGia = new JLabel("Giá phòng/giờ :");
-        lblGia.setFont(new Font(fontName, fontPlain, font14));
-        pnlThongTin.add(lblGia, "align right");
-
-        MyTextField txtGia = new MyTextField();
-        txtGia.setFont(new Font(fontName, fontPlain, font14));
-        txtGia.setEnabled(false);
-        txtGia.setBorderLine(true);
-        
-        pnlThongTin.add(txtGia, "w 100:260:350, h 36! , wrap");
-        
-        JLabel lblNhanVien = new JLabel("Nhân viên :");
-        lblNhanVien.setFont(new Font(fontName, fontPlain, font14));
-        pnlThongTin.add(lblNhanVien, "align right");
-
-        MyTextField txtNhanVien= new MyTextField();
-        txtNhanVien.setFont(new Font(fontName, fontPlain, font14));
-        txtNhanVien.setEnabled(false);
-        txtNhanVien.setBorderLine(true);
-        pnlThongTin.add(txtNhanVien, "w 100:260:350, h 36! , wrap");
-        
-        pnlThongTin.setBackground(Color.WHITE);
-           
         JPanel pnlButton = new JPanel();
-        pnlButton.setLayout(new MigLayout("","push[]10[]20","push[]20"));
+        pnlButton.setLayout(new MigLayout("","push[]10[]","push[][]"));
         pnlButton.setBackground(Color.WHITE);
         
         Button btnHuy = new Button("Giao phòng");
         btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
+        btnHuy.setBorderRadius(5);
         
         Button btnDoiPhong = new Button("Thoát");
         btnDoiPhong.setFont(new Font(fontName, fontPlain, font14));
         btnDoiPhong.setBackground(colorBtn);
+        btnDoiPhong.setBorderRadius(5);
         
         pnlButton.add(btnHuy,"h 36!");
         pnlButton.add(btnDoiPhong,"h 36!");
         
-        pnlThongTinPhong.add(pnlThongTin,"w 50%,h 100%");
-        pnlThongTinPhong.add(pnlButton,"w 50%,h 100%");
-        pnlInfoBottom.add(pnlThongTinPhong,"w 65%,h 100%");
+        pnlKhachHang.add(pnlButton,"span, w 100%,h 100%, wrap");
+      
+        pnlInfoBottom.add(pnlKhachHang,"w 65%,h 100%");
+        
     }
     
     public void initForm(){
+        setSize(new Dimension(1300,650));
+        setLocation(150, 150);
         mainPanel.setLayout(new MigLayout("","20[center]20"));
 //        MainPanel.setBackground(Color.WHITE);
         
-        setResizable(false);
+//        setResizable(false);
         pnlInfoTop = new PanelShadow();
         pnlInfoTop.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]20"));
         pnlInfoBottom = new PanelShadow();
-        pnlInfoBottom.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]10"));
+        pnlInfoBottom.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]"));
         
         initSetTheRoom();
         initService();
-        initCustomer();
         initRoom();
-        
+        initCustomer();
+
         pnlInfoTop.setBackground(Color.WHITE);
         pnlInfoBottom.setBackground(Color.WHITE);
         

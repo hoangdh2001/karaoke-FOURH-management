@@ -8,10 +8,15 @@ import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import gui.swing.table.SpinnerEditor;
 import gui.swing.table.TableCustom;
+import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +40,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     private JPanel pnlInfoRoom;
     private JPanel pnlDanhSachDichVu;
     private String fontName = "sansserif";
+    
+    private MyTable tableSelected;
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
     private int font14 = 14;
@@ -49,7 +56,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         setSize(new Dimension(1200,740));
         setLocation(150, 10);
         initForm();
-        
+        addAction();
     }
 
     @SuppressWarnings("unchecked")
@@ -144,11 +151,38 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
                 {  "Phan Van Tai",0, "8000","0"}, 
                 {  "Do Cao Hoc",0, "7000","0"},             
         };
-        
         String colSelected[] = {"Tên","Số lượng","Giá","Tổng"};
-        DefaultTableModel modelSelected = new DefaultTableModel(colSelected,0);
-        modelSelected.setDataVector(dataSelected, colSelected);
-        TableCustom tableSelected = new TableCustom(modelSelected);
+        
+        DefaultTableModel model = new DefaultTableModel(
+            dataSelected,
+            colSelected
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false,false
+            }; 
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        tableSelected = new MyTable(){
+			public Class getColumnClass(int column) {
+				switch (column) {
+				case 0:
+					return String.class;
+				case 1:
+					return String.class;
+				case 2:
+					return String.class;
+				case 3:
+					return String.class;
+				default:
+					return Boolean.class;
+				}
+			}
+        };
+    
+        tableSelected.setModel(model);
         
         TableColumnModel tcm = tableSelected.getColumnModel();
         TableColumn tc = tcm.getColumn(1);
@@ -169,6 +203,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         txtTong.setFont(new Font(fontName, fontPlain, font14));
         txtTong.setEnabled(false);
         txtTong.setBorderLine(true);
+        txtTong.setBorderRadius(5);
         tong.add(txtTong, "w 100:200:260, h 36! , wrap");
 
         pnlDanhSachDichVu.add(spSelected,"w 100%,h 90%,wrap");
@@ -182,7 +217,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     
     public void initInfoRoom(){
         JPanel pnlInfoRightWrap = new JPanel();
-        pnlInfoRightWrap.setLayout(new MigLayout("","[]","10[center]18"));
+        pnlInfoRightWrap.setLayout(new MigLayout("","[]","10[center]10[center]18[center]18"));
         
         JLabel lblTTPhong = new JLabel("Thông tin sử dụng");
         lblTTPhong.setFont(new Font(fontName, fontPlain, font16));
@@ -197,22 +232,28 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
 
         JLabel lblNgay= new JLabel("Ngày: ");
         lblNgay.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlInfoRoom.add(lblNgay, "align right");
 
         MyTextField txtNgay = new MyTextField();
         txtNgay.setFont(new Font(fontName, fontPlain, font14));
         txtNgay.setEnabled(false);
         txtNgay.setBorderLine(true);
+        txtNgay.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtNgay, "w 100%, h 36! , wrap");
         
         JLabel lblTenPhong= new JLabel("Tên phòng :");
         lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlInfoRoom.add(lblTenPhong, "align right");
 
         MyTextField txtTenPhong = new MyTextField();
         txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
         txtTenPhong.setEnabled(false);
         txtTenPhong.setBorderLine(true);
+        txtTenPhong.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtTenPhong, "w 100%, h 36! , wrap");
         
         JLabel lblLoai= new JLabel("Loại phòng :");
@@ -223,6 +264,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         txtLoai.setFont(new Font(fontName, fontPlain, font14));
         txtLoai.setEnabled(false);
         txtLoai.setBorderLine(true);
+        txtLoai.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtLoai, "w 100%, h 36! , wrap");
         
         JLabel lblGia= new JLabel("Giá phòng/giờ :");
@@ -233,6 +276,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         txtGia.setFont(new Font(fontName, fontPlain, font14));
         txtGia.setEnabled(false);
         txtGia.setBorderLine(true);
+        txtGia.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtGia, "w 100%, h 36! , wrap");
         
         JLabel lblNhanVien= new JLabel("Nhân viên :");
@@ -243,16 +288,21 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         txtNhanVien.setFont(new Font(fontName, fontPlain, font14));
         txtNhanVien.setEnabled(false);
         txtNhanVien.setBorderLine(true);
+        txtNhanVien.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtNhanVien, "w 100%, h 36! , wrap");
         
         JLabel lblStart = new JLabel("Giờ Bắt đầu :");
         lblStart.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlInfoRoom.add(lblStart, "align right");
 
         MyTextField txtStart = new MyTextField();
         txtStart.setFont(new Font(fontName, fontPlain, font14));
         txtStart.setEnabled(false);
         txtStart.setBorderLine(true);
+        txtStart.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtStart, "w 100%, h 36! , wrap");
         
         JLabel lblEnd = new JLabel("Giờ kết thúc :");
@@ -263,6 +313,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         txtEnd.setFont(new Font(fontName, fontPlain, font14));
         txtEnd.setEnabled(false);
         txtEnd.setBorderLine(true);
+        txtEnd.setBorderRadius(5);
         
         pnlInfoRoom.add(txtEnd, "w 100%, h 36! , wrap");
         pnlInfoRoom.setBackground(Color.WHITE);
@@ -273,12 +324,15 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         
         JLabel lblTongTien = new JLabel("Tổng tiền phòng :");
         lblTongTien.setFont(new Font(fontName, fontPlain, font14));
+        
         tongTienPhong.add(lblTongTien, "align left");
 
         MyTextField txtTongTien = new MyTextField();
         txtTongTien.setFont(new Font(fontName, fontPlain, font14));
         txtTongTien.setEnabled(false);
         txtTongTien.setBorderLine(true);
+        txtTongTien.setBorderRadius(5);
+        
         tongTienPhong.add(txtTongTien, "w 100:200:270, h 36!");
         
         pnlInfoRightWrap.add(pnlInfoRoom,"w 100%,h 90%,wrap");
@@ -304,15 +358,20 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         txtTongTien.setFont(new Font(fontName, fontPlain, font14));
         txtTongTien.setEnabled(false);
         txtTongTien.setBorderLine(true);
+        txtTongTien.setBorderRadius(5);
+        
         pnlThongTin.add(txtTongTien, "w 100:200:270, h 36! , wrap");
         
         JLabel lblTienDua = new JLabel("Tiền khách đưa :");
         lblTienDua.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlThongTin.add(lblTienDua, "align right");
 
         MyTextField txtTienDua = new MyTextField();
         txtTienDua.setFont(new Font(fontName, fontPlain, font14));
         txtTienDua.setBorderLine(true);
+        txtTienDua.setBorderRadius(5);
+        
         pnlThongTin.add(txtTienDua, "w 100:200:270, h 36! , wrap");
         
         JLabel lblTraLai = new JLabel("Tiền trả lại :");
@@ -323,6 +382,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         txtTraLai.setFont(new Font(fontName, fontPlain, font14));
         txtTraLai.setEnabled(false);
         txtTraLai.setBorderLine(true);
+        txtTraLai.setBorderRadius(5);
+        
         pnlThongTin.add(txtTraLai, "w 100:200:270, h 36! , wrap");
         
         pnlThongTin.setBackground(Color.WHITE);
@@ -334,10 +395,12 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         Button btnHuy = new Button("Hủy xem");
         btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
+        btnHuy.setBorderRadius(5);
         
         Button btnThanhToan = new Button("Thanh toán");
         btnThanhToan.setFont(new Font(fontName, fontPlain, font14));
         btnThanhToan.setBackground(colorBtn);
+        btnThanhToan.setBorderRadius(5);
         
         pnlButton.add(btnHuy,"h 36!");
         pnlButton.add(btnThanhToan,"h 36!");
@@ -365,6 +428,46 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         
         mainPanel.add(pnlInfoTop,"w 100%,h 70%,wrap");
         mainPanel.add(pnlInfoBottom,"w 100%,h 30%");
+    }
+     
+     public void addAction(){
+        tableSelected.addMouseListener(new action());
+    }
+    
+    private class action implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if(e.getSource().equals(tableSelected)){
+                System.out.println(tableSelected.getModel().getValueAt(0,1));
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+    }
+    
+    private class actionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource().equals(tableSelected)){
+                System.out.println(tableSelected.getModel().getValueAt(0,1));
+            }
+        }
+        
     }
      
      
