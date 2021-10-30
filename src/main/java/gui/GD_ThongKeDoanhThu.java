@@ -6,20 +6,14 @@
 package gui;
 
 import gui.swing.button.Button;
-import gui.swing.table.TableCustom;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
@@ -33,10 +27,10 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     public void buildGD(){
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
-        int fontSize = 16;
+        int fontSize = 14;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setPreferredSize(new Dimension(1119, 800));
+        pnlTop.setPreferredSize(new Dimension(1119, 780));
         pnlTop.setLayout(new MigLayout());
         
        // JPanel pnlThongKeTheo = new JPanel();
@@ -83,7 +77,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         pnlThongKeTheo.add(cmbKhac, ",w 60%, h 36!");
        
         pnlBangThongKe.setOpaque(false);
-        pnlBangThongKe.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Bảng thống kê", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), new Color(4, 72, 210)));
+        pnlBangThongKe.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 1), "Bảng thống kê", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), new Color(4, 72, 210)));
         pnlTop.add(pnlBangThongKe, "w 100%, h 75%, wrap");
        
             tblThongKe.addRow(new Object[]{"", "HD0001", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" });
@@ -111,7 +105,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
           
         pnlTinhTong.setOpaque(false);
         pnlTinhTong.setLayout(new MigLayout());
-        pnlTop.add(pnlTinhTong, "align right,w 25%, h 10%");
+        pnlTop.add(pnlTinhTong, "align right,w 25%, h 7%");
         
         //Tính tổng
         JLabel lblTong = new JLabel("Tổng:");
@@ -121,27 +115,31 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         MyTextField txtTong = new MyTextField();
         txtTong.setFont(new Font(fontName, fontStyle, fontSize));
         txtTong.setBorderLine(true);
+        txtTong.setBorderRadius(5);
         pnlTinhTong.add(txtTong, "w 80%, h 36!");
         
-        pnlBottom.setPreferredSize(new Dimension(1119, 100));
-        pnlBottom.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 2), "Xuất danh sách", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), new Color(4, 72, 210)));
-        pnlBottom.setLayout(new MigLayout("", "10[center] 50 [center] 20 [center]10", " [center] "));
+        pnlBottom.setPreferredSize(new Dimension(1119, 90));
+        pnlBottom.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 1), "Xuất danh sách", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), new Color(4, 72, 210)));
+        pnlBottom.setLayout(new MigLayout("", "20[center] 50 [center] 20 [center]10", " [center] "));
         
         MyTextField txtDuongDan = new MyTextField();
         txtDuongDan.setFont(new Font(fontName, fontStyle, fontSize));
         txtDuongDan.setBorderLine(true);
+        txtDuongDan.setBorderRadius(5);
         pnlBottom.add(txtDuongDan, "w 80%, h 36!");
         
         //Chọn đường dẫn
         Button btnChonDD = new Button("Chọn đường dẫn");
         btnChonDD.setFont(new Font(fontName, fontStyle, fontSize));
         btnChonDD.setBackground(colorBtn);
+        btnChonDD.setBorderRadius(5);
         pnlBottom.add(btnChonDD, "w 200!, h 36!");
 
         // Xuất danh sách
         Button btnXuat = new Button("Xuất danh sách");
         btnXuat.setFont(new Font(fontName, fontStyle, fontSize));
         btnXuat.setBackground(colorBtn);
+        btnXuat.setBorderRadius(5);
         pnlBottom.add(btnXuat, "w 200!, h 36!");
         
         
@@ -187,7 +185,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         );
         pnlThongKeTheoLayout.setVerticalGroup(
             pnlThongKeTheoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 149, Short.MAX_VALUE)
+            .addGap(0, 94, Short.MAX_VALUE)
         );
 
         pnlBangThongKe.setBackground(new java.awt.Color(255, 255, 255));
@@ -225,14 +223,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         pnlBangThongKe.setLayout(pnlBangThongKeLayout);
         pnlBangThongKeLayout.setHorizontalGroup(
             pnlBangThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrThongKe, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(scrThongKe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1106, Short.MAX_VALUE)
         );
         pnlBangThongKeLayout.setVerticalGroup(
             pnlBangThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBangThongKeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrThongKe, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(scrThongKe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
         );
 
         pnlTinhTong.setBackground(new java.awt.Color(255, 255, 255));
@@ -246,7 +241,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         );
         pnlTinhTongLayout.setVerticalGroup(
             pnlTinhTongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 131, Short.MAX_VALUE)
+            .addGap(0, 76, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
@@ -261,16 +256,17 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTopLayout.createSequentialGroup()
                 .addComponent(pnlThongKeTheo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pnlBangThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlTinhTong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlBangThongKe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlTinhTong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         lblTitle.setBackground(new java.awt.Color(255, 255, 255));
-        lblTitle.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblTitle.setForeground(new java.awt.Color(4, 72, 210));
-        lblTitle.setText("Thống Kê Theo Danh Sách");
+        lblTitle.setText("THỐNG KÊ THEO DANH SÁCH");
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
         pnlBottom.setShadowOpacity(0.3F);
@@ -292,11 +288,12 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(lblTitle)
-                .addGap(0, 886, Short.MAX_VALUE))
             .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,7 +303,8 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                 .addGap(11, 11, 11)
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

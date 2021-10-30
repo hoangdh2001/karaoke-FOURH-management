@@ -1,15 +1,21 @@
 package gui.swing.table2;
 
+import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
-import java.awt.Color;
-import java.awt.Graphics;
 
-public class CellRoomStatus extends javax.swing.JPanel {
+public class CellStatus extends javax.swing.JPanel {
 
-    public CellRoomStatus(TrangThaiPhong trangThai) {
+    public CellStatus(Object o) {
         initComponents();
-        lblStatus.setText(trangThai.getTrangThai());
-        lblStatus.setColorStatus(trangThai.getColor());
+        if (o instanceof TrangThaiPhong) {
+            TrangThaiPhong trangThai = (TrangThaiPhong) o;
+            lblStatus.setText(trangThai.getTrangThai());
+            lblStatus.setColorStatus(trangThai.getColor());
+        } else if (o instanceof TrangThaiPhieuDat) {
+            TrangThaiPhieuDat trangThai = (TrangThaiPhieuDat) o;
+            lblStatus.setText(trangThai.getTrangThai());
+            lblStatus.setColorStatus(trangThai.getStatusColor());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -24,17 +30,17 @@ public class CellRoomStatus extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

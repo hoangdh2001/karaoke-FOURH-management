@@ -1,20 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package gui;
 
+import dao.Phong_DAO;
+import entity.LoaiPhong;
+import entity.Phong;
+import entity.TrangThaiPhong;
 import gui.swing.button.Button;
 import gui.swing.table.TableCustom;
+
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,19 +28,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
-/**
- *
- * @author Hao
- */
 public class GD_DanhSachPhong extends JPanel {
-
-    /**
-     * Creates new form GD_DanhSachPhong
-     */
+    private Phong_DAO phong_DAO;
      public GD_DanhSachPhong(){
+         phong_DAO = new Phong_DAO();
          initComponents();
          buildGD();
-         tblPhong.fixTable(scrPhong);
+         initData();
+         table.fixTable(sp);
     }
 
     private void buildGD() {
@@ -44,106 +44,103 @@ public class GD_DanhSachPhong extends JPanel {
         int fontSize = 16;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setPreferredSize(new Dimension(1119, 200));
-        pnlTop.setLayout(new MigLayout());
+        pnlTop.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
         
         /**
          * Begin: group thông tin phòng
          */
-        JPanel pnlThongTin = new JPanel();
-        pnlThongTin.setOpaque(false);
-        pnlThongTin.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "push[center]20[center]20[]push"));
-        pnlTop.add(pnlThongTin,"w 100%,h 70%, wrap");
-        
-        //Mã phòng
-        JLabel lblMaPhong = new JLabel("Mã phòng:");
-        lblMaPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(lblMaPhong, "align right");
-        
-        
-        MyTextField txtMaPhong = new MyTextField();
-        txtMaPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        txtMaPhong.setBorderLine(true);
-        pnlThongTin.add(txtMaPhong, "w 30%, h 36!");
-        
-        //Loại phòng
-        JLabel lblLoaiPhong = new JLabel("Loại phòng:");
-        lblLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(lblLoaiPhong, "align right");
-        
-        MyComboBox<String> cmbLoaiPhong= new MyComboBox<>(new String[] {"--Loại phòng--", "Phòng thường", "Phòng tiệc", "Phòng vip"});
-        cmbLoaiPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbLoaiPhong.setBorderLine(true);
-        cmbLoaiPhong.setBorderRadius(10);
-        pnlThongTin.add(cmbLoaiPhong, "w 30%, h 36!, wrap");
-        
         //Tên phòng
         JLabel lblTenPhong = new JLabel("Tên phòng:");
-        lblTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTin.add(lblTenPhong, "align right");
+        lblTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        pnlTop.add(lblTenPhong);
         
         MyTextField txtTenPhong = new MyTextField();
-        txtTenPhong.setFont(new Font(fontName, fontStyle, fontSize));
+        txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         txtTenPhong.setBorderLine(true);
-        pnlThongTin.add(txtTenPhong, "w 30%, h 36!");
+        pnlTop.add(txtTenPhong, "w 30%");
         
-        //   Panel nút chức năng
-        JPanel pnlButton = new JPanel();
-        pnlButton.setOpaque(false);
-        pnlButton.setLayout(new MigLayout());
-        pnlTop.add(pnlButton, "align right,w 50%, h 30%");
-
-        // Nút Thêm
-        Button btnThemPhong = new Button("Thêm");
-        btnThemPhong .setFont(new Font(fontName, fontStyle, fontSize));
-        btnThemPhong .setBackground(colorBtn);
-        pnlButton.add(btnThemPhong , "w 100!, h 36!, gap 0 20px");//, growx
-
-        // Nút Xóa
-        Button btnXoaPhong  = new Button("Xóa");
-        btnXoaPhong .setFont(new Font(fontName, fontStyle, fontSize));
-        btnXoaPhong .setBackground(colorBtn);
-        pnlButton.add(btnXoaPhong , "w 100!, h 36!, gap 0 20px");
-
-        // Nút Sửa
-        Button btnSuaPhong  = new Button("Sửa");
-        btnSuaPhong .setFont(new Font(fontName, fontStyle, fontSize));
-        btnSuaPhong .setBackground(colorBtn);
-        pnlButton.add(btnSuaPhong , "w 100!, h 36!, gap 0 20px");
-
-        // Nút Làm mới
-        Button btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
-        btnLamMoi.setBackground(colorBtn);
-        pnlButton.add(btnLamMoi, "w 100!, h 36!");
+        // Loại phòng
+        JLabel lblLoaiPhong = new JLabel("Loại phòng");
+        lblLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        pnlTop.add(lblLoaiPhong);
+        
+        MyComboBox<String> cmbLoaiPhong = new MyComboBox<>(new String[] {"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
+        cmbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        cmbLoaiPhong.setBorderLine(true);
+        cmbLoaiPhong.setBorderRadius(10);
+        pnlTop.add(cmbLoaiPhong, "w 20%, h 30!");
+        
+        
+//        //   Panel nút chức năng
+//        JPanel pnlButton = new JPanel();
+//        pnlButton.setOpaque(false);
+//        pnlButton.setLayout(new MigLayout());
+//        pnlTop.add(pnlButton, "align right,w 50%, h 30%");
+//
+//        // Nút Thêm
+//        Button btnThemPhong = new Button("Thêm");
+//        btnThemPhong .setFont(new Font(fontName, fontStyle, fontSize));
+//        btnThemPhong .setBackground(colorBtn);
+//        pnlButton.add(btnThemPhong , "w 100!, h 36!, gap 0 20px");//, growx
+//
+//        // Nút Xóa
+//        Button btnXoaPhong  = new Button("Xóa");
+//        btnXoaPhong .setFont(new Font(fontName, fontStyle, fontSize));
+//        btnXoaPhong .setBackground(colorBtn);
+//        pnlButton.add(btnXoaPhong , "w 100!, h 36!, gap 0 20px");
+//
+//        // Nút Sửa
+//        Button btnSuaPhong  = new Button("Sửa");
+//        btnSuaPhong .setFont(new Font(fontName, fontStyle, fontSize));
+//        btnSuaPhong .setBackground(colorBtn);
+//        pnlButton.add(btnSuaPhong , "w 100!, h 36!, gap 0 20px");
+//
+//        // Nút Làm mới
+//        Button btnLamMoi = new Button("Làm mới");
+//        btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
+//        btnLamMoi.setBackground(colorBtn);
+//        pnlButton.add(btnLamMoi, "w 100!, h 36!");
         /**
          * end: group thông tin phòng hát
          */
          /*Begin: group danh sách Phòng hát*/
-        //pnlBottom.setLayout(new MigLayout());
-        pnlBottom.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 2), "Danh sách phòng", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 18),  new Color(4, 72, 210)));
-        pnlBottom.setPreferredSize(new Dimension(1119, 1110));
-        /*End: group danh sách Phòng */
+        pnlTop.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
         
+    }
+    
+    private void initData() {
+        LoaiPhong loaiPhong = new LoaiPhong();
+        loaiPhong.setTenLoaiPhong("Phòng thường");
+        EventAction eventAction = new EventAction() {
+            @Override
+            public void delete(Object obj) {
+                Phong phong = (Phong) obj;
+                JOptionPane.showMessageDialog(null, "Delete" + phong.getMaPhong());
+            }
 
-        tblPhong.addRow(new Object[]{"", "PH0001", "Phòng Vip", "Sẵn sàng","Phòng Vip", "500,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0002", "Phòng Thường", "Đang hát","Phòng Thường", "300,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0003", "Phòng Tiệc", "Đang sửa chữa","Phòng Tiệc", "400,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0004", "Phòng Thường", "Phòng đang dọn","Phòng Thường", "200,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0005", "Phòng Vip", "Sẵn sàng","Phòng Vip", "500,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0006", "Phòng Thường", "Đang hát","Phòng Thường", "300,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0007", "Phòng Tiệc", "Đang sửa chữa","Phòng Tiệc", "400,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0008", "Phòng Thường", "Phòng đang dọn","Phòng Thường", "200,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0009", "Phòng Thường", "Đang hát","Phòng Thường", "300,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0010", "Phòng Tiệc", "Đang sửa chữa", "Phòng Tiệc", "400,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0011", "Phòng Thường", "Phòng đang dọn","Phòng Thường", "200,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0012", "Phòng Vip", "Sẵn sàng","Phòng Vip", "500,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0013", "Phòng Thường", "Đang hát","Phòng Thường", "300,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0014", "Phòng Tiệc", "Đang sửa chữa","Phòng Tiệc", "400,000" }); 
-        tblPhong.addRow(new Object[]{"", "PH0015", "Phòng Thường", "Phòng đang dọn","Phòng Thường", "200,000" }); 
-           
-        setOpaque(false);
-        setPreferredSize(new Dimension(1119, 1500));
+            @Override
+            public void update(ModelAction action) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        List<Phong> dsPhong = phong_DAO.getDsPhong();
+        dsPhong.forEach((phong) -> {
+            table.addRow(phong.convertToRowTable(eventAction));
+        });
+        
+    }
+    
+    private JPanel createPanelTitle() {
+        JPanel pnlTitle = new JPanel();
+        pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
+        pnlTitle.setOpaque(false);
+        pnlTitle.setLayout(new MigLayout("fill", "", ""));
+        JLabel lblTitle = new JLabel();
+        lblTitle.setText("Danh sách phòng hát");
+        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
+        lblTitle.setForeground(new Color(68, 68, 68));
+        pnlTitle.add(lblTitle);
+        return  pnlTitle;
     }
 
     /**
@@ -157,72 +154,69 @@ public class GD_DanhSachPhong extends JPanel {
 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
-        scrPhong = new javax.swing.JScrollPane();
-        tblPhong = new gui.swing.table2.MyTable();
-        lblTitle = new javax.swing.JLabel();
+
+        sp = new javax.swing.JScrollPane();
+        table = new gui.swing.table2.MyTable();
+        jLabel1 = new javax.swing.JLabel();
+
+        setOpaque(false);
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
-        pnlTop.setShadowSize(3);
+        pnlTop.setShadowSize(2);
         pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1119, Short.MAX_VALUE)
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 214, Short.MAX_VALUE)
+            .addGap(0, 122, Short.MAX_VALUE)
         );
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBottom.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
         pnlBottom.setShadowOpacity(0.3F);
-        pnlBottom.setShadowSize(3);
+        pnlBottom.setShadowSize(2);
         pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setLayout(new java.awt.BorderLayout());
 
-        tblPhong.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "", "Mã phòng", "Tên phòng", "Trạng thái", "Loại phòng", "Giá phòng"
+                "", "Mã phòng", "Tên phòng", "Tầng", "Trạng thái", "Giá phòng", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        scrPhong.setViewportView(tblPhong);
-        if (tblPhong.getColumnModel().getColumnCount() > 0) {
-            tblPhong.getColumnModel().getColumn(0).setResizable(false);
-            tblPhong.getColumnModel().getColumn(1).setResizable(false);
-            tblPhong.getColumnModel().getColumn(2).setResizable(false);
-            tblPhong.getColumnModel().getColumn(3).setResizable(false);
-            tblPhong.getColumnModel().getColumn(4).setResizable(false);
-            tblPhong.getColumnModel().getColumn(5).setResizable(false);
+        sp.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
+            table.getColumnModel().getColumn(3).setResizable(false);
+            table.getColumnModel().getColumn(4).setResizable(false);
+            table.getColumnModel().getColumn(5).setResizable(false);
+            table.getColumnModel().getColumn(6).setResizable(false);
         }
-        tblPhong.getAccessibleContext().setAccessibleParent(pnlBottom);
 
-        javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
-        pnlBottom.setLayout(pnlBottomLayout);
-        pnlBottomLayout.setHorizontalGroup(
-            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrPhong, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-        pnlBottomLayout.setVerticalGroup(
-            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrPhong, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
-        );
+        pnlBottom.add(sp, java.awt.BorderLayout.CENTER);
 
-        lblTitle.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        lblTitle.setForeground(new java.awt.Color(4, 72, 210));
-        lblTitle.setText("Danh Sách Phòng");
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(4, 72, 210));
+        jLabel1.setText("Danh sách phòng");
+        pnlBottom.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -230,28 +224,22 @@ public class GD_DanhSachPhong extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(lblTitle)
-                .addGap(0, 827, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel jLabel1;
     private gui.swing.panel.PanelShadow pnlBottom;
     private gui.swing.panel.PanelShadow pnlTop;
-    private javax.swing.JScrollPane scrPhong;
-    private gui.swing.table2.MyTable tblPhong;
+    private javax.swing.JScrollPane sp;
+    private gui.swing.table2.MyTable table;
     // End of variables declaration//GEN-END:variables
 }

@@ -17,6 +17,7 @@ import gui.component.Content;
 import gui.component.Header;
 import gui.component.Header;
 import gui.component.Menu;
+import gui.dialog.DL_ThongTinNhanVien;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
@@ -46,6 +47,7 @@ public class GD_Chinh extends JFrame {
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setContentPane(createBackground());
         setMinimumSize(new Dimension(1200, 500));
+        setState(MAXIMIZED_BOTH);
 	pack();
 	setLocationRelativeTo(null);
 		
@@ -116,15 +118,27 @@ public class GD_Chinh extends JFrame {
         EventMenuSelected eventSelected = new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
-                System.out.println("Menu index: " + menuIndex + ", SubMenuIndex: " + subMenuIndex);
+                if(subMenuIndex == 0) {
+                    new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
+                }
+                if(subMenuIndex == 3) {
+                    new GD_DangNhap("Đăng nhập").setVisible(true);
+                    dispose();
+                }
             }
         };
-        header.addEvent2(new ActionListener() {
+        
+        header.addEvent2(new EventShowPopupMenu() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void showPopup(Component com) {
                 String[] menuItem = {"Hồ sơ", "Xin chào", "Chao xìn", "Đăng xuất"};
                 DropMenu dropMenu = new DropMenu(GD_Chinh.this, 0, eventSelected, menuItem);
-                int x = GD_Chinh.this.getX() + 1308;
+                int x;
+                if(menu.isShowMenu()) {
+                    x = GD_Chinh.this.getX() + com.getX() + 160;
+                } else {
+                    x = GD_Chinh.this.getX() + com.getX() - 20;
+                }
                 int y = GD_Chinh.this.getY()  + 55;
                 dropMenu.setLocation(x, y);
                 dropMenu.setVisible(true);
@@ -203,8 +217,9 @@ public class GD_Chinh extends JFrame {
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(30);
+        sp.getVerticalScrollBar().setUnitIncrement(100);
         sp.setBorder(null);
 	return sp;
     }
