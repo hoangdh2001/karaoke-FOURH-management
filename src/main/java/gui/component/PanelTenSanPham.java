@@ -4,15 +4,26 @@
  */
 package gui.component;
 
+import dao.NhaCungCapVaNhapHang_DAO;
+import entity.LoaiDichVu;
+import entity.MatHang;
+import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
+import objectcombobox.ObjectComboBox;
 
 /**
  *
  * @author 84975
  */
 public class PanelTenSanPham extends javax.swing.JPanel {
-
+    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO ;
     /**
      * Creates new form PanelTenSanPham
      */
@@ -30,57 +41,69 @@ public class PanelTenSanPham extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        SPChuaCo = new gui.swing.textfield.MyTextField();
-        SPDaCo = new gui.swing.textfield.MyComboBox();
+        txtSPChuaCo = new gui.swing.textfield.MyTextField();
+        cbSPDaCo = new gui.swing.textfield.MyComboBox();
 
         setLayout(new java.awt.CardLayout());
 
-        SPChuaCo.addActionListener(new java.awt.event.ActionListener() {
+        txtSPChuaCo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SPChuaCoActionPerformed(evt);
+                txtSPChuaCoActionPerformed(evt);
             }
         });
-        add(SPChuaCo, "card2");
-
-        SPDaCo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SPDaCoActionPerformed(evt);
-            }
-        });
-        add(SPDaCo, "card3");
+        add(txtSPChuaCo, "card2");
+        add(cbSPDaCo, "card3");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void SPChuaCoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SPChuaCoActionPerformed
+    private void txtSPChuaCoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSPChuaCoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_SPChuaCoActionPerformed
-
-    private void SPDaCoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SPDaCoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SPDaCoActionPerformed
+    }//GEN-LAST:event_txtSPChuaCoActionPerformed
     
-    public void config(){
+    public void config(){ 
         this.setOpaque(false);
-        SPChuaCo.setBorderLine(true);
+        txtSPChuaCo.setBorderLine(true);
+
+        cbSPDaCo.setBorderLine(true);
+        cbSPDaCo.setBorderRadius(10);
         
-        
-        SPDaCo.setBorderLine(true);
-        SPDaCo.setBorderRadius(10);
-        
-        SPDaCo.addItem("Sản phẩm 1");
+        cbSPDaCo.addItem("Chọn sản phẩm");
+
+        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
     }
     
     public void setTypeSP(boolean b){
         if(b){
-            SPDaCo.setVisible(false);
-            SPChuaCo.setVisible(true);
+            cbSPDaCo.setVisible(false);
+            txtSPChuaCo.setVisible(true);
         }else{
-            SPChuaCo.setVisible(false);
-            SPDaCo.setVisible(true);
+            txtSPChuaCo.setVisible(false);
+            cbSPDaCo.setVisible(true);
         }
     }
-
+    
+    public void setComboboxItem(String id){
+        cbSPDaCo.removeAllItems();
+        if(!id.equalsIgnoreCase("")){
+            List<MatHang> listMH = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang(id);
+            for (int i = 0; i < listMH.size(); i++) {
+                MatHang dv = listMH.get(i);
+                cbSPDaCo.addItem(new ObjectComboBox(dv.getTenMatHang(),dv.getMaMatHang()));  
+            } 
+        }else{
+            cbSPDaCo.addItem("Chọn sản phẩm");
+        }
+        
+    }
+    
+    public String getTenSanPhamMoi(){
+        return txtSPChuaCo.getText();
+    }
+    public String getMaSanPhamCu(){
+        ObjectComboBox dv = (ObjectComboBox)cbSPDaCo.getSelectedItem();
+        return dv.getMa();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.swing.textfield.MyTextField SPChuaCo;
-    private gui.swing.textfield.MyComboBox SPDaCo;
+    private gui.swing.textfield.MyComboBox cbSPDaCo;
+    private gui.swing.textfield.MyTextField txtSPChuaCo;
     // End of variables declaration//GEN-END:variables
 }

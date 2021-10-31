@@ -4,12 +4,15 @@
  */
 package gui;
 
+import entity.NhaCungCap;
+import java.util.List;
+import dao.NhaCungCapVaNhapHang_DAO;
+import entity.LoaiDichVu;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import gui.component.PanelTenSanPham;
-import gui.swing.table.SpinnerEditor;
 import gui.swing.table2.MyTable;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Date;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,6 +30,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
+import objectcombobox.ObjectComboBox;
 
 /**
  *
@@ -33,6 +38,26 @@ import net.miginfocom.swing.MigLayout;
  */
 public class GD_ThemSanPham extends javax.swing.JPanel {
     
+    private MyComboBox<String> cbNhaCungCap;
+    private MyComboBox<String> cbLoaiSP;
+    
+    private Button btnThemNCC;
+    private Button btnThem;
+    private Button btnXoa;
+    private Button btnLuu;
+    private Button btnXemThongTin;
+    
+    private MyTextField txtSoLuong;
+    private MyTextField txtGiaNhap;
+    private MyTextField txtGiaban;
+    
+    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO ;
+    
+    private PanelTenSanPham pnlSPMoi;
+    
+    private Date ngayNhap;
+    
+    private JCheckBox spMoi;
     
     private MyTable table;
 
@@ -51,6 +76,8 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         this.setLayout(new MigLayout("","10[]10","10[]10"));
         initFrom();
         initTable();
+        initDao();
+        initAction();
     }
 
     public void initFrom(){
@@ -62,27 +89,26 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         pnlNhaCungCap.setOpaque(false);
         pnlNhaCungCap.setLayout(new MigLayout("","10[]5[]5[]","20[]20"));
         
-        JLabel lblTimKiem = new JLabel("Nhà cung cấp :");
-        lblTimKiem.setFont(new Font(fontName, fontPlain, font14));
+        JLabel lblNCC = new JLabel("Nhà cung cấp :");
+        lblNCC.setFont(new Font(fontName, fontPlain, font14));
      
-        MyComboBox<String> cbNhaCungCap = new MyComboBox<>(new String[] {"cái j đó"});
+        cbNhaCungCap = new MyComboBox<>(new String[] {"Chọn nhà cung cấp"});
         cbNhaCungCap.setFont(new Font(fontName, fontPlain, font12));
         cbNhaCungCap.setBorderLine(true);
         cbNhaCungCap.setBorderRadius(10);
 
-        Button btnThemNCC = new Button("Thêm nhà cung cấp");
+        btnThemNCC = new Button("Thêm nhà cung cấp");
         btnThemNCC.setFont(new Font(fontName, fontPlain, font14));
         btnThemNCC.setBackground(colorBtn);
-        btnThemNCC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GD_ThemNhaCungCap().setVisible(true);
-            }
-        });
         
-        pnlNhaCungCap.add(lblTimKiem);
+        btnXemThongTin = new Button("Xem thông tin");
+        btnXemThongTin.setFont(new Font(fontName, fontPlain, font14));
+        btnXemThongTin.setBackground(colorBtn);
+   
+        pnlNhaCungCap.add(lblNCC);
         pnlNhaCungCap.add(cbNhaCungCap,"w 100:300:500, h 36!");
-        pnlNhaCungCap.add(btnThemNCC,"w 200,h 36!");
+        pnlNhaCungCap.add(btnThemNCC,"w 200!,h 36!");
+        pnlNhaCungCap.add(btnXemThongTin,"w 200!,h 36!");
 
         pnlForm.add(pnlNhaCungCap,"w 100%,wrap");
         
@@ -96,7 +122,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         pnlSanPham.setBackground(Color.WHITE);
         pnlSanPham.setLayout(new MigLayout("", "[center][center] 10 [center][center]", "[]10[center]10[center]"));
         
-        JCheckBox spMoi = new JCheckBox("Sản phẩm mới");
+        spMoi = new JCheckBox("Sản phẩm mới");
         pnlSanPham.add(spMoi,"align left,h 36!,wrap");
         
         JLabel lblLoaiSP = new JLabel("Loại sản phẩm :");
@@ -104,7 +130,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         
         pnlSanPham.add(lblLoaiSP, "align right");
         
-        MyComboBox<String> cbLoaiSP = new MyComboBox<>(new String[] {"loại j đó"});
+        cbLoaiSP = new MyComboBox<>(new String[] {"Chọn loại sản phẩm"});
         cbLoaiSP.setFont(new Font(fontName, fontPlain, font12));
         cbLoaiSP.setBorderLine(true);
         cbLoaiSP.setBorderRadius(10);
@@ -115,7 +141,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         
         pnlSanPham.add(lblTenSP, "align right");
         
-        PanelTenSanPham pnlSPMoi = new PanelTenSanPham();
+        pnlSPMoi = new PanelTenSanPham();
         pnlSPMoi.setTypeSP(false);
         pnlSanPham.add(pnlSPMoi,"w 80%,h 36!,wrap");
         
@@ -136,7 +162,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         
         pnlSanPham.add(lblSoLuong, "align right");
         
-        MyTextField txtSoLuong = new MyTextField();
+        txtSoLuong = new MyTextField();
         txtSoLuong.setFont(new Font(fontName, fontPlain, font14));
         txtSoLuong.setBorderLine(true);
         pnlSanPham.add(txtSoLuong, "w 80%, h 36!");
@@ -146,7 +172,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         
         pnlSanPham.add(lblGiaNhap, "align right");
         
-        MyTextField txtGiaNhap = new MyTextField();
+        txtGiaNhap = new MyTextField();
         txtGiaNhap.setFont(new Font(fontName, fontPlain, font14));
         txtGiaNhap.setBorderLine(true);
         pnlSanPham.add(txtGiaNhap, "w 80%, h 36!, wrap");
@@ -156,22 +182,33 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         
         pnlSanPham.add(lblGiaban, "align right");
         
-        MyTextField txtGiaban = new MyTextField();
+        txtGiaban = new MyTextField();
         txtGiaban.setFont(new Font(fontName, fontPlain, font14));
         txtGiaban.setBorderLine(true);
         pnlSanPham.add(txtGiaban, "w 80%, h 36!, wrap");
         
-        Button btnThem = new Button("Thêm");
+        btnThem = new Button("Thêm");
         btnThem.setFont(new Font(fontName, fontPlain, font14));
         btnThem.setBackground(colorBtn);
         
         
-        Button btnXoa = new Button("Xóa rỗng");
+        btnXoa = new Button("Xóa rỗng");
         btnXoa.setFont(new Font(fontName, fontPlain, font14));
         btnXoa.setBackground(colorBtn);
-       
-        pnlSanPham.add(btnThem, "w 100!, h 36!,pos 0.98al 0.95al n n");
-        pnlSanPham.add(btnXoa, "w 100!, h 36!,pos 0.8al 0.95al n n");
+        
+        btnLuu = new Button("Lưu");
+        btnLuu.setFont(new Font(fontName, fontPlain, font14));
+        btnLuu.setBackground(colorBtn);
+        
+        JPanel pnlbtn = new JPanel();
+        pnlbtn.setOpaque(false);
+        pnlbtn.setLayout(new MigLayout("","0[]10[]10[]0","0[]0"));
+        
+        pnlbtn.add(btnThem,"w 100%,h 36!");
+        pnlbtn.add(btnXoa,"w 100%,h 36!");
+        pnlbtn.add(btnLuu,"w 100%,h 36!");
+        
+        pnlSanPham.add(pnlbtn, "w 300!, h 36!,pos 1al 0.95al n n");
         
         pnlForm.add(pnlSanPham,"w 100%");
         
@@ -180,7 +217,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     
     public void initTable(){
         JPanel pnlTable = new PanelShadow();
-        pnlTable.setLayout(new MigLayout("fill"));
+        pnlTable.setLayout(new MigLayout("fill","20[]"));
         
         JLabel lblTTSanPhamMoi = new JLabel("Thông tin sản phẩm");
         lblTTSanPhamMoi.setFont(new Font(fontName, fontPlain, font16));
@@ -188,11 +225,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         pnlTable.add(lblTTSanPhamMoi, "span, w 100%, h 30!, wrap");
         
         pnlTable.setBackground(Color.WHITE);
-        Object data[][] = { 
-                {  "Tran Van Minh","a", "60","60000","60000","60000"}, 
-                {  "Phan Van Tai","a", "80","60000","60000","60000"}, 
-                {  "Do Cao Hoc","a", "70","60000","60000","60000"},             
-        };
+        Object data[][] = {};
         String col[] = {"Tên","loại sản phẩm","Số lượng","Giá nhập","Giá bán","Tổng"};
         
         DefaultTableModel model = new DefaultTableModel(
@@ -235,6 +268,99 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         
         pnlTable.add(sp,"w 100%,h 100%");
         this.add(pnlTable,"w 100%,h 100%");
+    }
+    
+    public void initDao(){
+        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+
+        List<NhaCungCap> listNCC = nhaCungCapVaNhapHang_DAO.getNhaCungCap();
+        for (int i = 0; i < listNCC.size(); i++) {
+            NhaCungCap ncc = listNCC.get(i);
+            cbNhaCungCap.addItem(new ObjectComboBox(ncc.getTenNCC(),ncc.getMaNCC()));  
+        }
+        
+        List<LoaiDichVu> listDV = nhaCungCapVaNhapHang_DAO.getLoaiDichVu();
+        for (int i = 0; i < listDV.size(); i++) {
+            LoaiDichVu dv = listDV.get(i);
+            cbLoaiSP.addItem(new ObjectComboBox(dv.getTenLoaiDichVu(),dv.getMaLoaiDichVu()));  
+        }
+        
+        
+    }
+    
+    public void initAction(){     
+        btnThemNCC.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GD_ThemNhaCungCap(null).setVisible(true);
+            }
+        });
+        
+        cbNhaCungCap.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                    if(cbNhaCungCap.getSelectedIndex() != 0){
+                    ObjectComboBox ncc = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
+                    System.out.println(ncc.getMa());
+                }
+            }
+        });
+        
+        cbLoaiSP.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                if(cbLoaiSP.getSelectedIndex() != 0){
+                    ObjectComboBox dv = (ObjectComboBox)cbLoaiSP.getSelectedItem();
+                    pnlSPMoi.setComboboxItem(dv.getMa());
+                }
+            }
+        });
+        
+        btnLuu.addActionListener(new createActionListenner());
+        btnXemThongTin.addActionListener(new createActionListenner());
+    };
+    
+    public class createActionListenner implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object o = e.getSource();
+            if(o.equals(btnLuu)){
+//                insert lo hang
+                String maLoHang = "LH0005";
+                ngayNhap = new Date();
+                double tongTien = 500;
+                String maNhanVien = "NV0007"; 
+                ObjectComboBox maNCC = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
+//                insert mat hang
+                String giaNhap = txtGiaNhap.getText();
+                String soLuong = txtSoLuong.getText();
+                String giaBan = txtGiaban.getText();
+
+                if(spMoi.isSelected()){
+                    ObjectComboBox loaiSP = (ObjectComboBox)cbLoaiSP.getSelectedItem();
+                    String maLoaiDichVu = loaiSP.getMa();
+                    String tenMatHang = pnlSPMoi.getTenSanPhamMoi();
+                    String maMatHang = "MH0050";
+                    
+                    System.out.println(
+                    "insert Lo hang: "+ maLoHang+ " " + ngayNhap +" "+tongTien +" "+ maNhanVien+" " +maNCC.getMa()+"\n"+
+                    "insert"+ maMatHang+" " + giaBan+" " +soLuong+" " +tenMatHang+" " + maLoaiDichVu+" "
+                    );
+                }else{
+                    String maMatHang = pnlSPMoi.getMaSanPhamCu();
+                    
+                    System.out.println(
+                    "insert Lo hang: "+ maLoHang+ " " + ngayNhap +" "+tongTien +" "+ maNhanVien+" " +maNCC.getMa()+"\n"+
+                    "update Mat Hang "+maMatHang+"set slTonKho = "+"slTonKho"+soLuong+" dongia =" + giaBan
+                    );
+                }
+            }else if(o.equals(btnXemThongTin)){
+                if(cbNhaCungCap.getSelectedIndex() !=0){
+                    ObjectComboBox maNCC = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
+                    NhaCungCap ncc = nhaCungCapVaNhapHang_DAO.getNhaCungCapById(maNCC.getMa());
+                    new GD_ThemNhaCungCap(ncc).setVisible(true);
+                }
+            }
+        }
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
