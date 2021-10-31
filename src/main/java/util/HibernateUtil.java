@@ -84,4 +84,8 @@ public class HibernateUtil {
     public void close() {
         sessionFactory.close();
     }
+    
+    public boolean checkConnect() {
+        return  sessionFactory.isClosed();
+    }
 }

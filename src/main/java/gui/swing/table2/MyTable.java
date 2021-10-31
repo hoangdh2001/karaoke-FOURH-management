@@ -10,12 +10,9 @@ import entity.TrangThaiPhong;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Component;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -90,7 +87,7 @@ public class MyTable extends JTable {
     
     @Override
     public TableCellEditor getCellEditor(int row, int col) {
-        if (col == getColumnCount() - 1) {
+        if (getValueAt(row, col) instanceof ModelAction) {
             return new TableCellAction();
         } else {
             return super.getCellEditor(row, col);

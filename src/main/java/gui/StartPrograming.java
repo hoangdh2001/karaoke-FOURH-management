@@ -16,8 +16,8 @@ public class StartPrograming {
             java.util.logging.Logger.getLogger(StartPrograming.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         EventQueue.invokeLater(() -> {
-            new GD_DangNhap("Đăng nhập").setVisible(true);
-//            new GD_Chinh("Quản lý karaoke fourh").setVisible(true);
+//            new GD_DangNhap("Đăng nhập").setVisible(true);
+            new GD_Chinh("Quản lý karaoke fourh").setVisible(true);
 
         });
         
