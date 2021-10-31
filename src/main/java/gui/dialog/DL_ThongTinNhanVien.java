@@ -2,6 +2,8 @@
 package gui.dialog;
 
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
@@ -41,7 +43,14 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
         animator = new Animator(100, target);
         animator.setResolution(0);
         animator.setAcceleration(0.5f);
-        animator.start();
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                if(!animator.isRunning()) {
+                    animator.start();
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

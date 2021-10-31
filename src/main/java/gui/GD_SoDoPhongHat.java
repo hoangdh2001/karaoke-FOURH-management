@@ -1,5 +1,6 @@
 package gui;
 
+import dao.Phong_DAO;
 import entity.TrangThaiPhong;
 import gui.component.PanelMap;
 import gui.component.PanelStatus;
@@ -11,6 +12,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,15 +22,16 @@ import net.miginfocom.swing.MigLayout;
 public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
     private PanelMap panelMap;
+    private Phong_DAO phong_DAO;
 
     public GD_SoDoPhongHat() {
+        phong_DAO = new Phong_DAO();
         initComponents();
         buildGD();
         panelMap();
     }
 
     private void buildGD() {
-
         panelForm.setPreferredSize(new Dimension(getWidth(), 265));
         panelForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
 
@@ -65,7 +69,11 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
         panelForm.add(lbTrangThai);
 
-        MyComboBox<String> cbTrangThai = new MyComboBox<>(new String[]{"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
+        MyComboBox<String> cbTrangThai = new MyComboBox<>();
+        cbTrangThai.addItem("--Tất cả--");
+        for (TrangThaiPhong value : TrangThaiPhong.values()) {
+            cbTrangThai.addItem(value.getTrangThai());
+        }
         cbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
         cbTrangThai.setBorderLine(true);
         cbTrangThai.setBorderRadius(10);
@@ -76,13 +84,19 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         timKiemBtn.setBorderline(true);
         timKiemBtn.setBorderRadius(5);
         timKiemBtn.setBackground(new Color(184, 238, 241));
+        timKiemBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                
+            }
+        });
         panelForm.add(timKiemBtn, "cell 3 2, align right, w 80!, h 36!");
 
         panelForm.add(createPaneStatus(), "pos 0al 1al 100% n, h 50!");
 
         panelForm.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
-
     }
+    
 
     private JPanel createPanelTitle() {
         JPanel pnlTitle = new JPanel();
@@ -102,21 +116,42 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         pnlStatus.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(0, 0, 0, 0.1f)));
         pnlStatus.setOpaque(false);
         pnlStatus.setLayout(new MigLayout("fill", "", ""));
-        TrangThaiPhong[] trangThai = TrangThaiPhong.values();
-        for (TrangThaiPhong trangThai1 : trangThai) {
-            PanelStatus pn = new PanelStatus(trangThai1);
-            pnlStatus.add(pn);
-        }
+        
+        PanelStatus pnlTrong = new PanelStatus(TrangThaiPhong.TRONG);
+        pnlTrong.setText(phong_DAO.getSoLuongPhongTheoTrangThai(TrangThaiPhong.TRONG));
+        pnlStatus.add(pnlTrong);
+        
+        PanelStatus pnlDangHat = new PanelStatus(TrangThaiPhong.DANG_HAT);
+        pnlDangHat.setText(phong_DAO.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_HAT));
+        pnlStatus.add(pnlDangHat);
+        
+        PanelStatus pnlDatTruoc = new PanelStatus(TrangThaiPhong.DAT_TRUOC);
+        pnlDatTruoc.setText(phong_DAO.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DAT_TRUOC));
+        pnlStatus.add(pnlDatTruoc);
+        
+        PanelStatus pnlBan = new PanelStatus(TrangThaiPhong.BAN);
+        pnlBan.setText(phong_DAO.getSoLuongPhongTheoTrangThai(TrangThaiPhong.BAN));
+        pnlStatus.add(pnlBan);
+        
+        PanelStatus pnlDangDon = new PanelStatus(TrangThaiPhong.DANG_DON);
+        pnlDangDon.setText(phong_DAO.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_DON));
+        pnlStatus.add(pnlDangDon);
+        
+        PanelStatus pnlDangSua = new PanelStatus(TrangThaiPhong.DANG_SUA);
+        pnlDangSua.setText(phong_DAO.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_SUA));
+        pnlStatus.add(pnlDangSua);
+        
         return pnlStatus;
     }
 
     private void panelMap() {
         panelMap = new PanelMap();
+        panelMap.setBackground(Color.WHITE);
         panelMap.setShadowOpacity(0.3f);
         panelMap.setShadowSize(2);
         panelMap.setShadowType(ShadowType.TOP);
         add(panelMap, BorderLayout.CENTER);
-        panelMap.setPreferredSize(new Dimension(getWidth(), 2500));
+        panelMap.setPreferredSize(new Dimension(getWidth(), getHeight() + 800));
     }
 
     @SuppressWarnings("unchecked")
