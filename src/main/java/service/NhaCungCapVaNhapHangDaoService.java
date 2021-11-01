@@ -7,6 +7,7 @@ package service;
 import entity.LoaiDichVu;
 import entity.MatHang;
 import entity.NhaCungCap;
+import entity.KhachHang;
 import java.util.List;
 
 /**
@@ -25,4 +26,6 @@ public interface NhaCungCapVaNhapHangDaoService {
     public List<MatHang> getDanhSachMatHang(String id);
     
     public String getlastNhaCungCap();
+    
+    public KhachHang getKhachHangBySDT(String sdt);
 }

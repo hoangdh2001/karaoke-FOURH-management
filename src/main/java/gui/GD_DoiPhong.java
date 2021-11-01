@@ -6,16 +6,16 @@ package gui;
 
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
-import gui.swing.table.TableCustomCheckBox;
-import gui.swing.table.TableCustomRadio;
 import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,6 +34,16 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     private JPanel pnlInfo;
     private JPanel pnlHieuChinh;
     private String fontName = "sansserif";
+    
+    private MyTextField txtTenPhong;
+    private MyTextField txtLoaiPhong;
+    private MyTextField txtGiaPhong;
+    private MyTextField txtGioDaHat;
+    private MyTextField txtTongTienCu;
+    
+    private MyTextField txtKhachHang;
+    private MyTextField txtLoaiPhongMoi;
+    private MyTextField txtGioBatDau;
     
     private MyTable table;
     
@@ -156,7 +166,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblTenPhong, "align right");
 
-        MyTextField txtTenPhong = new MyTextField();
+        txtTenPhong = new MyTextField();
         txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
         txtTenPhong.setEnabled(false);
         txtTenPhong.setBorderLine(true);
@@ -169,7 +179,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         
         pnlLoc.add(lblLoaiPhong, "align right");
 
-        MyTextField txtLoaiPhong = new MyTextField();
+        txtLoaiPhong = new MyTextField();
         txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         txtLoaiPhong.setEnabled(false);
         txtLoaiPhong.setBorderLine(true);
@@ -182,7 +192,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         
         pnlLoc.add(lblGiaPhong, "align right");
 
-        MyTextField txtGiaPhong = new MyTextField();
+        txtGiaPhong = new MyTextField();
         txtGiaPhong.setFont(new Font(fontName, fontPlain, font14));
         txtGiaPhong.setEnabled(false);
         txtGiaPhong.setBorderLine(true);
@@ -194,7 +204,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         lblGioDaHat.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblGioDaHat, "align right");
 
-        MyTextField txtGioDaHat = new MyTextField();
+        txtGioDaHat = new MyTextField();
         txtGioDaHat.setFont(new Font(fontName, fontPlain, font14));
         txtGioDaHat.setEnabled(false);
         txtGioDaHat.setBorderLine(true);
@@ -206,7 +216,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         lblTongTienCu.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblTongTienCu, "align right");
 
-        MyTextField txtTongTienCu = new MyTextField();
+        txtTongTienCu = new MyTextField();
         txtTongTienCu.setFont(new Font(fontName, fontPlain, font14));
         txtTongTienCu.setEnabled(false);
         txtTongTienCu.setBorderLine(true);
@@ -269,8 +279,6 @@ public class GD_DoiPhong extends javax.swing.JDialog {
 					return String.class;
 				case 2:
 					return String.class;
-				case 3:
-					return String.class;
 				default:
 					return Boolean.class;
 				}
@@ -295,7 +303,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         lblKhachHang.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblKhachHang, "align right");
 
-        MyTextField txtKhachHang = new MyTextField();
+        txtKhachHang = new MyTextField();
         txtKhachHang.setFont(new Font(fontName, fontPlain, font14));
         txtKhachHang.setEnabled(false);
         txtKhachHang.setBorderLine(true);
@@ -307,22 +315,31 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         lblLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblLoaiPhong, "align right");
 
-        MyTextField txtLoaiPhong = new MyTextField();
-        txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
-        txtLoaiPhong.setEnabled(false);
-        txtLoaiPhong.setBorderLine(true);
-        txtLoaiPhong.setBorderRadius(5);
+        txtLoaiPhongMoi = new MyTextField();
+        txtLoaiPhongMoi.setFont(new Font(fontName, fontPlain, font14));
+        txtLoaiPhongMoi.setEnabled(false);
+        txtLoaiPhongMoi.setBorderLine(true);
+        txtLoaiPhongMoi.setBorderRadius(5);
         
-        pnlThongTin.add(txtLoaiPhong, "w 100:260:350, h 36! , wrap");
+        pnlThongTin.add(txtLoaiPhongMoi, "w 100:260:350, h 36! , wrap");
         
         JLabel lblGioDatDau = new JLabel("Giờ bắt đầu :");
         lblGioDatDau.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblGioDatDau, "align right");
 
-        MyTextField txtGioBatDau = new MyTextField();
+        txtGioBatDau = new MyTextField();
         txtGioBatDau.setFont(new Font(fontName, fontPlain, font14));
         txtGioBatDau.setBorderLine(true);
         txtGioBatDau.setBorderRadius(5);
+        txtGioBatDau.setEnabled(false);
+        
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String strDate = formatter.format(date);
+        strDate = formatter.format(date);
+        
+        txtGioBatDau.setText(strDate);
         
         pnlThongTin.add(txtGioBatDau, "w 100:260:350, h 36! , wrap");
         
@@ -380,12 +397,14 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         @Override
         public void mouseClicked(MouseEvent e) {
             if(e.getSource().equals(table)){
-                System.out.println(table.getModel().getValueAt(0,3));
+                boolean cb = Boolean.parseBoolean(table.getValueAt(table.getSelectedRow(),3).toString().trim());
+                System.err.println(cb);
             }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
+            
         }
 
         @Override
@@ -398,6 +417,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
 
         @Override
         public void mouseExited(MouseEvent e) {
+            
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

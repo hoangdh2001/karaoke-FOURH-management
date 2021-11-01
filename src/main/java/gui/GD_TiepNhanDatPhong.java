@@ -4,6 +4,14 @@
  */
 package gui;
 
+import dao.NhaCungCapVaNhapHang_DAO;
+import entity.CaLam;
+import entity.KhachHang;
+import entity.LoaiNhanVien;
+import entity.LoaiPhong;
+import entity.NhanVien;
+import entity.Phong;
+import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import gui.swing.table.SpinnerEditor;
@@ -17,6 +25,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.Date;
+import java.text.DecimalFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -24,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -48,6 +63,19 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private MyTable tableDichVuDaChon;
     private MyTable tablePhieuDatPhong;
     
+    private MyTextField txtTenPhong;
+    private MyTextField txtLoaiPhong;
+    private MyTextField txtGia;
+    private MyTextField txtNhanVien;
+    private MyTextField txtSdt;
+    private MyTextField txtTenKhachHang;
+    private MyTextField txtCCCD ;
+    
+    private Button btnHuy;
+    private Button btnThoat;
+    
+    private DecimalFormat df;
+    
     private String fontName = "sansserif";
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
@@ -55,12 +83,24 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private int font12 = 12;
     private Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
-    public GD_TiepNhanDatPhong() {
+    
+    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhaphang_DAO;
+    
+    private Phong phong;
+    private NhanVien nhanVien;
+    
+    public GD_TiepNhanDatPhong(Phong phong,NhanVien nhanVien) {
         super();
         setTitle("Giao phòng");
         setModal(true);
+        setResizable(false);
         initComponents();
         initForm();
+        this.phong = new Phong("maphong", "phong 001", TrangThaiPhong.DANG_HAT, new LoaiPhong("loai phong", "ten loai phong", 5000.0), 1);  
+        this.nhanVien = nhanVien;
+        
+        initData();
+        addAction();
     }
     
     @SuppressWarnings("unchecked")
@@ -123,7 +163,12 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GD_TiepNhanDatPhong dialog = new GD_TiepNhanDatPhong();
+//                test phong
+                Phong phong = new Phong("maphong", "phong 001", TrangThaiPhong.DANG_HAT, new LoaiPhong("loai phong", "ten loai phong", 5000.0), 1);
+                LoaiNhanVien lnv = new LoaiNhanVien("1", "loai nhan vien");
+                NhanVien nhanVien = new NhanVien("Nhan vieen 001", "name", lnv, new CaLam("1", "sdf", "fsdf"), "66556651", true, new Date( System.currentTimeMillis()),null, null, null, null);
+                
+                GD_TiepNhanDatPhong dialog = new GD_TiepNhanDatPhong(phong,nhanVien);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -147,14 +192,14 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlDanhSachPhieu.add(lblDanhSachPhieu, "span, w 100%, h 30!, wrap");
         
         Object dataPhieu[][] = { 
-                { "101","Do Cao Hoc", "7000","7:30am"}, 
-                { "101","Do Cao Hoc", "7000","11:30am"}, 
-                { "101", "Tran Van Minh", "6000","1:30pm"}, 
-                { "102", "Phan Van Tai", "8000","5:30pm"}, 
-                { "101","Do Cao Hoc", "7000","9:30pm"},              
+                { "101","Do Cao Hoc", "7:30am"}, 
+                { "101","Do Cao Hoc", "11:30am"}, 
+                { "101", "Tran Van Minh", "1:30pm"}, 
+                { "102", "Phan Van Tai", "5:30pm"}, 
+                { "101","Do Cao Hoc","9:30pm"},              
         };
  
-        String col[] = {"Mã phiếu","Khách hàng","Ngày đặt","Giờ"};
+        String col[] = {"Mã phiếu","Khách hàng","Giờ"};
         DefaultTableModel model = new DefaultTableModel(
             dataPhieu,
             col
@@ -177,8 +222,6 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 				case 2:
 					return String.class;
 				case 3:
-					return String.class;
-				case 4:
 					return String.class;
 				default:
 					return Boolean.class;
@@ -214,14 +257,14 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlDanhSachDichVu.add(lblDanhSachDV, "span, w 100%, h 30!, wrap");
 //chua chon
         Object dataDicVu[][] = { 
-                { "101", "Tran Van Minh", "6000",JCheckBox.class}, 
-                { "102", "Phan Van Tai", "8000",JCheckBox.class}, 
-                { "101","Do Cao Hoc", "7000",JCheckBox.class},
-                { "101", "Do Cao Hoc", "7000",JCheckBox.class},
-                { "101", "Do Cao Hoc", "7000",JCheckBox.class},
-                { "101","Do Cao Hoc", "7000",JCheckBox.class},
-                { "101","Do Cao Hoc", "7000",JCheckBox.class},
-                { "101","Do Cao Hoc", "7000",JCheckBox.class},              
+                { "101", "Tran Van Minh", "6000",false}, 
+                { "102", "Phan Van Tai", "8000",false}, 
+                { "101","Do Cao Hoc", "7000",false},
+                { "101", "Do Cao Hoc", "7000",false},
+                { "101", "Do Cao Hoc", "7000",false},
+                { "101","Do Cao Hoc", "7000",false},
+                { "101","Do Cao Hoc", "7000",false},
+                { "101","Do Cao Hoc", "7000",false},              
         };
  
         String col[] = {"Tên","Số lượng","Giá","Chọn"};
@@ -246,30 +289,39 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 					return String.class;
 				case 2:
 					return String.class;
-				case 3:
-					return String.class;
 				default:
 					return Boolean.class;
 				}
+				
 			}
         };
-    
+        
         tableDichVu.setModel(model);
-        tableDichVu.getColumnModel().getColumn(3).setPreferredWidth(20);
+        tableDichVu.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tableDichVu.getColumnModel().getColumn(3).setPreferredWidth(40);
+        tableDichVu.getColumnModel().getColumn(2).setPreferredWidth(80);
+        tableDichVu.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableDichVu.getColumnModel().getColumn(0).setPreferredWidth(246);
+        
+        tableDichVu.getColumnModel().getColumn(3).setPreferredWidth(40);
+        tableDichVu.getColumnModel().getColumn(2).setPreferredWidth(80);
+        tableDichVu.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableDichVu.getColumnModel().getColumn(0).setPreferredWidth(246);
+        
         
         JScrollPane sp = new JScrollPane(tableDichVu);
 
         tableDichVu.fixTable(sp);
 //Da chon sp
         Object dataSelected[][] = { 
-                {  "Tran Van Minh",0, "6000"}, 
-                {  "Phan Van Tai",0, "8000"}, 
-                {  "Do Cao Hoc",0, "7000"},  
-                {  "Tran Van Minh",0, "6000"}, 
-                {  "Phan Van Tai",0, "8000"}, 
-                {  "Do Cao Hoc",0, "7000"},
+                {  "Tran Van Minh",0}, 
+                {  "Phan Van Tai",0}, 
+                {  "Do Cao Hoc",0},  
+                {  "Tran Van Minh",0}, 
+                {  "Phan Van Tai",0}, 
+                {  "Do Cao Hoc",0},
         };
-        String colSelected[] = {"Tên","Số lượng","Giá"};
+        String colSelected[] = {"Tên","Số lượng"};
         
         DefaultTableModel modelSelected = new DefaultTableModel(
             dataSelected,
@@ -288,27 +340,26 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 				switch (column) {
 				case 0:
 					return String.class;
-				case 1:
-					return String.class;
-				case 2:
-					return String.class;
 				default:
-					return Boolean.class;
+					return String.class;
 				}
 			}
         };
     
         tableDichVuDaChon.setModel(modelSelected);
+        tableDichVuDaChon.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tableDichVuDaChon.getColumnModel().getColumn(0).setPreferredWidth(165);
+        tableDichVuDaChon.getColumnModel().getColumn(1).setPreferredWidth(70);
         
         TableColumnModel tcm = tableDichVuDaChon.getColumnModel();
         TableColumn tc = tcm.getColumn(1);
-        tc.setCellEditor(new SpinnerEditor());
+        tc.setCellEditor(new SpinnerEditor(5));
         
         JScrollPane spSelected = new JScrollPane(tableDichVuDaChon);
         tableDichVuDaChon.fixTable(spSelected);
         
-        pnlDanhSachDichVu.add(spSelected,"w 60%,h 100%");
-        pnlDanhSachDichVu.add(sp,"w 60%,h 100%");
+        pnlDanhSachDichVu.add(spSelected,"w 35%,h 100%");
+        pnlDanhSachDichVu.add(sp,"w 65%,h 100%");
         
         pnlInfoTop.add(pnlDanhSachDichVu,"w 65%,h 100%");
     }
@@ -327,7 +378,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblTenPhong, "align right");
 
-        MyTextField txtTenPhong = new MyTextField();
+        txtTenPhong = new MyTextField();
         txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
         txtTenPhong.setEnabled(false);
         txtTenPhong.setBorderLine(true);
@@ -338,7 +389,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblLoaiPhong, "align right");
 
-        MyTextField txtLoaiPhong = new MyTextField();
+        txtLoaiPhong = new MyTextField();
         txtLoaiPhong.setFont(new Font(fontName, fontPlain, font14));
         txtLoaiPhong.setEnabled(false);
         txtLoaiPhong.setBorderLine(true);
@@ -349,7 +400,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblGia.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblGia, "align right");
 
-        MyTextField txtGia = new MyTextField();
+        txtGia = new MyTextField();
         txtGia.setFont(new Font(fontName, fontPlain, font14));
         txtGia.setEnabled(false);
         txtGia.setBorderRadius(5);
@@ -361,7 +412,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblNhanVien.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblNhanVien, "align right");
 
-        MyTextField txtNhanVien= new MyTextField();
+        txtNhanVien= new MyTextField();
         txtNhanVien.setFont(new Font(fontName, fontPlain, font14));
         txtNhanVien.setEnabled(false);
         txtNhanVien.setBorderLine(true);
@@ -392,7 +443,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblSdt.setFont(new Font(fontName, fontPlain, font14));
         pnlKhachHang.add(lblSdt, "align right");
 
-        MyTextField txtSdt = new MyTextField();
+        txtSdt = new MyTextField();
         txtSdt.setFont(new Font(fontName, fontPlain, font14));
         txtSdt.setBorderLine(true);
         txtSdt.setBorderRadius(5);
@@ -402,7 +453,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblTenKhachHang.setFont(new Font(fontName, fontPlain, font14));
         pnlKhachHang.add(lblTenKhachHang, "align right");
 
-        MyTextField txtTenKhachHang = new MyTextField();
+        txtTenKhachHang = new MyTextField();
         txtTenKhachHang.setFont(new Font(fontName, fontPlain, font14));
         txtTenKhachHang.setBorderLine(true);
         txtTenKhachHang.setBorderRadius(5);
@@ -412,7 +463,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblCCCD.setFont(new Font(fontName, fontPlain, font14));
         pnlKhachHang.add(lblCCCD, "align right");
 
-        MyTextField txtCCCD = new MyTextField();
+        txtCCCD = new MyTextField();
         txtCCCD.setFont(new Font(fontName, fontPlain, font14));
         txtCCCD.setBorderLine(true);
         txtCCCD.setBorderRadius(5);
@@ -422,18 +473,18 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlButton.setLayout(new MigLayout("","push[]10[]","push[][]"));
         pnlButton.setBackground(Color.WHITE);
         
-        Button btnHuy = new Button("Giao phòng");
+        btnHuy = new Button("Giao phòng");
         btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
         btnHuy.setBorderRadius(5);
         
-        Button btnDoiPhong = new Button("Thoát");
-        btnDoiPhong.setFont(new Font(fontName, fontPlain, font14));
-        btnDoiPhong.setBackground(colorBtn);
-        btnDoiPhong.setBorderRadius(5);
+        btnThoat = new Button("Thoát");
+        btnThoat.setFont(new Font(fontName, fontPlain, font14));
+        btnThoat.setBackground(colorBtn);
+        btnThoat.setBorderRadius(5);
         
         pnlButton.add(btnHuy,"h 36!");
-        pnlButton.add(btnDoiPhong,"h 36!");
+        pnlButton.add(btnThoat,"h 36!");
         
         pnlKhachHang.add(pnlButton,"span, w 100%,h 100%, wrap");
       
@@ -442,6 +493,8 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     }
     
     public void initForm(){
+        nhaCungCapVaNhaphang_DAO = new NhaCungCapVaNhapHang_DAO();
+        df = new DecimalFormat("#,##0.00");
         setSize(new Dimension(1300,650));
         setLocation(150, 150);
         mainPanel.setLayout(new MigLayout("","20[center]20"));
@@ -463,6 +516,77 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         
         mainPanel.add(pnlInfoTop,"w 100%,h 50%,wrap");
         mainPanel.add(pnlInfoBottom,"w 100%,h 50%");
+    }
+    
+    public void initData(){
+        txtTenPhong.setText(phong.getTenPhong());
+        txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
+        txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
+        txtNhanVien.setText(nhanVien.getTenNhanVien());
+    }
+    
+    public void addAction(){
+        tablePhieuDatPhong.addMouseListener(new createMouseListener());
+        tableDichVuDaChon.addMouseListener(new createMouseListener());
+        txtSdt.addKeyListener(new createKeyListener());
+    }
+    
+    public void initKhachHang(String sdt){
+        KhachHang kh = nhaCungCapVaNhaphang_DAO.getKhachHangBySDT(sdt);
+        txtTenKhachHang.setText(kh.getTenKhachHang());
+        txtCCCD.setText(kh.getCanCuocCD());
+    }
+    
+    private class createKeyListener implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+           Object obj = e.getSource();
+           if(e.getKeyChar() == KeyEvent.VK_ENTER && obj.equals(txtSdt)){
+               String sdt = txtSdt.getText().trim();
+               if(sdt != null){
+                   initKhachHang(sdt);
+               }
+           }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
+        
+    }
+    
+    private class createMouseListener implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            Object obj = e.getSource();
+            if(obj.equals(tablePhieuDatPhong)){
+                String ma = tablePhieuDatPhong.getModel().getValueAt(tablePhieuDatPhong.getSelectedRow(), 0).toString();
+                System.out.println(ma);
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

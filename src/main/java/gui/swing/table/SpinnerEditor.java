@@ -18,8 +18,10 @@ import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
 
@@ -32,17 +34,19 @@ public class SpinnerEditor extends DefaultCellEditor {
         DefaultEditor editor;
         JTextField textField;
         boolean valueSet;
-
+        int min = 0;
+        int step = 1;
+        int i = 1;
         // Initializes the spinner.
-        public SpinnerEditor() {
+        public SpinnerEditor(int max) {
             super(new JTextField());
-            spinner = new JSpinner();
+            
+            SpinnerModel value = new SpinnerNumberModel(i, min, max, step);
+            spinner = new JSpinner(value);
             editor = ((JSpinner.DefaultEditor)spinner.getEditor());
             textField = editor.getTextField();
             textField.addFocusListener( new FocusListener() {
                 public void focusGained( FocusEvent fe ) {
-                    //textField.setSelectionStart(0);
-                    //textField.setSelectionEnd(1);
                     SwingUtilities.invokeLater( new Runnable() {
                         public void run() {
                             if ( valueSet ) {
@@ -60,7 +64,8 @@ public class SpinnerEditor extends DefaultCellEditor {
                 }
             });
         }
-
+        
+        
         // Prepares the spinner component and returns it.
         public Component getTableCellEditorComponent(
             JTable table, Object value, boolean isSelected, int row, int column

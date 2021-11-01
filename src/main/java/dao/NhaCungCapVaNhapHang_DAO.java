@@ -4,6 +4,7 @@
  */
 package dao;
 
+import entity.KhachHang;
 import entity.LoaiDichVu;
 import entity.MatHang;
 import entity.NhaCungCap;
@@ -159,6 +160,25 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
                 Object[] obj = (Object[])session.createNativeQuery(sql).getSingleResult();
             tr.commit();
             return (String)obj[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    }
+
+    @Override
+    public KhachHang getKhachHangBySDT(String sdt) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "  select * from Khachhang where sdt = '"+sdt+"' ";
+        try {
+            tr.begin();
+                KhachHang kh = session.createNativeQuery(sql,KhachHang.class).getSingleResult();
+            tr.commit();
+            return kh;
         } catch (Exception e) {
             e.printStackTrace();
             tr.rollback();

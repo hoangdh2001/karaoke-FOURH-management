@@ -52,7 +52,8 @@ public class MyTable extends JTable {
                         cell.setForeground(new Color(102, 102, 102));
                     }
                     return cell;
-                } else if(o instanceof Class) {
+                    //        fix ở đây
+                } else if(o instanceof Boolean) {
                     CellCheckBox cell = new CellCheckBox();
                     cell.select(selected);
                     if (selected) {
@@ -65,7 +66,7 @@ public class MyTable extends JTable {
                     action = (ModelAction) o;
                     CellAction cell = new CellAction(action);
                     if (selected) {
-                        cell.setBackground(new Color(239, 244, 255));
+                        cell.setBackground(new Color(255, 255, 255));
                     } else {
                         cell.setBackground(Color.WHITE);
                     }
@@ -90,7 +91,10 @@ public class MyTable extends JTable {
     
     @Override
     public TableCellEditor getCellEditor(int row, int col) {
-        if (col == getColumnCount() - 1) {
+//        fix ở đây
+        if(getColumnName(col).equalsIgnoreCase("Chọn") || getColumnName(col).equalsIgnoreCase("Số lượng")){
+            return super.getCellEditor(row, col);
+        }else if (col == getColumnCount() - 1) {
             return new TableCellAction();
         } else {
             return super.getCellEditor(row, col);
