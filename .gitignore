@@ -1,5 +1,4 @@
-.\src\main\resources\hibernate.cfg.xml
+targer/
 lib/
-target/
 pom.xml
 README.md

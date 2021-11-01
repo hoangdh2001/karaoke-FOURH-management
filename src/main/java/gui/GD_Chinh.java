@@ -15,7 +15,6 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
-import gui.component.Header;
 import gui.component.Menu;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.event.EventMenuSelected;
@@ -63,10 +62,10 @@ public class GD_Chinh extends JFrame {
         // layout 2 cột 1 dòng
 	background.setLayout(layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0")); 
 	background.setBackground(new Color(236, 240, 245));
-		
+     
 	background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
 	background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
-	background.add(createContent(), "w 100%, h 100%"); // content full
+	background.add(createContent()); // content full
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -135,9 +134,9 @@ public class GD_Chinh extends JFrame {
                 DropMenu dropMenu = new DropMenu(GD_Chinh.this, 0, eventSelected, menuItem);
                 int x;
                 if(menu.isShowMenu()) {
-                    x = GD_Chinh.this.getX() + com.getX() + 160;
+                    x = GD_Chinh.this.getX() + com.getX() + com.getWidth() * 2 - 40;
                 } else {
-                    x = GD_Chinh.this.getX() + com.getX() - 20;
+                    x = GD_Chinh.this.getX() + com.getX() + com.getWidth() - 40;
                 }
                 int y = GD_Chinh.this.getY()  + 55;
                 dropMenu.setLocation(x, y);
@@ -219,7 +218,7 @@ public class GD_Chinh extends JFrame {
         sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(100);
+        sp.getVerticalScrollBar().setUnitIncrement(50);
         sp.setBorder(null);
 	return sp;
     }

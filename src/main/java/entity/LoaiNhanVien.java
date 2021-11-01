@@ -3,8 +3,13 @@ package entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "getLoaiNhanViens", query = "select lnv from LoaiNhanVien lnv")
+})
 public class LoaiNhanVien {
 	@Id
 	private String maLoaiNV;

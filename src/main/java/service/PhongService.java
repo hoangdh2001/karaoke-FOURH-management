@@ -1,6 +1,8 @@
 package service;
 
+import entity.LoaiPhong;
 import entity.Phong;
+import entity.TrangThaiPhong;
 import java.util.List;
 
 public interface PhongService {
@@ -10,4 +12,6 @@ public interface PhongService {
     public Phong getPhong(String maPhong);
     public List<Phong> getDsPhong();
     public List<Integer> getDsTang();
+    public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai);
+    public List<Phong> getPhongByAttributes(String tenPhong, LoaiPhong loaiPhong, TrangThaiPhong trangThai);
 }

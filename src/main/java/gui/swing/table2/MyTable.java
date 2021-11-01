@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -51,9 +50,9 @@ public class MyTable extends JTable {
                         cell.setBackground(Color.WHITE);
                         cell.setForeground(new Color(102, 102, 102));
                     }
-                    return cell;
-                    //        fix ở đây
+                    return cell;     //        fix ở đây
                 } else if(o instanceof Boolean) {
+                } else if(o instanceof Class) {
                     CellCheckBox cell = new CellCheckBox();
                     cell.select(selected);
                     if (selected) {
@@ -84,6 +83,7 @@ public class MyTable extends JTable {
                     }
                     return com;
                 }
+                return null;
             }
 
         });
@@ -95,7 +95,10 @@ public class MyTable extends JTable {
         if(getColumnName(col).equalsIgnoreCase("Chọn") || getColumnName(col).equalsIgnoreCase("Số lượng")){
             return super.getCellEditor(row, col);
         }else if (col == getColumnCount() - 1) {
-            return new TableCellAction();
+            if (getValueAt(row, col) instanceof ModelAction) {
+                return new TableCellAction();
+            }
+            return super.getCellEditor(row, col);
         } else {
             return super.getCellEditor(row, col);
         }
