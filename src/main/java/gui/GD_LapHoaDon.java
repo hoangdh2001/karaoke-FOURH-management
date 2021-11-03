@@ -4,16 +4,16 @@
  */
 package gui;
 
-import entity.CaLam;
-import entity.LoaiNhanVien;
-import entity.LoaiPhong;
+import dao.NhaCungCapVaNhapHang_DAO;
+import dao.Phong_DAO;
+import entity.ChiTietHoaDon;
+import entity.HoaDon;
 import entity.NhanVien;
 import entity.Phong;
 import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import gui.swing.table.SpinnerEditor;
-import gui.swing.table.TableCustom;
 import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
@@ -27,22 +27,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
-import java.time.LocalTime;
+import java.util.Date;
+import java.text.ParseException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -81,6 +81,9 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     
     private Phong phong;
     private NhanVien nhanVien;
+    private HoaDon hoaDon;
+    
+    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
     
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
@@ -89,12 +92,10 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     private Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
     
-    public GD_LapHoaDon() {
+    public GD_LapHoaDon(Phong phong,NhanVien nhanVien) {
         super();
-        this.phong = new Phong("maphong", "phong 001", TrangThaiPhong.DANG_HAT, new LoaiPhong("loai phong", "ten loai phong", 5000.0), 1);
-        LoaiNhanVien lnv = new LoaiNhanVien("1", "loai nhan vien");
-        this.nhanVien= new NhanVien("Nhan vieen 001", "name", lnv, new CaLam("1", "sdf", "fsdf"), "66556651", true, new Date( System.currentTimeMillis()),null, null, null, null);
-        
+        this.phong = phong;
+        this.nhanVien= nhanVien;
         setModal(true);
         initComponents();
         setSize(new Dimension(1200,740));
@@ -169,7 +170,10 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GD_LapHoaDon dialog = new GD_LapHoaDon();
+                Phong phong = new Phong_DAO().getPhong("PH0001");
+                System.out.println(phong);
+                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+                GD_LapHoaDon dialog = new GD_LapHoaDon(phong,nhanVien);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -193,16 +197,11 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         lblDanhSachPhieu.setForeground(colorLabel);
         pnlDanhSachDichVu.add(lblDanhSachPhieu, "span, w 100%, h 30!, wrap");
 
-        Object dataSelected[][] = { 
-                {  "Tran Van Minh",1, "6000",0}, 
-                {  "Phan Van Tai",1, "8000",0}, 
-                {  "Do Cao Hoc",1, "7000",0},             
-        };
         String colSelected[] = {"Tên","Số lượng","Giá","Tổng"};
         
         DefaultTableModel model = new DefaultTableModel(
-            dataSelected,
-            colSelected
+            colSelected,
+            0
         ) {
             boolean[] canEdit = new boolean [] {
                 false, true, false,false
@@ -221,10 +220,9 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
 					return String.class;
 				case 2:
 					return String.class;
-				case 3:
-					return String.class;
 				default:
-					return Boolean.class;
+					return String.class;
+				
 				}
 			}
         };
@@ -390,7 +388,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         
     }
     
-    public void initAction(){
+    public void initActionPanel(){
         pnlThanhToan = new JPanel();
         pnlThanhToan.setBackground(Color.WHITE);
         pnlThanhToan.setLayout(new MigLayout("","28[][]","10[]5"));
@@ -459,6 +457,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     }
 
      public void initForm(){
+        nhaCungCapVaNhapHang_DAO= new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
         mainPanel.setLayout(new MigLayout("","20[center]20"));
 //        MainPanel.setBackground(Color.WHITE);
@@ -469,7 +468,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         pnlInfoBottom.setLayout(new MigLayout("", "20[center][center]20", "20[]"));
         
         initService();
-        initAction();
+        initActionPanel();
         initInfoRoom();
         
         pnlInfoTop.setBackground(Color.WHITE);
@@ -480,23 +479,29 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     }
      
      public void initData(Phong phong,NhanVien nv){
-        Date date = new Date( System.currentTimeMillis());
-        Date dateExamp = new Date(0);
-        SimpleDateFormat formatterNgay = new SimpleDateFormat("MM/dd/yyyy");
-        SimpleDateFormat formatterGio = new SimpleDateFormat("MM/dd/yyyy");
+        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
         
-        formatterNgay = new SimpleDateFormat("dd-MM-yyyy");
-        formatterGio = new SimpleDateFormat("hh:mm:ss");
+        hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
         
+        List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
+        dsCTHoaDon.forEach(ctHoaDon -> {
+            tableSelected.addRow(ctHoaDon.convertToRowTableInGDLapHoaDon());
+        });
+        
+        
+        SimpleDateFormat formatterNgay = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatterGio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        
+        Date date = new Date(System.currentTimeMillis());
         String strNgay = formatterNgay.format(date);
-        String strBatDau = formatterGio.format(dateExamp);
+        String strBatDau = formatterGio.format(hoaDon.getThoiGianBatDau());
         String strGio = formatterGio.format(date);
         
         txtNgay.setText(strNgay);
         txtTenPhong.setText(phong.getTenPhong());
         txtLoai.setText(phong.getLoaiPhong().getTenLoaiPhong());
         txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
-        txtNhanVien.setText(fontName);
+        txtNhanVien.setText(nhanVien.getTenNhanVien());
         txtStart.setText(strBatDau);
         txtEnd.setText(strGio);
         
@@ -507,15 +512,17 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         tableSelected.addKeyListener(new actionKeyListenner());
         txtTienDua.addKeyListener(new actionKeyListenner());
         btnHuy.addMouseListener(new actionMouselistenner());
+        btnThanhToan.addActionListener(new actionListener());
     }
     
     public double TongTienDichVu(){
         double tong = 0;
 	int soLuongMH = tableSelected.getRowCount();
+        
         TableModel model = tableSelected.getModel();
         for (int i = 0;i < soLuongMH;i++ ) {
             int soluong = Integer.parseInt(model.getValueAt(i, 1).toString()); 
-            double giathanh = Double.parseDouble((model.getValueAt(i, 2).toString()));
+            double giathanh = hoaDon.getDsChiTietHoaDon().get(i).getMatHang().getDonGia();
             String tongTienSP = df.format(soluong * giathanh);
             tableSelected.getModel().setValueAt(tongTienSP,i,3);
             
@@ -525,21 +532,24 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         return tong;
     }
     
-    public double TongTienPhong(){
+    public double TongTienPhong() throws ParseException{
         String txtgioBatDau = txtStart.getText().trim();
         String txtgioKetThuc = txtEnd.getText().trim();
         
-        LocalTime gioBatDau = LocalTime.parse(txtgioBatDau);
-        LocalTime gioKetThuc = LocalTime.parse(txtgioKetThuc);
+        SimpleDateFormat gio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         
-        int millisBatDau = gioBatDau.toSecondOfDay() * 1000;
-        int millisKetThuc = gioKetThuc.toSecondOfDay() * 1000;
+        Date dateGioBatDau = (Date) gio.parse(txtgioBatDau);
+        Date dateGioKetThuc = (Date) gio.parse(txtgioKetThuc);
         
-        int tongThoiGian = millisKetThuc - millisBatDau;
+        long millisBatDau = dateGioBatDau.getTime();
+        long millisKetThuc = dateGioKetThuc.getTime();
+        
+        long tongThoiGian = millisKetThuc - millisBatDau;
         
         int seconds = (int) (tongThoiGian / 1000) % 60 ;
         int minutes = (int) ((tongThoiGian / (1000*60)) % 60);
         int hours   = (int) ((tongThoiGian / (1000*60*60)) % 24);
+        
         System.out.println(hours + ":" + minutes + ":" + seconds);
         
         double giaPhong = phong.getLoaiPhong().getGiaPhong();
@@ -551,7 +561,12 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     
     public double TongTien(){
         double tongTienDichVu = TongTienDichVu();
-	double tongTienPhong = TongTienPhong();
+	double tongTienPhong = 0;
+        try {
+            tongTienPhong = TongTienPhong();
+        } catch (ParseException ex) {
+            Logger.getLogger(GD_LapHoaDon.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         txtTongTien.setText(df.format(tongTienDichVu + tongTienPhong));
 	return tongTienDichVu + tongTienPhong;
@@ -566,19 +581,33 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
 				tienKhachTra = Double.parseDouble(tienKT);
 				tongTien = TongTien();
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(this, "Tiền khách trả không hợp lệ");
+				showMsg("Tiền khách trả không hợp lệ");
 				return false;
 			}
 			if (tienKT.matches("^\\d+$") && tienKhachTra >= tongTien) {
 				txtTraLai.setText(df.format(tienKhachTra - tongTien));
 			} else {
-				JOptionPane.showMessageDialog(this, "Số tiền trả Không đủ");
+				showMsg("Số tiền trả Không đủ");
 				txtTienDua.selectAll();
 				txtTienDua.requestFocus();
 				return false;
 			}
 		}
 		return true;
+    }
+    
+    public boolean validateData(){
+        if (txtTienDua.getText().trim().equals("")) {
+			showMsg("Nhập số tiền khách trả!");
+			txtTienDua.selectAll();
+			txtTienDua.requestFocus();
+			return false;
+		}
+        return true;
+    }
+    
+    private void showMsg(String msg) {
+	JOptionPane.showMessageDialog(null, msg);
     }
     
     private class actionMouselistenner implements MouseListener{
@@ -639,8 +668,34 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     private class actionListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("abc");
-            TongTien();
+            Object obj = e.getSource();
+            if(obj.equals(btnThanhToan) && validateData()){
+                try {
+                    SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date date = new Date(System.currentTimeMillis());
+                    String ngayLapHoaDon = gio.format(date);
+                    nhaCungCapVaNhapHang_DAO.updateHoaDon(hoaDon,TongTienPhong(),TongTien(),TongTienDichVu(),ngayLapHoaDon);
+                    
+                    List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
+                    for (int i = 0 ; i< tableSelected.getRowCount(); i++){
+                        ChiTietHoaDon ctHoaDon = dsCTHoaDon.get(i);
+                        int soluongCu = ctHoaDon.getSoLuong();
+                        int soLuongMoi = Integer.parseInt(tableSelected.getValueAt(i,1).toString());
+                        if(soLuongMoi > soluongCu){
+                            nhaCungCapVaNhapHang_DAO.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soLuongMoi - soluongCu,"decrease");
+                        }else{
+                            nhaCungCapVaNhapHang_DAO.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soluongCu - soLuongMoi,"increase");
+                        }
+
+                        dsCTHoaDon.get(i).setSoLuong(soLuongMoi);
+                        nhaCungCapVaNhapHang_DAO.updateCTHoaDon(dsCTHoaDon.get(i));
+                    }
+                    nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_DON);
+                    dispose();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
         }
     }
      

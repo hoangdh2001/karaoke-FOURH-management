@@ -1,11 +1,13 @@
 package entity;
 
+import java.text.DecimalFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import objectcombobox.ObjectComboBox;
 
 @Entity
 @IdClass(ChiTietHoaDon_PK.class)
@@ -29,6 +31,13 @@ public class ChiTietHoaDon {
 	 * @param chietKhau
 	 */
 	public ChiTietHoaDon(MatHang matHang, int soLuong, float chietKhau) {
+		this.matHang = matHang;
+		this.soLuong = soLuong;
+		this.chietKhau = chietKhau;
+	}
+        
+        public ChiTietHoaDon(HoaDon hoaDon,MatHang matHang, int soLuong, float chietKhau) {
+                this.hoaDon = hoaDon;
 		this.matHang = matHang;
 		this.soLuong = soLuong;
 		this.chietKhau = chietKhau;
@@ -97,4 +106,10 @@ public class ChiTietHoaDon {
 		return "ChiTietHoaDon [matHang=" + matHang + ", soLuong=" + soLuong + ", chietKhau=" + chietKhau
 				+ ", thanhTien=" + thanhTien + "]";
 	}
+        
+        public Object[] convertToRowTableInGDLapHoaDon(){
+            DecimalFormat df;
+            df = new DecimalFormat("#,##0.00");
+            return new Object[]{ new ObjectComboBox(matHang.getTenMatHang(),matHang.getMaMatHang()), soLuong,df.format(matHang.getDonGia()) ,getThanhTien()};
+        }
 }

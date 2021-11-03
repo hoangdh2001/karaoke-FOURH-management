@@ -4,6 +4,8 @@
  */
 package objectcombobox;
 
+import java.util.Objects;
+
 /**
  *
  * @author 84975
@@ -16,6 +18,10 @@ public class ObjectComboBox {
         return ma;
     }
 
+    public void setMa(String ma) {
+        this.ma = ma;
+    }
+    
     @Override
     public String toString() {
         return ten;
@@ -25,4 +31,30 @@ public class ObjectComboBox {
         this.ten = ten;
         this.ma = ma;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ObjectComboBox other = (ObjectComboBox) obj;
+        if (!Objects.equals(this.ten, other.ten)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

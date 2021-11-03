@@ -28,6 +28,7 @@ public class MyTable extends JTable {
     private ModelAction action;
     public MyTable() {
         setShowHorizontalLines(true);
+        setSelectionBackground(new Color(239, 244, 255));
         setGridColor(new Color(230, 230, 230));
         setRowHeight(40);
         getTableHeader().setReorderingAllowed(false);
@@ -52,6 +53,14 @@ public class MyTable extends JTable {
                     }
                     return cell;     //        fix ở đây
                 } else if(o instanceof Boolean) {
+                    CellCheckBox cell = new CellCheckBox();
+                    cell.select(selected);
+                    if (selected) {
+                        cell.setBackground(new Color(239, 244, 255));
+                    } else {
+                        cell.setBackground(Color.WHITE);
+                    }
+                    return cell;
                 } else if(o instanceof Class) {
                     CellCheckBox cell = new CellCheckBox();
                     cell.select(selected);
@@ -83,7 +92,6 @@ public class MyTable extends JTable {
                     }
                     return com;
                 }
-                return null;
             }
 
         });

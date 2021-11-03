@@ -4,6 +4,12 @@
  */
 package gui;
 
+import dao.NhaCungCapVaNhapHang_DAO;
+import dao.Phong_DAO;
+import entity.HoaDon;
+import entity.NhanVien;
+import entity.Phong;
+import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import gui.swing.table2.MyTable;
@@ -13,6 +19,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JCheckBox;
@@ -20,9 +27,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /**
  *
@@ -47,6 +56,14 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     
     private MyTable table;
     
+    private Phong phong;
+    private HoaDon hoaDon;
+    private NhanVien nhanVien;
+    
+    private DecimalFormat df;
+    
+    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
+    
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
     private int font14 = 14;
@@ -57,14 +74,14 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     /**
      * Creates new form GD_CuaSoDatPhong2
      */
-    public GD_DoiPhong() {
+    public GD_DoiPhong(Phong phong,NhanVien nhanVien) {
         setModal(true);
         initComponents();
-        setSize(new Dimension(1350,560));
-        setResizable(false);
-        setLocation(150, 150);
+        this.phong = phong;
+        this.nhanVien = nhanVien;
         setTitle("Đổi phòng");
         initForm();
+        initData();
         addAction();
     }
 
@@ -139,7 +156,9 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GD_DoiPhong dialog = new GD_DoiPhong();
+                Phong phong = new Phong_DAO().getPhong("PH0001");
+                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+                GD_DoiPhong dialog = new GD_DoiPhong(phong,nhanVien);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -243,27 +262,15 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         lblPhongMoi.setFont(new Font(fontName, fontPlain, font16));
         lblPhongMoi.setForeground(colorLabel);
         pnlDanhSachPhong.add(lblPhongMoi, "span, w 100%, h 30!, wrap");
-        
-        Object data[][] = { 
-                { "101", "Tran Van Minh", "6000",false}, 
-                { "102", "Phan Van Tai", "8000",false}, 
-                { "101","Do Cao Hoc", "7000",false},
-                { "101", "Do Cao Hoc", "7000",false},
-                { "101", "Do Cao Hoc", "7000",false},
-                { "101","Do Cao Hoc", "7000",false},
-                { "101","Do Cao Hoc", "7000",false},
-                { "101","Do Cao Hoc", "7000",false},              
-        };
  
         String col[] = {"Tên phòng","Loại phòng","Giá phòng/Giờ","Chon"};
         DefaultTableModel model = new DefaultTableModel(
-            data,
             new String [] {
-            "Tên phòng","Loại phòng","Giá phòng/Giờ","Chọn"
-            }
+            "Tên phòng","Loại phòng","Tầng","Giá phòng/Giờ","Chọn"
+            },0
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false,true
+                false, false, false,false,true
             }; 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -279,6 +286,8 @@ public class GD_DoiPhong extends javax.swing.JDialog {
 					return String.class;
 				case 2:
 					return String.class;
+                                case 3:
+					return String.class;
 				default:
 					return Boolean.class;
 				}
@@ -286,6 +295,13 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         };
     
         table.setModel(model);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.getColumnModel().getColumn(4).setPreferredWidth(40);
+        table.getColumnModel().getColumn(3).setPreferredWidth(80);
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        table.getColumnModel().getColumn(1).setPreferredWidth(100);
+        table.getColumnModel().getColumn(0).setPreferredWidth(100);
+        
         
         JScrollPane sp = new JScrollPane(table);
 
@@ -367,6 +383,13 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     }
     
     public void initForm(){
+        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+        df = new DecimalFormat("#,##0.00");
+        hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
+        
+        setSize(new Dimension(1350,560));
+        setResizable(false);
+        setLocation(150, 150);
         MainPanel.setLayout(new MigLayout("","20[center]10"));
 //        MainPanel.setBackground(Color.WHITE);
         
@@ -388,6 +411,17 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         MainPanel.add(pnlHieuChinh,"w 100%,h 240");
     }
     
+    public void initData(){
+        txtTenPhong.setText(phong.getTenPhong());
+        txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
+        txtGiaPhong.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
+//        txtGioDaHat.setText(phong.getTenPhong());
+//        txtTongTienCu.setText(fontName);
+        
+        List<Phong> dsPhong  = nhaCungCapVaNhapHang_DAO.getDSPhongByTrangThai(TrangThaiPhong.TRONG);
+        dsPhong.forEach(phong -> table.addRow(phong.convertToRowTableInGDoiPhong()));
+    }
+    
     public void addAction(){
         table.addMouseListener(new action());
     }
@@ -397,8 +431,8 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         @Override
         public void mouseClicked(MouseEvent e) {
             if(e.getSource().equals(table)){
-                boolean cb = Boolean.parseBoolean(table.getValueAt(table.getSelectedRow(),3).toString().trim());
-                System.err.println(cb);
+//                boolean cb = (Boolean)table.getValueAt(, 3);
+//                System.err.println(cb);
             }
         }
 

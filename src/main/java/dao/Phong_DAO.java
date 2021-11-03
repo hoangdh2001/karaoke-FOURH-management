@@ -61,10 +61,11 @@ public class Phong_DAO implements PhongService {
 
         try {
             tr.begin();
-            Phong phong = session.find(Phong.class, maPhong);
+                Phong phong = session.find(Phong.class, maPhong);
             tr.commit();
             return phong;
         } catch (Exception e) {
+            e.printStackTrace();
             tr.rollback();
         }
         return null;
@@ -134,7 +135,7 @@ public class Phong_DAO implements PhongService {
         String sql = "select * from Phong "
                 + "where tenPhong = N'%"+ tenPhong +"%' "
                 + "or maLoaiPhong = '"+ loaiPhong.getMaLoaiPhong() +"' "
-                + "or trangThai = '"+ trangThai +"'";
+                + "or trangThai = '"+ trangThai.DANG_HAT +"'";
         try {
             tr.begin();
             List<Phong> dsPhong = session

@@ -5,46 +5,51 @@
 package gui;
 
 import dao.NhaCungCapVaNhapHang_DAO;
+import dao.Phong_DAO;
 import entity.CaLam;
+import entity.ChiTietHoaDon;
+import entity.HoaDon;
 import entity.KhachHang;
 import entity.LoaiNhanVien;
 import entity.LoaiPhong;
+import entity.MatHang;
 import entity.NhanVien;
 import entity.Phong;
 import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import gui.swing.table.SpinnerEditor;
-import gui.swing.table.TableCustom;
-import gui.swing.table.TableCustomCheckBox;
-import gui.swing.table.TableCustomRadio;
 import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.text.DecimalFormat;
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
+import entity.PhieuDatPhong;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import objectcombobox.ObjectComboBox;
 
 /**
  *
@@ -72,7 +77,10 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private MyTextField txtCCCD ;
     
     private Button btnHuy;
-    private Button btnThoat;
+    private Button btnGiaoPhong;
+    
+    private ArrayList<ObjectComboBox> listDaChon;
+    private ArrayList<ObjectComboBox> listDaChonSoLuong;
     
     private DecimalFormat df;
     
@@ -96,9 +104,8 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         setResizable(false);
         initComponents();
         initForm();
-        this.phong = new Phong("maphong", "phong 001", TrangThaiPhong.DANG_HAT, new LoaiPhong("loai phong", "ten loai phong", 5000.0), 1);  
+        this.phong = phong;
         this.nhanVien = nhanVien;
-        
         initData();
         addAction();
     }
@@ -164,10 +171,8 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 //                test phong
-                Phong phong = new Phong("maphong", "phong 001", TrangThaiPhong.DANG_HAT, new LoaiPhong("loai phong", "ten loai phong", 5000.0), 1);
-                LoaiNhanVien lnv = new LoaiNhanVien("1", "loai nhan vien");
-                NhanVien nhanVien = new NhanVien("Nhan vieen 001", "name", lnv, new CaLam("1", "sdf", "fsdf"), "66556651", true, new Date( System.currentTimeMillis()),null, null, null, null);
-                
+                Phong phong = new Phong_DAO().getPhong("PH0001");
+                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
                 GD_TiepNhanDatPhong dialog = new GD_TiepNhanDatPhong(phong,nhanVien);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -191,21 +196,14 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         lblDanhSachPhieu.setForeground(colorLabel);
         pnlDanhSachPhieu.add(lblDanhSachPhieu, "span, w 100%, h 30!, wrap");
         
-        Object dataPhieu[][] = { 
-                { "101","Do Cao Hoc", "7:30am"}, 
-                { "101","Do Cao Hoc", "11:30am"}, 
-                { "101", "Tran Van Minh", "1:30pm"}, 
-                { "102", "Phan Van Tai", "5:30pm"}, 
-                { "101","Do Cao Hoc","9:30pm"},              
-        };
  
         String col[] = {"Mã phiếu","Khách hàng","Giờ"};
         DefaultTableModel model = new DefaultTableModel(
-            dataPhieu,
-            col
+            col,
+            0
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false,true
+                false, false, false
             }; 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -219,13 +217,10 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 					return String.class;
 				case 1:
 					return String.class;
-				case 2:
-					return String.class;
-				case 3:
-					return String.class;
 				default:
-					return Boolean.class;
-				}
+					return String.class;
+				
+                                }
                         }
         };
     
@@ -257,20 +252,13 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlDanhSachDichVu.add(lblDanhSachDV, "span, w 100%, h 30!, wrap");
 //chua chon
         Object dataDicVu[][] = { 
-                { "101", "Tran Van Minh", "6000",false}, 
-                { "102", "Phan Van Tai", "8000",false}, 
-                { "101","Do Cao Hoc", "7000",false},
-                { "101", "Do Cao Hoc", "7000",false},
-                { "101", "Do Cao Hoc", "7000",false},
-                { "101","Do Cao Hoc", "7000",false},
-                { "101","Do Cao Hoc", "7000",false},
-                { "101","Do Cao Hoc", "7000",false},              
+                { new ObjectComboBox("1002","ma"), "Tran Van Minh", "6000",false}             
         };
  
         String col[] = {"Tên","Số lượng","Giá","Chọn"};
         DefaultTableModel model = new DefaultTableModel(
-            dataDicVu,
-            col
+            col,
+            0
         ) {
             boolean[] canEdit = new boolean [] {
                 false, false, false,true
@@ -303,29 +291,17 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         tableDichVu.getColumnModel().getColumn(1).setPreferredWidth(100);
         tableDichVu.getColumnModel().getColumn(0).setPreferredWidth(246);
         
-        tableDichVu.getColumnModel().getColumn(3).setPreferredWidth(40);
-        tableDichVu.getColumnModel().getColumn(2).setPreferredWidth(80);
-        tableDichVu.getColumnModel().getColumn(1).setPreferredWidth(100);
-        tableDichVu.getColumnModel().getColumn(0).setPreferredWidth(246);
         
         
         JScrollPane sp = new JScrollPane(tableDichVu);
 
         tableDichVu.fixTable(sp);
 //Da chon sp
-        Object dataSelected[][] = { 
-                {  "Tran Van Minh",0}, 
-                {  "Phan Van Tai",0}, 
-                {  "Do Cao Hoc",0},  
-                {  "Tran Van Minh",0}, 
-                {  "Phan Van Tai",0}, 
-                {  "Do Cao Hoc",0},
-        };
         String colSelected[] = {"Tên","Số lượng"};
         
         DefaultTableModel modelSelected = new DefaultTableModel(
-            dataSelected,
-            colSelected
+            colSelected,
+            0
         ) {
             boolean[] canEdit = new boolean [] {
                 false, true, false
@@ -350,10 +326,11 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         tableDichVuDaChon.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         tableDichVuDaChon.getColumnModel().getColumn(0).setPreferredWidth(165);
         tableDichVuDaChon.getColumnModel().getColumn(1).setPreferredWidth(70);
+        tableDichVuDaChon.setCellSelectionEnabled(true);
         
         TableColumnModel tcm = tableDichVuDaChon.getColumnModel();
         TableColumn tc = tcm.getColumn(1);
-        tc.setCellEditor(new SpinnerEditor(5));
+        tc.setCellEditor(new SpinnerEditor(100));
         
         JScrollPane spSelected = new JScrollPane(tableDichVuDaChon);
         tableDichVuDaChon.fixTable(spSelected);
@@ -473,18 +450,18 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlButton.setLayout(new MigLayout("","push[]10[]","push[][]"));
         pnlButton.setBackground(Color.WHITE);
         
-        btnHuy = new Button("Giao phòng");
+        btnGiaoPhong= new Button("Giao phòng");
+        btnGiaoPhong.setFont(new Font(fontName, fontPlain, font14));
+        btnGiaoPhong.setBackground(colorBtn);
+        btnGiaoPhong.setBorderRadius(5);
+        
+        btnHuy = new Button("Thoát");
         btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
         btnHuy.setBorderRadius(5);
         
-        btnThoat = new Button("Thoát");
-        btnThoat.setFont(new Font(fontName, fontPlain, font14));
-        btnThoat.setBackground(colorBtn);
-        btnThoat.setBorderRadius(5);
-        
+        pnlButton.add(btnGiaoPhong,"h 36!");
         pnlButton.add(btnHuy,"h 36!");
-        pnlButton.add(btnThoat,"h 36!");
         
         pnlKhachHang.add(pnlButton,"span, w 100%,h 100%, wrap");
       
@@ -493,14 +470,13 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     }
     
     public void initForm(){
+        listDaChon = new ArrayList<ObjectComboBox>();
+        listDaChonSoLuong = new ArrayList<ObjectComboBox>();
         nhaCungCapVaNhaphang_DAO = new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
         setSize(new Dimension(1300,650));
         setLocation(150, 150);
         mainPanel.setLayout(new MigLayout("","20[center]20"));
-//        MainPanel.setBackground(Color.WHITE);
-        
-//        setResizable(false);
         pnlInfoTop = new PanelShadow();
         pnlInfoTop.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]20"));
         pnlInfoBottom = new PanelShadow();
@@ -523,18 +499,31 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
         txtNhanVien.setText(nhanVien.getTenNhanVien());
+        
+        List<PhieuDatPhong> dsPhieuDatPhong = nhaCungCapVaNhaphang_DAO.getPhieuHomNay(phong.getMaPhong());
+        dsPhieuDatPhong.forEach(phieu -> 
+                tablePhieuDatPhong.addRow(phieu.convertToRowTableInGDTiepNhanDatPhong()));
+        
+        List<MatHang> dsMatHang = nhaCungCapVaNhaphang_DAO.getDanhSachMatHang();
+        dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
     }
     
     public void addAction(){
         tablePhieuDatPhong.addMouseListener(new createMouseListener());
-        tableDichVuDaChon.addMouseListener(new createMouseListener());
+        tableDichVu.addMouseListener(new createMouseListener());
+        tableDichVuDaChon.addKeyListener(new createKeyListener());
         txtSdt.addKeyListener(new createKeyListener());
+        txtTenKhachHang.addKeyListener(new createKeyListener());
+        txtCCCD.addKeyListener(new createKeyListener());
+        btnGiaoPhong.addActionListener(new createActionListenner());
     }
     
     public void initKhachHang(String sdt){
         KhachHang kh = nhaCungCapVaNhaphang_DAO.getKhachHangBySDT(sdt);
-        txtTenKhachHang.setText(kh.getTenKhachHang());
-        txtCCCD.setText(kh.getCanCuocCD());
+        if(kh != null){
+            txtTenKhachHang.setText(kh.getTenKhachHang());
+            txtCCCD.setText(kh.getCanCuocCD());
+        }
     }
     
     private class createKeyListener implements KeyListener{
@@ -548,7 +537,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
            Object obj = e.getSource();
            if(e.getKeyChar() == KeyEvent.VK_ENTER && obj.equals(txtSdt)){
                String sdt = txtSdt.getText().trim();
-               if(sdt != null){
+               if(!sdt.equals("")){
                    initKhachHang(sdt);
                }
            }
@@ -556,6 +545,29 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 
         @Override
         public void keyReleased(KeyEvent e) {
+            Object obj = e.getSource();
+            if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE){
+               if(obj.equals(txtSdt) || obj.equals(txtTenKhachHang) || obj.equals(txtCCCD)){
+                    if((txtSdt.getText().trim() + txtTenKhachHang.getText().trim() +  txtCCCD.getText().trim()).equals("") ){
+                        tablePhieuDatPhong.clearSelection();
+                    }
+                }
+           }else if (e.getKeyChar() == KeyEvent.VK_ENTER && obj.equals(tableDichVuDaChon)){
+               int idx = (int)tableDichVuDaChon.getSelectedRow();
+               ObjectComboBox cb = (ObjectComboBox)tableDichVuDaChon.getValueAt(idx, 0);
+               int soLuong = 0;
+               for(int i = 0; i < tableDichVu.getRowCount(); i++) {
+                    if(tableDichVu.getValueAt(i, 0).equals(cb)) {
+                        soLuong = (int)tableDichVu.getValueAt(i, 1);
+                        listDaChonSoLuong.get(i).setMa(String.valueOf(tableDichVuDaChon.getValueAt(idx, 1)));
+                        break;
+                    }
+                }
+               if((int)tableDichVuDaChon.getValueAt(idx, 1) > soLuong){
+                   JOptionPane.showMessageDialog(GD_TiepNhanDatPhong.this,cb.toString()+ " số lượng chỉ còn " + soLuong);
+                   tableDichVuDaChon.editCellAt(idx,1);
+               }
+           }
         }
         
     }
@@ -564,6 +576,43 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            Object obj = e.getSource();
+            if(obj.equals(tableDichVu)){
+                CountDownLatch lt = new CountDownLatch(1);
+                Thread thread = new Thread(() -> {
+                    System.out.println(tableDichVu.getValueAt(tableDichVu.getSelectedRow(), 3));
+                    for(int i = 0; i < tableDichVu.getRowCount(); i++) {
+                        ObjectComboBox cb = (ObjectComboBox) tableDichVu.getModel().getValueAt(i, 0);
+                        ObjectComboBox sl = new ObjectComboBox(cb.getMa(),"1");
+			if((Boolean)tableDichVu.getValueAt(i, 3)) {
+                            if(!listDaChon.contains(cb)) {
+                                listDaChon.add(cb);
+                                listDaChonSoLuong.add(sl);
+                            }
+			}else {
+                            listDaChon.remove(cb);
+                            listDaChonSoLuong.remove(sl);
+			}
+                    }
+                    
+                    DefaultTableModel model = (DefaultTableModel)tableDichVuDaChon.getModel();
+                    model.setRowCount(0);
+                    
+                    for(int i = 0; i < listDaChon.size(); i++){
+                        ObjectComboBox cb = (ObjectComboBox) listDaChon.get(i);
+                        tableDichVuDaChon.addRow(new Object[]{cb,Integer.parseInt(listDaChonSoLuong.get(i).getMa())});
+                    }
+                    lt.countDown();
+                });
+                
+                thread.start();
+                
+                try {
+                    lt.await();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GD_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
 
         @Override
@@ -571,7 +620,10 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
             Object obj = e.getSource();
             if(obj.equals(tablePhieuDatPhong)){
                 String ma = tablePhieuDatPhong.getModel().getValueAt(tablePhieuDatPhong.getSelectedRow(), 0).toString();
-                System.out.println(ma);
+                PhieuDatPhong phieuDatPhong = nhaCungCapVaNhaphang_DAO.getPhieuById(ma);
+                txtSdt.setText(phieuDatPhong.getKhachHang().getSoDienThoai());
+                txtTenKhachHang.setText(phieuDatPhong.getKhachHang().getTenKhachHang());
+                txtCCCD.setText(phieuDatPhong.getKhachHang().getCanCuocCD());
             }
         }
 
@@ -585,6 +637,109 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 
         @Override
         public void mouseExited(MouseEvent e) {
+        }
+        
+    }
+    
+    private boolean validateData() {
+		String sdt = txtSdt.getText().trim();
+		String hoTen = txtTenKhachHang.getText().trim();
+		String CCCD = txtCCCD.getText().trim();
+                
+		if (sdt.trim().equals("")) {
+			showMsg("Số điện thoại khách hàng trống !");
+			txtSdt.selectAll();
+			txtSdt.requestFocus();
+			return false;
+		} else {
+			if (!(sdt.matches("^[0-9]{10}$"))) {
+				showMsg("Số điện thoại khách hàng không hợp lệ");
+				txtSdt.requestFocus();
+				txtSdt.selectAll();
+				return false;
+			}
+		}
+                
+		if (hoTen.trim().equals("")) {
+			showMsg("Họ tên khách hàng trống !");
+			txtTenKhachHang.selectAll();
+			txtTenKhachHang.requestFocus();
+			return false;
+		} else {
+
+			if ((hoTen.matches(
+					"^[a-zA-Z ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]"))) {
+				showMsg("tên khách hàng không hợp lệ");
+				txtTenKhachHang.requestFocus();
+				txtTenKhachHang.selectAll();
+				return false;
+			}
+		}
+
+		if (CCCD.trim().equals("")) {
+			showMsg("Địa chỉ không được trống !");
+			txtCCCD.selectAll();
+			txtCCCD.requestFocus();
+			return false;
+		} else {
+                            if (!(CCCD.matches("^(0)[0-9]{11}$"))) {
+				showMsg("Căn cước công dân không hợp lệ");
+				txtCCCD.requestFocus();
+				txtCCCD.selectAll();
+				return false;
+                            }
+		}
+		return true;
+	}
+    
+    private void showMsg(String msg) {
+	JOptionPane.showMessageDialog(null, msg);
+    }
+    
+    
+    
+    private class createActionListenner implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object obj = e.getSource();
+            if(obj.equals(btnGiaoPhong) && validateData()){
+                KhachHang kh = nhaCungCapVaNhaphang_DAO.getKhachHangBySDT(txtSdt.getText());
+                if(kh == null){
+                    String maKhachhang = nhaCungCapVaNhaphang_DAO.getlastKhachHangTang();
+                    kh = new KhachHang(maKhachhang
+                            ,txtTenKhachHang.getText()
+                            ,txtCCCD.getText()
+                            ,txtSdt.getText());
+                    nhaCungCapVaNhaphang_DAO.addKhachHang(kh);
+                }
+                if(tablePhieuDatPhong.getSelectedRow() != -1){
+                    String maPhieuDatPhong = tablePhieuDatPhong.getValueAt(tablePhieuDatPhong.getSelectedRow(), 0).toString();
+                    nhaCungCapVaNhaphang_DAO.updatePhieuDatHang(maPhieuDatPhong);
+                }
+                nhaCungCapVaNhaphang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_HAT);
+                
+                String maHoaDon = nhaCungCapVaNhaphang_DAO.getlastMaHoaDonTang();
+                
+                HoaDon hoaDon = new HoaDon(maHoaDon, kh, phong, nhanVien,
+                        new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+                nhaCungCapVaNhaphang_DAO.insertHoaDon(hoaDon);
+//insert chi tiet hoa don
+                if(tableDichVuDaChon.getRowCount() != 0){
+                    for( int i = 0 ; i< tableDichVuDaChon.getRowCount(); i++){
+                        ObjectComboBox cb = (ObjectComboBox)tableDichVuDaChon.getValueAt(i, 0);
+                        int soluong = Integer.parseInt(tableDichVuDaChon.getValueAt(i, 1).toString());
+                        System.out.println(soluong);
+                        if(soluong > 0){
+                            MatHang matHang = nhaCungCapVaNhaphang_DAO.getMatHang(cb.getMa());
+                            ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(hoaDon,matHang, soluong, 0.0f);
+                            nhaCungCapVaNhaphang_DAO.insertCTHoaDon(ctHoaDon);
+                            nhaCungCapVaNhaphang_DAO.updateSLMatHang(cb.getMa(),soluong,"decrease");
+                        }
+                    }  
+                }
+                dispose();
+            }
         }
         
     }

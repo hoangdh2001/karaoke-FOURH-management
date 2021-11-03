@@ -1,6 +1,6 @@
 package entity;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.transaction.Transactional;
 
 @Entity
+@Transactional
 public class HoaDon {
 	@Id
 	private String maHoaDon;
@@ -25,8 +27,11 @@ public class HoaDon {
 	@ManyToOne
 	@JoinColumn(name = "maNhanVien", nullable = false)
 	private NhanVien nhanVien;
+        @Column(columnDefinition = "datetime")
 	private Date ngayLapHoaDon;
+        @Column(columnDefinition = "datetime")
 	private Date thoiGianBatDau;
+        @Column(columnDefinition = "datetime")
 	private Date thoiGianKetThuc;
 	@OneToMany(mappedBy = "hoaDon")
 	private List<ChiTietHoaDon> dsChiTietHoaDon;
@@ -46,13 +51,13 @@ public class HoaDon {
 	 * @param thoiGianBatDau
 	 * @param thoiGianKetThuc
 	 */
-	public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien, Date ngayLapHoaDon,
+	public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien,
 			Date thoiGianBatDau, Date thoiGianKetThuc) {
 		this.maHoaDon = maHoaDon;
 		this.khachHang = khachHang;
 		this.phong = phong;
 		this.nhanVien = nhanVien;
-		this.ngayLapHoaDon = ngayLapHoaDon;
+		this.ngayLapHoaDon = new Date(System.currentTimeMillis());
 		this.thoiGianBatDau = thoiGianBatDau;
 		this.thoiGianKetThuc = thoiGianKetThuc;
 		this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
@@ -67,14 +72,14 @@ public class HoaDon {
 	 * @param phong
 	 * @param nhanVien
 	 */
-	public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien) {
-		this.maHoaDon = maHoaDon;
-		this.khachHang = khachHang;
-		this.phong = phong;
-		this.nhanVien = nhanVien;
-		this.ngayLapHoaDon = Date.valueOf(LocalDate.now());
-		this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
-	}
+//	public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien) {
+//		this.maHoaDon = maHoaDon;
+//		this.khachHang = khachHang;
+//		this.phong = phong;
+//		this.nhanVien = nhanVien;
+//		this.ngayLapHoaDon = Date.valueOf(LocalDate.now());
+//		this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+//	}
 	/**
 	 * 
 	 */
