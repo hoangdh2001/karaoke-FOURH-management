@@ -37,30 +37,31 @@ public class GD_NhanVien extends JLayeredPane {
         setLayer(panelHidden, JLayeredPane.POPUP_LAYER);
         add(panelTop, "grow, wrap, h 250!");
         add(panelBottom, "grow, h 100%");
-        add(panelHidden, "pos " + getPreferredSize().getWidth() + 20 + " 0al n n, h 100%, w 400!");
+        add(panelHidden, "pos -400 0 n n, h 100%, w 400!");
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
-                double size = getPreferredSize().getWidth() + 20 - 400;
-                double sizeClose = getPreferredSize().getWidth();
-                if (show) {
-                    if (fraction <= 0.3f) {
-                        size = GD_NhanVien.this.getPreferredSize().getWidth() * (1f - fraction);
-                        layout.setComponentConstraints(panelHidden, "pos " + size + " 0al n n, h 100%, w 400!");
-                        revalidate();
-                    }
+                float size = fraction * 400;
+                if(show) {
+                    size = - size;
                 } else {
-                    if (fraction >= 0.7f) {
-                        sizeClose = GD_NhanVien.this.getPreferredSize().getWidth() * fraction;
-                        layout.setComponentConstraints(panelHidden, "pos " + sizeClose + " 0al n n, h 100%, w 400!");
-                        revalidate();
-                    }
+                    size -= 400;
+                }
+                layout.setComponentConstraints(panelHidden, "pos " + (int) size + " 0 n n, h 100%, w 400!");
+                revalidate();
+            }
+
+            @Override
+            public void end() {
+                show = !show;
+                if(!show) {
+                    panelHidden.setVisible(false);
                 }
             }
         };
-        animator = new Animator(1000, target);
+        animator = new Animator(400, target);
         animator.setResolution(0);
-        animator.setAcceleration(0.5f);
+        animator.setDeceleration(0.5f);
     }
 
     private void createPanelTop() {
@@ -73,30 +74,15 @@ public class GD_NhanVien extends JLayeredPane {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (!animator.isRunning()) {
-                    animator.start();
-                } else {
-                    animator.stop();
-                    animator.start();
+                if(!animator.isRunning()) {
+                    if(!show) {
+                        animator.start();
+                        panelHidden.setVisible(true);
+                    }
                 }
-                show = true;
-            }
-        });
-        JButton buttonClose = new JButton("Close");
-        buttonClose.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (!animator.isRunning()) {
-                    animator.start();
-                } else {
-                    animator.stop();
-                    animator.start();
-                }
-                show = false;
             }
         });
         panelTop.add(button);
-        panelTop.add(buttonClose);
 
     }
 

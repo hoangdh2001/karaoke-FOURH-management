@@ -13,6 +13,10 @@ import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -23,17 +27,22 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_DanhSachPhong extends JPanel {
+
     private Phong_DAO phong_DAO;
-     public GD_DanhSachPhong(){
-         phong_DAO = new Phong_DAO();
-         initComponents();
-         buildGD();
-         initData();
-         table.fixTable(sp);
+    private EventAction eventAction;
+
+    public GD_DanhSachPhong() {
+        phong_DAO = new Phong_DAO();
+        initComponents();
+        buildGD();
+        initData();
+        table.fixTable(sp);
     }
 
     private void buildGD() {
@@ -41,35 +50,33 @@ public class GD_DanhSachPhong extends JPanel {
         int fontStyle = Font.PLAIN;
         int fontSize = 16;
         Color colorBtn = new Color(184, 238, 241);
-        
+
         pnlTop.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
-        
+
         /**
          * Begin: group thông tin phòng
          */
-        
         // Mã phòng
         JLabel lblTenPhong = new JLabel("Tên phòng:");
         lblTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         pnlTop.add(lblTenPhong);
-        
+
         MyTextField txtMaPhong = new MyTextField();
         txtMaPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         txtMaPhong.setBorderLine(true);
         pnlTop.add(txtMaPhong, "w 20%");
-        
+
         //Tên phòng
         JLabel lblLoaiPhong = new JLabel("Loại phòng");
         lblLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         pnlTop.add(lblLoaiPhong);
-        
-        MyComboBox<String> cmbLoaiPhong = new MyComboBox<>(new String[] {"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
+
+        MyComboBox<String> cmbLoaiPhong = new MyComboBox<>(new String[]{"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
         cmbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         cmbLoaiPhong.setBorderLine(true);
         cmbLoaiPhong.setBorderRadius(10);
         pnlTop.add(cmbLoaiPhong, "w 20%, h 30!");
-        
-        
+
 //        //   Panel nút chức năng
 //        JPanel pnlButton = new JPanel();
 //        pnlButton.setOpaque(false);
@@ -102,38 +109,53 @@ public class GD_DanhSachPhong extends JPanel {
         /**
          * end: group thông tin phòng hát
          */
-         /*Begin: group danh sách Phòng hát*/
-        /*End: group danh sách Phòng */
-        
-        
-        
-        
+        /*Begin: group danh sách Phòng hát*/
+ /*End: group danh sách Phòng */
         pnlTop.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
-        
+
     }
-    
+
     private void initData() {
         LoaiPhong loaiPhong = new LoaiPhong();
         loaiPhong.setTenLoaiPhong("Phòng thường");
-        EventAction eventAction = new EventAction() {
+        eventAction = new EventAction() {
             @Override
             public void delete(Object obj) {
                 Phong phong = (Phong) obj;
-                JOptionPane.showMessageDialog(null, "Delete" + phong.getMaPhong());
+                if (JOptionPane.showConfirmDialog(GD_DanhSachPhong.this, "Bạn có muốn xóa mã " + phong.getMaPhong(), "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    String s = phong_DAO.deletePhong(phong.getMaPhong()) == true ? "Xóa thành công mã " + phong.getMaPhong() : "Xóa thất bại mã " + phong.getMaPhong();
+                    JOptionPane.showMessageDialog(GD_DanhSachPhong.this, s);
+                    DefaultTableModel df = (DefaultTableModel) table.getModel();
+                    df.getDataVector().removeAllElements();
+                    table.clearSelection();
+                    loadData();
+                }
             }
 
             @Override
             public void update(ModelAction action) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                Phong phong = (Phong) action.getObj();
+                if (JOptionPane.showConfirmDialog(GD_DanhSachPhong.this, "Bạn có muốn cập nhật không?", "Cập nhật", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    phong.setTenPhong(table.getValueAt(table.getSelectedRow(), 2).toString());
+                    String s = phong_DAO.updatePhong(phong) == true ? "Cập nhật thành công" : "Cập nhật thất bại";
+                    JOptionPane.showMessageDialog(GD_DanhSachPhong.this, s);
+                    DefaultTableModel df = (DefaultTableModel) table.getModel();
+                    df.getDataVector().removeAllElements();
+                    table.clearSelection();
+                    loadData();
+                }
             }
         };
+        loadData();
+    }
+
+    private void loadData() {
         List<Phong> dsPhong = phong_DAO.getDsPhong();
         dsPhong.forEach((phong) -> {
             table.addRow(phong.convertToRowTable(eventAction));
         });
-        
     }
-    
+
     private JPanel createPanelTitle() {
         JPanel pnlTitle = new JPanel();
         pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
@@ -144,7 +166,7 @@ public class GD_DanhSachPhong extends JPanel {
         lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
         lblTitle.setForeground(new Color(68, 68, 68));
         pnlTitle.add(lblTitle);
-        return  pnlTitle;
+        return pnlTitle;
     }
 
     /**
@@ -196,7 +218,7 @@ public class GD_DanhSachPhong extends JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, true, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

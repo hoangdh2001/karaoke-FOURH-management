@@ -58,11 +58,11 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
             @Override
             public void update(ModelAction action) {
-                PhieuDatPhong pdp = (PhieuDatPhong) action.getObj();
-                pdp.setNgayDat(Date.valueOf(table.getValueAt(table.getSelectedRow(), 5).toString()));
-                pdp.setTienCoc(Double.valueOf(table.getValueAt(table.getSelectedRow(), 7).toString()));
-                action.setObj(pdp);
-                System.out.println(pdp);
+//                PhieuDatPhong pdp = (PhieuDatPhong) action.getObj();
+//                pdp.setNgayDat(Date.valueOf(table.getValueAt(table.getSelectedRow(), 5).toString()));
+//                pdp.setTienCoc(Double.valueOf(table.getValueAt(table.getSelectedRow(), 7).toString()));
+//                action.setObj(pdp);
+//                System.out.println(pdp);
             }
         };
         table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));

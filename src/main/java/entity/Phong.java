@@ -131,6 +131,6 @@ public class Phong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
-        return new Object[]{JCheckBox.class, maPhong, tenPhong, tang, trangThai, loaiPhong.getTenLoaiPhong(), new ModelAction(this, event)};
+        return new Object[]{JCheckBox.class,  maPhong, tenPhong, tang, trangThai, loaiPhong.getTenLoaiPhong(), new ModelAction(this, event)};
     }
 }
