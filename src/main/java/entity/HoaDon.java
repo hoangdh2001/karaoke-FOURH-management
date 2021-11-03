@@ -78,7 +78,7 @@ public class HoaDon {
         this.khachHang = khachHang;
         this.phong = phong;
         this.nhanVien = nhanVien;
-        this.ngayLapHoaDon = new Date();
+        this.thoiGianBatDau = new Date();
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
     }
 

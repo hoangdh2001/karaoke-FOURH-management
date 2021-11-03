@@ -5,8 +5,6 @@ import entity.TrangThaiPhong;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Component;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -66,7 +64,7 @@ public class MyTable extends JTable {
                     ModelAction action = (ModelAction) o;
                     CellAction cell = new CellAction(action);
                     if (selected) {
-                        cell.setBackground(new Color(255, 255, 255));
+                        cell.setBackground(new Color(239, 244, 255));
                     } else {
                         cell.setBackground(Color.WHITE);
                     }

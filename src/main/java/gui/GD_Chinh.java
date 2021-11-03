@@ -16,6 +16,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.component.Content;
 import gui.component.Header;
 import gui.component.Menu;
+import gui.component.RoomDetail;
 import gui.component.TabHidden;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
@@ -49,6 +50,7 @@ public class GD_Chinh extends JFrame {
     private boolean tabShow;
     private MigLayout layout;
     private final DecimalFormat df = new DecimalFormat("##0.##");
+    private TabLayout tab;
     public GD_Chinh(String title) {
 	super(title);
 	buidGD_Chinh();
@@ -173,8 +175,10 @@ public class GD_Chinh extends JFrame {
 //            System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
             switch (menuIndex) {
                 case 0:
-                    if(subMenuIndex == 0)
+                    if(subMenuIndex == 0) {
                         content.showForm(new GD_SoDoPhongHat());
+                        tab.showDetail(new RoomDetail());
+                    }
                     else if(subMenuIndex == 1)
                         content.showForm(new GD_DanhSachPhong());
                     break;
@@ -242,7 +246,7 @@ public class GD_Chinh extends JFrame {
      * tạo ngăn tab
      */
     private TabLayout createTabPane() {
-        TabLayout tab = new TabLayout();
+        tab = new TabLayout();
         background.setLayer(tab, JLayeredPane.POPUP_LAYER);
         TimingTarget target = new TimingTargetAdapter() {
             @Override
