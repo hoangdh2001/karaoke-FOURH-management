@@ -36,6 +36,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -207,6 +208,8 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener, M
         cmbLoaiNV = new MyComboBox<>();
         cmbLoaiNV.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNV.setBorderLine(true);
+        DefaultComboBoxModel<LoaiNhanVien> dcmb = new DefaultComboBoxModel<LoaiNhanVien>();
+        
         pnlThongTinNV.add(cmbLoaiNV, "w 80%, h 36!, wrap");
 
         //Ca làm
@@ -373,6 +376,7 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener, M
         };
 
         for (NhanVien i : listNhanVien) {
+            System.out.println(i);
             tblCenter.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
         }
     }
@@ -390,9 +394,11 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener, M
         // load dữ liệu lên combobox Loại Nhân Viên và combobox Loại Nhân Viên(tìm kiếm)
         listLoaiNhanVien = loaiNhanVien_DAO.getLoaiNhanViens();
         for (LoaiNhanVien lnv : listLoaiNhanVien) {
-            cmbLoaiNV.addItem(lnv.getTenLoaiNV());
-            cmbLoaiNVTK.addItem(lnv.getTenLoaiNV());
+            cmbLoaiNV.addItem(lnv);
+            cmbLoaiNVTK.addItem(lnv);
         }
+        
+         
 
         // load dữ liệu lên combobox Ca Làm và combobox Ca Làm(tìm kiếm)
         listCaLam = caLam_DAO.getCaLams();
@@ -500,7 +506,7 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener, M
         Object object = e.getSource();
 
         if (object.equals(btnThemNV)) {
-            System.out.println("Them nhân viên");
+            insertNhanVien();
         } else if (object.equals(btnXoaNV)) {
             System.out.println("Xoa nhân viên");
 
@@ -515,6 +521,25 @@ public class GD_NhanVien extends javax.swing.JPanel implements ActionListener, M
         }
     }
 
+    private void insertNhanVien() {
+        String ma = txtMaNV.getText().trim();
+        String ten = txtTenNV.getText().trim();
+        String lnv = cmbLoaiNV.getSelectedItem().toString();
+        String caLam = cmbCaLam.getSelectedItem().toString();
+        String cccd = txtMaNV.getText().trim();
+        boolean gioiTinh = cmbGioiTinh.getSelectedItem().toString() == "Nữ" ? true : false;
+
+        String ngaySinh = df.format(dscNgaySinh.getDate());
+        String sdt = txtMaNV.getText().trim();
+        String email = txtMaNV.getText().trim();
+        String diaChi = txtMaNV.getText().trim();
+
+//        NhanVien nhanVien = new NhanVien(ma, ten, lnv, caLam, cccd, gioiTinh, ngaySinh, sdt, email, diaChi);
+    }
+
+    /**
+     * Xóa trống form
+     */
     private void clearForm() {
         NhanVien nhanVienLast = listNhanVien.get(listNhanVien.size() - 1);
         String idNew = generateId(nhanVienLast.getMaNhanVien());

@@ -28,7 +28,20 @@ public class NhanVien_DAO implements NhanVienService {
 
     @Override
     public boolean addNhanVien(NhanVien nhanVien) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction.begin();
+            session.save(nhanVien);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+
+        }
+        return false;                
     }
 
     @Override
