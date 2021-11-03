@@ -3,8 +3,11 @@ package gui.component;
 import gui.swing.panel.PanelShadow;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import net.miginfocom.swing.MigLayout;
 
 public class TabHidden extends PanelShadow {
+    
+    private MigLayout layout;
     private boolean tabShow;
 
     public boolean isTabShow() {
@@ -21,8 +24,12 @@ public class TabHidden extends PanelShadow {
     
     public TabHidden() {
         initComponents();
-        setFocusable(true);
         btnClose.setMnemonic(KeyEvent.VK_X);
+        
+        layout = new MigLayout("fill, insets 0", "[fill]", "50[fill]");
+        setLayout(layout);
+        
+        add(btnClose, "pos 0al 0al");
         
     }
     
@@ -37,12 +44,23 @@ public class TabHidden extends PanelShadow {
         setShadowOpacity(0.2F);
         setShadowSize(2);
         setShadowType(gui.dropshadow.ShadowType.TOP_LEFT);
-        setLayout(new java.awt.BorderLayout());
 
         btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_multiply_30px_1.png"))); // NOI18N
         btnClose.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnClose.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        add(btnClose, java.awt.BorderLayout.PAGE_START);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 512, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
     }// </editor-fold>//GEN-END:initComponents
 
 

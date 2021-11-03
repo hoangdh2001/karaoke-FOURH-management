@@ -257,6 +257,7 @@ public class GD_Chinh extends JFrame {
                 } else {
                     width = 30 * (1f - fraction);
                 }
+                width = Double.valueOf(df.format(width));
                 layout.setComponentConstraints(tab, "pos " + width + "% 1al n n, w 100%, h 100%");
                 tab.repaint();
                 tab.revalidate();
@@ -272,7 +273,7 @@ public class GD_Chinh extends JFrame {
                 }
             }
         };
-        Animator animator2 = new Animator(200, target);
+        Animator animator2 = new Animator(400, target);
         animator2.setResolution(0);
         animator2.setAcceleration(0.5f);
         animator2.setDeceleration(0.5f);
@@ -309,6 +310,7 @@ public class GD_Chinh extends JFrame {
                 }
             }
         });
+        tab.showDetail(new RoomDetail());
         return tab;
     }
 }
