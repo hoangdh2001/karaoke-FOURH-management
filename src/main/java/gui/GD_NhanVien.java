@@ -41,13 +41,12 @@ public class GD_NhanVien extends JLayeredPane {
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
-                float size = (fraction * 400);
-                if (show) {
-                    size = -size;
+                float size = fraction * 400;
+                if(show) {
+                    size = - size;
                 } else {
                     size -= 400;
                 }
-                System.out.println(size);
                 layout.setComponentConstraints(panelHidden, "pos " + (int) size + " 0 n n, h 100%, w 400!");
                 revalidate();
             }
@@ -55,14 +54,14 @@ public class GD_NhanVien extends JLayeredPane {
             @Override
             public void end() {
                 show = !show;
-                if (!show) {
+                if(!show) {
                     panelHidden.setVisible(false);
                 }
             }
         };
-        animator = new Animator(1000, target);
+        animator = new Animator(400, target);
         animator.setResolution(0);
-        animator.setAcceleration(0.5f);
+        animator.setDeceleration(0.5f);
     }
 
     private void createPanelTop() {
@@ -75,11 +74,11 @@ public class GD_NhanVien extends JLayeredPane {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (!animator.isRunning()) {
-                    if (!show) {
-                        panelHidden.setVisible(true);
+                if(!animator.isRunning()) {
+                    if(!show) {
                         animator.start();
-                    } 
+                        panelHidden.setVisible(true);
+                    }
                 }
             }
         });

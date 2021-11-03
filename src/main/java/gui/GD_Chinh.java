@@ -16,6 +16,8 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.component.Content;
 import gui.component.Header;
 import gui.component.Menu;
+import gui.component.TabHidden;
+import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowPopupMenu;
@@ -23,18 +25,30 @@ import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
 import gui.swing.scrollbar.ScrollBarCustom;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
+import org.jdesktop.animation.timing.triggers.FocusTrigger;
 
 public class GD_Chinh extends JFrame {
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
+    private JLayeredPane background;
     private Animator animator; // thực thi animation
     private Menu menu; // thành phân nav kiểu menu chọn nội dung hiện thị
     private Header header; // thành phần header hiện thi thông tin nhân viên
     private Content content; // thành phần content chứa nội dung
+    private boolean tabShow;
+    private MigLayout layout;
+    private final DecimalFormat df = new DecimalFormat("##0.##");
     public GD_Chinh(String title) {
 	super(title);
 	buidGD_Chinh();
@@ -44,28 +58,29 @@ public class GD_Chinh extends JFrame {
      */
     private void buidGD_Chinh() {
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
-	setContentPane(createBackground());
+        createBackground();
+	setContentPane(background);
         setMinimumSize(new Dimension(1200, 500));
-        setState(MAXIMIZED_BOTH);
 	pack();
 	setLocationRelativeTo(null);
-		
+        setState(MAXIMIZED_BOTH);
     }
     /**
      * Tạo nên chứa cái thành phần header, nav dọc kiểu menu, content
      * @return JPanel background
      */
-    private JPanel createBackground() {
-	JPanel background = new JPanel();
+    private void createBackground() {
+	background = new JLayeredPane();
 	background.setPreferredSize(new Dimension(1400, 800));
-	MigLayout layout;
         // layout 2 cột 1 dòng
-	background.setLayout(layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0")); 
+        layout = new MigLayout("fill, insets 0", "0[]0[100%, fill]0", "0[fill, top]0");
+	background.setLayout(layout); 
 	background.setBackground(new Color(236, 240, 245));
      
 	background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
 	background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
 	background.add(createContent()); // content full
+        background.add(createTabPane(), "pos 30% 1al n n, w 100%, h 90%");
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -90,10 +105,10 @@ public class GD_Chinh extends JFrame {
         };
         animator = new Animator(500, target); // thực thi sư kiện thời gian trong 5s
         animator.setResolution(0); // Mượt
-        animator.setDeceleration(0.5f); // giảm tốc 50%
-        animator.setAcceleration(0.5f); // tăng tốc 50% suy ra bình thường
+        animator.setDeceleration(0.5f); // ngưỡng 50% sẽ giảm tốc
+        animator.setAcceleration(0.5f); // ngưỡng 50% sẽ tăng tốc 
+        // Bù trù
         // Khi click vào nút menu sẽ mở menu rộng ra
-        return background;
     }
     /**
      * Tạo header bào gồm hiện thị thông tin nhân viên, loại nhân viên
@@ -222,5 +237,74 @@ public class GD_Chinh extends JFrame {
         sp.setBorder(null);
 	return sp;
     }
+    
+    /**
+     * tạo ngăn tab
+     */
+    private TabLayout createTabPane() {
+        TabLayout tab = new TabLayout();
+        background.setLayer(tab, JLayeredPane.POPUP_LAYER);
+        TimingTarget target = new TimingTargetAdapter() {
+            @Override
+            public void timingEvent(float fraction) {
+                double width;
+                if(tabShow) {
+                    width = 30 * fraction;
+                } else {
+                    width = 30 * (1f - fraction);
+                }
+                layout.setComponentConstraints(tab, "pos " + width + "% 1al n n, w 100%, h 100%");
+                tab.repaint();
+                tab.revalidate();
+                
+                background.revalidate();
+            }
+
+            @Override
+            public void end() {
+                tabShow = !tabShow;
+                if(!tabShow) {
+                    tab.setVisible(false);
+                }
+            }
+        };
+        Animator animator2 = new Animator(200, target);
+        animator2.setResolution(0);
+        animator2.setAcceleration(0.5f);
+        animator2.setDeceleration(0.5f);
+        tab.addAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (!animator2.isRunning()) {
+                    if (tabShow) {
+                        animator2.start();
+                    }
+                }
+            }
+        });
+        header.addAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if(!animator2.isRunning()) {
+                    if(!tabShow) {
+                         tab.setVisible(true);
+                        animator2.start();
+                    }
+                }
+            }
+        });
+        tab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (SwingUtilities.isLeftMouseButton(me)) {
+                    if (!animator2.isRunning()) {
+                        if (tabShow) {
+                            animator2.start();
+                        }
+                    }
+                }
+            }
+        });
+        return tab;
+    }
 }
- 

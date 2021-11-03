@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui.swing.table2;
 
 import entity.TrangThaiPhieuDat;
@@ -20,17 +15,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
-/**
- *
- * @author Admin
- */
 public class MyTable extends JTable {
-    private ModelAction action;
     public MyTable() {
         setShowHorizontalLines(true);
         setSelectionBackground(new Color(239, 244, 255));
         setGridColor(new Color(230, 230, 230));
         setRowHeight(40);
+        setSelectionBackground(new Color(239, 244, 255));
         getTableHeader().setReorderingAllowed(false);
         getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -70,8 +61,9 @@ public class MyTable extends JTable {
                         cell.setBackground(Color.WHITE);
                     }
                     return cell;
-                } else if(o instanceof ModelAction) {
-                    action = (ModelAction) o;
+                }
+                else if(o instanceof ModelAction) {
+                    ModelAction action = (ModelAction) o;
                     CellAction cell = new CellAction(action);
                     if (selected) {
                         cell.setBackground(new Color(255, 255, 255));
@@ -125,4 +117,5 @@ public class MyTable extends JTable {
         scroll.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         scroll.setBorder(new EmptyBorder(5, 10, 5, 10));
     }
+    
 }
