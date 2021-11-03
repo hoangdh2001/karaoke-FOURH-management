@@ -721,8 +721,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                 
                 String maHoaDon = nhaCungCapVaNhaphang_DAO.getlastMaHoaDonTang();
                 
-                HoaDon hoaDon = new HoaDon(maHoaDon, kh, phong, nhanVien,
-                        new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+                HoaDon hoaDon = new HoaDon(maHoaDon, kh, phong, nhanVien);
                 nhaCungCapVaNhaphang_DAO.insertHoaDon(hoaDon);
 //insert chi tiet hoa don
                 if(tableDichVuDaChon.getRowCount() != 0){
