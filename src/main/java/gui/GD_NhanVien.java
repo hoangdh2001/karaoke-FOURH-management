@@ -70,19 +70,6 @@ public class GD_NhanVien extends JLayeredPane {
         panelTop.setShadowType(ShadowType.TOP);
         panelTop.setShadowOpacity(0.3f);
         panelTop.setShadowSize(3);
-        JButton button = new JButton("Open");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if(!animator.isRunning()) {
-                    if(!show) {
-                        animator.start();
-                        panelHidden.setVisible(true);
-                    }
-                }
-            }
-        });
-        panelTop.add(button);
 
     }
 
