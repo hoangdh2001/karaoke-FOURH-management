@@ -17,7 +17,6 @@ import gui.component.Content;
 import gui.component.Header;
 import gui.component.Menu;
 import gui.component.RoomDetail;
-import gui.component.TabHidden;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.event.EventMenuSelected;
@@ -26,8 +25,6 @@ import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
 import gui.swing.scrollbar.ScrollBarCustom;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -35,7 +32,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import org.jdesktop.animation.timing.triggers.FocusTrigger;
 
 public class GD_Chinh extends JFrame {
     /**

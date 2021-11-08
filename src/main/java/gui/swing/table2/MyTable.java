@@ -19,7 +19,6 @@ public class MyTable extends JTable {
         setSelectionBackground(new Color(239, 244, 255));
         setGridColor(new Color(230, 230, 230));
         setRowHeight(40);
-        setSelectionBackground(new Color(239, 244, 255));
         getTableHeader().setReorderingAllowed(false);
         getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
