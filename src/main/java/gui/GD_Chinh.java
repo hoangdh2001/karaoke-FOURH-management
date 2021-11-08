@@ -16,8 +16,8 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.component.Content;
 import gui.component.Header;
 import gui.component.Menu;
+import gui.component.NhanVienDetail;
 import gui.component.RoomDetail;
-import gui.component.TabHidden;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.event.EventMenuSelected;
@@ -26,8 +26,6 @@ import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
 import gui.swing.scrollbar.ScrollBarCustom;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -35,7 +33,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import org.jdesktop.animation.timing.triggers.FocusTrigger;
 
 public class GD_Chinh extends JFrame {
     /**
@@ -179,8 +176,9 @@ public class GD_Chinh extends JFrame {
                         content.showForm(new GD_SoDoPhongHat());
                         tab.showDetail(new RoomDetail());
                     }
-                    else if(subMenuIndex == 1)
+                    else if(subMenuIndex == 1) {
                         content.showForm(new GD_DanhSachPhong());
+                    }
                     break;
                 case 1:
                     content.showForm(new GD_QLDatPhong());
@@ -193,6 +191,7 @@ public class GD_Chinh extends JFrame {
                     break;
                 case 4:
                     content.showForm(new GD_NhanVien());
+                    tab.showDetail(new NhanVienDetail());
                     break;
                 case 5:
                     if(subMenuIndex == 0)
