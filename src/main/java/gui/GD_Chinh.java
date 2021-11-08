@@ -15,6 +15,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
+import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
 import gui.component.RoomDetail;
@@ -185,6 +186,7 @@ public class GD_Chinh extends JFrame {
                     break;
                 case 2:
                     content.showForm(new GD_KhachHang());
+                    tab.showDetail(new KhachHangDetail());
                     break;
                 case 3:
                     content.showForm(new GD_HoaDon());
