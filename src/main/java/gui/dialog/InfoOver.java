@@ -28,7 +28,6 @@ public class InfoOver extends javax.swing.JDialog {
     public InfoOver(java.awt.Frame parent) {
         super(parent, false);
         initComponents();
-        setLocationRelativeTo(null);
         setBackground(new Color(0, 0, 0, 0));
         setOpacity(0);
         TimingTarget target = new TimingTargetAdapter() {

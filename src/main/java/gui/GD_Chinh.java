@@ -83,7 +83,7 @@ public class GD_Chinh extends JFrame {
 	background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
 	background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
 	background.add(createContent()); // content full
-        background.add(createTabPane(), "pos 30% 1al n n, w 100%, h 90%");
+        background.add(createTabPane(), "pos 45% 1al n n, w 100%, h 90%");
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -256,6 +256,9 @@ public class GD_Chinh extends JFrame {
             public void showInfoOver(Component com) {
                 Room room = (Room) com;
                 infoOver = new InfoOver(GD_Chinh.this);
+                int x = GD_Chinh.this.getX();
+                int y = GD_Chinh.this.getY();
+                infoOver.setLocation(x, y);
                 infoOver.setVisible(true);
             }
 
@@ -288,9 +291,9 @@ public class GD_Chinh extends JFrame {
             public void timingEvent(float fraction) {
                 double width;
                 if(tabShow) {
-                    width = 30 * fraction;
+                    width = 45 * fraction;
                 } else {
-                    width = 30 * (1f - fraction);
+                    width = 45 * (1f - fraction);
                 }
                 width = Double.valueOf(df.format(width));
                 layout.setComponentConstraints(tab, "pos " + width + "% 1al n n, w 100%, h 100%");
