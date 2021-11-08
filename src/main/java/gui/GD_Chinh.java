@@ -336,7 +336,7 @@ public class GD_Chinh extends JFrame {
                 }
             }
         });
-        tab.addMouseListener(new MouseAdapter() {
+        tab.addEventCloseTab(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
                 if (SwingUtilities.isLeftMouseButton(me)) {
