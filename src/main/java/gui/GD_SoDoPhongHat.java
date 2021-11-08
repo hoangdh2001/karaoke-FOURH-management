@@ -5,6 +5,7 @@ import entity.TrangThaiPhong;
 import gui.component.PanelMap;
 import gui.component.PanelStatus;
 import gui.dropshadow.ShadowType;
+import gui.event.EventShowInfoOver;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
@@ -23,6 +24,10 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
     private PanelMap panelMap;
     private Phong_DAO phong_DAO;
+    
+    public void addEvent(EventShowInfoOver event) {
+        panelMap.addEvent(event);
+    }
 
     public GD_SoDoPhongHat() {
         phong_DAO = new Phong_DAO();
@@ -149,10 +154,13 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         panelMap.setBackground(Color.WHITE);
         panelMap.setShadowOpacity(0.3f);
         panelMap.setShadowSize(2);
+        
         panelMap.setShadowType(ShadowType.TOP);
         add(panelMap, BorderLayout.CENTER);
         panelMap.setPreferredSize(new Dimension(getWidth(), getHeight() + 800));
     }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

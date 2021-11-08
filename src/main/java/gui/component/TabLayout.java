@@ -38,11 +38,9 @@ public class TabLayout extends javax.swing.JPanel {
     public TabLayout() {
         initComponents();
         setLayout(new MigLayout("fill, insets0"));
-        add(tab, "pos 1al 1al n n, w 30%, h 90%");
+        add(tab, "pos 1al 1al n n, w 45%, h 90%");
         setOpaque(false);
         setVisible(false);
-        tab.addMouseListener(new MouseAdapter() {
-        });
     }
 
     @SuppressWarnings("unchecked")
