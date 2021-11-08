@@ -16,6 +16,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.component.Content;
 import gui.component.Header;
 import gui.component.Menu;
+import gui.component.NhanVienDetail;
 import gui.component.RoomDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
@@ -175,8 +176,9 @@ public class GD_Chinh extends JFrame {
                         content.showForm(new GD_SoDoPhongHat());
                         tab.showDetail(new RoomDetail());
                     }
-                    else if(subMenuIndex == 1)
+                    else if(subMenuIndex == 1) {
                         content.showForm(new GD_DanhSachPhong());
+                    }
                     break;
                 case 1:
                     content.showForm(new GD_QLDatPhong());
@@ -189,6 +191,7 @@ public class GD_Chinh extends JFrame {
                     break;
                 case 4:
                     content.showForm(new GD_NhanVien());
+                    tab.showDetail(new NhanVienDetail());
                     break;
                 case 5:
                     if(subMenuIndex == 0)
