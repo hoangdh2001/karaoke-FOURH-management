@@ -5,242 +5,77 @@
  */
 package gui.component;
 
-import com.toedter.calendar.JDateChooser;
-import dao.Phong_DAO;
 import gui.event.EventTabSelected;
-import gui.swing.layout.WrapLayout;
 import gui.swing.panel.TabButton;
 import gui.swing.scrollbar.ScrollBarCustom;
-import gui.swing.textfield.MyComboBox;
-import gui.swing.textfield.MyTextField;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import net.miginfocom.swing.MigLayout;
 
 /**
  *
  * @author Admin
  */
 public class NhanVienDetail extends javax.swing.JPanel {
-
-    private MyTextField txtMaNV;
-    private MyTextField txtTenNV;
-    private MyComboBox<Object> cmbGioiTinh;
-    private JDateChooser dscNgaySinh;
-    private MyTextField txtSDT;
-    private MyTextField txtEmail;
-    private MyTextField txtDiaChi;
-    private MyComboBox<Object> cmbLoaiNV;
-    private MyComboBox<Object> cmbCaLam;
-    private MyTextField txtCCCD;
-
-    private TabButton tabPane;
-    private JPanel pane;
+    
     private List<JPanel> panels = new ArrayList<>();
     private JScrollPane scrTab;
-    private JPanel pnlTabInfo;
 
     /**
      * Creates new form NhanVienDetail
      */
     public NhanVienDetail() {
         initComponents();
-        buildNhanVienDetail();
-    }
-
-    private void buildNhanVienDetail() {
-        this.setLayout(new BorderLayout());
-        this.add(createTabPane(), BorderLayout.NORTH);
-        this.add(createPane(), BorderLayout.CENTER);
-    }
-
-    private JScrollPane createPane() {
-        scrTab = new JScrollPane();
-        pane = new JPanel();
-        pane.setLayout(new BorderLayout());
-        pane.setOpaque(false);
-        pane.add(createTabInfo());
-        scrTab.getViewport().setBackground(Color.WHITE);
-        scrTab.setVerticalScrollBar(new ScrollBarCustom());
         
-        JPanel p = new JPanel();
-        p.setOpaque(false);
-        scrTab.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        scrTab.setViewportView(pane);
-        scrTab.getVerticalScrollBar().setUnitIncrement(50);
-        scrTab.setBorder(null);
-        return scrTab;
-    }
-
-    private JPanel createTabPane() {
-        tabPane = new TabButton();
-        tabPane.setEvent(new EventTabSelected() {
+//        add(createPane(), BorderLayout.CENTER);
+        
+        tab.setEvent(new EventTabSelected() {
             @Override
             public boolean selected(int index, boolean selectedTab) {
-                showTabPane(panels.get(index));
-                scrTab.getVerticalScrollBar().setValue(0);
-                tabPane.check();
+//                showTabPane(panels.get(index));
+//                scrTab.getVerticalScrollBar().setValue(0);
+                if (index == 0) {
+                    showTabPane(new PanelTabThongTinKhachHang());
+                } else if (index == 1) {
+                    showTabPane(new PanelTabSuaThongTinKH());
+                }
+                
+                tab.check();
                 return true;
             }
         });
-        tabPane.setBackground(Color.WHITE);
-
-        return tabPane;
+        tab.addTabButtonItem("Thong tin");
+        tab.addTabButtonItem("Sua");
+//        panels.add(jPanel1);
+//        panels.add(jPanel2);
     }
-
+    
     private void showTabPane(Component component) {
         pane.removeAll();
         pane.add(component);
         pane.repaint();
         pane.revalidate();
     }
-
-    private JPanel createTabInfo() {
-        /*Begin: Khởi tạo*/
-        pnlTabInfo = new JPanel();
-        pnlTabInfo.setOpaque(false);
-        pnlTabInfo.setLayout(new BorderLayout());
-        panels.add(pnlTabInfo);
-        tabPane.addTabButtonItem("Thông tin");
-        /*End: Khởi tạo*/
-
-        
-        
-        /*Begin: Thành phần con - hiển thị thông tin*/
-        String fontName = "sansserif";
-        int fontPlain = Font.PLAIN;
-        int font14 = 14;
-
-        JPanel pnlCenter = new JPanel();
-        pnlCenter.setBorder(BorderFactory.createLineBorder(Color.yellow));
-        pnlCenter.setLayout(new MigLayout("", "[]", "[][][][][][][][][]"));
-
-        // Mã nhân viên
-        JLabel lblMaNV = new JLabel("Mã nhân viên:");
-        lblMaNV.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblMaNV, "align right");
-
-        txtMaNV = new MyTextField();
-        txtMaNV.setFont(new Font(fontName, fontPlain, font14));
-        txtMaNV.setBorderLine(true);
-        txtMaNV.setBorderRadius(5);
-        txtMaNV.setEditable(false);
-        pnlCenter.add(txtMaNV, "w 80%, h 36!, wrap");
-
-        //Tên nhân viên
-        JLabel lblTenNV = new JLabel("Tên nhân viên:");
-        lblTenNV.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblTenNV, "align right");
-
-        txtTenNV = new MyTextField();
-        txtTenNV.setFont(new Font(fontName, fontPlain, font14));
-        txtTenNV.setBorderLine(true);
-        txtTenNV.setBorderRadius(5);
-        pnlCenter.add(txtTenNV, "w 80%, h 36!, wrap");
-
-        //Giới tính
-        JLabel lblGioiTinh = new JLabel("Giới tính:");
-        lblGioiTinh.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblGioiTinh, "align right");
-
-        cmbGioiTinh = new MyComboBox<>();
-        cmbGioiTinh.setFont(new Font(fontName, fontPlain, font14));
-        cmbGioiTinh.setBorderLine(true);
-        cmbGioiTinh.setBorderRadius(10);
-        cmbGioiTinh.addItem("Nam");
-        cmbGioiTinh.addItem("Nữ");
-        pnlCenter.add(cmbGioiTinh, "w 80%, h 36!, wrap");
-
-        //Ngày sinh
-        JLabel lblNgaySinh = new JLabel("Ngày sinh:");
-        lblNgaySinh.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblNgaySinh, "align right");
-
-        dscNgaySinh = new JDateChooser();
-        dscNgaySinh.setFont(new Font(fontName, fontPlain, font14));
-        dscNgaySinh.setDateFormatString("dd-MM-yyyy");
-        pnlCenter.add(dscNgaySinh, "w 80%, h 36!, wrap");
-
-        //Số điện thoại
-        JLabel lblSDT = new JLabel("Số điện thoại:");
-        lblSDT.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblSDT, "align right");
-
-        txtSDT = new MyTextField();
-        txtSDT.setFont(new Font(fontName, fontPlain, font14));
-        txtSDT.setBorderLine(true);
-        txtSDT.setBorderRadius(5);
-        pnlCenter.add(txtSDT, "w 80%, h 36!, wrap");
-
-        //Email
-        JLabel lblEmail = new JLabel("Email:");
-        lblEmail.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblEmail, "align right");
-
-        txtEmail = new MyTextField();
-        txtEmail.setFont(new Font(fontName, fontPlain, font14));
-        txtEmail.setBorderLine(true);
-        txtEmail.setBorderRadius(5);
-        pnlCenter.add(txtEmail, "w 80%, h 36!, wrap");
-
-        //Địa chỉ
-        JLabel lblDiaChi = new JLabel("Địa chỉ:");
-        lblDiaChi.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblDiaChi, "align right");
-
-        txtDiaChi = new MyTextField();
-        txtDiaChi.setFont(new Font(fontName, fontPlain, font14));
-        txtDiaChi.setBorderLine(true);
-        txtDiaChi.setBorderRadius(5);
-        pnlCenter.add(txtDiaChi, "w 80%, h 36!, wrap");
-
-        //Loại nhân viên
-        JLabel lblLoaiNV = new JLabel("Loại nhân viên:");
-        lblLoaiNV.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblLoaiNV, "align right");
-
-        cmbLoaiNV = new MyComboBox<>();
-        cmbLoaiNV.setFont(new Font(fontName, fontPlain, font14));
-        cmbLoaiNV.setBorderLine(true);
-        cmbLoaiNV.setBorderRadius(10);
-        pnlCenter.add(cmbLoaiNV, "w 80%, h 36!, wrap");
-
-        //Ca làm
-        JLabel lblCaLam = new JLabel("Ca làm:");
-        lblCaLam.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblCaLam, "align right");
-
-        cmbCaLam = new MyComboBox<>();
-        cmbCaLam.setFont(new Font(fontName, fontPlain, font14));
-        cmbCaLam.setBorderLine(true);
-        cmbCaLam.setBorderRadius(10);
-        pnlCenter.add(cmbCaLam, "w 80%, h 36!, wrap");
-
-        //Căn cước công dân
-        JLabel lblCCCD = new JLabel("CCCD:");
-        lblCCCD.setFont(new Font(fontName, fontPlain, font14));
-        pnlCenter.add(lblCCCD, "align right");
-
-        txtCCCD = new MyTextField();
-        txtCCCD.setFont(new Font(fontName, fontPlain, font14));
-        txtCCCD.setBorderLine(true);
-        txtCCCD.setBorderRadius(5);
-        pnlCenter.add(txtCCCD, "w 80%, h 36!, wrap");
-        /*End: Thành phần con - hiển thị thông tin*/
-        
-        pnlTabInfo.add(pnlCenter, BorderLayout.CENTER);
-        
-        return pnlTabInfo;
-    }
+    
+//    private JScrollPane createPane() {
+//        scrTab = new JScrollPane();
+//        pane.setLayout(new BorderLayout());
+//        pane.setOpaque(false);
+//        pane.add(jPanel1);
+//        scrTab.getViewport().setBackground(Color.WHITE);
+//        scrTab.setVerticalScrollBar(new ScrollBarCustom());
+//        JPanel p = new JPanel();
+//        p.setOpaque(false);
+//        scrTab.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+//        scrTab.setViewportView(pane);
+//        scrTab.getVerticalScrollBar().setUnitIncrement(50);
+//        scrTab.setBorder(null);
+//        return scrTab;
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -251,21 +86,110 @@ public class NhanVienDetail extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tab = new gui.swing.panel.TabButton();
+        pane = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+
         setBackground(new java.awt.Color(153, 255, 153));
+
+        pane.setBackground(new java.awt.Color(51, 51, 255));
+
+        jPanel1.setBackground(new java.awt.Color(255, 51, 204));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 333, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 315, Short.MAX_VALUE)
+        );
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 102));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 208, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 327, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout paneLayout = new javax.swing.GroupLayout(pane);
+        pane.setLayout(paneLayout);
+        paneLayout.setHorizontalGroup(
+            paneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(120, 120, 120))
+        );
+        paneLayout.setVerticalGroup(
+            paneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneLayout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addGroup(paneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(114, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(255, 0, 0));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 953, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 578, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel pane;
+    private gui.swing.panel.TabButton tab;
     // End of variables declaration//GEN-END:variables
 }
