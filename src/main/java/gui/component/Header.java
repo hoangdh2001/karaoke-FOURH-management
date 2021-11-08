@@ -13,6 +13,10 @@ public class Header extends PanelShadow {
     private final SimpleDateFormat dfTime = new SimpleDateFormat("hh:MM:ss");
     private Thread thread;
     private boolean start = true;
+    
+    public void addAction(ActionListener evt) {
+        jButton1.addActionListener(evt);
+    }
     public void addEvent(ActionListener event) {
         btnOpenMenu.addActionListener(event);
     }
@@ -72,34 +76,17 @@ public class Header extends PanelShadow {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        avatar = new gui.swing.image.ImageAvatar();
-        labelRound1 = new gui.swing.label.LabelRound();
-        lblName = new javax.swing.JLabel();
-        lblRole = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lblDate = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
         btnOpenMenu = new gui.swing.button.Button();
-        btnDropMenu = new gui.swing.button.ButtonBadges();
+        btnDropMenu = new gui.swing.button.ButtonInfo();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setShadowOpacity(0.3F);
         setShadowSize(2);
         setShadowType(gui.dropshadow.ShadowType.BOT);
-
-        avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/avatar.png"))); // NOI18N
-
-        labelRound1.setBackground(new java.awt.Color(0, 204, 0));
-        labelRound1.setBorderRadius(10);
-        avatar.add(labelRound1);
-        labelRound1.setBounds(30, 30, 10, 10);
-
-        lblName.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        lblName.setForeground(new java.awt.Color(127, 127, 127));
-        lblName.setText("Đỗ Huy Hoàng");
-
-        lblRole.setForeground(new java.awt.Color(127, 127, 127));
-        lblRole.setText("Quản lý");
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -113,7 +100,14 @@ public class Header extends PanelShadow {
 
         btnOpenMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu.png"))); // NOI18N
 
-        btnDropMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/expand_arrow_15px.png"))); // NOI18N
+        btnDropMenu.setBorderRadius(10);
+        btnDropMenu.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        btnDropMenu.setPrefixIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/avatar.png"))); // NOI18N
+        btnDropMenu.setSuffixIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/expand_arrow_15px.png"))); // NOI18N
+        btnDropMenu.setTextName("Đỗ Huy Hoàng");
+        btnDropMenu.setTextRoll("Quản lý");
+
+        jButton1.setText("jButton1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -122,7 +116,9 @@ public class Header extends PanelShadow {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 661, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 315, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(251, 251, 251)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDate)
                     .addGroup(layout.createSequentialGroup()
@@ -130,57 +126,42 @@ public class Header extends PanelShadow {
                         .addComponent(lblTime)))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblName, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblRole, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(btnDropMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addComponent(btnDropMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblRole))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblDate)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblTime))
-                            .addComponent(jSeparator1))))
-                .addGap(7, 7, 7))
-            .addComponent(avatar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnDropMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19))))
+                        .addComponent(lblDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTime))
+                    .addComponent(jSeparator1))
+                .addGap(7, 7, 7))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addComponent(btnDropMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.swing.image.ImageAvatar avatar;
-    private gui.swing.button.ButtonBadges btnDropMenu;
+    private gui.swing.button.ButtonInfo btnDropMenu;
     private gui.swing.button.Button btnOpenMenu;
+    private javax.swing.JButton jButton1;
     private javax.swing.JSeparator jSeparator1;
-    private gui.swing.label.LabelRound labelRound1;
     private javax.swing.JLabel lblDate;
-    private javax.swing.JLabel lblName;
-    private javax.swing.JLabel lblRole;
     private javax.swing.JLabel lblTime;
     // End of variables declaration//GEN-END:variables
 }

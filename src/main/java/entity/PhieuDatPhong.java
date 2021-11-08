@@ -2,7 +2,8 @@ package entity;
 
 import gui.swing.table2.EventAction;
 import gui.swing.table2.ModelAction;
-import java.sql.Date;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.swing.JCheckBox;
 
 @Entity
 public class PhieuDatPhong {
@@ -24,8 +26,9 @@ public class PhieuDatPhong {
     @ManyToOne
     @JoinColumn(name = "maPhong", nullable = false)
     private Phong phong;
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "datetime")
     private Date ngayDat;
+    @Column(columnDefinition = "datetime")
     private Date ngayTao;
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "nvarchar(255)")
@@ -68,7 +71,8 @@ public class PhieuDatPhong {
         this.tienCoc = tienCoc;
         this.ngayDat = ngayDat;
         this.trangThai = trangThai;
-        this.ngayTao = Date.valueOf(LocalDate.now());
+//        this.ngayTao = Date.valueOf(LocalDate.now());
+        this.ngayTao = new Date();
     }
 
     /**
@@ -184,6 +188,12 @@ public class PhieuDatPhong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
-        return new Object[]{"", maPhieuDat, ngayTao, khachHang.getTenKhachHang(), phong.getTenPhong(), ngayDat, trangThai, tienCoc, new ModelAction(this, event)};
+        return new Object[]{JCheckBox.class, maPhieuDat, ngayTao, khachHang.getTenKhachHang(), phong.getTenPhong(), ngayDat, trangThai, tienCoc, new ModelAction(this, event)};
+    }
+    
+    public Object[] convertToRowTableInGDTiepNhanDatPhong(){
+        SimpleDateFormat formatterGio = new SimpleDateFormat("hh:mm");
+        System.out.println(formatterGio.format(ngayDat.getTime()));
+        return new Object[]{maPhieuDat,khachHang.getTenKhachHang(),formatterGio.format(ngayDat.getTime())};
     }
 }

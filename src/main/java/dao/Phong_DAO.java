@@ -5,7 +5,9 @@
  */
 package dao;
 
+import entity.LoaiPhong;
 import entity.Phong;
+import entity.TrangThaiPhong;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -44,12 +46,34 @@ public class Phong_DAO implements PhongService {
 
     @Override
     public boolean updatePhong(Phong phong) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.update(phong);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return false;
     }
 
     @Override
     public boolean deletePhong(String maPhong) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.delete(session.find(Phong.class, maPhong));
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return false;
     }
 
     @Override
@@ -59,10 +83,11 @@ public class Phong_DAO implements PhongService {
 
         try {
             tr.begin();
-            Phong phong = session.find(Phong.class, maPhong);
+                Phong phong = session.find(Phong.class, maPhong);
             tr.commit();
             return phong;
         } catch (Exception e) {
+            e.printStackTrace();
             tr.rollback();
         }
         return null;
@@ -101,14 +126,48 @@ public class Phong_DAO implements PhongService {
                     .createNamedQuery(sql)
                     .getResultList();
             tr.commit();
-            return  dsTang;
+            return dsTang;
         } catch (Exception e) {
             tr.rollback();
         }
         session.close();
         return null;
     }
-    
-    
 
+    @Override
+    public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select count(*) from Phong where trangThai = '" + trangThai + "'";
+        int soLuong = 0;
+        try {
+            tr.begin();
+            soLuong = (Integer) session.createNativeQuery(sql).getSingleResult();
+            tr.commit();
+        } catch (NumberFormatException e) {
+            tr.rollback();
+        }
+        return soLuong;
+    }
+
+    @Override
+    public List<Phong> getPhongByAttributes(String tenPhong, LoaiPhong loaiPhong, TrangThaiPhong trangThai) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select * from Phong "
+                + "where tenPhong = N'%"+ tenPhong +"%' "
+                + "or maLoaiPhong = '"+ loaiPhong.getMaLoaiPhong() +"' "
+                + "or trangThai = '"+ trangThai.DANG_HAT +"'";
+        try {
+            tr.begin();
+            List<Phong> dsPhong = session
+                    .createNativeQuery(sql, Phong.class)
+                    .getResultList();
+            tr.commit();
+            return dsPhong;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
 }

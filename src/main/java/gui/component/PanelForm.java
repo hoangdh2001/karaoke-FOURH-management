@@ -54,21 +54,17 @@ public class PanelForm extends javax.swing.JPanel {
                     fractionCover = 1f - fraction;
                     fractionForm = fraction;
                     if (fraction >= 0.5f) {
-                        System.out.println("quên mật khẩu nằm bên phải");
                         // Chuyển các text trên panel cover 
                         image.forgotPassRight(fractionCover * 100);
                     } else {
-                        System.out.println("đăng nhập đang nằm phải");
                         image.loginRight(fractionForm * 100);
                     }
                 } else {
                     fractionCover = fraction;
                     fractionForm = 1f - fraction;
                     if (fraction <= 0.5f) {
-                        System.out.println("Quên mật khẩu nằm bên trái");
                         image.forgotPassLeft(fraction * 100);
                     } else {
-                        System.out.println("Đăng nhập đang nằm bên trái");
                         image.loginLeft((1f - fraction) * 100);
                     }
                 }

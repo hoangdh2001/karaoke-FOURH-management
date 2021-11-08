@@ -25,7 +25,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -59,11 +58,11 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 
             @Override
             public void update(ModelAction action) {
-                PhieuDatPhong pdp = (PhieuDatPhong) action.getObj();
-                pdp.setNgayDat(Date.valueOf(table.getValueAt(table.getSelectedRow(), 5).toString()));
-                pdp.setTienCoc(Double.valueOf(table.getValueAt(table.getSelectedRow(), 7).toString()));
-                action.setObj(pdp);
-                System.out.println(pdp);
+//                PhieuDatPhong pdp = (PhieuDatPhong) action.getObj();
+//                pdp.setNgayDat(Date.valueOf(table.getValueAt(table.getSelectedRow(), 5).toString()));
+//                pdp.setTienCoc(Double.valueOf(table.getValueAt(table.getSelectedRow(), 7).toString()));
+//                action.setObj(pdp);
+//                System.out.println(pdp);
             }
         };
     }

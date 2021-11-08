@@ -4,25 +4,45 @@
  */
 package gui;
 
+import dao.NhaCungCapVaNhapHang_DAO;
+import dao.Phong_DAO;
+import entity.ChiTietHoaDon;
+import entity.HoaDon;
+import entity.NhanVien;
+import entity.Phong;
+import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import gui.swing.table.SpinnerEditor;
-import gui.swing.table.TableCustom;
+import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.BorderFactory;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.ParseException;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,6 +55,36 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     private JPanel pnlInfoRoom;
     private JPanel pnlDanhSachDichVu;
     private String fontName = "sansserif";
+    
+    private DecimalFormat df;
+    
+    private MyTextField txtTongDV;
+    
+    private MyTextField txtNgay;
+    private MyTextField txtTenPhong;
+    private MyTextField txtLoai;
+    private MyTextField txtGia;
+    private MyTextField txtNhanVien;
+    private MyTextField txtStart;
+    private MyTextField txtEnd;
+    private MyTextField txtTongTienPhong;
+    
+    private MyTextField txtTongTien;
+    
+    private MyTextField txtTienDua;
+    private MyTextField txtTraLai;
+    
+    private MyTable tableSelected;
+    
+    private Button btnHuy;
+    private Button btnThanhToan;
+    
+    private Phong phong;
+    private NhanVien nhanVien;
+    private HoaDon hoaDon;
+    
+    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
+    
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
     private int font14 = 14;
@@ -42,13 +92,18 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     private Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
     
-    public GD_LapHoaDon() {
+    public GD_LapHoaDon(Phong phong,NhanVien nhanVien) {
         super();
+        this.phong = phong;
+        this.nhanVien= nhanVien;
         setModal(true);
         initComponents();
         setSize(new Dimension(1200,740));
         setLocation(150, 10);
         initForm();
+        addAction();
+        initData(phong,nhanVien);
+        TongTien();
         
     }
 
@@ -115,7 +170,10 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GD_LapHoaDon dialog = new GD_LapHoaDon();
+                Phong phong = new Phong_DAO().getPhong("PH0001");
+                System.out.println(phong);
+                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+                GD_LapHoaDon dialog = new GD_LapHoaDon(phong,nhanVien);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -139,20 +197,42 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         lblDanhSachPhieu.setForeground(colorLabel);
         pnlDanhSachDichVu.add(lblDanhSachPhieu, "span, w 100%, h 30!, wrap");
 
-        Object dataSelected[][] = { 
-                {  "Tran Van Minh",0, "6000","0"}, 
-                {  "Phan Van Tai",0, "8000","0"}, 
-                {  "Do Cao Hoc",0, "7000","0"},             
+        String colSelected[] = {"Tên","Số lượng","Giá","Tổng"};
+        
+        DefaultTableModel model = new DefaultTableModel(
+            colSelected,
+            0
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false,false
+            }; 
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         };
         
-        String colSelected[] = {"Tên","Số lượng","Giá","Tổng"};
-        DefaultTableModel modelSelected = new DefaultTableModel(colSelected,0);
-        modelSelected.setDataVector(dataSelected, colSelected);
-        TableCustom tableSelected = new TableCustom(modelSelected);
+        tableSelected = new MyTable(){
+			public Class getColumnClass(int column) {
+				switch (column) {
+				case 0:
+					return String.class;
+				case 1:
+					return String.class;
+				case 2:
+					return String.class;
+				default:
+					return String.class;
+				
+				}
+			}
+        };
+    
+        tableSelected.setModel(model);
         
         TableColumnModel tcm = tableSelected.getColumnModel();
-        TableColumn tc = tcm.getColumn(1);
-        tc.setCellEditor(new SpinnerEditor());
+        TableColumn tcSpinner = tcm.getColumn(1);
+        SpinnerEditor sp = new SpinnerEditor(100);
+        tcSpinner.setCellEditor(sp);
         
         JScrollPane spSelected = new JScrollPane(tableSelected);
         tableSelected.fixTable(spSelected);
@@ -165,11 +245,12 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         lblTong.setFont(new Font(fontName, fontPlain, font14));
         tong.add(lblTong, "align right");
 
-        MyTextField txtTong = new MyTextField();
-        txtTong.setFont(new Font(fontName, fontPlain, font14));
-        txtTong.setEnabled(false);
-        txtTong.setBorderLine(true);
-        tong.add(txtTong, "w 100:200:260, h 36! , wrap");
+        txtTongDV = new MyTextField();
+        txtTongDV.setFont(new Font(fontName, fontPlain, font14));
+        txtTongDV.setEnabled(false);
+        txtTongDV.setBorderLine(true);
+        txtTongDV.setBorderRadius(5);
+        tong.add(txtTongDV, "w 100:200:260, h 36! , wrap");
 
         pnlDanhSachDichVu.add(spSelected,"w 100%,h 90%,wrap");
         pnlDanhSachDichVu.add(tong,"w 100%,h 10%");
@@ -182,7 +263,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     
     public void initInfoRoom(){
         JPanel pnlInfoRightWrap = new JPanel();
-        pnlInfoRightWrap.setLayout(new MigLayout("","[]","10[center]18"));
+        pnlInfoRightWrap.setLayout(new MigLayout("","[]","10[center]10[center]18[center]18"));
         
         JLabel lblTTPhong = new JLabel("Thông tin sử dụng");
         lblTTPhong.setFont(new Font(fontName, fontPlain, font16));
@@ -197,72 +278,88 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
 
         JLabel lblNgay= new JLabel("Ngày: ");
         lblNgay.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlInfoRoom.add(lblNgay, "align right");
 
-        MyTextField txtNgay = new MyTextField();
+        txtNgay = new MyTextField();
         txtNgay.setFont(new Font(fontName, fontPlain, font14));
         txtNgay.setEnabled(false);
         txtNgay.setBorderLine(true);
+        txtNgay.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtNgay, "w 100%, h 36! , wrap");
         
         JLabel lblTenPhong= new JLabel("Tên phòng :");
         lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlInfoRoom.add(lblTenPhong, "align right");
 
-        MyTextField txtTenPhong = new MyTextField();
+        txtTenPhong = new MyTextField();
         txtTenPhong.setFont(new Font(fontName, fontPlain, font14));
         txtTenPhong.setEnabled(false);
         txtTenPhong.setBorderLine(true);
+        txtTenPhong.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtTenPhong, "w 100%, h 36! , wrap");
         
         JLabel lblLoai= new JLabel("Loại phòng :");
         lblLoai.setFont(new Font(fontName, fontPlain, font14));
         pnlInfoRoom.add(lblLoai, "align right");
 
-        MyTextField txtLoai = new MyTextField();
+        txtLoai = new MyTextField();
         txtLoai.setFont(new Font(fontName, fontPlain, font14));
         txtLoai.setEnabled(false);
         txtLoai.setBorderLine(true);
+        txtLoai.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtLoai, "w 100%, h 36! , wrap");
         
         JLabel lblGia= new JLabel("Giá phòng/giờ :");
         lblGia.setFont(new Font(fontName, fontPlain, font14));
         pnlInfoRoom.add(lblGia, "align right");
 
-        MyTextField txtGia = new MyTextField();
+        txtGia = new MyTextField();
         txtGia.setFont(new Font(fontName, fontPlain, font14));
         txtGia.setEnabled(false);
         txtGia.setBorderLine(true);
+        txtGia.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtGia, "w 100%, h 36! , wrap");
         
         JLabel lblNhanVien= new JLabel("Nhân viên :");
         lblNhanVien.setFont(new Font(fontName, fontPlain, font14));
         pnlInfoRoom.add(lblNhanVien, "align right");
 
-        MyTextField txtNhanVien = new MyTextField();
+        txtNhanVien = new MyTextField();
         txtNhanVien.setFont(new Font(fontName, fontPlain, font14));
         txtNhanVien.setEnabled(false);
         txtNhanVien.setBorderLine(true);
+        txtNhanVien.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtNhanVien, "w 100%, h 36! , wrap");
         
         JLabel lblStart = new JLabel("Giờ Bắt đầu :");
         lblStart.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlInfoRoom.add(lblStart, "align right");
 
-        MyTextField txtStart = new MyTextField();
+        txtStart = new MyTextField();
         txtStart.setFont(new Font(fontName, fontPlain, font14));
         txtStart.setEnabled(false);
         txtStart.setBorderLine(true);
+        txtStart.setBorderRadius(5);
+        
         pnlInfoRoom.add(txtStart, "w 100%, h 36! , wrap");
         
         JLabel lblEnd = new JLabel("Giờ kết thúc :");
         lblEnd.setFont(new Font(fontName, fontPlain, font14));
         pnlInfoRoom.add(lblEnd, "align right");
 
-        MyTextField txtEnd = new MyTextField();
+        txtEnd = new MyTextField();
         txtEnd.setFont(new Font(fontName, fontPlain, font14));
         txtEnd.setEnabled(false);
         txtEnd.setBorderLine(true);
+        txtEnd.setBorderRadius(5);
         
         pnlInfoRoom.add(txtEnd, "w 100%, h 36! , wrap");
         pnlInfoRoom.setBackground(Color.WHITE);
@@ -273,13 +370,16 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         
         JLabel lblTongTien = new JLabel("Tổng tiền phòng :");
         lblTongTien.setFont(new Font(fontName, fontPlain, font14));
+        
         tongTienPhong.add(lblTongTien, "align left");
 
-        MyTextField txtTongTien = new MyTextField();
-        txtTongTien.setFont(new Font(fontName, fontPlain, font14));
-        txtTongTien.setEnabled(false);
-        txtTongTien.setBorderLine(true);
-        tongTienPhong.add(txtTongTien, "w 100:200:270, h 36!");
+        txtTongTienPhong = new MyTextField();
+        txtTongTienPhong.setFont(new Font(fontName, fontPlain, font14));
+        txtTongTienPhong.setEnabled(false);
+        txtTongTienPhong.setBorderLine(true);
+        txtTongTienPhong.setBorderRadius(5);
+        
+        tongTienPhong.add(txtTongTienPhong, "w 100:200:270, h 36!");
         
         pnlInfoRightWrap.add(pnlInfoRoom,"w 100%,h 90%,wrap");
         pnlInfoRightWrap.add(tongTienPhong,"w 100%,h 10%");
@@ -288,7 +388,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         
     }
     
-    public void initAction(){
+    public void initActionPanel(){
         pnlThanhToan = new JPanel();
         pnlThanhToan.setBackground(Color.WHITE);
         pnlThanhToan.setLayout(new MigLayout("","28[][]","10[]5"));
@@ -300,29 +400,36 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         lblTongTien.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblTongTien, "align right");
 
-        MyTextField txtTongTien = new MyTextField();
+        txtTongTien = new MyTextField();
         txtTongTien.setFont(new Font(fontName, fontPlain, font14));
         txtTongTien.setEnabled(false);
         txtTongTien.setBorderLine(true);
+        txtTongTien.setBorderRadius(5);
+        
         pnlThongTin.add(txtTongTien, "w 100:200:270, h 36! , wrap");
         
         JLabel lblTienDua = new JLabel("Tiền khách đưa :");
         lblTienDua.setFont(new Font(fontName, fontPlain, font14));
+        
         pnlThongTin.add(lblTienDua, "align right");
 
-        MyTextField txtTienDua = new MyTextField();
+        txtTienDua = new MyTextField();
         txtTienDua.setFont(new Font(fontName, fontPlain, font14));
         txtTienDua.setBorderLine(true);
+        txtTienDua.setBorderRadius(5);
+        
         pnlThongTin.add(txtTienDua, "w 100:200:270, h 36! , wrap");
         
         JLabel lblTraLai = new JLabel("Tiền trả lại :");
         lblTraLai.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTin.add(lblTraLai, "align right");
 
-        MyTextField txtTraLai= new MyTextField();
+        txtTraLai= new MyTextField();
         txtTraLai.setFont(new Font(fontName, fontPlain, font14));
         txtTraLai.setEnabled(false);
         txtTraLai.setBorderLine(true);
+        txtTraLai.setBorderRadius(5);
+        
         pnlThongTin.add(txtTraLai, "w 100:200:270, h 36! , wrap");
         
         pnlThongTin.setBackground(Color.WHITE);
@@ -331,13 +438,15 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         pnlButton.setLayout(new MigLayout("","push[]10[]20","push[]20"));
         pnlButton.setBackground(Color.WHITE);
         
-        Button btnHuy = new Button("Hủy xem");
+        btnHuy = new Button("Hủy xem");
         btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
+        btnHuy.setBorderRadius(5);
         
-        Button btnThanhToan = new Button("Thanh toán");
+        btnThanhToan = new Button("Thanh toán");
         btnThanhToan.setFont(new Font(fontName, fontPlain, font14));
         btnThanhToan.setBackground(colorBtn);
+        btnThanhToan.setBorderRadius(5);
         
         pnlButton.add(btnHuy,"h 36!");
         pnlButton.add(btnThanhToan,"h 36!");
@@ -348,6 +457,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     }
 
      public void initForm(){
+        nhaCungCapVaNhapHang_DAO= new NhaCungCapVaNhapHang_DAO();
+        df = new DecimalFormat("#,##0.00");
         mainPanel.setLayout(new MigLayout("","20[center]20"));
 //        MainPanel.setBackground(Color.WHITE);
         
@@ -357,7 +468,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         pnlInfoBottom.setLayout(new MigLayout("", "20[center][center]20", "20[]"));
         
         initService();
-        initAction();
+        initActionPanel();
         initInfoRoom();
         
         pnlInfoTop.setBackground(Color.WHITE);
@@ -365,6 +476,227 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         
         mainPanel.add(pnlInfoTop,"w 100%,h 70%,wrap");
         mainPanel.add(pnlInfoBottom,"w 100%,h 30%");
+    }
+     
+     public void initData(Phong phong,NhanVien nv){
+        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+        
+        hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
+        
+        List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
+        dsCTHoaDon.forEach(ctHoaDon -> {
+            tableSelected.addRow(ctHoaDon.convertToRowTableInGDLapHoaDon());
+        });
+        
+        
+        SimpleDateFormat formatterNgay = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatterGio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        
+        Date date = new Date(System.currentTimeMillis());
+        String strNgay = formatterNgay.format(date);
+        String strBatDau = formatterGio.format(hoaDon.getThoiGianBatDau());
+        String strGio = formatterGio.format(date);
+        
+        txtNgay.setText(strNgay);
+        txtTenPhong.setText(phong.getTenPhong());
+        txtLoai.setText(phong.getLoaiPhong().getTenLoaiPhong());
+        txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
+        txtNhanVien.setText(nhanVien.getTenNhanVien());
+        txtStart.setText(strBatDau);
+        txtEnd.setText(strGio);
+        
+     }
+     
+    public void addAction(){
+//        tableSelected.addActionListener(new actionListener());
+        tableSelected.addKeyListener(new actionKeyListenner());
+        txtTienDua.addKeyListener(new actionKeyListenner());
+        btnHuy.addMouseListener(new actionMouselistenner());
+        btnThanhToan.addActionListener(new actionListener());
+    }
+    
+    public double TongTienDichVu(){
+        double tong = 0;
+	int soLuongMH = tableSelected.getRowCount();
+        
+        TableModel model = tableSelected.getModel();
+        for (int i = 0;i < soLuongMH;i++ ) {
+            int soluong = Integer.parseInt(model.getValueAt(i, 1).toString()); 
+            double giathanh = hoaDon.getDsChiTietHoaDon().get(i).getMatHang().getDonGia();
+            String tongTienSP = df.format(soluong * giathanh);
+            tableSelected.getModel().setValueAt(tongTienSP,i,3);
+            
+            tong += soluong * giathanh;
+	}
+        txtTongDV.setText(df.format(tong));
+        return tong;
+    }
+    
+    public double TongTienPhong() throws ParseException{
+        String txtgioBatDau = txtStart.getText().trim();
+        String txtgioKetThuc = txtEnd.getText().trim();
+        
+        SimpleDateFormat gio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        
+        Date dateGioBatDau = (Date) gio.parse(txtgioBatDau);
+        Date dateGioKetThuc = (Date) gio.parse(txtgioKetThuc);
+        
+        long millisBatDau = dateGioBatDau.getTime();
+        long millisKetThuc = dateGioKetThuc.getTime();
+        
+        long tongThoiGian = millisKetThuc - millisBatDau;
+        
+        int seconds = (int) (tongThoiGian / 1000) % 60 ;
+        int minutes = (int) ((tongThoiGian / (1000*60)) % 60);
+        int hours   = (int) ((tongThoiGian / (1000*60*60)) % 24);
+        
+        System.out.println(hours + ":" + minutes + ":" + seconds);
+        
+        double giaPhong = phong.getLoaiPhong().getGiaPhong();
+        
+        double tienPhong = hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
+        txtTongTienPhong.setText(df.format(tienPhong));
+        return tienPhong;
+    }
+    
+    public double TongTien(){
+        double tongTienDichVu = TongTienDichVu();
+	double tongTienPhong = 0;
+        try {
+            tongTienPhong = TongTienPhong();
+        } catch (ParseException ex) {
+            Logger.getLogger(GD_LapHoaDon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        txtTongTien.setText(df.format(tongTienDichVu + tongTienPhong));
+	return tongTienDichVu + tongTienPhong;
+    }
+     
+    public boolean tinhTienThoi() {
+		if (!txtTongTien.getText().equals("")) {
+			String tienKT = txtTienDua.getText().trim();
+			double tienKhachTra = 0;
+			double tongTien = 0;
+			try {
+				tienKhachTra = Double.parseDouble(tienKT);
+				tongTien = TongTien();
+			} catch (Exception e) {
+				showMsg("Tiền khách trả không hợp lệ");
+				return false;
+			}
+			if (tienKT.matches("^\\d+$") && tienKhachTra >= tongTien) {
+				txtTraLai.setText(df.format(tienKhachTra - tongTien));
+			} else {
+				showMsg("Số tiền trả Không đủ");
+				txtTienDua.selectAll();
+				txtTienDua.requestFocus();
+				return false;
+			}
+		}
+		return true;
+    }
+    
+    public boolean validateData(){
+        if (txtTienDua.getText().trim().equals("")) {
+			showMsg("Nhập số tiền khách trả!");
+			txtTienDua.selectAll();
+			txtTienDua.requestFocus();
+			return false;
+		}
+        return true;
+    }
+    
+    private void showMsg(String msg) {
+	JOptionPane.showMessageDialog(null, msg);
+    }
+    
+    private class actionMouselistenner implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Object obj = e.getSource();
+            if(obj.equals(tableSelected)){
+                System.out.println(tableSelected.getModel().getValueAt(0,1));
+            }else if(obj.equals(btnHuy)){
+                dispose();
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+    }
+    
+    private class actionKeyListenner implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            Object obj = e.getSource();
+            if(e.getKeyChar() == KeyEvent.VK_ENTER && obj.equals(txtTienDua)){
+                if(tinhTienThoi()) {
+                    txtTienDua.setText(df.format(Double.parseDouble(txtTienDua.getText().trim())));
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            Object obj = e.getSource();
+            if (e.getKeyChar() == KeyEvent.VK_ENTER && obj.equals(tableSelected)){
+                TongTien();
+            }
+        }
+        
+    }
+    
+    private class actionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object obj = e.getSource();
+            if(obj.equals(btnThanhToan) && validateData()){
+                try {
+                    SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date date = new Date(System.currentTimeMillis());
+                    String ngayLapHoaDon = gio.format(date);
+                    nhaCungCapVaNhapHang_DAO.updateHoaDon(hoaDon,TongTienPhong(),TongTien(),TongTienDichVu(),ngayLapHoaDon);
+                    
+                    List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
+                    for (int i = 0 ; i< tableSelected.getRowCount(); i++){
+                        ChiTietHoaDon ctHoaDon = dsCTHoaDon.get(i);
+                        int soluongCu = ctHoaDon.getSoLuong();
+                        int soLuongMoi = Integer.parseInt(tableSelected.getValueAt(i,1).toString());
+                        if(soLuongMoi > soluongCu){
+                            nhaCungCapVaNhapHang_DAO.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soLuongMoi - soluongCu,"decrease");
+                        }else{
+                            nhaCungCapVaNhapHang_DAO.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soluongCu - soLuongMoi,"increase");
+                        }
+
+                        dsCTHoaDon.get(i).setSoLuong(soLuongMoi);
+                        nhaCungCapVaNhapHang_DAO.updateCTHoaDon(dsCTHoaDon.get(i));
+                    }
+                    nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_DON);
+                    dispose();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
+        }
     }
      
      

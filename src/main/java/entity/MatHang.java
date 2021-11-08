@@ -1,11 +1,12 @@
 package entity;
 
+import java.text.DecimalFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import objectcombobox.ObjectComboBox;
 @Entity
 public class MatHang {
 	@Id
@@ -102,4 +103,9 @@ public class MatHang {
 		return "MatHang [maMatHang=" + maMatHang + ", tenMatHang=" + tenMatHang + ", loaiDichVu=" + loaiDichVu
 				+ ", sLTonKho=" + sLTonKho + ", donGia=" + donGia + "]";
 	}
+    public Object[] convertToRowTableInGDTiepNhanDatPhong(){
+        DecimalFormat df;
+        df = new DecimalFormat("#,##0.00");
+        return new Object[]{ new ObjectComboBox(tenMatHang,maMatHang), sLTonKho, df.format(donGia),false};
+    }
 }
