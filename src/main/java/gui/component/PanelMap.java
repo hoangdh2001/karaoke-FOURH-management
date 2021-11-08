@@ -2,6 +2,9 @@ package gui.component;
 
 import dao.Phong_DAO;
 import entity.Phong;
+import gui.dialog.InfoOver;
+import gui.event.EventShowInfoOver;
+import gui.event.EventShowPopupMenu;
 import gui.event.EventTabSelected;
 import gui.swing.layout.WrapLayout;
 import gui.swing.panel.PanelShadow;
@@ -11,10 +14,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 public class PanelMap extends PanelShadow {
@@ -25,7 +32,12 @@ public class PanelMap extends PanelShadow {
     private List<JPanel> panels = new ArrayList<>();
     private Phong_DAO phong_DAO;
     private JScrollPane sp;
-
+    private EventShowInfoOver event;
+    
+    public void addEvent(EventShowInfoOver event) {
+        this.event = event;
+    }
+    
     public PanelMap() {
         phong_DAO = new Phong_DAO();
         buildMap();
@@ -90,6 +102,17 @@ public class PanelMap extends PanelShadow {
 
     public void addRoom(JPanel panel, Room room) {
         room.setPreferredSize(new Dimension(200, 250));
+        room.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                event.showInfoOver(room);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                event.hiddenInfoOver(room);
+            }
+        });
         panel.add(room);
     }
 

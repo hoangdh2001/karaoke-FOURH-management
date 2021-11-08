@@ -15,12 +15,16 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
+import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
+import gui.component.Room;
 import gui.component.RoomDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
+import gui.dialog.InfoOver;
 import gui.event.EventMenuSelected;
+import gui.event.EventShowInfoOver;
 import gui.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
@@ -79,7 +83,7 @@ public class GD_Chinh extends JFrame {
 	background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
 	background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
 	background.add(createContent()); // content full
-        background.add(createTabPane(), "pos 30% 1al n n, w 100%, h 90%");
+        background.add(createTabPane(), "pos 45% 1al n n, w 100%, h 90%");
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -173,8 +177,24 @@ public class GD_Chinh extends JFrame {
             switch (menuIndex) {
                 case 0:
                     if(subMenuIndex == 0) {
-                        content.showForm(new GD_SoDoPhongHat());
+                        GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
+                        soDoPhongHat.addEvent(new EventShowInfoOver() {
+                            private InfoOver infoOver = new InfoOver(GD_Chinh.this);
+                            @Override
+                            public void showInfoOver(Component com) {
+                                Room room = (Room) com;
+                                infoOver = new InfoOver(GD_Chinh.this);
+                                infoOver.setVisible(true);
+                            }
+
+                            @Override
+                            public void hiddenInfoOver(Component com) {
+                                infoOver.close();
+                            }
+                        });
+                        content.showForm(soDoPhongHat);
                         tab.showDetail(new RoomDetail());
+                        
                     }
                     else if(subMenuIndex == 1) {
                         content.showForm(new GD_DanhSachPhong());
@@ -185,6 +205,7 @@ public class GD_Chinh extends JFrame {
                     break;
                 case 2:
                     content.showForm(new GD_KhachHang());
+                    tab.showDetail(new KhachHangDetail());
                     break;
                 case 3:
                     content.showForm(new GD_HoaDon());
@@ -228,7 +249,25 @@ public class GD_Chinh extends JFrame {
         JScrollPane sp = new JScrollPane();
 	content = new Content();
 	content.setBackground(new Color(245, 245, 245));
-	content.showForm(new GD_SoDoPhongHat());
+        GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
+        soDoPhongHat.addEvent(new EventShowInfoOver() {
+            private InfoOver infoOver = new InfoOver(GD_Chinh.this);
+            @Override
+            public void showInfoOver(Component com) {
+                Room room = (Room) com;
+                infoOver = new InfoOver(GD_Chinh.this);
+                int x = GD_Chinh.this.getX();
+                int y = GD_Chinh.this.getY();
+                infoOver.setLocation(x, y);
+                infoOver.setVisible(true);
+            }
+
+            @Override
+            public void hiddenInfoOver(Component com) {
+                infoOver.close();
+            }
+        });
+	content.showForm(soDoPhongHat);
         sp.getViewport().setBackground(Color.WHITE);
         sp.setVerticalScrollBar(new ScrollBarCustom());
         JPanel p = new JPanel();
@@ -252,9 +291,9 @@ public class GD_Chinh extends JFrame {
             public void timingEvent(float fraction) {
                 double width;
                 if(tabShow) {
-                    width = 30 * fraction;
+                    width = 45 * fraction;
                 } else {
-                    width = 30 * (1f - fraction);
+                    width = 45 * (1f - fraction);
                 }
                 width = Double.valueOf(df.format(width));
                 layout.setComponentConstraints(tab, "pos " + width + "% 1al n n, w 100%, h 100%");
@@ -297,7 +336,7 @@ public class GD_Chinh extends JFrame {
                 }
             }
         });
-        tab.addMouseListener(new MouseAdapter() {
+        tab.addEventCloseTab(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
                 if (SwingUtilities.isLeftMouseButton(me)) {

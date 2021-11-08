@@ -19,7 +19,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Admin
  */
-public class TabButton extends  JPanel {
+public class TabButton extends JPanel {
     private EventTabSelected event;
     private List<TabButtonItem> tabButtonItems  = new ArrayList<>();
 

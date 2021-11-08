@@ -6,9 +6,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.JPanel;
 
-public class NhanVienDetail extends javax.swing.JPanel {
+public class KhachHangDetail extends javax.swing.JPanel {
 
-    public NhanVienDetail() {
+    public KhachHangDetail() {
         initComponents();
         buildDisplay();
         
