@@ -23,10 +23,10 @@ public class NhanVienDetail extends javax.swing.JPanel {
             @Override
             public boolean selected(int index, boolean selectedTab) {
                 if(index == 0) {
-                    showTab(new PanelThongTinKH());
+                    showTab(new PanelTabThongTinNV());
                 }
                 else if(index == 1) {
-                    showTab(new PanelSuaKH());
+                    showTab(new PanelTabSuaThongTinNV());
                 }
                 tab.check();
                 return true;
@@ -35,7 +35,7 @@ public class NhanVienDetail extends javax.swing.JPanel {
         
         tab.addTabButtonItem("Thông tin");
         tab.addTabButtonItem("Sửa");
-        pane.add(new PanelThongTinKH());
+        pane.add(new PanelTabThongTinNV());
     }
     
     private void showTab(Component com) {

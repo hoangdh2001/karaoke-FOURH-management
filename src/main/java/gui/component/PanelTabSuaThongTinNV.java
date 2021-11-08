@@ -9,12 +9,12 @@ package gui.component;
  *
  * @author NGUYE
  */
-public class PanelTabThongTinKhachHang extends javax.swing.JPanel {
+public class PanelTabSuaThongTinNV extends javax.swing.JPanel {
 
     /**
-     * Creates new form PanelTabThongTinKhachHang
+     * Creates new form PanelTabSuaThongTinKH
      */
-    public PanelTabThongTinKhachHang() {
+    public PanelTabSuaThongTinNV() {
         initComponents();
     }
 
@@ -29,17 +29,17 @@ public class PanelTabThongTinKhachHang extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
 
-        jPanel1.setBackground(new java.awt.Color(153, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(102, 255, 102));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 657, Short.MAX_VALUE)
+            .addGap(0, 713, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 589, Short.MAX_VALUE)
+            .addGap(0, 531, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
