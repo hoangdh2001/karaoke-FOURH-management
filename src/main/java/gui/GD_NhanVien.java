@@ -12,6 +12,9 @@ import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -20,6 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
@@ -58,6 +63,11 @@ public class GD_NhanVien extends JPanel {
         //lấy dữ liệu 
         nhanVien_DAO = new NhanVien_DAO();
         loadDataToTable();
+
+    }
+    
+    public void  addEvent(MouseListener event){
+        tblNhanVien.addMouseListener(event);
     }
 
     private void buildGD() {
@@ -69,31 +79,7 @@ public class GD_NhanVien extends JPanel {
         createPanelHidden();
         add(panelHidden);
 
-        TimingTarget target = new TimingTargetAdapter() {
-            @Override
-            public void timingEvent(float fraction) {
-                float size = fraction * 400;
-                if (show) {
-                    size = -size;
-                } else {
-                    size -= 400;
-                }
-                layout.setComponentConstraints(panelHidden, "pos " + (int) size + " 0 n n, h 100%, w 400!");
-                revalidate();
-            }
-
-            @Override
-            public void end() {
-                show = !show;
-                if (!show) {
-                    panelHidden.setVisible(false);
-                }
-            }
-        };
-        animator = new Animator(400, target);
-        animator.setResolution(0);
-        animator.setDeceleration(0.5f);
-
+        
     }
 
     /**
