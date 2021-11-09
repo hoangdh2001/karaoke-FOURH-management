@@ -2,7 +2,6 @@ package gui.component;
 
 import dao.Phong_DAO;
 import entity.Phong;
-import gui.dialog.InfoOver;
 import gui.event.EventShowInfoOver;
 import gui.event.EventShowPopupMenu;
 import gui.event.EventTabSelected;

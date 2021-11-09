@@ -21,7 +21,7 @@ import gui.component.NhanVienDetail;
 import gui.component.RoomDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
-import gui.dialog.InfoOver;
+import gui.component.RoomDetail;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowInfoOver;
 import gui.event.EventShowPopupMenu;
@@ -182,14 +182,22 @@ public class GD_Chinh extends JFrame {
                             @Override
                             public void showInfoOver(Component com, MouseEvent e) {
                 //                MenuItem item = (MenuItem) com;
-                                InfoOver infoOver = new InfoOver(GD_Chinh.this);
-                                infoOver.setLocation(e.getXOnScreen() + 50, e.getYOnScreen());
+                                RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                                int x = 0;
+                                int y = 0;
+                                if((e.getXOnScreen() + 400) >= 1920) {
+                                    x = e.getXOnScreen() - e.getX() - 400;
+                                    y = e.getYOnScreen() - e.getY() - 10;
+                                } else {
+                                    x = e.getXOnScreen() + 200 - e.getX();
+                                    y = e.getYOnScreen() - e.getY() - 10;
+                                }
+                                infoOver.setLocation(x, y);
                                 infoOver.setVisible(true);
                             }
 
                         });
                         content.showForm(soDoPhongHat);
-                        tab.showDetail(new RoomDetail());
                         
                     }
                     else if(subMenuIndex == 1) {
@@ -251,8 +259,17 @@ public class GD_Chinh extends JFrame {
             @Override
             public void showInfoOver(Component com, MouseEvent e) {
 //                MenuItem item = (MenuItem) com;
-                InfoOver infoOver = new InfoOver(GD_Chinh.this);
-                infoOver.setLocation(e.getXOnScreen() + 50, e.getYOnScreen());
+                RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                int x = 0;
+                int y = 0;
+                if((e.getXOnScreen() + 400) >= 1920) {
+                    x = e.getXOnScreen() - e.getX() - 400;
+                    y = e.getYOnScreen() - e.getY() - 10;
+                } else {
+                    x = e.getXOnScreen() + 200 - e.getX();
+                    y = e.getYOnScreen() - e.getY() - 10;
+                }
+                infoOver.setLocation(x, y);
                 infoOver.setVisible(true);
             }
 
@@ -339,7 +356,6 @@ public class GD_Chinh extends JFrame {
                 }
             }
         });
-        tab.showDetail(new RoomDetail());
         return tab;
     }
 }
