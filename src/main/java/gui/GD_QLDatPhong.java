@@ -20,6 +20,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.Date;
 import java.time.LocalDate;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,58 +33,23 @@ import net.miginfocom.swing.MigLayout;
  * @author NGUYENHUNG
  */
 public class GD_QLDatPhong extends javax.swing.JPanel {
+
+    private DefaultComboBoxModel<TrangThaiPhieuDat> cbModel;
     /**
      * Creates new form GD_QLDatPhong
      */
     public GD_QLDatPhong() {
         initComponents();
         buildGD_QLDatPhong();
-        initData();
-        table.fixTable(sp);
-        setSizeComlumnTable();
-    }
-
-    private void initData() {
-//        , "1", "25/10/2021", "Đỗ Huy Hoàng", "Nguyễn Hưng", "Phòng A1", "25/10/2021", TrangThaiPhieuDat.DANG_DOI
-        KhachHang khachHang = new KhachHang();
-        khachHang.setTenKhachHang("Đỗ Huy Hoàng");
-        Phong phong = new Phong();
-        phong.setTenPhong("Phòng A1");
-        EventAction event = new EventAction() {
-            @Override
-            public void delete(Object obj) {
-                PhieuDatPhong pdp = (PhieuDatPhong) obj;
-                JOptionPane.showMessageDialog(null, "Delete " + pdp.getMaPhieuDat());
-            }
-
-            @Override
-            public void update(ModelAction action) {
-//                PhieuDatPhong pdp = (PhieuDatPhong) action.getObj();
-//                pdp.setNgayDat(Date.valueOf(table.getValueAt(table.getSelectedRow(), 5).toString()));
-//                pdp.setTienCoc(Double.valueOf(table.getValueAt(table.getSelectedRow(), 7).toString()));
-//                action.setObj(pdp);
-//                System.out.println(pdp);
-            }
-        };
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        
     }
 
     private void buildGD_QLDatPhong() {
-        buildPanelForm();
+        createPanelForm();
         setPreferredSize(new Dimension(getWidth(), 720));
+        createTable();
     }
     
-    private void buildPanelForm() {
+    private void createPanelForm() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
@@ -168,8 +134,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         JLabel lblTrangThai = new JLabel("Trạng thái:");
         lblTrangThai.setFont(new Font(fontName, fontPlain, font14));
         pnlThongTinPhieu.add(lblTrangThai, "align right");
-
-        MyComboBox<String> cmbTrangThai = new MyComboBox<>();
+        
+        cbModel = new DefaultComboBoxModel<>();
+        MyComboBox<String> cmbTrangThai = new MyComboBox<>(cbModel);
         cmbTrangThai.setFont(new Font(fontName, fontPlain, font14));
         cmbTrangThai.setBorderLine(true);
         cmbTrangThai.setBorderRadius(10);
@@ -282,6 +249,25 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
         btnTimKiem.setBackground(colorBtn);
         pnlTimKiemPhieu.add(btnTimKiem, "span, align right, w 100!, h 36!");
         /*End: group Tìm kiếm*/
+        loadDataForm();
+    }
+    
+    private void loadDataForm() {
+        TrangThaiPhieuDat[] listTrangThaiPhieuDat = TrangThaiPhieuDat.values();
+        for (TrangThaiPhieuDat trangThaiPhieuDat : listTrangThaiPhieuDat) {
+            cbModel.addElement(trangThaiPhieuDat);
+        }
+    }
+    
+    private void createTable() {
+        
+        table.fixTable(sp);
+        loadData();
+        setSizeComlumnTable();
+    }
+    
+    private void loadData() {
+        
     }
     
     private void setSizeComlumnTable() {

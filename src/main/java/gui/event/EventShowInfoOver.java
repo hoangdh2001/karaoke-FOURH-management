@@ -1,8 +1,8 @@
 package gui.event;
 
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 
 public interface EventShowInfoOver {
-    public void showInfoOver(Component com);
-    public void hiddenInfoOver(Component com);
+    public void showInfoOver(Component com, MouseEvent e);
 }
