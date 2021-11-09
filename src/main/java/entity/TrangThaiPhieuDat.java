@@ -23,5 +23,12 @@ public enum TrangThaiPhieuDat {
     public Color getStatusColor() {
         return statusColor;
     }
+
+    @Override
+    public String toString() {
+        return trangThai;
+    }
+
+    
     
 }

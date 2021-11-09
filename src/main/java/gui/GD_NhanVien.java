@@ -1,6 +1,8 @@
 package gui;
 
+import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
+import entity.LoaiNhanVien;
 import entity.NhanVien;
 import gui.dropshadow.ShadowType;
 import gui.swing.button.Button;
@@ -23,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import gui.event.EventSelectedRow;
+import javax.swing.DefaultComboBoxModel;
 
 public class GD_NhanVien extends JPanel {
 
@@ -42,6 +45,8 @@ public class GD_NhanVien extends JPanel {
     private MyComboBox<Object> cmbCaLamTK;
     private Button btnTimKiem;
     private NhanVien_DAO nhanVien_DAO;
+    private LoaiNhanVien_DAO loaiNhanVien_DAO;
+
     private List<NhanVien> listNhanVien;
 
     private EventSelectedRow eventSelectedRow;
@@ -58,6 +63,7 @@ public class GD_NhanVien extends JPanel {
     public void addEvent(EventSelectedRow event) {
         this.eventSelectedRow = event;
     }
+
 
     private void buildGD() {
         pnlTop.setLayout(new MigLayout("", "[][]", "[]"));
@@ -198,24 +204,26 @@ public class GD_NhanVien extends JPanel {
         //Load dữ liệu từ DB lên bảng 
         listNhanVien = nhanVien_DAO.getNhanViens();
         for (NhanVien i : listNhanVien) {
-            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien()
-                    , i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai()
-                    , i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
+            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
+                     i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
+                     i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
         }
 
-        //Nhận sự kiện double click chuột trái và truyền NhanVien được chọn sang GD_Chinh.java
+        
         tblNhanVien.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 //Nếu click chuột trái và click 2 lần
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
-                    
+
                     String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString();
+                    
                     eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
                 }
             }
         });
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

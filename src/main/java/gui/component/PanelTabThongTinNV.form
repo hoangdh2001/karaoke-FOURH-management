@@ -38,37 +38,52 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="lblLoaiNhanVien" max="32767" attributes="0"/>
-                      <Component id="lblDiaChi" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblCaLam" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblEmail" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblSDT" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblNgaySinh" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblGioiTinh" alignment="0" max="32767" attributes="0"/>
-                      <Component id="lblMaNhanVien" alignment="0" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblValueDiaChi" min="-2" pref="446" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="lblValueLoaiNhanVien" alignment="1" max="32767" attributes="0"/>
-                          <Component id="lblValueCaLam" alignment="1" max="32767" attributes="0"/>
-                          <Component id="lblValueEmail" alignment="1" pref="446" max="32767" attributes="0"/>
-                          <Component id="lblValueSDT" alignment="1" max="32767" attributes="0"/>
-                          <Component id="lblValueNgaySinh" alignment="1" max="32767" attributes="0"/>
-                          <Component id="lblValueGioiTinh" alignment="1" max="32767" attributes="0"/>
-                          <Component id="lblValueMaNhanVien" alignment="1" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblLoaiNhanVien" max="32767" attributes="0"/>
+                              <Component id="lblDiaChi" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblDiaChi1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblDiaChi2" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblDiaChi3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblValueDiaChi" min="-2" pref="446" max="-2" attributes="0"/>
+                              <Component id="lblValueLoaiNhanVien" alignment="0" pref="448" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblCaLam" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblEmail" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblSDT" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblNgaySinh" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblGioiTinh" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblMaNhanVien" alignment="0" pref="135" max="32767" attributes="0"/>
+                              <Component id="lblCaLam1" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblValueCaLam" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblValueEmail" alignment="1" pref="446" max="32767" attributes="0"/>
+                              <Component id="lblValueSDT" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblValueNgaySinh" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblValueGioiTinh" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblValueMaNhanVien" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblCaLam2" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="21" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblMaNhanVien" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="lblValueMaNhanVien" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
@@ -100,6 +115,11 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblCaLam1" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="lblCaLam2" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblLoaiNhanVien" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="lblValueLoaiNhanVien" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
@@ -108,7 +128,13 @@
                       <Component id="lblDiaChi" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="lblValueDiaChi" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="100" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="lblDiaChi1" min="-2" pref="35" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="lblDiaChi2" min="-2" pref="35" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="lblDiaChi3" min="-2" pref="35" max="-2" attributes="0"/>
+                  <EmptySpace pref="69" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -288,6 +314,61 @@
               <Font name="SansSerif" size="18" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="12, Le Van Bao, Go Vap, TP Ho Chi Minh"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblDiaChi1">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="cc" red="cc" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="X&#xe3;/Ph&#x1b0;&#x1edd;ng"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblDiaChi2">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="cc" red="cc" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Qu&#x1ead;n/Huy&#x1ec7;n"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblDiaChi3">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="cc" red="cc" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="T&#x1ec9;nh/Th&#xe0;nh ph&#x1ed1;"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblCaLam1">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="cc" red="cc" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="S&#x1ed1; C&#x103;n c&#x1b0;&#x1edb;c"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblCaLam2">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="cc" red="cc" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="S&#x1ed1; C&#x103;n c&#x1b0;&#x1edb;c"/>
           </Properties>
         </Component>
       </SubComponents>

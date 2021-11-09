@@ -228,7 +228,7 @@ public class GD_Chinh extends JFrame {
                         gD_NhanVien.addEvent(new EventSelectedRow() {
                             @Override
                             public void selectedRow(Object object) {
-                                //Nhận lại object nhân viên từ GD_NhanVien.java
+                                
                                 
                                 NhanVien nhanVien = (NhanVien) object;
                                 
@@ -239,7 +239,7 @@ public class GD_Chinh extends JFrame {
                                         // Truyền object nhân viên vào NhanVienDetail - vào tab ẩn bên phải của nhân viên
                                         NhanVienDetail nhanVienDetail = new NhanVienDetail(nhanVien);
                                         tab.showDetail(nhanVienDetail);
-
+//chính -> GD_nhanVien -> nhân viên detail-> tab thông tin nhân viên
                                         animator2.start();
                                     }
                                 }
