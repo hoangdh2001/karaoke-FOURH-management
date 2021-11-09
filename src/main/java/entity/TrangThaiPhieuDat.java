@@ -28,7 +28,4 @@ public enum TrangThaiPhieuDat {
     public String toString() {
         return trangThai;
     }
-
-    
-    
 }

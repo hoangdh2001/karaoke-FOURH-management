@@ -4,9 +4,13 @@ import dao.Phong_DAO;
 import entity.TrangThaiPhong;
 import gui.component.PanelMap;
 import gui.component.PanelStatus;
+import gui.component.Slide1;
+import gui.component.Slide2;
+import gui.component.Slide3;
 import gui.dropshadow.ShadowType;
 import gui.event.EventShowInfoOver;
 import gui.swing.button.Button;
+import gui.swing.panel.slideshow.Slideshow;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.BorderLayout;
@@ -15,20 +19,29 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_SoDoPhongHat extends javax.swing.JPanel {
-
+    
     private PanelMap panelMap;
     private Phong_DAO phong_DAO;
     
     public void addEvent(EventShowInfoOver event) {
         panelMap.addEvent(event);
     }
+    
+    public void addEventSp(MouseWheelListener event) {
+        panelMap.addEventSp(event);
+    }
 
+    public PanelMap getPanelMap() {
+        return panelMap;
+    }
+    
     public GD_SoDoPhongHat() {
         phong_DAO = new Phong_DAO();
         initComponents();
@@ -37,42 +50,56 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     }
 
     private void buildGD() {
-        panelForm.setPreferredSize(new Dimension(getWidth(), 265));
-        panelForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
+        pnlTop.setLayout(new MigLayout("fill, insets 0, wrap", "0[fill]0", "0[fill]0[fill]0[fill]0"));
 
+        pnlTop.add(createPanelTitle(), "h 40!, span 2");
+        
+        pnlTop.add(createPanelForm(), "split 2");
+        
+        pnlTop.add(createSlideshow(), "w 500!");
+        
+        pnlTop.add(createPaneStatus(), "h 50!, span 2");
+        
+    }
+    
+    private JPanel createPanelForm() {
+        JPanel pnlForm = new JPanel();
+        pnlForm.setOpaque(false);
+        pnlForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "10[center]20[center]20[]5"));
+        
         JLabel lbSdt = new JLabel("Số điện thoại");
         lbSdt.setFont(new Font("sansserif", Font.PLAIN, 12));
-        panelForm.add(lbSdt);
+        pnlForm.add(lbSdt);
 
         MyTextField txtSdt = new MyTextField();
         txtSdt.setFont(new Font("sansserif", Font.PLAIN, 12));
         txtSdt.setBorderLine(true);
-//        txtSdt.setBorderRadius(10);
-        panelForm.add(txtSdt, "w 20%");
+        txtSdt.setBorderRadius(5);
+        pnlForm.add(txtSdt, "w 25%");
 
         JLabel lbTenPhong = new JLabel("Tên phòng:");
         lbTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
-        panelForm.add(lbTenPhong);
+        pnlForm.add(lbTenPhong);
 
         MyTextField txtTenPhong = new MyTextField();
         txtTenPhong.setBorderLine(true);
         txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
-//        txtTenPhong.setBorderRadius(10);
-        panelForm.add(txtTenPhong, "w 20%, wrap");
+        txtTenPhong.setBorderRadius(5);
+        pnlForm.add(txtTenPhong, "w 25%, wrap");
 
         JLabel lbLoaiPhong = new JLabel("Loại phòng:");
         lbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
-        panelForm.add(lbLoaiPhong);
+        pnlForm.add(lbLoaiPhong);
 
         MyComboBox<String> cbLoaiPhong = new MyComboBox<>(new String[]{"--Tất cả--", "Phòng thường", "Phòng tiệc", "Phòng vip"});
         cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         cbLoaiPhong.setBorderLine(true);
         cbLoaiPhong.setBorderRadius(10);
-        panelForm.add(cbLoaiPhong, "w 20%, h 30!");
+        pnlForm.add(cbLoaiPhong, "w 25%, h 30!");
 
         JLabel lbTrangThai = new JLabel("Trạng thái");
         lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
-        panelForm.add(lbTrangThai);
+        pnlForm.add(lbTrangThai);
 
         MyComboBox<String> cbTrangThai = new MyComboBox<>();
         cbTrangThai.addItem("--Tất cả--");
@@ -82,7 +109,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         cbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 12));
         cbTrangThai.setBorderLine(true);
         cbTrangThai.setBorderRadius(10);
-        panelForm.add(cbTrangThai, "w 20%, h 30!, wrap");
+        pnlForm.add(cbTrangThai, "w 25%, h 30!, wrap");
 
         Button timKiemBtn = new Button("Tìm kiếm");
         timKiemBtn.setFont(new Font("sansserif", Font.PLAIN, 12));
@@ -95,13 +122,16 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 
             }
         });
-        panelForm.add(timKiemBtn, "cell 3 2, align right, w 80!, h 36!");
-
-        panelForm.add(createPaneStatus(), "pos 0al 1al 100% n, h 50!");
-
-        panelForm.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
+        pnlForm.add(timKiemBtn, "cell 3 2, align right, w 80!, h 36!");
+        return pnlForm;
     }
     
+    private Slideshow createSlideshow() {
+        Slideshow slideshow = new Slideshow();
+        slideshow.setOpaque(false);
+        slideshow.initSlideshow(new Slide1(), new Slide2(), new Slide3());
+        return slideshow;
+    }
 
     private JPanel createPanelTitle() {
         JPanel pnlTitle = new JPanel();
@@ -166,32 +196,32 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelForm = new gui.swing.panel.PanelShadow();
+        pnlTop = new gui.swing.panel.PanelShadow();
 
         setOpaque(false);
-        setLayout(new java.awt.BorderLayout(10, 10));
+        setLayout(new java.awt.BorderLayout());
 
-        panelForm.setBackground(new java.awt.Color(255, 255, 255));
-        panelForm.setShadowOpacity(0.3F);
-        panelForm.setShadowSize(2);
-        panelForm.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlTop.setBackground(new java.awt.Color(255, 255, 255));
+        pnlTop.setShadowOpacity(0.3F);
+        pnlTop.setShadowSize(2);
+        pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
 
-        javax.swing.GroupLayout panelFormLayout = new javax.swing.GroupLayout(panelForm);
-        panelForm.setLayout(panelFormLayout);
-        panelFormLayout.setHorizontalGroup(
-            panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
+        pnlTop.setLayout(pnlTopLayout);
+        pnlTopLayout.setHorizontalGroup(
+            pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1225, Short.MAX_VALUE)
         );
-        panelFormLayout.setVerticalGroup(
-            panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+        pnlTopLayout.setVerticalGroup(
+            pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 134, Short.MAX_VALUE)
         );
 
-        add(panelForm, java.awt.BorderLayout.PAGE_START);
+        add(pnlTop, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.swing.panel.PanelShadow panelForm;
+    private gui.swing.panel.PanelShadow pnlTop;
     // End of variables declaration//GEN-END:variables
 }
