@@ -129,7 +129,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private Slideshow createSlideshow() {
         Slideshow slideshow = new Slideshow();
         slideshow.setOpaque(false);
-        slideshow.initSlideshow(new Slide1(), new Slide2(), new Slide3());
+        slideshow.initSlideshow(new Slide1(), new Slide2());
         return slideshow;
     }
 
