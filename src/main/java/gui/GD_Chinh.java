@@ -18,7 +18,6 @@ import gui.component.Header;
 import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
-import gui.component.Room;
 import gui.component.RoomDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
@@ -52,6 +51,7 @@ public class GD_Chinh extends JFrame {
     private MigLayout layout;
     private final DecimalFormat df = new DecimalFormat("##0.##");
     private TabLayout tab;
+    
     public GD_Chinh(String title) {
 	super(title);
 	buidGD_Chinh();
@@ -179,18 +179,14 @@ public class GD_Chinh extends JFrame {
                     if(subMenuIndex == 0) {
                         GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
                         soDoPhongHat.addEvent(new EventShowInfoOver() {
-                            private InfoOver infoOver = new InfoOver(GD_Chinh.this);
                             @Override
-                            public void showInfoOver(Component com) {
-                                Room room = (Room) com;
-                                infoOver = new InfoOver(GD_Chinh.this);
+                            public void showInfoOver(Component com, MouseEvent e) {
+                //                MenuItem item = (MenuItem) com;
+                                InfoOver infoOver = new InfoOver(GD_Chinh.this);
+                                infoOver.setLocation(e.getXOnScreen() + 50, e.getYOnScreen());
                                 infoOver.setVisible(true);
                             }
 
-                            @Override
-                            public void hiddenInfoOver(Component com) {
-                                infoOver.close();
-                            }
                         });
                         content.showForm(soDoPhongHat);
                         tab.showDetail(new RoomDetail());
@@ -246,26 +242,20 @@ public class GD_Chinh extends JFrame {
      * @return JPanel content
      */
     private JScrollPane createContent() {
+        
         JScrollPane sp = new JScrollPane();
 	content = new Content();
 	content.setBackground(new Color(245, 245, 245));
         GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
         soDoPhongHat.addEvent(new EventShowInfoOver() {
-            private InfoOver infoOver = new InfoOver(GD_Chinh.this);
             @Override
-            public void showInfoOver(Component com) {
-                Room room = (Room) com;
-                infoOver = new InfoOver(GD_Chinh.this);
-                int x = GD_Chinh.this.getX();
-                int y = GD_Chinh.this.getY();
-                infoOver.setLocation(x, y);
+            public void showInfoOver(Component com, MouseEvent e) {
+//                MenuItem item = (MenuItem) com;
+                InfoOver infoOver = new InfoOver(GD_Chinh.this);
+                infoOver.setLocation(e.getXOnScreen() + 50, e.getYOnScreen());
                 infoOver.setVisible(true);
             }
 
-            @Override
-            public void hiddenInfoOver(Component com) {
-                infoOver.close();
-            }
         });
 	content.showForm(soDoPhongHat);
         sp.getViewport().setBackground(Color.WHITE);
@@ -284,6 +274,7 @@ public class GD_Chinh extends JFrame {
      * tạo ngăn tab
      */
     private TabLayout createTabPane() {
+        
         tab = new TabLayout();
         background.setLayer(tab, JLayeredPane.POPUP_LAYER);
         TimingTarget target = new TimingTargetAdapter() {

@@ -29,7 +29,7 @@ public class TabHidden extends PanelShadow {
         layout = new MigLayout("fill, insets 0", "[fill]", "50[fill]");
         setLayout(layout);
         
-        add(btnClose, "pos 0al 0al");
+        add(btnClose, "pos -20 0al");
         
     }
     

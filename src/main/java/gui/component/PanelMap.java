@@ -104,13 +104,10 @@ public class PanelMap extends PanelShadow {
         room.setPreferredSize(new Dimension(200, 250));
         room.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
-                event.showInfoOver(room);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                event.hiddenInfoOver(room);
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    event.showInfoOver(room, e);
+                }
             }
         });
         panel.add(room);

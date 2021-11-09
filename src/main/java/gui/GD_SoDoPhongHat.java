@@ -15,13 +15,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_SoDoPhongHat extends javax.swing.JPanel {
-
+    
     private PanelMap panelMap;
     private Phong_DAO phong_DAO;
     
@@ -29,6 +30,10 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         panelMap.addEvent(event);
     }
 
+    public PanelMap getPanelMap() {
+        return panelMap;
+    }
+    
     public GD_SoDoPhongHat() {
         phong_DAO = new Phong_DAO();
         initComponents();
@@ -100,6 +105,8 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         panelForm.add(createPaneStatus(), "pos 0al 1al 100% n, h 50!");
 
         panelForm.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
+        
+        
     }
     
 
@@ -169,7 +176,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         panelForm = new gui.swing.panel.PanelShadow();
 
         setOpaque(false);
-        setLayout(new java.awt.BorderLayout(10, 10));
+        setLayout(new java.awt.BorderLayout());
 
         panelForm.setBackground(new java.awt.Color(255, 255, 255));
         panelForm.setShadowOpacity(0.3F);
@@ -184,7 +191,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         );
         panelFormLayout.setVerticalGroup(
             panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 134, Short.MAX_VALUE)
         );
 
         add(panelForm, java.awt.BorderLayout.PAGE_START);
