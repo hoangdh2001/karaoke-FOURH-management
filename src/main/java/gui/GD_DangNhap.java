@@ -46,7 +46,7 @@ public class GD_DangNhap extends JFrame {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(200);
                             GD_DangNhap.this.dispose();
                             new GD_Chinh("Quản lý Karaoke FourH").setVisible(true);
                         } catch (Exception e) {
