@@ -118,7 +118,7 @@ public class RoomDetail extends javax.swing.JDialog {
         }
     }
 
-    private void closeMenu() {
+    public void closeMenu() {
         if (animator.isRunning()) {
             animator.stop();
         }

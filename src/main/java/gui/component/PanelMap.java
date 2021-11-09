@@ -16,6 +16,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -35,6 +36,10 @@ public class PanelMap extends PanelShadow {
     
     public void addEvent(EventShowInfoOver event) {
         this.event = event;
+    }
+    
+    public void addEventSp(MouseWheelListener event) {
+        sp.addMouseWheelListener(event);
     }
     
     public PanelMap() {

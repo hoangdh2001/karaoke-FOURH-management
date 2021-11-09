@@ -31,6 +31,8 @@ import gui.swing.menu.PopupMenu;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.text.DecimalFormat;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
@@ -51,6 +53,7 @@ public class GD_Chinh extends JFrame {
     private MigLayout layout;
     private final DecimalFormat df = new DecimalFormat("##0.##");
     private TabLayout tab;
+    private JScrollPane sp;
     
     public GD_Chinh(String title) {
 	super(title);
@@ -194,6 +197,18 @@ public class GD_Chinh extends JFrame {
                                 }
                                 infoOver.setLocation(x, y);
                                 infoOver.setVisible(true);
+                                sp.addMouseWheelListener(new MouseWheelListener() {
+                                    @Override
+                                    public void mouseWheelMoved(MouseWheelEvent arg0) {
+                                        infoOver.closeMenu();
+                                    }
+                                });
+                                soDoPhongHat.addEventSp(new MouseWheelListener() {
+                                    @Override
+                                    public void mouseWheelMoved(MouseWheelEvent arg0) {
+                                        infoOver.closeMenu();
+                                    }
+                                });
                             }
 
                         });
@@ -250,8 +265,7 @@ public class GD_Chinh extends JFrame {
      * @return JPanel content
      */
     private JScrollPane createContent() {
-        
-        JScrollPane sp = new JScrollPane();
+        sp = new JScrollPane();
 	content = new Content();
 	content.setBackground(new Color(245, 245, 245));
         GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
@@ -271,9 +285,22 @@ public class GD_Chinh extends JFrame {
                 }
                 infoOver.setLocation(x, y);
                 infoOver.setVisible(true);
+                sp.addMouseWheelListener(new MouseWheelListener() {
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent arg0) {
+                        infoOver.closeMenu();
+                    }
+                });
+                soDoPhongHat.addEventSp(new MouseWheelListener() {
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent arg0) {
+                        infoOver.closeMenu();
+                    }
+                });
             }
 
         });
+        
 	content.showForm(soDoPhongHat);
         sp.getViewport().setBackground(Color.WHITE);
         sp.setVerticalScrollBar(new ScrollBarCustom());
