@@ -25,7 +25,6 @@ import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.dialog.InfoOver;
 import gui.event.EventMenuSelected;
-import gui.event.EventNSelectedRow;
 import gui.event.EventShowInfoOver;
 import gui.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
@@ -39,6 +38,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
+import gui.event.EventSelectedRow;
 
 public class GD_Chinh extends JFrame {
 
@@ -225,15 +225,18 @@ public class GD_Chinh extends JFrame {
 
                         content.showForm(gD_NhanVien);
 
-                        gD_NhanVien.addEvent(new EventNSelectedRow() {
+                        gD_NhanVien.addEvent(new EventSelectedRow() {
                             @Override
                             public void selectedRow(Object object) {
+                                //Nhận lại object nhân viên từ GD_NhanVien.java
                                 
                                 NhanVien nhanVien = (NhanVien) object;
+                                
                                 if (!animator2.isRunning()) {
                                     if (!tabShow) {
                                         tab.setVisible(true);
 
+                                        // Truyền object nhân viên vào NhanVienDetail - vào tab ẩn bên phải của nhân viên
                                         NhanVienDetail nhanVienDetail = new NhanVienDetail(nhanVien);
                                         tab.showDetail(nhanVienDetail);
 

@@ -3,7 +3,6 @@ package gui;
 import dao.NhanVien_DAO;
 import entity.NhanVien;
 import gui.dropshadow.ShadowType;
-import gui.event.EventNSelectedRow;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
@@ -23,7 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import org.jdesktop.animation.timing.Animator;
+import gui.event.EventSelectedRow;
 
 public class GD_NhanVien extends JPanel {
 
@@ -34,10 +33,7 @@ public class GD_NhanVien extends JPanel {
     Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
 
-    private MigLayout layout;
     private PanelShadow panelHidden;
-    private Animator animator;
-    private boolean show;
     private final DecimalFormat df = new DecimalFormat("##0.000");
     private MyTextField txtTimKiem;
     private MyComboBox<Object> cmbCot;
@@ -48,25 +44,18 @@ public class GD_NhanVien extends JPanel {
     private NhanVien_DAO nhanVien_DAO;
     private List<NhanVien> listNhanVien;
 
-    private EventNSelectedRow eventSelectedRow;
+    private EventSelectedRow eventSelectedRow;
 
     public GD_NhanVien() {
         initComponents();
         setPreferredSize(new Dimension(getWidth(), 1000));
-        tblNhanVien.fixTable(jScrollPane2);
         buildGD();
 
-        mouse();
-
-        //chia ra createTable-> xuwr lys
-        tblNhanVien.setFont(new Font(fontName, fontPlain, font14));
-        //lấy dữ liệu 
         nhanVien_DAO = new NhanVien_DAO();
-        loadDataToTable();
-
+        TableHandler();
     }
 
-    public void addEvent(EventNSelectedRow event) {
+    public void addEvent(EventSelectedRow event) {
         this.eventSelectedRow = event;
     }
 
@@ -78,7 +67,6 @@ public class GD_NhanVien extends JPanel {
 
         createPanelHidden();
         add(panelHidden);
-
     }
 
     /**
@@ -185,12 +173,13 @@ public class GD_NhanVien extends JPanel {
     }
 
     /**
-     * lấy dữ liệu lên Bảng danh sách nhân viên
+     * set thuộc tính và xử lý dữ liệu của bảng
      */
-    private void loadDataToTable() {
+    private void TableHandler() {
+        tblNhanVien.fixTable(scrTable);
+        tblNhanVien.setFont(new Font(fontName, fontPlain, font14));
 
-        listNhanVien = nhanVien_DAO.getNhanViens();
-
+        //Thêm cột có icon xóa, sửa
         EventAction event = new EventAction() {
             @Override
             public void delete(Object obj) {
@@ -206,17 +195,21 @@ public class GD_NhanVien extends JPanel {
 
         };
 
+        //Load dữ liệu từ DB lên bảng 
+        listNhanVien = nhanVien_DAO.getNhanViens();
         for (NhanVien i : listNhanVien) {
-            System.out.println(i);
-            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
+            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien()
+                    , i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai()
+                    , i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
         }
-    }
 
-    private void mouse() {
+        //Nhận sự kiện double click chuột trái và truyền NhanVien được chọn sang GD_Chinh.java
         tblNhanVien.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                //Nếu click chuột trái và click 2 lần
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    
                     String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString();
                     eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
                 }
@@ -232,7 +225,7 @@ public class GD_NhanVien extends JPanel {
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlCenter = new gui.swing.panel.PanelShadow();
         lblTitleBang = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        scrTable = new javax.swing.JScrollPane();
         tblNhanVien = new gui.swing.table2.MyTable();
 
         setOpaque(false);
@@ -285,9 +278,9 @@ public class GD_NhanVien extends JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(tblNhanVien);
+        scrTable.setViewportView(tblNhanVien);
 
-        pnlCenter.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        pnlCenter.add(scrTable, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -314,11 +307,11 @@ public class GD_NhanVien extends JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTitleBang;
     private gui.swing.panel.PanelShadow pnlCenter;
     private gui.swing.panel.PanelShadow pnlTop;
+    private javax.swing.JScrollPane scrTable;
     private gui.swing.table2.MyTable tblNhanVien;
     // End of variables declaration//GEN-END:variables
 }
