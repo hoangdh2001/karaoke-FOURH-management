@@ -1,17 +1,23 @@
 package gui;
 
+import dao.NhanVien_DAO;
+import entity.NhanVien;
 import gui.dropshadow.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.text.DecimalFormat;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
@@ -20,6 +26,13 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 public class GD_NhanVien extends JPanel {
+
+    private String fontName = "sansserif";
+    private int fontPlain = Font.PLAIN;
+    private int font16 = 16;
+    private int font14 = 14;
+    Color colorBtn = new Color(184, 238, 241);
+    private Color colorLabel = new Color(47, 72, 210);
 
     private MigLayout layout;
     private PanelShadow panelHidden;
@@ -32,12 +45,19 @@ public class GD_NhanVien extends JPanel {
     private MyComboBox<Object> cmbLoaiNVTK;
     private MyComboBox<Object> cmbCaLamTK;
     private Button btnTimKiem;
+    private NhanVien_DAO nhanVien_DAO;
+    private List<NhanVien> listNhanVien;
 
     public GD_NhanVien() {
         initComponents();
         setPreferredSize(new Dimension(getWidth(), 1000));
-        myTable2.fixTable(jScrollPane2);
+        tblNhanVien.fixTable(jScrollPane2);
         buildGD();
+
+        tblNhanVien.setFont(new Font(fontName, fontPlain, font14));
+        //lấy dữ liệu 
+        nhanVien_DAO = new NhanVien_DAO();
+        loadDataToTable();
     }
 
     private void buildGD() {
@@ -48,7 +68,7 @@ public class GD_NhanVien extends JPanel {
 
         createPanelHidden();
         add(panelHidden);
-        
+
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -87,6 +107,7 @@ public class GD_NhanVien extends JPanel {
 
     /**
      * Tạo tiêu đề có borderLine ở dưới
+     *
      * @return pnlTitle
      */
     private JPanel createPanelTitle() {
@@ -106,12 +127,12 @@ public class GD_NhanVien extends JPanel {
      * Tạo các textField, combobox tìm kiếm
      */
     private void createPanelSearch() {
-        String fontName = "sansserif";
-        int fontPlain = Font.PLAIN;
-        int font16 = 16;
-        int font14 = 14;
-        Color colorBtn = new Color(184, 238, 241);
-        Color colorLabel = new Color(47, 72, 210);
+//        String fontName = "sansserif";
+//        int fontPlain = Font.PLAIN;
+//        int font16 = 16;
+//        int font14 = 14;
+//        Color colorBtn = new Color(184, 238, 241);
+//        Color colorLabel = new Color(47, 72, 210);
 
         /*Begin: group tìm nhân viên*/
         JPanel pnlTimKiemNV = new JPanel();
@@ -185,6 +206,34 @@ public class GD_NhanVien extends JPanel {
 //        SwingUtilities.isLeftMouseButton(Event e)&& e.getClickcount()==2
     }
 
+    /**
+     * lấy dữ liệu lên Bảng danh sách nhân viên
+     */
+    private void loadDataToTable() {
+
+        listNhanVien = nhanVien_DAO.getNhanViens();
+
+        EventAction event = new EventAction() {
+            @Override
+            public void delete(Object obj) {
+                NhanVien nhanVien = (NhanVien) obj;
+                JOptionPane.showMessageDialog(null, "Delete" + nhanVien.getMaNhanVien());
+            }
+
+            @Override
+            public void update(ModelAction action) {
+                NhanVien nhanVien = (NhanVien) action.getObj();
+                action.setObj(nhanVien);
+            }
+
+        };
+
+        for (NhanVien i : listNhanVien) {
+            System.out.println(i);
+            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -194,7 +243,7 @@ public class GD_NhanVien extends JPanel {
         pnlCenter = new gui.swing.panel.PanelShadow();
         lblTitleBang = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        myTable2 = new gui.swing.table2.MyTable();
+        tblNhanVien = new gui.swing.table2.MyTable();
 
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1225, 900));
@@ -230,26 +279,23 @@ public class GD_NhanVien extends JPanel {
         lblTitleBang.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         pnlCenter.add(lblTitleBang, java.awt.BorderLayout.PAGE_START);
 
-        myTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Ca làm"
+                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Ca làm", "Loại nhân viên", "Title 9"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, true, true, true, true
+                true, false, false, false, false, false, true, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(myTable2);
+        jScrollPane2.setViewportView(tblNhanVien);
 
         pnlCenter.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -281,8 +327,8 @@ public class GD_NhanVien extends JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTitleBang;
-    private gui.swing.table2.MyTable myTable2;
     private gui.swing.panel.PanelShadow pnlCenter;
     private gui.swing.panel.PanelShadow pnlTop;
+    private gui.swing.table2.MyTable tblNhanVien;
     // End of variables declaration//GEN-END:variables
 }
