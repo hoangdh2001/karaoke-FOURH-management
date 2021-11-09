@@ -14,8 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.swing.JCheckBox;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "getDSPhieuDatPhong", query = "select p from PhieuDatPhong p")
+})
 public class PhieuDatPhong {
 
     @Id
@@ -81,9 +86,9 @@ public class PhieuDatPhong {
     public PhieuDatPhong() {
     }
 
-    public PhieuDatPhong(String string, KhachHang khachHang, Phong phong, Date valueOf, Date valueOf0, TrangThaiPhieuDat trangThaiPhieuDat, int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    public PhieuDatPhong(String string, KhachHang khachHang, Phong phong, Date valueOf, Date valueOf0, TrangThaiPhieuDat trangThaiPhieuDat, int i) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 
     /**
      * @return the maPhieuDat
@@ -188,7 +193,8 @@ public class PhieuDatPhong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
-        return new Object[]{JCheckBox.class, maPhieuDat, ngayTao, khachHang.getTenKhachHang(), phong.getTenPhong(), ngayDat, trangThai, tienCoc, new ModelAction(this, event)};
+        SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        return new Object[]{JCheckBox.class, maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, tienCoc, new ModelAction(this, event)};
     }
     
     public Object[] convertToRowTableInGDTiepNhanDatPhong(){
