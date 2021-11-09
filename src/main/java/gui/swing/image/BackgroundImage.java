@@ -29,6 +29,11 @@ public class BackgroundImage extends javax.swing.JPanel {
     public void setFtColor(Color ftColor) {
         this.ftColor = ftColor;
     }
+
+    public BackgroundImage() {
+        setOpaque(false);
+        initComponents();
+    }
     
     public BackgroundImage(Icon icon) {
         this.icon = icon;

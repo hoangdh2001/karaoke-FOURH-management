@@ -2,7 +2,6 @@ package gui.component;
 
 import dao.Phong_DAO;
 import entity.Phong;
-import gui.dialog.InfoOver;
 import gui.event.EventShowInfoOver;
 import gui.event.EventShowPopupMenu;
 import gui.event.EventTabSelected;
@@ -17,6 +16,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -36,6 +36,10 @@ public class PanelMap extends PanelShadow {
     
     public void addEvent(EventShowInfoOver event) {
         this.event = event;
+    }
+    
+    public void addEventSp(MouseWheelListener event) {
+        sp.addMouseWheelListener(event);
     }
     
     public PanelMap() {
@@ -104,13 +108,10 @@ public class PanelMap extends PanelShadow {
         room.setPreferredSize(new Dimension(200, 250));
         room.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
-                event.showInfoOver(room);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                event.hiddenInfoOver(room);
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    event.showInfoOver(room, e);
+                }
             }
         });
         panel.add(room);

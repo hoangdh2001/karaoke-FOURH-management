@@ -3,7 +3,6 @@ package gui.component;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
-import gui.dialog.InfoOver;
 import gui.event.EventMenuSelected;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;

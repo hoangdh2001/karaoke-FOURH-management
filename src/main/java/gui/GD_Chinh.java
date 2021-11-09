@@ -19,11 +19,10 @@ import gui.component.Header;
 import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
-import gui.component.Room;
 import gui.component.RoomDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
-import gui.dialog.InfoOver;
+import gui.component.RoomDetail;
 import gui.event.EventMenuSelected;
 import gui.event.EventShowInfoOver;
 import gui.event.EventShowPopupMenu;
@@ -33,6 +32,8 @@ import gui.swing.menu.PopupMenu;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.text.DecimalFormat;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
@@ -56,7 +57,8 @@ public class GD_Chinh extends JFrame {
     private MigLayout layout;
     private final DecimalFormat df = new DecimalFormat("##0.##");
     private TabLayout tab;
-
+    private JScrollPane sp;
+    
     public GD_Chinh(String title) {
         super(title);
         buidGD_Chinh();
@@ -186,30 +188,46 @@ public class GD_Chinh extends JFrame {
 //            System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
                 switch (menuIndex) {
                     case 0:
-                        if (subMenuIndex == 0) {
-                            GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
-                            soDoPhongHat.addEvent(new EventShowInfoOver() {
-                                private InfoOver infoOver = new InfoOver(GD_Chinh.this);
-
-                                @Override
-                                public void showInfoOver(Component com) {
-                                    Room room = (Room) com;
-                                    infoOver = new InfoOver(GD_Chinh.this);
-                                    infoOver.setVisible(true);
+                    if(subMenuIndex == 0) {
+                        GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
+                        soDoPhongHat.addEvent(new EventShowInfoOver() {
+                            @Override
+                            public void showInfoOver(Component com, MouseEvent e) {
+                //                MenuItem item = (MenuItem) com;
+                                RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                                int x = 0;
+                                int y = 0;
+                                if((e.getXOnScreen() + 400) >= 1920) {
+                                    x = e.getXOnScreen() - e.getX() - 400;
+                                    y = e.getYOnScreen() - e.getY() - 10;
+                                } else {
+                                    x = e.getXOnScreen() + 200 - e.getX();
+                                    y = e.getYOnScreen() - e.getY() - 10;
                                 }
+                                infoOver.setLocation(x, y);
+                                infoOver.setVisible(true);
+                                sp.addMouseWheelListener(new MouseWheelListener() {
+                                    @Override
+                                    public void mouseWheelMoved(MouseWheelEvent arg0) {
+                                        infoOver.closeMenu();
+                                    }
+                                });
+                                soDoPhongHat.addEventSp(new MouseWheelListener() {
+                                    @Override
+                                    public void mouseWheelMoved(MouseWheelEvent arg0) {
+                                        infoOver.closeMenu();
+                                    }
+                                });
+                            }
 
-                                @Override
-                                public void hiddenInfoOver(Component com) {
-                                    infoOver.close();
-                                }
-                            });
-                            content.showForm(soDoPhongHat);
-                            tab.showDetail(new RoomDetail());
-
-                        } else if (subMenuIndex == 1) {
-                            content.showForm(new GD_DanhSachPhong());
-                        }
-                        break;
+                        });
+                        content.showForm(soDoPhongHat);
+                        
+                    }
+                    else if(subMenuIndex == 1) {
+                        content.showForm(new GD_DanhSachPhong());
+                    }
+                    break;
                     case 1:
                         content.showForm(new GD_QLDatPhong());
                         break;
@@ -283,29 +301,43 @@ public class GD_Chinh extends JFrame {
      * @return JPanel content
      */
     private JScrollPane createContent() {
-        JScrollPane sp = new JScrollPane();
-        content = new Content();
-        content.setBackground(new Color(245, 245, 245));
+        sp = new JScrollPane();
+	content = new Content();
+	content.setBackground(new Color(245, 245, 245));
         GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
         soDoPhongHat.addEvent(new EventShowInfoOver() {
-            private InfoOver infoOver = new InfoOver(GD_Chinh.this);
-
             @Override
-            public void showInfoOver(Component com) {
-                Room room = (Room) com;
-                infoOver = new InfoOver(GD_Chinh.this);
-                int x = GD_Chinh.this.getX();
-                int y = GD_Chinh.this.getY();
+            public void showInfoOver(Component com, MouseEvent e) {
+//                MenuItem item = (MenuItem) com;
+                RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                int x = 0;
+                int y = 0;
+                if((e.getXOnScreen() + 400) >= 1920) {
+                    x = e.getXOnScreen() - e.getX() - 400;
+                    y = e.getYOnScreen() - e.getY() - 10;
+                } else {
+                    x = e.getXOnScreen() + 200 - e.getX();
+                    y = e.getYOnScreen() - e.getY() - 10;
+                }
                 infoOver.setLocation(x, y);
                 infoOver.setVisible(true);
+                sp.addMouseWheelListener(new MouseWheelListener() {
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent arg0) {
+                        infoOver.closeMenu();
+                    }
+                });
+                soDoPhongHat.addEventSp(new MouseWheelListener() {
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent arg0) {
+                        infoOver.closeMenu();
+                    }
+                });
             }
 
-            @Override
-            public void hiddenInfoOver(Component com) {
-                infoOver.close();
-            }
         });
-        content.showForm(soDoPhongHat);
+        
+	content.showForm(soDoPhongHat);
         sp.getViewport().setBackground(Color.WHITE);
         sp.setVerticalScrollBar(new ScrollBarCustom());
         JPanel p = new JPanel();
@@ -322,6 +354,7 @@ public class GD_Chinh extends JFrame {
      * tạo ngăn tab
      */
     private TabLayout createTabPane() {
+        
         tab = new TabLayout();
         background.setLayer(tab, JLayeredPane.POPUP_LAYER);
         TimingTarget target = new TimingTargetAdapter() {
@@ -386,7 +419,6 @@ public class GD_Chinh extends JFrame {
                 }
             }
         });
-        tab.showDetail(new RoomDetail());
         return tab;
     }
 }
