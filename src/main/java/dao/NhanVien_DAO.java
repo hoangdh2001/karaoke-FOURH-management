@@ -46,7 +46,20 @@ public class NhanVien_DAO implements NhanVienService {
 
     @Override
     public NhanVien getNhanVien(String maNhanVien) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction.begin();
+            NhanVien nhanVien = session.find(NhanVien.class, maNhanVien);
+            transaction.commit();
+
+            return nhanVien;
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        }
+        return null;
     }
 
     @Override

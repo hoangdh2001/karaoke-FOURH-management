@@ -1,5 +1,6 @@
 package gui.component;
 
+import entity.NhanVien;
 import gui.event.EventTabSelected;
 import gui.swing.panel.TabButton;
 import java.awt.BorderLayout;
@@ -8,36 +9,39 @@ import javax.swing.JPanel;
 
 public class NhanVienDetail extends javax.swing.JPanel {
 
-    public NhanVienDetail() {
+    private NhanVien nhanVien;
+
+    public NhanVienDetail(NhanVien nhanVien) {
+        this.nhanVien = nhanVien;
+        System.out.println(nhanVien);
         initComponents();
         buildDisplay();
-        
+
     }
-    
+
     private void buildDisplay() {
         createTabButton();
     }
-    
+
     private void createTabButton() {
         tab.setEvent(new EventTabSelected() {
             @Override
             public boolean selected(int index, boolean selectedTab) {
-                if(index == 0) {
+                if (index == 0) {
                     showTab(new PanelTabThongTinNV());
-                }
-                else if(index == 1) {
+                } else if (index == 1) {
                     showTab(new PanelTabSuaThongTinNV());
                 }
                 tab.check();
                 return true;
             }
         });
-        
+
         tab.addTabButtonItem("Thông tin");
         tab.addTabButtonItem("Sửa");
         pane.add(new PanelTabThongTinNV());
     }
-    
+
     private void showTab(Component com) {
         pane.removeAll();
         pane.add(com);

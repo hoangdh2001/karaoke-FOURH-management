@@ -1,5 +1,6 @@
 package gui;
 
+import entity.NhanVien;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -24,6 +25,7 @@ import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.dialog.InfoOver;
 import gui.event.EventMenuSelected;
+import gui.event.EventNSelectedRow;
 import gui.event.EventShowInfoOver;
 import gui.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
@@ -222,22 +224,25 @@ public class GD_Chinh extends JFrame {
                         GD_NhanVien gD_NhanVien = new GD_NhanVien();
 
                         content.showForm(gD_NhanVien);
-                        
-                        gD_NhanVien.addEvent(new MouseAdapter() {
+
+                        gD_NhanVien.addEvent(new EventNSelectedRow() {
                             @Override
-                            public void mousePressed(MouseEvent e) {
-                                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
-                                    if (!animator2.isRunning()) {
-                                        if (!tabShow) {
-                                            tab.setVisible(true);
-                                            animator2.start();
-                                        }
+                            public void selectedRow(Object object) {
+                                
+                                NhanVien nhanVien = (NhanVien) object;
+                                if (!animator2.isRunning()) {
+                                    if (!tabShow) {
+                                        tab.setVisible(true);
+
+                                        NhanVienDetail nhanVienDetail = new NhanVienDetail(nhanVien);
+                                        tab.showDetail(nhanVienDetail);
+
+                                        animator2.start();
                                     }
                                 }
-                            }
 
+                            }
                         });
-                        tab.showDetail(new NhanVienDetail());
 
                         break;
                     case 5:

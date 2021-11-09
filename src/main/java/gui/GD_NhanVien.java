@@ -3,6 +3,7 @@ package gui;
 import dao.NhanVien_DAO;
 import entity.NhanVien;
 import gui.dropshadow.ShadowType;
+import gui.event.EventNSelectedRow;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
@@ -14,21 +15,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
-import org.jdesktop.animation.timing.TimingTarget;
-import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 public class GD_NhanVien extends JPanel {
 
@@ -53,21 +48,26 @@ public class GD_NhanVien extends JPanel {
     private NhanVien_DAO nhanVien_DAO;
     private List<NhanVien> listNhanVien;
 
+    private EventNSelectedRow eventSelectedRow;
+
     public GD_NhanVien() {
         initComponents();
         setPreferredSize(new Dimension(getWidth(), 1000));
         tblNhanVien.fixTable(jScrollPane2);
         buildGD();
 
+        mouse();
+
+        //chia ra createTable-> xuwr lys
         tblNhanVien.setFont(new Font(fontName, fontPlain, font14));
         //lấy dữ liệu 
         nhanVien_DAO = new NhanVien_DAO();
         loadDataToTable();
 
     }
-    
-    public void  addEvent(MouseListener event){
-        tblNhanVien.addMouseListener(event);
+
+    public void addEvent(EventNSelectedRow event) {
+        this.eventSelectedRow = event;
     }
 
     private void buildGD() {
@@ -79,7 +79,6 @@ public class GD_NhanVien extends JPanel {
         createPanelHidden();
         add(panelHidden);
 
-        
     }
 
     /**
@@ -113,12 +112,6 @@ public class GD_NhanVien extends JPanel {
      * Tạo các textField, combobox tìm kiếm
      */
     private void createPanelSearch() {
-//        String fontName = "sansserif";
-//        int fontPlain = Font.PLAIN;
-//        int font16 = 16;
-//        int font14 = 14;
-//        Color colorBtn = new Color(184, 238, 241);
-//        Color colorLabel = new Color(47, 72, 210);
 
         /*Begin: group tìm nhân viên*/
         JPanel pnlTimKiemNV = new JPanel();
@@ -189,7 +182,6 @@ public class GD_NhanVien extends JPanel {
         pnlTimKiemNV.add(btnTimKiem, "align left, w 100!, h 40!");
         /* End: group tìm nhân viên*/
 
-//        SwingUtilities.isLeftMouseButton(Event e)&& e.getClickcount()==2
     }
 
     /**
@@ -218,6 +210,18 @@ public class GD_NhanVien extends JPanel {
             System.out.println(i);
             tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
         }
+    }
+
+    private void mouse() {
+        tblNhanVien.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString();
+                    eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
