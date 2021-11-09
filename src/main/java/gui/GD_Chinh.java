@@ -19,7 +19,6 @@ import gui.component.Header;
 import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
-import gui.component.RoomDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
@@ -242,11 +241,9 @@ public class GD_Chinh extends JFrame {
                         GD_NhanVien gD_NhanVien = new GD_NhanVien();
 
                         content.showForm(gD_NhanVien);
-
                         gD_NhanVien.addEvent(new EventSelectedRow() {
                             @Override
                             public void selectedRow(Object object) {
-                                
                                 
                                 NhanVien nhanVien = (NhanVien) object;
                                 
@@ -257,14 +254,13 @@ public class GD_Chinh extends JFrame {
                                         // Truyền object nhân viên vào NhanVienDetail - vào tab ẩn bên phải của nhân viên
                                         NhanVienDetail nhanVienDetail = new NhanVienDetail(nhanVien);
                                         tab.showDetail(nhanVienDetail);
-//chính -> GD_nhanVien -> nhân viên detail-> tab thông tin nhân viên
                                         animator2.start();
                                     }
                                 }
 
                             }
                         });
-
+                        System.out.println("step 5");
                         break;
                     case 5:
                         if (subMenuIndex == 0) {

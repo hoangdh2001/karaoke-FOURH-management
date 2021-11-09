@@ -76,7 +76,7 @@ public class NhanVienDetail extends javax.swing.JPanel {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(248, 248, 242));
         setLayout(new java.awt.BorderLayout());
 
         pane.setBackground(new java.awt.Color(255, 255, 255));
@@ -85,8 +85,9 @@ public class NhanVienDetail extends javax.swing.JPanel {
 
         jPanel2.setOpaque(false);
 
-        lblTenNhanVien.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        lblTenNhanVien.setText("Đỗ Huy Hoàng");
+        lblTenNhanVien.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblTenNhanVien.setForeground(new java.awt.Color(68, 71, 90));
+        lblTenNhanVien.setText("Some text");
 
         tab.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -98,7 +99,7 @@ public class NhanVienDetail extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(lblTenNhanVien)
-                .addContainerGap(554, Short.MAX_VALUE))
+                .addContainerGap(565, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

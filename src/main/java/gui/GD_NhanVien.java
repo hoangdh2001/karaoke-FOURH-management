@@ -2,7 +2,6 @@ package gui;
 
 import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
-import entity.LoaiNhanVien;
 import entity.NhanVien;
 import gui.dropshadow.ShadowType;
 import gui.swing.button.Button;
@@ -25,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import gui.event.EventSelectedRow;
-import javax.swing.DefaultComboBoxModel;
 
 public class GD_NhanVien extends JPanel {
 
@@ -209,7 +207,6 @@ public class GD_NhanVien extends JPanel {
                      i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
         }
 
-        
         tblNhanVien.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -217,7 +214,6 @@ public class GD_NhanVien extends JPanel {
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
 
                     String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString();
-                    
                     eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
                 }
             }
