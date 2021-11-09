@@ -1,5 +1,6 @@
 package gui;
 
+import entity.NhanVien;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -37,14 +38,17 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
+import gui.event.EventSelectedRow;
 
 public class GD_Chinh extends JFrame {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private JLayeredPane background;
     private Animator animator; // thực thi animation
+    private Animator animator2; // thực thi animation2
     private Menu menu; // thành phân nav kiểu menu chọn nội dung hiện thị
     private Header header; // thành phần header hiện thi thông tin nhân viên
     private Content content; // thành phần content chứa nội dung
@@ -52,37 +56,41 @@ public class GD_Chinh extends JFrame {
     private MigLayout layout;
     private final DecimalFormat df = new DecimalFormat("##0.##");
     private TabLayout tab;
+
     public GD_Chinh(String title) {
-	super(title);
-	buidGD_Chinh();
+        super(title);
+        buidGD_Chinh();
     }
+
     /**
      * Xây dựng GD_Chính
      */
     private void buidGD_Chinh() {
-	setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         createBackground();
-	setContentPane(background);
+        setContentPane(background);
         setMinimumSize(new Dimension(1200, 500));
-	pack();
-	setLocationRelativeTo(null);
+        pack();
+        setLocationRelativeTo(null);
         setState(MAXIMIZED_BOTH);
     }
+
     /**
      * Tạo nên chứa cái thành phần header, nav dọc kiểu menu, content
+     *
      * @return JPanel background
      */
     private void createBackground() {
-	background = new JLayeredPane();
-	background.setPreferredSize(new Dimension(1400, 800));
+        background = new JLayeredPane();
+        background.setPreferredSize(new Dimension(1400, 800));
         // layout 2 cột 1 dòng
         layout = new MigLayout("fill, insets 0", "0[]0[100%, fill]0", "0[fill, top]0");
-	background.setLayout(layout); 
-	background.setBackground(new Color(236, 240, 245));
-     
-	background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
-	background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
-	background.add(createContent()); // content full
+        background.setLayout(layout);
+        background.setBackground(new Color(236, 240, 245));
+
+        background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
+        background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
+        background.add(createContent()); // content full
         background.add(createTabPane(), "pos 45% 1al n n, w 100%, h 90%");
         TimingTarget target = new TimingTargetAdapter() {
             @Override
@@ -113,21 +121,22 @@ public class GD_Chinh extends JFrame {
         // Bù trù
         // Khi click vào nút menu sẽ mở menu rộng ra
     }
+
     /**
-     * Tạo header bào gồm hiện thị thông tin nhân viên, loại nhân viên
-     * Thời gian
+     * Tạo header bào gồm hiện thị thông tin nhân viên, loại nhân viên Thời gian
+     *
      * @return JPanel header
      */
     private Header createHeader() {
-	header = new Header();
+        header = new Header();
         header.addEvent(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if(!animator.isRunning()) {
+                if (!animator.isRunning()) {
                     animator.start();
                 }
                 menu.setEnableMenu(false);
-                if(menu.isShowMenu()) {
+                if (menu.isShowMenu()) {
                     menu.hideAllMenu();
                 }
             }
@@ -135,97 +144,123 @@ public class GD_Chinh extends JFrame {
         EventMenuSelected eventSelected = new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
-                if(subMenuIndex == 0) {
+                if (subMenuIndex == 0) {
                     new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
                 }
-                if(subMenuIndex == 3) {
+                if (subMenuIndex == 3) {
                     new GD_DangNhap("Đăng nhập").setVisible(true);
                     dispose();
                 }
             }
         };
-        
+
         header.addEvent2(new EventShowPopupMenu() {
             @Override
             public void showPopup(Component com) {
                 String[] menuItem = {"Hồ sơ", "Xin chào", "Chao xìn", "Đăng xuất"};
                 DropMenu dropMenu = new DropMenu(GD_Chinh.this, 0, eventSelected, menuItem);
                 int x;
-                if(menu.isShowMenu()) {
+                if (menu.isShowMenu()) {
                     x = GD_Chinh.this.getX() + com.getX() + com.getWidth() * 2 - 40;
                 } else {
                     x = GD_Chinh.this.getX() + com.getX() + com.getWidth() - 40;
                 }
-                int y = GD_Chinh.this.getY()  + 55;
+                int y = GD_Chinh.this.getY() + 55;
                 dropMenu.setLocation(x, y);
                 dropMenu.setVisible(true);
             }
         });
-	return header;
+        return header;
     }
+
     /**
-     * Tạo menu gồm menuItem and subMenu
-     * Từng index là để show nột dung
+     * Tạo menu gồm menuItem and subMenu Từng index là để show nột dung
+     *
      * @return nav
      */
     private Menu createNav() {
         menu = new Menu();
         menu.addEvent(new EventMenuSelected() {
-        @Override
-        public void menuSelected(int menuIndex, int subMenuIndex) {
+            @Override
+            public void menuSelected(int menuIndex, int subMenuIndex) {
 //            System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
-            switch (menuIndex) {
-                case 0:
-                    if(subMenuIndex == 0) {
-                        GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
-                        soDoPhongHat.addEvent(new EventShowInfoOver() {
-                            private InfoOver infoOver = new InfoOver(GD_Chinh.this);
-                            @Override
-                            public void showInfoOver(Component com) {
-                                Room room = (Room) com;
-                                infoOver = new InfoOver(GD_Chinh.this);
-                                infoOver.setVisible(true);
-                            }
+                switch (menuIndex) {
+                    case 0:
+                        if (subMenuIndex == 0) {
+                            GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
+                            soDoPhongHat.addEvent(new EventShowInfoOver() {
+                                private InfoOver infoOver = new InfoOver(GD_Chinh.this);
 
+                                @Override
+                                public void showInfoOver(Component com) {
+                                    Room room = (Room) com;
+                                    infoOver = new InfoOver(GD_Chinh.this);
+                                    infoOver.setVisible(true);
+                                }
+
+                                @Override
+                                public void hiddenInfoOver(Component com) {
+                                    infoOver.close();
+                                }
+                            });
+                            content.showForm(soDoPhongHat);
+                            tab.showDetail(new RoomDetail());
+
+                        } else if (subMenuIndex == 1) {
+                            content.showForm(new GD_DanhSachPhong());
+                        }
+                        break;
+                    case 1:
+                        content.showForm(new GD_QLDatPhong());
+                        break;
+                    case 2:
+                        content.showForm(new GD_KhachHang());
+                        tab.showDetail(new KhachHangDetail());
+                        break;
+                    case 3:
+                        content.showForm(new GD_HoaDon());
+                        break;
+                    case 4:
+                        GD_NhanVien gD_NhanVien = new GD_NhanVien();
+
+                        content.showForm(gD_NhanVien);
+
+                        gD_NhanVien.addEvent(new EventSelectedRow() {
                             @Override
-                            public void hiddenInfoOver(Component com) {
-                                infoOver.close();
+                            public void selectedRow(Object object) {
+                                
+                                
+                                NhanVien nhanVien = (NhanVien) object;
+                                
+                                if (!animator2.isRunning()) {
+                                    if (!tabShow) {
+                                        tab.setVisible(true);
+
+                                        // Truyền object nhân viên vào NhanVienDetail - vào tab ẩn bên phải của nhân viên
+                                        NhanVienDetail nhanVienDetail = new NhanVienDetail(nhanVien);
+                                        tab.showDetail(nhanVienDetail);
+//chính -> GD_nhanVien -> nhân viên detail-> tab thông tin nhân viên
+                                        animator2.start();
+                                    }
+                                }
+
                             }
                         });
-                        content.showForm(soDoPhongHat);
-                        tab.showDetail(new RoomDetail());
-                        
-                    }
-                    else if(subMenuIndex == 1) {
-                        content.showForm(new GD_DanhSachPhong());
-                    }
-                    break;
-                case 1:
-                    content.showForm(new GD_QLDatPhong());
-                    break;
-                case 2:
-                    content.showForm(new GD_KhachHang());
-                    tab.showDetail(new KhachHangDetail());
-                    break;
-                case 3:
-                    content.showForm(new GD_HoaDon());
-                    break;
-                case 4:
-                    content.showForm(new GD_NhanVien());
-                    tab.showDetail(new NhanVienDetail());
-                    break;
-                case 5:
-                    if(subMenuIndex == 0)
-                        content.showForm(new GD_ThongKeDoanhThu());
-                    else if(subMenuIndex == 1)
-                        content.showForm(new GD_ThongKeHangHoa());
-                    break;
-                default:
-                    break;
+
+                        break;
+                    case 5:
+                        if (subMenuIndex == 0) {
+                            content.showForm(new GD_ThongKeDoanhThu());
+                        } else if (subMenuIndex == 1) {
+                            content.showForm(new GD_ThongKeHangHoa());
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         });
-        
+
         // mở cửa sổ nhỏ khi menu đóng
         menu.addEventShowPopup(new EventShowPopupMenu() {
             @Override
@@ -239,19 +274,22 @@ public class GD_Chinh extends JFrame {
             }
         });
         menu.initMenuItem();
-	return menu;
+        return menu;
     }
+
     /**
      * Tạo ngăn hiện lên nội dung
+     *
      * @return JPanel content
      */
     private JScrollPane createContent() {
         JScrollPane sp = new JScrollPane();
-	content = new Content();
-	content.setBackground(new Color(245, 245, 245));
+        content = new Content();
+        content.setBackground(new Color(245, 245, 245));
         GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
         soDoPhongHat.addEvent(new EventShowInfoOver() {
             private InfoOver infoOver = new InfoOver(GD_Chinh.this);
+
             @Override
             public void showInfoOver(Component com) {
                 Room room = (Room) com;
@@ -267,7 +305,7 @@ public class GD_Chinh extends JFrame {
                 infoOver.close();
             }
         });
-	content.showForm(soDoPhongHat);
+        content.showForm(soDoPhongHat);
         sp.getViewport().setBackground(Color.WHITE);
         sp.setVerticalScrollBar(new ScrollBarCustom());
         JPanel p = new JPanel();
@@ -277,9 +315,9 @@ public class GD_Chinh extends JFrame {
         sp.setViewportView(content);
         sp.getVerticalScrollBar().setUnitIncrement(50);
         sp.setBorder(null);
-	return sp;
+        return sp;
     }
-    
+
     /**
      * tạo ngăn tab
      */
@@ -290,7 +328,7 @@ public class GD_Chinh extends JFrame {
             @Override
             public void timingEvent(float fraction) {
                 double width;
-                if(tabShow) {
+                if (tabShow) {
                     width = 45 * fraction;
                 } else {
                     width = 45 * (1f - fraction);
@@ -299,19 +337,19 @@ public class GD_Chinh extends JFrame {
                 layout.setComponentConstraints(tab, "pos " + width + "% 1al n n, w 100%, h 100%");
                 tab.repaint();
                 tab.revalidate();
-                
+
                 background.revalidate();
             }
 
             @Override
             public void end() {
                 tabShow = !tabShow;
-                if(!tabShow) {
+                if (!tabShow) {
                     tab.setVisible(false);
                 }
             }
         };
-        Animator animator2 = new Animator(400, target);
+        animator2 = new Animator(400, target);
         animator2.setResolution(0);
         animator2.setAcceleration(0.5f);
         animator2.setDeceleration(0.5f);
@@ -328,9 +366,9 @@ public class GD_Chinh extends JFrame {
         header.addAction(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if(!animator2.isRunning()) {
-                    if(!tabShow) {
-                         tab.setVisible(true);
+                if (!animator2.isRunning()) {
+                    if (!tabShow) {
+                        tab.setVisible(true);
                         animator2.start();
                     }
                 }

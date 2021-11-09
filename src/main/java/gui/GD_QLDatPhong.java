@@ -65,17 +65,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel {
 //                System.out.println(pdp);
             }
         };
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        table.addRow(new PhieuDatPhong("1", khachHang, phong, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), TrangThaiPhieuDat.DANG_DOI, 100000f).convertToRowTable(event));
-        
     }
 
     private void buildGD_QLDatPhong() {
