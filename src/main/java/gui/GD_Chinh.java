@@ -1,6 +1,7 @@
 package gui;
 
 import entity.NhanVien;
+import entity.PhieuDatPhong;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -229,7 +230,24 @@ public class GD_Chinh extends JFrame {
                     }
                     break;
                     case 1:
+                        GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
                         content.showForm(new GD_QLDatPhong());
+                        
+                        qlDatPhong.addEvent(new EventSelectedRow() {
+                            @Override
+                            public void selectedRow(Object object) {
+                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
+                                
+                                if(!animator2.isRunning()){
+                                    if(!tabShow){
+                                        tab.setVisible(true);
+                                        //Phi
+                                    }
+                                }
+
+                            }
+                        });
+                        
                         break;
                     case 2:
                         content.showForm(new GD_KhachHang());

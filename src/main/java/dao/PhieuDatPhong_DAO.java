@@ -6,6 +6,7 @@
 package dao;
 
 import entity.PhieuDatPhong;
+import entity.TrangThaiPhieuDat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,10 +39,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     public List<PhieuDatPhong> getDsPhieuDatPhong() {
        Session session = sessionFactory.openSession();
             Transaction tr = session.getTransaction();
+            String sql = "select p.* from PhieuDatPhong p";
             try {
                 tr.begin();
                 List<PhieuDatPhong> dsPhieuDatPhong = session
-                        .createNamedQuery("getDSPhieuDatPhong", PhieuDatPhong.class)
+                        .createNativeQuery(sql, PhieuDatPhong.class)
                         .getResultList();
                 tr.commit();
                 return dsPhieuDatPhong;
@@ -95,7 +97,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByName_TrangThai(String tuKhoa, String trangThai) {
+    public List<PhieuDatPhong> timDSPhieuDatPhongByName_TrangThai(String tuKhoa, TrangThaiPhieuDat trangThai) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
@@ -188,7 +190,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tuKhoa, String trangThai, int nam, int thang, int ngay) {
+    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tuKhoa, TrangThaiPhieuDat trangThai, int nam, int thang, int ngay) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
@@ -232,7 +234,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai_Ngay(String trangThai, int nam, int thang, int ngay) {
+    public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai_Ngay(TrangThaiPhieuDat trangThai, int nam, int thang, int ngay) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
@@ -253,7 +255,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai(String trangThai) {
+    public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai(TrangThaiPhieuDat trangThai) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {

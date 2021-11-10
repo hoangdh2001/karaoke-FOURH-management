@@ -18,9 +18,6 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "getDSPhieuDatPhong", query = "select p from PhieuDatPhong p")
-})
 public class PhieuDatPhong {
 
     @Id
