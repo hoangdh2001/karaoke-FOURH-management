@@ -1,8 +1,12 @@
 package gui;
 
+import dao.CaLam_DAO;
 import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
+import entity.CaLam;
+import entity.LoaiNhanVien;
 import entity.NhanVien;
+
 import gui.dropshadow.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
@@ -10,13 +14,16 @@ import gui.swing.table2.EventAction;
 import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import java.text.DecimalFormat;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,6 +31,18 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import gui.event.EventSelectedRow;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.KeyStroke;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.Keymap;
 
 public class GD_NhanVien extends JPanel {
 
@@ -44,10 +63,15 @@ public class GD_NhanVien extends JPanel {
     private Button btnTimKiem;
     private NhanVien_DAO nhanVien_DAO;
     private LoaiNhanVien_DAO loaiNhanVien_DAO;
+    private CaLam_DAO caLam_DAO;
 
     private List<NhanVien> listNhanVien;
+    private List<LoaiNhanVien> loaiNhanViens;
+    private List<CaLam> caLams;
 
     private EventSelectedRow eventSelectedRow;
+    private DefaultComboBoxModel<LoaiNhanVien> cmbModelLNV;
+    private DefaultComboBoxModel<CaLam> cmbModelCaLam;
 
     public GD_NhanVien() {
         initComponents();
@@ -56,12 +80,16 @@ public class GD_NhanVien extends JPanel {
 
         nhanVien_DAO = new NhanVien_DAO();
         TableHandler();
+        loaiNhanVien_DAO = new LoaiNhanVien_DAO();
+        caLam_DAO = new CaLam_DAO();
+        FormHandler();
+
+        SearchHandler();
     }
 
     public void addEvent(EventSelectedRow event) {
         this.eventSelectedRow = event;
     }
-
 
     private void buildGD() {
         pnlTop.setLayout(new MigLayout("", "[][]", "[]"));
@@ -146,7 +174,8 @@ public class GD_NhanVien extends JPanel {
 
         pnlTimKiemNV.add(lblLoaiNVTK);
 
-        cmbLoaiNVTK = new MyComboBox<>();
+        cmbModelLNV = new DefaultComboBoxModel<>();
+        cmbLoaiNVTK = new MyComboBox<>(cmbModelLNV);
         cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNVTK.setBorderLine(true);
         cmbLoaiNVTK.setBorderRadius(5);
@@ -158,7 +187,8 @@ public class GD_NhanVien extends JPanel {
         lblCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblCaLamTK, "align right");
 
-        cmbCaLamTK = new MyComboBox<>();
+        cmbModelCaLam = new DefaultComboBoxModel<>();
+        cmbCaLamTK = new MyComboBox<>(cmbModelCaLam);
         cmbCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLamTK.setBorderLine(true);
         cmbCaLamTK.setBorderRadius(5);
@@ -183,6 +213,10 @@ public class GD_NhanVien extends JPanel {
         tblNhanVien.fixTable(scrTable);
         tblNhanVien.setFont(new Font(fontName, fontPlain, font14));
 
+        String html2 = "<html><head><style> body{margin: 0 ; padding: 0; background-color: #303841;} h3{color: white; padding: 0 16px;} </style></head>"
+                + "<body><h3>Click chuột trái 2 lần để xem chi tiết</h3></body></html>";
+        tblNhanVien.setToolTipText(html2);
+
         //Thêm cột có icon xóa, sửa
         EventAction event = new EventAction() {
             @Override
@@ -203,8 +237,8 @@ public class GD_NhanVien extends JPanel {
         listNhanVien = nhanVien_DAO.getNhanViens();
         for (NhanVien i : listNhanVien) {
             tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
-                     i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
-                     i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
+                    i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
+                    i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
         }
 
         tblNhanVien.addMouseListener(new MouseAdapter() {
@@ -219,7 +253,123 @@ public class GD_NhanVien extends JPanel {
             }
         });
     }
-    
+
+    /**
+     * load dữ liệu lên các combobox của form tìm kiếm
+     */
+    private void FormHandler() {
+        loaiNhanViens = loaiNhanVien_DAO.getLoaiNhanViens();
+        for (LoaiNhanVien lnv : loaiNhanViens) {
+            cmbModelLNV.addElement(lnv);
+        }
+
+        caLams = caLam_DAO.getCaLams();
+        for (CaLam caLam : caLams) {
+            cmbModelCaLam.addElement(caLam);
+        }
+
+    }
+
+    private void SearchHandler() {
+        DefaultTableModel defaultTableModel = (DefaultTableModel) tblNhanVien.getModel();
+        txtTimKiem.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println(".keyReleased()");
+                System.out.println(tblNhanVien.getModel().getRowCount());
+
+                defaultTableModel.setRowCount(0);
+
+                int code = e.getKeyCode();
+                System.out.println(code);
+                SearchNhanVien();
+//                int gioiTinh = 0;
+//
+//                String maCaLam = "";
+//                if (!cmbCaLamTK.getSelectedItem().equals("Tất cả")) {
+//                    maCaLam = (String) cmbCaLamTK.getSelectedItem();
+//                }
+//
+//                String maLoaiNV = "";
+//                if (!cmbLoaiNVTK.getSelectedItem().equals("Tất cả")) {
+//                    maLoaiNV = (String) cmbLoaiNVTK.getSelectedItem();
+//                }
+//
+//                List<NhanVien> nhanViens = nhanVien_DAO.searchNhanVien(txtTimKiem.getText().trim(), gioiTinh, maLoaiNV, maCaLam);
+//                for (NhanVien i : nhanViens) {
+//                    tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
+//                            i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
+//                            i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
+//                }
+//                List<NhanVien> nhanViens = nhanVien_DAO.searchNhanVien("Nguyễn", 0, "0", "0");
+//                for (NhanVien i : nhanViens) {
+//                    tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
+//                            i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
+//                            i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
+//                }
+            }
+        });
+
+        cmbGioiTinhTK.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                defaultTableModel.setRowCount(0);
+                SearchNhanVien();
+            }
+        });
+
+        cmbCaLamTK.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                defaultTableModel.setRowCount(0);
+                SearchNhanVien();
+            }
+        });
+
+        cmbLoaiNVTK.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                defaultTableModel.setRowCount(0);
+                SearchNhanVien();
+            }
+        });
+
+    }
+
+    private void SearchNhanVien() {
+        int gioiTinh = 0;
+
+        String maCaLam = "";
+//        if (!cmbCaLamTK.getSelectedItem().equals("Tất cả")) {
+//            maCaLam = (String) cmbCaLamTK.getSelectedItem();
+//            for (CaLam cl : caLams) {
+//                cmbCaLamTK.getSelectedItem().get
+//            }
+//        }
+
+        String maLoaiNV = "";
+        System.out.println(cmbLoaiNVTK.getSelectedItem());
+        if (!cmbLoaiNVTK.getSelectedItem().equals("Tất cả")) {
+            for (LoaiNhanVien lnv : loaiNhanViens) {
+                if (lnv.getTenLoaiNV() == cmbLoaiNVTK.getSelectedItem()) {
+                    maLoaiNV = lnv.getMaLoaiNV();
+                    System.out.println("ma Loai:" + maLoaiNV);
+                }
+                System.out.println("loai " + lnv.getTenLoaiNV());
+            }
+            System.out.println("ele" + cmbModelLNV.getElementAt(cmbLoaiNVTK.getSelectedIndex()));
+            System.out.println("2:" + cmbModelLNV.getElementAt(2));
+//            System.out.println("clas" + cmbModelLNV.);
+
+        }
+
+        List<NhanVien> nhanViens = nhanVien_DAO.searchNhanVien(txtTimKiem.getText().trim(), gioiTinh, maLoaiNV, maCaLam);
+        for (NhanVien i : nhanViens) {
+            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
+                    i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
+                    i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

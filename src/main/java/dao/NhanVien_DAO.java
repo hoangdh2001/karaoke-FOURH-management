@@ -41,7 +41,7 @@ public class NhanVien_DAO implements NhanVienService {
             transaction.rollback();
 
         }
-        return false;                
+        return false;
     }
 
     @Override
@@ -78,6 +78,30 @@ public class NhanVien_DAO implements NhanVienService {
             e.printStackTrace();
             transaction.rollback();
         }
+        return null;
+    }
+
+    @Override
+    public List<NhanVien> searchNhanVien(String tenNV, int gioiTinh, String maLoaiNV, String maCaLam) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction.begin();
+            String query = "select * from NhanVien where  "
+                    + "tenNhanVien like N'%" + tenNV + "%'"
+                    + "and gioiTinh =" + gioiTinh
+                    + "   and maCa like '%" + maCaLam + "%'"
+                    + "and maLoaiNhanVien like '%" + maLoaiNV + "%'";
+            List<NhanVien> nhanViens = session.createNativeQuery(query, NhanVien.class).getResultList();
+            transaction.commit();
+
+            return nhanViens;
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        }
+
         return null;
     }
 
