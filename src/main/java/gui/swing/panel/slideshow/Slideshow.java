@@ -121,7 +121,7 @@ public class Slideshow extends JLayeredPane {
         add(panel, "w 100%-6!");
         
         
-        timer = new Timer(3000, new ActionListener() {
+        timer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 next();

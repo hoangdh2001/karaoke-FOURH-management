@@ -19,7 +19,6 @@ import gui.component.Header;
 import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
-import gui.component.RoomDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
@@ -42,11 +41,12 @@ import net.miginfocom.swing.MigLayout;
 import gui.event.EventSelectedRow;
 
 public class GD_Chinh extends JFrame {
-
+    
     /**
      *
      */
     private static final long serialVersionUID = 1L;
+    private static NhanVien nhanVien;
     private JLayeredPane background;
     private Animator animator; // thực thi animation
     private Animator animator2; // thực thi animation2

@@ -40,20 +40,7 @@ public class GD_DangNhap extends JFrame {
         form.login(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                form.showMessage(gui.component.Message.MessageType.SUCCESS, "Đăng nhập thành công");
-                // Dừng lại 2s để open GD_Chính
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(2000);
-                            GD_DangNhap.this.dispose();
-                            new GD_Chinh("Quản lý Karaoke FourH").setVisible(true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                new GD_Chinh("Quản lý Karaoke FourH").setVisible(true);
             }
         });
         bg.setLayout(layout);
