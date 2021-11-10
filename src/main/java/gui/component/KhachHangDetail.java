@@ -1,5 +1,6 @@
 package gui.component;
 
+import entity.KhachHang;
 import gui.event.EventTabSelected;
 import gui.swing.panel.TabButton;
 import java.awt.BorderLayout;
@@ -7,23 +8,29 @@ import java.awt.Component;
 import javax.swing.JPanel;
 
 public class KhachHangDetail extends javax.swing.JPanel {
+    private KhachHang khachHang;
+    private PanelThongTinKH pnlThongTinKhachHang;
 
-    public KhachHangDetail() {
+    public KhachHangDetail(KhachHang khachHang) {
+        this.khachHang = khachHang;
+        System.out.println("Khách hàng đã chọn:\n" + khachHang);
+        
         initComponents();
         buildDisplay();
         
     }
     
     private void buildDisplay() {
+        pnlThongTinKhachHang= new PanelThongTinKH(khachHang);
         createTabButton();
     }
-    
+
     private void createTabButton() {
         tab.setEvent(new EventTabSelected() {
             @Override
             public boolean selected(int index, boolean selectedTab) {
                 if(index == 0) {
-                    showTab(new PanelThongTinKH());
+                    showTab(pnlThongTinKhachHang);
                 }
                 else if(index == 1) {
                     showTab(new PanelSuaKH());
@@ -35,7 +42,7 @@ public class KhachHangDetail extends javax.swing.JPanel {
         
         tab.addTabButtonItem("Thông tin");
         tab.addTabButtonItem("Sửa");
-        pane.add(new PanelThongTinKH());
+        pane.add(pnlThongTinKhachHang);
     }
     
     private void showTab(Component com) {

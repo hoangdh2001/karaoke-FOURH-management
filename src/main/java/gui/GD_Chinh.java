@@ -1,5 +1,6 @@
 package gui;
 
+import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import java.awt.Color;
@@ -230,28 +231,46 @@ public class GD_Chinh extends JFrame {
                     }
                     break;
                     case 1:
-                        GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
+                       // GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
                         content.showForm(new GD_QLDatPhong());
                         
-                        qlDatPhong.addEvent(new EventSelectedRow() {
-                            @Override
-                            public void selectedRow(Object object) {
-                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
-                                
-                                if(!animator2.isRunning()){
-                                    if(!tabShow){
-                                        tab.setVisible(true);
-                                        //Phi
-                                    }
-                                }
-
-                            }
-                        });
+//                        qlDatPhong.addEvent(new EventSelectedRow() {
+//                            @Override
+//                            public void selectedRow(Object object) {
+//                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
+//                                
+//                                if(!animator2.isRunning()){
+//                                    if(!tabShow){
+//                                        tab.setVisible(true);
+//                                        //Phi
+//                                    }
+//                                }
+//
+//                            }
+//                        });
                         
                         break;
                     case 2:
-                        content.showForm(new GD_KhachHang());
-                        tab.showDetail(new KhachHangDetail());
+                        GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
+                        content.showForm(giaoDienKhachHang);
+                        
+                        giaoDienKhachHang.addEvent(new EventSelectedRow() {
+                            @Override
+                            public void selectedRow(Object object) {
+                                KhachHang khachHang = (KhachHang) object;
+                                if(!animator2.isRunning()){
+                                    if(!tabShow){
+                                        tab.setVisible(true);
+                                        
+                                        KhachHangDetail khachHangDetail =  new KhachHangDetail(khachHang);
+                                        tab.showDetail(khachHangDetail);
+                                        animator2.start();
+                                    }
+                                }
+                            }
+                        });
+                        
+                        
                         break;
                     case 3:
                         content.showForm(new GD_HoaDon());

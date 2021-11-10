@@ -56,7 +56,7 @@ public class NhanVien_DAO implements NhanVienService {
 
             return nhanVien;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e);
             transaction.rollback();
         }
         return null;

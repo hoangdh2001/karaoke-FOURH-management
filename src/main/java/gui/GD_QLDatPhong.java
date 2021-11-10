@@ -246,7 +246,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         df.setRowCount(0);
     }
     
-    
     public void taiLaiDuLieu(List<PhieuDatPhong> dsPhieu){
         dsPhieu.forEach((phieu) -> {
              tblPhieuDatPhong.addRow(phieu.convertToRowTable(event));

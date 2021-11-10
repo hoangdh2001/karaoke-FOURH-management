@@ -54,16 +54,18 @@ public class KhachHang_DAO implements KhachHangService {
     
 
     public KhachHang getKhachHang(String maKhachHang) {
-        Session session = sessionFactory.getCurrentSession();
+       Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
+
         try {
             tr.begin();
             KhachHang khachHang = session.find(KhachHang.class, maKhachHang);
             tr.commit();
+
             return khachHang;
         } catch (Exception e) {
+            System.err.println(e);
             tr.rollback();
-            e.printStackTrace();
         }
         return null;
     }

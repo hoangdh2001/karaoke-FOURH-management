@@ -1,16 +1,33 @@
 package gui;
 
+import dao.KhachHang_DAO;
+import entity.KhachHang;
+import gui.dropshadow.ShadowType;
+import gui.event.EventSelectedRow;
 import gui.swing.button.Button;
+import gui.swing.panel.PanelShadow;
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
@@ -19,19 +36,30 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Hao
  */
-public class GD_KhachHang extends javax.swing.JPanel {
+public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, KeyListener{
+    List<KhachHang> dsKhachHang = new ArrayList<KhachHang>();
+    private KhachHang_DAO khachHang_Dao;
     private MyTextField txtTimKiem;
     private Button btnLamMoi;
+    private EventAction eventAction;
+    private PanelShadow panelHidden;
+    private EventSelectedRow eventSelectedRow;
     /**
      * Creates new form GD_KhachHang
      */
     public GD_KhachHang() {
         initComponents();
         buildGD();
-        tblKhachHang.fixTable(scrKhachHang);
+        
+    }
+    
+    public void addEvent(EventSelectedRow event) {
+        this.eventSelectedRow = event;
     }
 
     private void buildGD(){
+        khachHang_Dao = new KhachHang_DAO();
+
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
         int fontSize = 14;
@@ -40,7 +68,7 @@ public class GD_KhachHang extends javax.swing.JPanel {
         pnlTop.setLayout(new MigLayout("", "200[center]5[center] 20[center]push", "60[center]10"));
         pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
       
-        JLabel lblKhachHang = new JLabel("Nhập tên/ số điện thoại");
+        JLabel lblKhachHang = new JLabel("Nhập tên/ số điện thoại (các số cuối)");
         lblKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
         pnlTop.add(lblKhachHang);
         
@@ -58,8 +86,21 @@ public class GD_KhachHang extends javax.swing.JPanel {
         btnLamMoi.setBorderRadius(5);
         pnlTop.add(btnLamMoi, "w 100!, h 36!");
         
+        btnLamMoi.addActionListener(this);
+        txtTimKiem.addKeyListener(this);
+        
+        createPanelHidden();
+        add(panelHidden);
+        //xuLySuKien();
+        createTable();
         setOpaque(false);
         setPreferredSize(new Dimension(getWidth(), 950));
+    }
+    
+    private void createPanelHidden() {
+        panelHidden = new PanelShadow();
+        panelHidden.setShadowType(ShadowType.CENTER);
+        panelHidden.setShadowOpacity(0.3f);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -108,7 +149,7 @@ public class GD_KhachHang extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                true, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -162,6 +203,91 @@ public class GD_KhachHang extends javax.swing.JPanel {
         pnlTitle.add(lblTitle);
         return  pnlTitle;
     }
+    
+    private void loadData() {
+        eventAction = new EventAction() {
+            @Override
+            public void delete(Object obj) {
+                int row = tblKhachHang.getSelectedRow();
+                KhachHang khachHang = (KhachHang) obj;
+                if(JOptionPane.showConfirmDialog(GD_KhachHang.this, "Bạn có chắc chắn muốn xóa khách hàng " +khachHang.getMaKhachHang(), "Delete", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+                    String s = khachHang_Dao.xoaKhachHang(khachHang.getMaKhachHang())==true? "Xóa thành công":"Thất bại";
+                    JOptionPane.showMessageDialog(GD_KhachHang.this,s);
+                    dsKhachHang = khachHang_Dao.getDSKhachHang();
+                    xoaDuLieu();
+                    taiLaiDuLieu(dsKhachHang);
+                }
+            }
+
+            @Override
+            public void update(ModelAction action) {
+                int row = tblKhachHang.getSelectedRow();
+                KhachHang kh = (KhachHang) action.getObj();
+                kh.setTenKhachHang(tblKhachHang.getValueAt(row, 2).toString());
+                
+                kh.setSoDienThoai(tblKhachHang.getValueAt(row, 4).toString());
+                String s=  khachHang_Dao.capNhatKhachHang(kh)==true?"Cập nhật thành công":"Thất bại";
+                JOptionPane.showMessageDialog(null, s);
+                dsKhachHang = khachHang_Dao.getDSKhachHang();
+                xoaDuLieu();
+                taiLaiDuLieu(dsKhachHang);
+            }
+                
+        };
+                dsKhachHang = khachHang_Dao.getDSKhachHang();
+                xoaDuLieu();
+                taiLaiDuLieu(dsKhachHang);
+                
+                
+        tblKhachHang.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //Nếu click chuột trái và click 2 lần
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    int row = tblKhachHang.getSelectedRow();
+                    String maKhachHang = tblKhachHang.getValueAt(row, 1).toString();
+                    System.out.println(khachHang_Dao.getKhachHang(maKhachHang));
+                    eventSelectedRow.selectedRow(khachHang_Dao.getKhachHang(maKhachHang));
+                }
+            }
+        });
+    }
+    
+    
+    public void xoaDuLieu(){
+        DefaultTableModel df = (DefaultTableModel) tblKhachHang.getModel();
+        df.setRowCount(0);
+    }
+    
+    public void taiLaiDuLieu(List<KhachHang> dsKhachHang){
+        dsKhachHang.forEach((khachHang) -> {
+             tblKhachHang.addRow(khachHang.convertToRowTable(eventAction));
+        });
+    }
+    
+    private void createTable() {
+        tblKhachHang.fixTable(scrKhachHang);
+        loadData();
+        
+    }
+    
+//    private void xuLySuKien(){
+//        /*Đăng ký sự kiện*/
+//        btnLamMoi.addActionListener(this);
+//        txtTimKiem.addKeyListener(this);
+//         tblKhachHang.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                //Nếu click chuột trái và click 2 lần
+//                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+//
+//                    String maKhachHang = tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 1).toString();
+//                    
+//                    eventSelectedRow.selectedRow(khachHang_Dao.getKhachHang(maKhachHang));
+//                }
+//            }
+//        });
+//    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -171,4 +297,35 @@ public class GD_KhachHang extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrKhachHang;
     private gui.swing.table2.MyTable tblKhachHang;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
+        if(obj.equals(btnLamMoi)){
+           txtTimKiem.setText("");
+           dsKhachHang = khachHang_Dao.getDSKhachHang();
+            xoaDuLieu();
+            taiLaiDuLieu(dsKhachHang);
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent arg0) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent arg0) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent arg0) {
+        Object obj = arg0.getSource();
+        if(obj.equals(txtTimKiem)){
+            List<KhachHang> dsKhachHang = khachHang_Dao.layDSKhachHang(txtTimKiem.getText().trim());
+            xoaDuLieu();
+            taiLaiDuLieu(dsKhachHang);
+        }
+    }
+
+    
 }
