@@ -1,5 +1,8 @@
 package gui.component;
 
+import dao.NhanVien_DAO;
+import entity.NhanVien;
+import gui.event.EventOnClick;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -16,11 +19,15 @@ import gui.swing.textfield.MyTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import net.miginfocom.swing.MigLayout;
+import service.NhanVienService;
 
 public class PanelLogin extends javax.swing.JLayeredPane {
     private ActionListener evt;
-    private ActionListener evt1;
+    private EventOnClick event;
+    private NhanVienService nhanVienService;
+    
     public PanelLogin() {
+        nhanVienService = new NhanVien_DAO();
         initComponents();
         buildLogin();
         buildForgotPass();
@@ -37,10 +44,10 @@ public class PanelLogin extends javax.swing.JLayeredPane {
     }
     /**
      * Thêm sự kiện cho nút đăng nhập
-     * @param evt1 
+     * @param event 
      */
-    public void addEventLogin(ActionListener evt1) {
-        this.evt1 = evt1;
+    public void addEventLogin(EventOnClick event) {
+        this.event = event;
     }
     /**
      * Xây dựng giao diện login
@@ -83,7 +90,10 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         loginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                PanelLogin.this.evt1.actionPerformed(arg0);
+                String sdt = txtUser.getText();
+                byte[] pass = txtPass.getText().getBytes();
+                NhanVien nhanVien = nhanVienService.getNhanVienByLogin(sdt, pass);
+                PanelLogin.this.event.onClick(nhanVien);
             }
         });
         login.add(loginBtn, "w 40%, h 40!");

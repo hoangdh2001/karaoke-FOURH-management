@@ -1,5 +1,7 @@
 package gui;
 
+import entity.NhanVien;
+import gui.component.Message;
 import java.awt.Color;
 
 import javax.swing.GroupLayout;
@@ -8,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import gui.component.PanelForm;
+import gui.event.EventOnClick;
 import gui.swing.image.BackgroundImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,10 +40,16 @@ public class GD_DangNhap extends JFrame {
         setLocationRelativeTo(null);
         layout = new MigLayout("fill", "push[center]push"); // layout hiện thị các thành phần ở giữa
         form = new PanelForm();
-        form.login(new ActionListener() {
+        form.login(new EventOnClick() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
-                new GD_Chinh("Quản lý Karaoke FourH").setVisible(true);
+            public void onClick(Object object) {
+                NhanVien nhanVien = (NhanVien) object;
+                if (nhanVien != null) {
+                    GD_DangNhap.this.dispose();
+                    new GD_Chinh("Quản lý Karaoke FourH", nhanVien).setVisible(true);
+                } else {
+                    form.showMessage(Message.MessageType.ERROR, "Sai mật khẩu");
+                }
             }
         });
         bg.setLayout(layout);

@@ -3,6 +3,7 @@ package gui.component;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
+import gui.GD_Chinh;
 import gui.GD_TiepNhanDatPhong;
 import gui.event.EventMenuSelected;
 import gui.swing.panel.PanelShadow;
@@ -278,7 +279,7 @@ public class Room extends PanelShadow {
         btnThue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                new GD_TiepNhanDatPhong(phong, null).setVisible(true);
+                new GD_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
             }
         });
         pnlPhongTrong.add(btnThue);

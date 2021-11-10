@@ -1,184 +1,106 @@
 package gui;
 
+import dao.KhachHang_DAO;
+import entity.KhachHang;
+import gui.dropshadow.ShadowType;
 import gui.swing.button.Button;
+import gui.swing.panel.PanelShadow;
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
+import gui.event.EventOnClick;
 
 /**
  *
  * @author Hao
  */
-public class GD_KhachHang extends javax.swing.JPanel {
-
-    private DefaultTableModel modelKhanhHang;
-
+public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, KeyListener{
+    List<KhachHang> dsKhachHang = new ArrayList<KhachHang>();
+    private KhachHang_DAO khachHang_Dao;
+    private MyTextField txtTimKiem;
+    private Button btnLamMoi;
+    private EventAction eventAction;
+    private PanelShadow panelHidden;
+    private EventOnClick eventSelectedRow;
     /**
      * Creates new form GD_KhachHang
      */
     public GD_KhachHang() {
         initComponents();
         buildGD();
-        tblKhachHang.fixTable(scrKhachHang);
+        
+    }
+    
+    public void addEvent(EventOnClick event) {
+        this.eventSelectedRow = event;
     }
 
     private void buildGD(){
+        khachHang_Dao = new KhachHang_DAO();
+
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
         int fontSize = 14;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setLayout(new MigLayout("", "3[center] 20 [center]3", "6[center]5"));
-        pnlTop.setPreferredSize(new Dimension(1119, 250));
+        pnlTop.setLayout(new MigLayout("", "200[center]5[center] 20[center]push", "60[center]10"));
+        pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
+      
+        JLabel lblKhachHang = new JLabel("Nhập tên/ số điện thoại (các số cuối)");
+        lblKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
+        pnlTop.add(lblKhachHang);
         
-       /**
-        * Begin: group Thông tin khách hàng
-        */        
-        JPanel pnlThongTinKH = new JPanel();
-        pnlThongTinKH.setOpaque(false);
-        pnlThongTinKH.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 2), "Thông tin khách hàng", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16),  new Color(4, 72, 210)));
-        pnlThongTinKH.setLayout(new MigLayout("", "10[center]10[center] 20 [center]10[center]10", "[center]20[center]35[center]"));
-        pnlTop.add(pnlThongTinKH, "w 65%, h 90%");
+        /*Ô nhập thông tin tìm kiếm*/
+        txtTimKiem = new MyTextField();
+        txtTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
+        txtTimKiem.setBorderLine(true);
+        txtTimKiem.setBorderRadius(5);
+        pnlTop.add(txtTimKiem, "w 40%, h 36!");
         
-        //Mã khách hàng
-        JLabel lblMaKH = new JLabel("Mã khách hàng:");
-        lblMaKH.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTinKH.add(lblMaKH, "align right");
-        
-        MyTextField txtMaKH = new MyTextField();
-        txtMaKH.setFont(new Font(fontName, fontStyle, fontSize));
-        txtMaKH.setBorderLine(true);
-        txtMaKH.setBorderRadius(5);
-        pnlThongTinKH.add(txtMaKH, "w 80%, h 36!");
-       
-        
-        //Tên khách hàng
-        JLabel lblTenKH = new JLabel("Tên khách hàng:");
-        lblTenKH.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTinKH.add(lblTenKH, "align right");
-        
-        MyTextField txtTenKH = new MyTextField();
-        txtTenKH.setFont(new Font(fontName, fontStyle, fontSize));
-        txtTenKH.setBorderLine(true);
-        txtTenKH.setBorderRadius(5);
-        pnlThongTinKH.add(txtTenKH, "w 80%, h 36!, wrap");
-        
-        //Căn cước công dân của khách hàng
-        JLabel lblCCCD = new JLabel("Căn cước công dân:");
-        lblCCCD.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTinKH.add(lblCCCD, "align right");
-        
-        MyTextField txtCCCD = new MyTextField();
-        txtCCCD.setFont(new Font("sansserif", Font.PLAIN, 12));
-        txtCCCD.setBorderLine(true);
-        txtCCCD.setBorderRadius(5);
-        pnlThongTinKH.add(txtCCCD, "w 80%, h 36!");
-        
-        //Số điện thoại của khách hàng
-        JLabel lblSDT = new JLabel("Số điện thoại:");
-        lblSDT.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongTinKH.add(lblSDT, "align right");
-        
-        MyTextField txtSDT = new MyTextField();
-        txtSDT.setFont(new Font(fontName, fontStyle, fontSize));
-        txtSDT.setBorderLine(true);
-        txtSDT.setBorderRadius(5);
-        pnlThongTinKH.add(txtSDT, "w 80%, h 36!, wrap");
-        
-        //Panel nút chức năng
-        JPanel pnlButton = new JPanel();
-        pnlButton.setOpaque(false);
-        pnlButton.setLayout(new MigLayout("", "push[]20[]20[]20[]0", "push[]push"));
-        pnlThongTinKH.add(pnlButton, "span , w 100%, h 36!");
-
-        // Nút Xóa
-        Button btnXoaKH = new Button("Xóa");
-        btnXoaKH.setFont(new Font(fontName, fontStyle, fontSize));
-        btnXoaKH.setBackground(colorBtn);
-        btnXoaKH.setBorderline(true);
-        btnXoaKH.setBorderRadius(5);
-        pnlButton.add(btnXoaKH, "w 100!, h 36!,growx");
-
-        // Nút Sửa
-        Button btnSuaKH = new Button("Sửa");
-        btnSuaKH.setFont(new Font(fontName, fontStyle, fontSize));
-        btnSuaKH.setBackground(colorBtn);
-        btnSuaKH.setBorderline(true);
-        btnSuaKH.setBorderRadius(5);
-        pnlButton.add(btnSuaKH, "w 80!, h 36!");
-
-        // Nút Làm mới
-        Button btnLamMoi = new Button("Làm mới");
+        btnLamMoi = new Button("Làm mới");
         btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
         btnLamMoi.setBackground(colorBtn);
         btnLamMoi.setBorderline(true);
         btnLamMoi.setBorderRadius(5);
-        pnlButton.add(btnLamMoi, "w 80!, h 36!");
-        /**
-         * End: group thông tin khách hàng
-         */
-        JSeparator spr = new JSeparator(SwingConstants.VERTICAL);
-        spr.setPreferredSize(new Dimension(2, 200));
-        pnlTop.add(spr);
-        /**
-         * Begin: Tìm kiếm khách hàng
-         */
-        JPanel pnlTimKiemKH = new JPanel();
-        pnlTimKiemKH.setOpaque(false);
-        pnlTimKiemKH.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 1), "Tìm kiếm", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16),  new Color(4, 72, 210)));
-        pnlTimKiemKH.setLayout(new MigLayout("", "[center]20[center]", ""));//[]10[]10[]10[]10[]20[]
-        pnlTop.add(pnlTimKiemKH, "w 35%, h 90%");
-      
-        /*Ô nhập thông tin tìm kiếm*/
-        MyTextField txtTimKiem = new MyTextField();
-        txtTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
-        txtTimKiem.setBorderLine(true);
-        txtTimKiem.setBorderRadius(5);
-        pnlTimKiemKH.add(txtTimKiem, "w 50%, h 36!");
-       
-        /*Chọn thông thêm tiêu chí để lọc thông tin*/
-        MyComboBox<String> cmbTimKiem = new MyComboBox<>();
-        cmbTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbTimKiem.addItem("--Chọn--");
-        cmbTimKiem.setBorderLine(true);
-        cmbTimKiem.setBorderRadius(10);
-        pnlTimKiemKH.add(cmbTimKiem, "w 40%,h 30!, wrap");
+        pnlTop.add(btnLamMoi, "w 100!, h 36!");
         
-        /*Click vào button để tìm kiếm*/
-        Button btnTimKiem = new Button("Tìm kiếm");
-        btnTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
-        btnTimKiem.setBackground(colorBtn);
-        btnTimKiem.setBorderline(true);
-        btnTimKiem.setBorderRadius(5);
-        pnlTimKiemKH.add(btnTimKiem,"pos 0.9al 0.75al n n,w 80!, h 36!");//pos 0.9al 0.75al n n
+        btnLamMoi.addActionListener(this);
+        txtTimKiem.addKeyListener(this);
         
-        pnlBottom.setPreferredSize(new Dimension(1119, 630));
-        
-        tblKhachHang.addRow(new Object[]{"", "KH0001", "Nguyễn Thị Lan", "Nữ","077025222155", "0585534785", "Vũng Tàu" });
-        tblKhachHang.addRow(new Object[]{"", "KH0002", "Hoàng Văn Nam", "Nam","077256461235", "0358188554", "Kiên Giang" });
-        tblKhachHang.addRow(new Object[]{"", "KH0003", "Nguyễn Thị Lan", "Nữ","077795222555", "0585487785", "Vũng Tàu" });
-        tblKhachHang.addRow(new Object[]{"", "KH0004", "Hoàng Văn Nam", "Nam","077256255235", "0350152224", "Kiên Giang" });
-        tblKhachHang.addRow(new Object[]{"", "KH0005", "Nguyễn Thị Lan", "Nữ","077250581152", "0501155530", "Vũng Tàu" });
-        tblKhachHang.addRow(new Object[]{"", "KH0006", "Hoàng Văn Nam", "Nam","077255885555", "0758152954", "Kiên Giang" });
-        tblKhachHang.addRow(new Object[]{"", "KH0007", "Nguyễn Thị Lan", "Nữ","077252441533", "0356221225", "Vũng Tàu" });
-        tblKhachHang.addRow(new Object[]{"", "KH0008", "Hoàng Văn Nam", "Nam","077253356815", "0350884664", "Kiên Giang" });
-        tblKhachHang.addRow(new Object[]{"", "KH0009", "Nguyễn Thị Lan", "Nữ","077255698711", "0580552385", "Vũng Tàu" });
-        tblKhachHang.addRow(new Object[]{"", "KH0010", "Hoàng Văn Nam", "Nam","077255563489", "0350552254", "Kiên Giang" });
-        tblKhachHang.addRow(new Object[]{"", "KH0011", "Nguyễn Thị Lan", "Nữ","077257896574", "0580554385", "Vũng Tàu" });
-         
-          
+        createPanelHidden();
+        add(panelHidden);
+        //xuLySuKien();
+        createTable();
         setOpaque(false);
-        setPreferredSize(new Dimension(getWidth(), 900));
+        setPreferredSize(new Dimension(getWidth(), 950));
+    }
+    
+    private void createPanelHidden() {
+        panelHidden = new PanelShadow();
+        panelHidden.setShadowType(ShadowType.CENTER);
+        panelHidden.setShadowOpacity(0.3f);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -189,19 +111,11 @@ public class GD_KhachHang extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblTitle = new javax.swing.JLabel();
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
         scrKhachHang = new javax.swing.JScrollPane();
         tblKhachHang = new gui.swing.table2.MyTable();
         lblTitleBang = new javax.swing.JLabel();
-
-        lblTitle.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        lblTitle.setForeground(new java.awt.Color(4, 72, 210));
-        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("QUẢN LÝ KHÁCH HÀNG");
-        lblTitle.setToolTipText("");
-        lblTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
@@ -217,7 +131,7 @@ public class GD_KhachHang extends javax.swing.JPanel {
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 195, Short.MAX_VALUE)
+            .addGap(0, 247, Short.MAX_VALUE)
         );
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
@@ -231,11 +145,11 @@ public class GD_KhachHang extends javax.swing.JPanel {
 
             },
             new String [] {
-                "", "Mã khách hàng", "Tên khách hàng", "Giới tính", "Căn cước công dân", "Số điện thoại", "Địa chỉ"
+                "", "Mã khách hàng", "Tên khách hàng", "Căn cước công dân", "Số điện thoại", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                true, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -250,13 +164,11 @@ public class GD_KhachHang extends javax.swing.JPanel {
             tblKhachHang.getColumnModel().getColumn(2).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(3).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(4).setResizable(false);
-            tblKhachHang.getColumnModel().getColumn(5).setResizable(false);
-            tblKhachHang.getColumnModel().getColumn(6).setResizable(false);
         }
 
         pnlBottom.add(scrKhachHang, java.awt.BorderLayout.CENTER);
 
-        lblTitleBang.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblTitleBang.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         lblTitleBang.setForeground(new java.awt.Color(4, 72, 210));
         lblTitleBang.setText("  Danh sách khách hàng");
         lblTitleBang.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
@@ -269,30 +181,151 @@ public class GD_KhachHang extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(lblTitle)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+    private JPanel createPanelTitle() {
+        JPanel pnlTitle = new JPanel();
+        pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
+        pnlTitle.setOpaque(false);
+        pnlTitle.setLayout(new MigLayout("fill", "", ""));
+        JLabel lblTitle = new JLabel();
+        lblTitle.setText("QUẢN LÝ KHÁCH HÀNG");
+        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
+        lblTitle.setForeground(new Color(68, 68, 68));
+        pnlTitle.add(lblTitle);
+        return  pnlTitle;
+    }
+    
+    private void loadData() {
+        eventAction = new EventAction() {
+            @Override
+            public void delete(Object obj) {
+                int row = tblKhachHang.getSelectedRow();
+                KhachHang khachHang = (KhachHang) obj;
+                if(JOptionPane.showConfirmDialog(GD_KhachHang.this, "Bạn có chắc chắn muốn xóa khách hàng " +khachHang.getMaKhachHang(), "Delete", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+                    String s = khachHang_Dao.xoaKhachHang(khachHang.getMaKhachHang())==true? "Xóa thành công":"Thất bại";
+                    JOptionPane.showMessageDialog(GD_KhachHang.this,s);
+                    dsKhachHang = khachHang_Dao.getDSKhachHang();
+                    xoaDuLieu();
+                    taiLaiDuLieu(dsKhachHang);
+                }
+            }
+
+            @Override
+            public void update(ModelAction action) {
+                int row = tblKhachHang.getSelectedRow();
+                KhachHang kh = (KhachHang) action.getObj();
+                kh.setTenKhachHang(tblKhachHang.getValueAt(row, 2).toString());
+                
+                kh.setSoDienThoai(tblKhachHang.getValueAt(row, 4).toString());
+                String s=  khachHang_Dao.capNhatKhachHang(kh)==true?"Cập nhật thành công":"Thất bại";
+                JOptionPane.showMessageDialog(null, s);
+                dsKhachHang = khachHang_Dao.getDSKhachHang();
+                xoaDuLieu();
+                taiLaiDuLieu(dsKhachHang);
+            }
+                
+        };
+                dsKhachHang = khachHang_Dao.getDSKhachHang();
+                xoaDuLieu();
+                taiLaiDuLieu(dsKhachHang);
+                
+                
+        tblKhachHang.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //Nếu click chuột trái và click 2 lần
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    int row = tblKhachHang.getSelectedRow();
+                    String maKhachHang = tblKhachHang.getValueAt(row, 1).toString();
+                    System.out.println(khachHang_Dao.getKhachHang(maKhachHang));
+                    eventSelectedRow.onClick(khachHang_Dao.getKhachHang(maKhachHang));
+                }
+            }
+        });
+    }
+    
+    
+    public void xoaDuLieu(){
+        DefaultTableModel df = (DefaultTableModel) tblKhachHang.getModel();
+        df.setRowCount(0);
+    }
+    
+    public void taiLaiDuLieu(List<KhachHang> dsKhachHang){
+        dsKhachHang.forEach((khachHang) -> {
+             tblKhachHang.addRow(khachHang.convertToRowTable(eventAction));
+        });
+    }
+    
+    private void createTable() {
+        tblKhachHang.fixTable(scrKhachHang);
+        loadData();
+        
+    }
+    
+//    private void xuLySuKien(){
+//        /*Đăng ký sự kiện*/
+//        btnLamMoi.addActionListener(this);
+//        txtTimKiem.addKeyListener(this);
+//         tblKhachHang.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                //Nếu click chuột trái và click 2 lần
+//                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+//
+//                    String maKhachHang = tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 1).toString();
+//                    
+//                    eventSelectedRow.selectedRow(khachHang_Dao.getKhachHang(maKhachHang));
+//                }
+//            }
+//        });
+//    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTitleBang;
     private gui.swing.panel.PanelShadow pnlBottom;
     private gui.swing.panel.PanelShadow pnlTop;
     private javax.swing.JScrollPane scrKhachHang;
     private gui.swing.table2.MyTable tblKhachHang;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
+        if(obj.equals(btnLamMoi)){
+           txtTimKiem.setText("");
+           dsKhachHang = khachHang_Dao.getDSKhachHang();
+            xoaDuLieu();
+            taiLaiDuLieu(dsKhachHang);
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent arg0) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent arg0) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent arg0) {
+        Object obj = arg0.getSource();
+        if(obj.equals(txtTimKiem)){
+            List<KhachHang> dsKhachHang = khachHang_Dao.layDSKhachHang(txtTimKiem.getText().trim());
+            xoaDuLieu();
+            taiLaiDuLieu(dsKhachHang);
+        }
+    }
+
+    
 }

@@ -1,5 +1,6 @@
 package gui.component;
 
+import gui.event.EventOnClick;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -102,7 +103,7 @@ public class PanelForm extends javax.swing.JPanel {
 
     }
 
-    public void login(ActionListener evt) {
+    public void login(EventOnClick evt) {
         login.addEventLogin(evt);
     }
 

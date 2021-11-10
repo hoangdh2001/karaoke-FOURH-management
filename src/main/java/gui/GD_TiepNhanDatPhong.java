@@ -137,50 +137,9 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(GD_TiepNhanDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(GD_TiepNhanDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(GD_TiepNhanDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(GD_TiepNhanDatPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-////                test phong
-//                Phong phong = new Phong_DAO().getPhong("PH0001");
-//                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
-//                GD_TiepNhanDatPhong dialog = new GD_TiepNhanDatPhong(phong,nhanVien);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
-    
     public void initSetTheRoom(){
         pnlDanhSachPhieu = new JPanel();
         pnlDanhSachPhieu.setOpaque(false);
@@ -471,7 +430,6 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         nhaCungCapVaNhaphang_DAO = new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
         setSize(new Dimension(1300,650));
-        setLocation(150, 150);
         mainPanel.setLayout(new MigLayout("","20[center]20"));
         pnlInfoTop = new PanelShadow();
         pnlInfoTop.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]20"));

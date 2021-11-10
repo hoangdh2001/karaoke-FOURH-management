@@ -16,4 +16,5 @@ public interface NhanVienService {
     public boolean addNhanVien(NhanVien nhanVien);
     public NhanVien getNhanVien(String maNhanVien);
     public List<NhanVien> getNhanViens();
+    public NhanVien getNhanVienByLogin(String sdt, byte[] matKhau);
 }

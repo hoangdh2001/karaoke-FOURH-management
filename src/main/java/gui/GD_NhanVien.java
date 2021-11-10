@@ -24,8 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import gui.event.EventSelectedRow;
 import javax.swing.DefaultComboBoxModel;
+import gui.event.EventOnClick;
 
 public class GD_NhanVien extends JPanel {
 
@@ -49,7 +49,7 @@ public class GD_NhanVien extends JPanel {
 
     private List<NhanVien> listNhanVien;
 
-    private EventSelectedRow eventSelectedRow;
+    private EventOnClick eventSelectedRow;
 
     public GD_NhanVien() {
         initComponents();
@@ -60,7 +60,7 @@ public class GD_NhanVien extends JPanel {
         TableHandler();
     }
 
-    public void addEvent(EventSelectedRow event) {
+    public void addEvent(EventOnClick event) {
         this.eventSelectedRow = event;
     }
 
@@ -218,7 +218,7 @@ public class GD_NhanVien extends JPanel {
 
                     String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString();
                     
-                    eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
+                    eventSelectedRow.onClick(nhanVien_DAO.getNhanVien(maNhanVien));
                 }
             }
         });

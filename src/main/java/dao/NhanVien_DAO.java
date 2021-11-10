@@ -56,7 +56,7 @@ public class NhanVien_DAO implements NhanVienService {
 
             return nhanVien;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e);
             transaction.rollback();
         }
         return null;
@@ -81,4 +81,26 @@ public class NhanVien_DAO implements NhanVienService {
         return null;
     }
 
+    @Override
+    public NhanVien getNhanVienByLogin(String sdt, byte[] matKhau) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from NhanVien "
+                + "where sdt = '"+ sdt +"' "
+                + "and matKhau = :x";
+        
+        try {
+            tr.begin();
+            NhanVien nhanVien = session
+                    .createNativeQuery(sql, NhanVien.class)
+                    .setParameter("x", matKhau)
+                    .getSingleResult();
+            tr.commit();
+            return nhanVien;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
 }

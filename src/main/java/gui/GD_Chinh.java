@@ -1,6 +1,8 @@
 package gui;
 
+import entity.KhachHang;
 import entity.NhanVien;
+import entity.PhieuDatPhong;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -38,7 +40,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import gui.event.EventSelectedRow;
+import gui.event.EventOnClick;
 
 public class GD_Chinh extends JFrame {
     
@@ -46,7 +48,7 @@ public class GD_Chinh extends JFrame {
      *
      */
     private static final long serialVersionUID = 1L;
-    private static NhanVien nhanVien;
+    public static NhanVien NHAN_VIEN;
     private JLayeredPane background;
     private Animator animator; // thực thi animation
     private Animator animator2; // thực thi animation2
@@ -59,8 +61,9 @@ public class GD_Chinh extends JFrame {
     private TabLayout tab;
     private JScrollPane sp;
     
-    public GD_Chinh(String title) {
+    public GD_Chinh(String title, NhanVien nhanVien) {
         super(title);
+        GD_Chinh.NHAN_VIEN = nhanVien;
         buidGD_Chinh();
     }
 
@@ -229,11 +232,46 @@ public class GD_Chinh extends JFrame {
                     }
                     break;
                     case 1:
+                       // GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
                         content.showForm(new GD_QLDatPhong());
+                        
+//                        qlDatPhong.addEvent(new EventSelectedRow() {
+//                            @Override
+//                            public void selectedRow(Object object) {
+//                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
+//                                
+//                                if(!animator2.isRunning()){
+//                                    if(!tabShow){
+//                                        tab.setVisible(true);
+//                                        //Phi
+//                                    }
+//                                }
+//
+//                            }
+//                        });
+                        
                         break;
                     case 2:
-                        content.showForm(new GD_KhachHang());
-                        tab.showDetail(new KhachHangDetail());
+                        GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
+                        content.showForm(giaoDienKhachHang);
+                        
+                        giaoDienKhachHang.addEvent(new EventOnClick() {
+                            @Override
+                            public void onClick(Object object) {
+                                KhachHang khachHang = (KhachHang) object;
+                                if(!animator2.isRunning()){
+                                    if(!tabShow){
+                                        tab.setVisible(true);
+                                        
+                                        KhachHangDetail khachHangDetail =  new KhachHangDetail(khachHang);
+                                        tab.showDetail(khachHangDetail);
+                                        animator2.start();
+                                    }
+                                }
+                            }
+                        });
+                        
+                        
                         break;
                     case 3:
                         content.showForm(new GD_HoaDon());
@@ -243,9 +281,9 @@ public class GD_Chinh extends JFrame {
 
                         content.showForm(gD_NhanVien);
 
-                        gD_NhanVien.addEvent(new EventSelectedRow() {
+                        gD_NhanVien.addEvent(new EventOnClick() {
                             @Override
-                            public void selectedRow(Object object) {
+                            public void onClick(Object object) {
                                 
                                 
                                 NhanVien nhanVien = (NhanVien) object;
