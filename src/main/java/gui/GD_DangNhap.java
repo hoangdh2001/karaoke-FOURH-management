@@ -59,7 +59,7 @@ public class GD_DangNhap extends JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
+        setUndecorated(true);
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(

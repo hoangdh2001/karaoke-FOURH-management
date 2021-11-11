@@ -2,7 +2,6 @@ package gui;
 
 import entity.KhachHang;
 import entity.NhanVien;
-import entity.PhieuDatPhong;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
