@@ -2,7 +2,7 @@ package gui;
 
 import entity.NhanVien;
 import gui.component.Message;
-import gui.event.EventOnClick;
+import gui.swing.event.EventOnClick;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

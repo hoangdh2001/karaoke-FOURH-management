@@ -1,4 +1,4 @@
-package gui.model;
+package gui.swing.model;
 
 import javax.swing.Icon;
 

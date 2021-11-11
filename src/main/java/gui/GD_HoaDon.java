@@ -214,7 +214,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlForm.setBackground(new java.awt.Color(255, 255, 255));
         pnlForm.setShadowOpacity(0.3F);
         pnlForm.setShadowSize(3);
-        pnlForm.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlForm.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
         pnlForm.setLayout(pnlFormLayout);
@@ -230,7 +230,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
         pnlCenter.setShadowOpacity(0.3F);
         pnlCenter.setShadowSize(3);
-        pnlCenter.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlCenter.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);

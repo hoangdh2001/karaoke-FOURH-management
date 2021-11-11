@@ -209,7 +209,7 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog {
         pnlMain.setBackground(new java.awt.Color(255, 255, 255));
         pnlMain.setShadowOpacity(0.3F);
         pnlMain.setShadowSize(3);
-        pnlMain.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlMain.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);

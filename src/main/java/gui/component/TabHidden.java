@@ -43,7 +43,7 @@ public class TabHidden extends PanelShadow {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 30, 1, 1));
         setShadowOpacity(0.2F);
         setShadowSize(2);
-        setShadowType(gui.dropshadow.ShadowType.TOP_LEFT);
+        setShadowType(gui.swing.graphics.ShadowType.TOP_LEFT);
 
         btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_multiply_30px_1.png"))); // NOI18N
         btnClose.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);

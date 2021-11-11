@@ -169,7 +169,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
         pnlTop.setShadowSize(3);
-        pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlTop.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         pnlThongKeTheo.setBackground(new java.awt.Color(255, 255, 255));
         pnlThongKeTheo.setShadowColor(new java.awt.Color(255, 255, 255));
@@ -271,7 +271,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
         pnlBottom.setShadowOpacity(0.3F);
         pnlBottom.setShadowSize(3);
-        pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
         pnlBottom.setLayout(pnlBottomLayout);

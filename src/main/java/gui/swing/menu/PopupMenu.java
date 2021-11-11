@@ -12,7 +12,7 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-import gui.event.EventMenuSelected;
+import gui.swing.event.EventMenuSelected;
 
 public class PopupMenu extends javax.swing.JDialog {
 

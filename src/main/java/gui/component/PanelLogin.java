@@ -13,13 +13,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import gui.swing.button.Button;
+import gui.swing.button.LinkBtn;
 import gui.swing.textfield.MyPasswordField;
 import gui.swing.textfield.MyTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import net.miginfocom.swing.MigLayout;
 import service.NhanVienService;
-import gui.event.EventOnClick;
+import gui.swing.event.EventOnClick;
 
 public class PanelLogin extends javax.swing.JLayeredPane {
     private ActionListener evt;
@@ -70,11 +71,9 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         txtPass.setHint("Mật khẩu");
         login.add(txtPass, "w 60%");
         
-        JButton forgotBtn = new JButton("Quên mật khẩu?");
+        LinkBtn forgotBtn = new LinkBtn("Quên mật khẩu?");
         forgotBtn.setFont(new Font("sansserif", Font.ITALIC, 12));
         forgotBtn.setForeground(Color.GRAY);
-        forgotBtn.setContentAreaFilled(false);
-        forgotBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         forgotBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {

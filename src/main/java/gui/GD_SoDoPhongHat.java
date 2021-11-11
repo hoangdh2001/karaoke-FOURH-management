@@ -8,8 +8,8 @@ import gui.component.PanelMap;
 import gui.component.PanelStatus;
 import gui.component.Slide1;
 import gui.component.Slide2;
-import gui.dropshadow.ShadowType;
-import gui.event.EventShowInfoOver;
+import gui.swing.graphics.ShadowType;
+import gui.swing.event.EventShowInfoOver;
 import gui.swing.button.Button;
 import gui.swing.panel.slideshow.Slideshow;
 import gui.swing.textfield.MyComboBox;
@@ -254,7 +254,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
         pnlTop.setShadowSize(2);
-        pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlTop.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);

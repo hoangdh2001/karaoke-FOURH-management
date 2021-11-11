@@ -12,7 +12,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
-import gui.event.EventOnClick;
+import gui.swing.event.EventOnClick;
 
 public class PanelForm extends javax.swing.JPanel {
 
@@ -51,6 +51,14 @@ public class PanelForm extends javax.swing.JPanel {
                 }
                 // nếu pane login đang được hiện thị
                 if (isLogin) {
+                    fractionCover = fraction;
+                    fractionForm = 1f - fraction;
+                    if (fraction <= 0.5f) {
+                        image.forgotPassLeft(fraction * 100);
+                    } else {
+                        image.loginLeft((1f - fraction) * 100);
+                    }
+                } else {
                     // gán để căn lề theo các giá trị
                     fractionCover = 1f - fraction;
                     fractionForm = fraction;
@@ -59,14 +67,6 @@ public class PanelForm extends javax.swing.JPanel {
                         image.forgotPassRight(fractionCover * 100);
                     } else {
                         image.loginRight(fractionForm * 100);
-                    }
-                } else {
-                    fractionCover = fraction;
-                    fractionForm = 1f - fraction;
-                    if (fraction <= 0.5f) {
-                        image.forgotPassLeft(fraction * 100);
-                    } else {
-                        image.loginLeft((1f - fraction) * 100);
                     }
                 }
                 // Mở giao diện quên mật khẩu khi đến qua ngưỡng fraction 0.5 
@@ -90,8 +90,8 @@ public class PanelForm extends javax.swing.JPanel {
         animator.setAcceleration(0.5f);
         animator.setDeceleration(0.5f);
         animator.setResolution(0); // mượt
-        add(image, "width " + coverSize + "%, pos 0al 0 n 100%"); // đặt image width 40% , căn trái 
-        add(login, "width " + loginSize + "%, pos 1al 0 n 100%"); // đặt login width 60%, căn phải
+        add(image, "width " + coverSize + "%, pos 1al 0 n 100%"); // đặt image width 40% , căn trái 
+        add(login, "width " + loginSize + "%, pos 0al 0 n 100%"); // đặt login width 60%, căn phải
         login.addEventOpen(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {

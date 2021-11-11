@@ -1,4 +1,4 @@
-package gui.dropshadow;
+package gui.swing.graphics;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

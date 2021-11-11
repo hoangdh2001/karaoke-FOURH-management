@@ -23,9 +23,9 @@ import gui.component.NhanVienDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
-import gui.event.EventMenuSelected;
-import gui.event.EventShowInfoOver;
-import gui.event.EventShowPopupMenu;
+import gui.swing.event.EventMenuSelected;
+import gui.swing.event.EventShowInfoOver;
+import gui.swing.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
@@ -39,7 +39,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import gui.event.EventOnClick;
+import gui.swing.event.EventOnClick;
 
 public class GD_Chinh extends JFrame {
     

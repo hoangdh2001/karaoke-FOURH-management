@@ -2,7 +2,7 @@ package gui;
 
 import dao.KhachHang_DAO;
 import entity.KhachHang;
-import gui.dropshadow.ShadowType;
+import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import gui.event.EventOnClick;
+import gui.swing.event.EventOnClick;
 
 /**
  *
@@ -121,7 +121,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlTop.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         pnlTop.setShadowOpacity(0.3F);
         pnlTop.setShadowSize(3);
-        pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlTop.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
@@ -137,7 +137,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
         pnlBottom.setShadowOpacity(0.3F);
         pnlBottom.setShadowSize(3);
-        pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setShadowType(gui.swing.graphics.ShadowType.TOP);
         pnlBottom.setLayout(new java.awt.BorderLayout());
 
         tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
