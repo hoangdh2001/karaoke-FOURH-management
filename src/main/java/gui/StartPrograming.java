@@ -17,7 +17,7 @@ public class StartPrograming {
         }
         EventQueue.invokeLater(() -> {
             new GD_DangNhap("Đăng nhập").setVisible(true);
-//            new GD_Chinh("Karaoke fourh", null).setVisible(true);
+//           new GD_Chinh("Karaoke fourh", null).setVisible(true);
         });
         
     }

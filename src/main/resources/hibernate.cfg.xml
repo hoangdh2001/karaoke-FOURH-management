@@ -10,7 +10,7 @@
         <property name="connection.url">
             jdbc:sqlserver://localhost:1433;databaseName=QLKaraoke</property>
         <property name="connection.username">sa</property>
-        <property name="connection.password">huyhoang14901</property>
+        <property name="connection.password">huyhoang1409</property>
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.SQLServer2012Dialect</property>
         <!-- Enable Hibernate's automatic session context management -->
