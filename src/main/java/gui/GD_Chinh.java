@@ -2,6 +2,7 @@ package gui;
 
 import entity.KhachHang;
 import entity.NhanVien;
+import entity.PhieuDatPhong;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,6 +21,7 @@ import gui.component.Header;
 import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
+import gui.component.PhieuDatPhongDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
@@ -231,23 +233,22 @@ public class GD_Chinh extends JFrame {
                     }
                     break;
                     case 1:
-                       // GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
-                        content.showForm(new GD_QLDatPhong());
-                        
-//                        qlDatPhong.addEvent(new EventSelectedRow() {
-//                            @Override
-//                            public void selectedRow(Object object) {
-//                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
-//                                
-//                                if(!animator2.isRunning()){
-//                                    if(!tabShow){
-//                                        tab.setVisible(true);
-//                                        //Phi
-//                                    }
-//                                }
-//
-//                            }
-//                        });
+                        GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
+                        content.showForm(qlDatPhong);
+                        qlDatPhong.addEvent(new EventOnClick() {
+                            @Override
+                            public void onClick(Object object) {
+                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
+                                    if(!animator2.isRunning()){
+                                        if(!tabShow){
+                                            tab.setVisible(true);
+                                            PhieuDatPhongDetail phieuDetail = new PhieuDatPhongDetail(phieuDatPhong);
+                                            tab.showDetail(phieuDetail);
+                                            animator2.start();
+                                        }
+                                    }
+                                }
+                        });
                         
                         break;
                     case 2:

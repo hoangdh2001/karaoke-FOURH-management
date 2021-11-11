@@ -33,8 +33,6 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
         lblTTNgayDat.setText(fm.format(phieu.getNgayDat()));
         lblTTTrangThai.setText(phieu.getTrangThai().getTrangThai());
         lblTTTienCoc.setText(Double.toString(phieu.getTienCoc()));
-        
-        
     }
 
     /**
@@ -253,7 +251,7 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
                 .addGroup(pnlThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTrangThaiPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTTTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

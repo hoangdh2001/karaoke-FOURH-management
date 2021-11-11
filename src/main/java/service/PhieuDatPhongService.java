@@ -16,6 +16,7 @@ import java.util.List;
 public interface PhieuDatPhongService {
     public List<PhieuDatPhong> getDsPhieuDatPhong();
     public List<String> getDSTrangThaiPhieu();
+    public PhieuDatPhong getPhieuDatPhong(String maPhieuDat);
     public List<PhieuDatPhong> timDSPhieuDatPhongByName(String tuKhoa);
     public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai(TrangThaiPhieuDat trangThai);
     public List<PhieuDatPhong> timDSPhieuDatPhongByName_TrangThai(String tuKhoa, TrangThaiPhieuDat trangThai);
@@ -26,5 +27,4 @@ public interface PhieuDatPhongService {
     public boolean capNhatTrangThaiPhieu(String maPhieu);
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong);
     public boolean xoaPhieuDatPhong(String maPhieuDat);
-    
 }
