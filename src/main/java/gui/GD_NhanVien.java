@@ -174,8 +174,8 @@ public class GD_NhanVien extends JPanel {
 
         pnlTimKiemNV.add(lblLoaiNVTK);
 
-        cmbModelLNV = new DefaultComboBoxModel<>();
-        cmbLoaiNVTK = new MyComboBox<>(cmbModelLNV);
+//        cmbModelLNV = new DefaultComboBoxModel<>();
+        cmbLoaiNVTK = new MyComboBox<>();
         cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNVTK.setBorderLine(true);
         cmbLoaiNVTK.setBorderRadius(5);
@@ -187,8 +187,8 @@ public class GD_NhanVien extends JPanel {
         lblCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblCaLamTK, "align right");
 
-        cmbModelCaLam = new DefaultComboBoxModel<>();
-        cmbCaLamTK = new MyComboBox<>(cmbModelCaLam);
+//        cmbModelCaLam = new DefaultComboBoxModel<>();
+        cmbCaLamTK = new MyComboBox<>();
         cmbCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLamTK.setBorderLine(true);
         cmbCaLamTK.setBorderRadius(5);
@@ -211,8 +211,9 @@ public class GD_NhanVien extends JPanel {
      */
     private void TableHandler() {
         tblNhanVien.fixTable(scrTable);
-        tblNhanVien.setFont(new Font(fontName, fontPlain, font14));
-
+        tblNhanVien.setFont(new Font(fontName, fontPlain, font16));
+        setSizeColumnTable();
+        
         String html2 = "<html><head><style> body{margin: 0 ; padding: 0; background-color: #303841;} h3{color: white; padding: 0 16px;} </style></head>"
                 + "<body><h3>Click chuột trái 2 lần để xem chi tiết</h3></body></html>";
         tblNhanVien.setToolTipText(html2);
@@ -260,12 +261,12 @@ public class GD_NhanVien extends JPanel {
     private void FormHandler() {
         loaiNhanViens = loaiNhanVien_DAO.getLoaiNhanViens();
         for (LoaiNhanVien lnv : loaiNhanViens) {
-            cmbModelLNV.addElement(lnv);
+            cmbLoaiNVTK.addItem(lnv.getTenLoaiNV());
         }
 
         caLams = caLam_DAO.getCaLams();
-        for (CaLam caLam : caLams) {
-            cmbModelCaLam.addElement(caLam);
+        for (CaLam cl : caLams) {
+            cmbCaLamTK.addItem(cl.getGioBatDau() + "-" + cl.getGioKetThuc());
         }
 
     }
@@ -283,30 +284,6 @@ public class GD_NhanVien extends JPanel {
                 int code = e.getKeyCode();
                 System.out.println(code);
                 SearchNhanVien();
-//                int gioiTinh = 0;
-//
-//                String maCaLam = "";
-//                if (!cmbCaLamTK.getSelectedItem().equals("Tất cả")) {
-//                    maCaLam = (String) cmbCaLamTK.getSelectedItem();
-//                }
-//
-//                String maLoaiNV = "";
-//                if (!cmbLoaiNVTK.getSelectedItem().equals("Tất cả")) {
-//                    maLoaiNV = (String) cmbLoaiNVTK.getSelectedItem();
-//                }
-//
-//                List<NhanVien> nhanViens = nhanVien_DAO.searchNhanVien(txtTimKiem.getText().trim(), gioiTinh, maLoaiNV, maCaLam);
-//                for (NhanVien i : nhanViens) {
-//                    tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
-//                            i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
-//                            i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
-//                }
-//                List<NhanVien> nhanViens = nhanVien_DAO.searchNhanVien("Nguyễn", 0, "0", "0");
-//                for (NhanVien i : nhanViens) {
-//                    tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
-//                            i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
-//                            i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
-//                }
             }
         });
 
@@ -337,29 +314,31 @@ public class GD_NhanVien extends JPanel {
     }
 
     private void SearchNhanVien() {
-        int gioiTinh = 0;
+        int gioiTinh = 2; // mặc định là lấy tất cả giới tính
+        if (!cmbGioiTinhTK.getSelectedItem().equals("Tất cả")) {
+            gioiTinh = cmbGioiTinhTK.getSelectedItem() == "Nam" ? 0 : 1;
+        } else {
+            gioiTinh = 2;
+        }
 
         String maCaLam = "";
-//        if (!cmbCaLamTK.getSelectedItem().equals("Tất cả")) {
-//            maCaLam = (String) cmbCaLamTK.getSelectedItem();
-//            for (CaLam cl : caLams) {
-//                cmbCaLamTK.getSelectedItem().get
-//            }
-//        }
+        if (!cmbCaLamTK.getSelectedItem().equals("Tất cả")) {
+            for (CaLam cl : caLams) {
+                String caLam = cl.getGioBatDau() + "-" + cl.getGioKetThuc();
+                if (caLam.equals(cmbCaLamTK.getSelectedItem())) {
+                    maCaLam = cl.getMaCa();
+                }
+            }
+        }
 
         String maLoaiNV = "";
         System.out.println(cmbLoaiNVTK.getSelectedItem());
         if (!cmbLoaiNVTK.getSelectedItem().equals("Tất cả")) {
             for (LoaiNhanVien lnv : loaiNhanViens) {
-                if (lnv.getTenLoaiNV() == cmbLoaiNVTK.getSelectedItem()) {
+                if (lnv.getTenLoaiNV().equals(cmbLoaiNVTK.getSelectedItem())) {
                     maLoaiNV = lnv.getMaLoaiNV();
-                    System.out.println("ma Loai:" + maLoaiNV);
                 }
-                System.out.println("loai " + lnv.getTenLoaiNV());
             }
-            System.out.println("ele" + cmbModelLNV.getElementAt(cmbLoaiNVTK.getSelectedIndex()));
-            System.out.println("2:" + cmbModelLNV.getElementAt(2));
-//            System.out.println("clas" + cmbModelLNV.);
 
         }
 
@@ -369,6 +348,38 @@ public class GD_NhanVien extends JPanel {
                     i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
                     i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
         }
+    }
+    
+    
+     private void setSizeColumnTable() {
+        //chọn
+        tblNhanVien.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tblNhanVien.getColumnModel().getColumn(0).setMaxWidth(50);
+        tblNhanVien.getColumnModel().getColumn(0).setMinWidth(50);
+        //mã nhân viên
+        tblNhanVien.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tblNhanVien.getColumnModel().getColumn(1).setMaxWidth(150);
+        tblNhanVien.getColumnModel().getColumn(1).setMinWidth(150);
+        //tên nhân viên
+        tblNhanVien.getColumnModel().getColumn(2).setPreferredWidth(250);
+        tblNhanVien.getColumnModel().getColumn(2).setMaxWidth(250);
+        tblNhanVien.getColumnModel().getColumn(2).setMinWidth(220);
+        //giới tính
+        tblNhanVien.getColumnModel().getColumn(3).setPreferredWidth(120);
+        tblNhanVien.getColumnModel().getColumn(3).setMaxWidth(120);
+        tblNhanVien.getColumnModel().getColumn(3).setMinWidth(120);
+        //ngày sinh
+        tblNhanVien.getColumnModel().getColumn(4).setPreferredWidth(10);
+        //số điện thoại
+        tblNhanVien.getColumnModel().getColumn(5).setPreferredWidth(10);
+        //căn cước CD
+        tblNhanVien.getColumnModel().getColumn(6).setPreferredWidth(20);
+        
+        //ca làm
+        tblNhanVien.getColumnModel().getColumn(7).setPreferredWidth(20);
+        //loại nhân viên
+        tblNhanVien.getColumnModel().getColumn(8).setPreferredWidth(20);
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -421,11 +432,11 @@ public class GD_NhanVien extends JPanel {
 
             },
             new String [] {
-                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Ca làm", "Loại nhân viên", "Title 9"
+                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Căn cước công dân", "Ca làm", "Loại nhân viên"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, true, false, true
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

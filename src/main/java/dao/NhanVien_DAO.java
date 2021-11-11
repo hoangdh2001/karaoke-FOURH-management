@@ -85,12 +85,18 @@ public class NhanVien_DAO implements NhanVienService {
     public List<NhanVien> searchNhanVien(String tenNV, int gioiTinh, String maLoaiNV, String maCaLam) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
-
+        int gioiTinh0 = gioiTinh;
+        int gioiTinh1 = gioiTinh;
+        
+        if (gioiTinh == 2) { // gán lại giá trị cho gioiTinh0 và gioiTinh1 để lấy dc tất cả
+            gioiTinh0 = 0;
+            gioiTinh1 = 1;
+        }
         try {
             transaction.begin();
             String query = "select * from NhanVien where  "
                     + "tenNhanVien like N'%" + tenNV + "%'"
-                    + "and gioiTinh =" + gioiTinh
+                    + "and ( gioiTinh =" + gioiTinh0 + "  OR  gioiTinh = " + gioiTinh1 + " ) "
                     + "   and maCa like '%" + maCaLam + "%'"
                     + "and maLoaiNhanVien like '%" + maLoaiNV + "%'";
             List<NhanVien> nhanViens = session.createNativeQuery(query, NhanVien.class).getResultList();
