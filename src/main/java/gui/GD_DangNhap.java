@@ -101,11 +101,11 @@ public class GD_DangNhap extends javax.swing.JFrame {
         loading.addEventContinue(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                Main main = new Main();
-                main.setData(loading.getData());
-                main.setVisible(true);
-                //  Close login form
-                GD_DangNhap.this.dispose();
+//                Main main = new Main();
+//                main.setData(loading.getData());
+//                main.setVisible(true);
+//                //  Close login form
+//                GD_DangNhap.this.dispose();
             }
         });
         loading.addEventBack(new ActionListener() {

@@ -2,10 +2,7 @@ package gui.component;
 
 import entity.KhachHang;
 import gui.swing.event.EventTabSelected;
-import gui.swing.panel.TabButton;
-import java.awt.BorderLayout;
 import java.awt.Component;
-import javax.swing.JPanel;
 
 public class KhachHangDetail extends javax.swing.JPanel {
     private KhachHang khachHang;
