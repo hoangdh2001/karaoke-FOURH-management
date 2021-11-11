@@ -103,7 +103,8 @@ public class PanelForm extends javax.swing.JPanel {
 
     }
 
-    public void login(EventOnClick evt) {
+    public void addEventLogin(EventOnClick evt) {
+        System.out.println("Done");
         login.addEventLogin(evt);
     }
 
