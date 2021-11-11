@@ -2,7 +2,6 @@ package gui.component;
 
 import dao.NhanVien_DAO;
 import entity.NhanVien;
-import gui.event.EventOnClick;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -20,6 +19,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import net.miginfocom.swing.MigLayout;
 import service.NhanVienService;
+import gui.event.EventOnClick;
 
 public class PanelLogin extends javax.swing.JLayeredPane {
     private ActionListener evt;

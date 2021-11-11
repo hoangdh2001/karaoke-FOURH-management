@@ -1,6 +1,5 @@
 package gui.component;
 
-import gui.event.EventOnClick;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,6 +12,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
+import gui.event.EventOnClick;
 
 public class PanelForm extends javax.swing.JPanel {
 
