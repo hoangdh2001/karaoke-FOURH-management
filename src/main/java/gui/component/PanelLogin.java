@@ -26,6 +26,12 @@ public class PanelLogin extends javax.swing.JLayeredPane {
     private ActionListener evt;
     private EventOnClick event;
     private NhanVienService nhanVienService;
+    private MyTextField txtUser;
+    private MyPasswordField txtPass;
+    private MyTextField txtSdt;
+    private MyTextField txtEmail;
+    private MyPasswordField txtForgotPass;
+    private MyPasswordField txtRePass;
     
     public PanelLogin() {
         nhanVienService = new NhanVien_DAO();
@@ -36,6 +42,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         login.setVisible(true);
         forgotPass.setVisible(false);
     }
+    
     /**
      * Thêm sự kiện cho nút nút quên mật khẩu và quay lại
      * @param evt 
@@ -61,12 +68,12 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         label.setForeground(new Color(7, 164, 121));
         login.add(label);
         
-        MyTextField txtUser = new MyTextField();
+        txtUser = new MyTextField();
         txtUser.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/user.png")));
         txtUser.setHint("Tên đăng nhập");
         login.add(txtUser, "w 60%");
         
-        MyPasswordField txtPass = new MyPasswordField();
+        txtPass = new MyPasswordField();
         txtPass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
         txtPass.setHint("Mật khẩu");
         login.add(txtPass, "w 60%");
@@ -110,7 +117,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         label.setForeground(new Color(7, 164, 121));
         forgotPass.add(label);
         
-        MyTextField txtSdt = new MyTextField();
+        txtSdt = new MyTextField();
         txtSdt.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/user.png")));
         txtSdt.addKeyListener(new KeyAdapter() {
             @Override
@@ -132,7 +139,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         txtSdt.setHint("Số điện thoại"); // text dưới nền 
         forgotPass.add(txtSdt, "w 60%");
         
-        MyTextField txtEmail = new MyTextField();
+        txtEmail = new MyTextField();
         txtEmail.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/mail.png")));
         txtEmail.addKeyListener(new KeyAdapter() {
             @Override
@@ -153,12 +160,12 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         txtEmail.setHint("Email");
         forgotPass.add(txtEmail, "w 60%");
         
-        MyPasswordField txtPass = new MyPasswordField();
-        txtPass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
-        txtPass.setHint("Mật khẩu");
-        forgotPass.add(txtPass, "w 60%");
+        txtForgotPass = new MyPasswordField();
+        txtForgotPass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
+        txtForgotPass.setHint("Mật khẩu");
+        forgotPass.add(txtForgotPass, "w 60%");
         
-        MyPasswordField txtRePass = new MyPasswordField();
+        txtRePass = new MyPasswordField();
         txtRePass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
         txtRePass.setHint("Nhập lại mật khẩu");
         forgotPass.add(txtRePass, "w 60%");
@@ -188,10 +195,18 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         if(show) {
             forgotPass.setVisible(false);
             login.setVisible(true);
+            txtUser.requestFocus();
+            txtUser.selectAll();
+            txtPass.setText("");
         }
         else {
             forgotPass.setVisible(true);
             login.setVisible(false);
+            txtSdt.requestFocus();
+            txtSdt.selectAll();
+            txtEmail.selectAll();
+            txtForgotPass.setText("");
+            txtRePass.setText("");
         }
     }
     
