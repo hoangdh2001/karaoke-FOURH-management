@@ -212,7 +212,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 }
             }
         });
-        
     }
     
     private void loadDataToCombobox() {
