@@ -21,6 +21,7 @@ import java.awt.event.KeyEvent;
 import net.miginfocom.swing.MigLayout;
 import service.NhanVienService;
 import gui.swing.event.EventOnClick;
+import java.util.Arrays;
 
 public class PanelLogin extends javax.swing.JLayeredPane {
     private ActionListener evt;
@@ -119,44 +120,11 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         
         txtSdt = new MyTextField();
         txtSdt.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/user.png")));
-        txtSdt.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                switch (txtSdt.getText()) {
-                    case "":
-                        txtSdt.setSuffixIcon(null); // set null khi text rỗng
-                        break;
-                    case "123":
-                        txtSdt.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/ok_20px.png"))); // set icon khi nhập đúng
-                        break;
-                    default:
-                        txtSdt.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/cancel_20px.png"))); // set icon khi nhập sai
-                        break;
-                }
-                    
-            }
-        });
         txtSdt.setHint("Số điện thoại"); // text dưới nền 
         forgotPass.add(txtSdt, "w 60%");
         
         txtEmail = new MyTextField();
         txtEmail.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/mail.png")));
-        txtEmail.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                switch (txtEmail.getText()) {
-                    case "":
-                        txtEmail.setSuffixIcon(null); // set null khi text rỗng
-                        break;
-                    case "123":
-                        txtEmail.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/checkmark_20px.png"))); // set icon khi nhập đúng
-                        break;
-                    default:
-                        txtEmail.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/delete_20px.png"))); // set icon khi nhập sai
-                        break;
-                }
-            }
-        });
         txtEmail.setHint("Email");
         forgotPass.add(txtEmail, "w 60%");
         
@@ -174,6 +142,25 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         Button forgotPassBtn = new Button("Đổi mật khẩu", true);
         forgotPassBtn.setBackground(new Color(7, 164, 121));
         forgotPassBtn.setForeground(Color.WHITE);
+        forgotPassBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                String sdt = txtSdt.getText();
+                String email = txtEmail.getText();
+                String rePass = txtRePass.getText();
+                NhanVien nhanVien = nhanVienService.getNhanVienBySdt(sdt, email);
+                if(nhanVien != null) {
+                    nhanVien.setMatKhau(rePass.getBytes());
+                    if(nhanVienService.updateNhanVien(nhanVien)) {
+                        System.out.println("Đổi mật khẩu thành công");
+                    } else {
+                        System.out.println("Đổi mật khẩu thất bại");
+                    }
+                } else {
+                    System.out.println("Sdt hoặc email sai");
+                }
+            }
+        });
         forgotPass.add(forgotPassBtn, "w 40%, h 40!");
         
         Button backBtn = new Button("Quay lại", true);
@@ -187,6 +174,39 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         });
         forgotPass.add(backBtn, "w 40%, h 40!");
     }
+    
+    public void setTextWhenBack() {
+        txtUser.requestFocus();
+        txtUser.selectAll();
+        txtPass.setText("");
+    }
+    
+//    private void forgetPass() {
+//        
+//        txtSdt.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyReleased(KeyEvent e) {
+//                
+//            }
+//        });
+//        
+//        txtEmail.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyReleased(KeyEvent e) {
+//                switch (txtEmail.getText()) {
+//                    case "":
+//                        txtEmail.setSuffixIcon(null); // set null khi text rỗng
+//                        break;
+//                    case "123":
+//                        txtEmail.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/ok_20px.png"))); // set icon khi nhập đúng
+//                        break;
+//                    default:
+//                        txtEmail.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/cancel_20px.png"))); // set icon khi nhập sai
+//                        break;
+//                }
+//            }
+//        });
+//    }
     /**
      * hiển thị giao diện quên mật khẩu theo tham số
      * @param show 

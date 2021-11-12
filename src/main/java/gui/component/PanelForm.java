@@ -107,6 +107,10 @@ public class PanelForm extends javax.swing.JPanel {
         System.out.println("Done");
         login.addEventLogin(evt);
     }
+    
+    public void setTextWhenBack() {
+        login.setTextWhenBack();
+    }
 
     public void showMessage(Message.MessageType messageType, String message) {
         Message ms = new Message();

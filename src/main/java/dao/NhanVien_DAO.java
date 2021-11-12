@@ -45,13 +45,47 @@ public class NhanVien_DAO implements NhanVienService {
     }
 
     @Override
-    public NhanVien getNhanVien(String maNhanVien) {
+    public boolean updateNhanVien(NhanVien nhanVien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.update(nhanVien);
+            tr.commit();
+            return  true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteNhanVien(String id) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.delete(session.find(NhanVien.class, id));
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+    
+    @Override
+    public NhanVien getNhanVien(String id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
 
         try {
             transaction.begin();
-            NhanVien nhanVien = session.find(NhanVien.class, maNhanVien);
+            NhanVien nhanVien = session.find(NhanVien.class, id);
             transaction.commit();
 
             return nhanVien;
@@ -103,4 +137,52 @@ public class NhanVien_DAO implements NhanVienService {
         }
         return null;
     }
+
+    @Override
+    public NhanVien getNhanVienBySdt(String sdt) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from NhanVien "
+                + "where sdt = :x";
+        
+        try {
+            tr.begin();
+            NhanVien nhanVien = session
+                    .createNativeQuery(sql, NhanVien.class)
+                    .setParameter("x", sdt)
+                    .getSingleResult();
+            tr.commit();
+            return nhanVien;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
+
+    @Override
+    public NhanVien getNhanVienBySdt(String sdt, String email) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select top 1 * from NhanVien "
+                + "where sdt = :x "
+                + "and email = :y";
+        
+        try {
+            tr.begin();
+            NhanVien nhanVien = session
+                    .createNativeQuery(sql, NhanVien.class)
+                    .setParameter("x", sdt)
+                    .setParameter("y", email)
+                    .getSingleResult();
+            tr.commit();
+            return nhanVien;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
+    
 }

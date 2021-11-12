@@ -63,6 +63,7 @@ public class GD_DangNhap extends javax.swing.JFrame {
         super.setVisible(b);
         show = b;
         if(show) {
+            pnlForm.setTextWhenBack();
             animator.start();
         }
     }

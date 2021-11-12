@@ -40,6 +40,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventOnClick;
+import java.awt.Frame;
 
 public class GD_Chinh extends JFrame {
     
@@ -48,6 +49,7 @@ public class GD_Chinh extends JFrame {
      */
     private static final long serialVersionUID = 1L;
     public static NhanVien NHAN_VIEN;
+    public static Frame FRAME;
     private JLayeredPane background;
     private Animator animator; // thực thi animation
     private Animator animator2; // thực thi animation2
@@ -60,9 +62,10 @@ public class GD_Chinh extends JFrame {
     private TabLayout tab;
     private JScrollPane sp;
     
-    public GD_Chinh(String title, NhanVien nhanVien) {
+    public GD_Chinh(Frame frame, String title, NhanVien nhanVien) {
         super(title);
         GD_Chinh.NHAN_VIEN = nhanVien;
+        GD_Chinh.FRAME = frame;
         buidGD_Chinh();
     }
 
@@ -152,7 +155,7 @@ public class GD_Chinh extends JFrame {
                     new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
                 }
                 if (subMenuIndex == 3) {
-                    new GD_DangNhap("Đăng nhập").setVisible(true);
+                    FRAME.setVisible(true);
                     dispose();
                 }
             }
@@ -428,17 +431,6 @@ public class GD_Chinh extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 if (!animator2.isRunning()) {
                     if (tabShow) {
-                        animator2.start();
-                    }
-                }
-            }
-        });
-        header.addAction(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (!animator2.isRunning()) {
-                    if (!tabShow) {
-                        tab.setVisible(true);
                         animator2.start();
                     }
                 }
