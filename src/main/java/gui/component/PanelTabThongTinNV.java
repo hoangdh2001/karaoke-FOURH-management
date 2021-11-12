@@ -18,7 +18,11 @@ public class PanelTabThongTinNV extends javax.swing.JPanel {
         String gioiTinh = nhanVien.isGioiTinh() == true ? "Nữ" : "Nam";
         lblValueGioiTinh.setText(gioiTinh);
 
-        lblValueNgaySinh.setText(nhanVien.getMaNhanVien());
+        System.out.println();
+        String[] temp = nhanVien.getNgaySinh().toString().split("-");
+        String ngaySinh = temp[2] + "/" + temp[1] + "/" + temp[0];
+
+        lblValueNgaySinh.setText(ngaySinh);
 
         lblValueSDT.setText(nhanVien.getSoDienThoai());
         lblValueEmail.setText(nhanVien.getEmail());
