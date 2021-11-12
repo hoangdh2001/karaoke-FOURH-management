@@ -84,9 +84,9 @@ public class PhieuDatPhong {
     public PhieuDatPhong() {
     }
 
-    public PhieuDatPhong(String string, KhachHang khachHang, Phong phong, Date valueOf, Date valueOf0, TrangThaiPhieuDat trangThaiPhieuDat, int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    public PhieuDatPhong(String string, KhachHang khachHang, Phong phong, Date valueOf, Date valueOf0, TrangThaiPhieuDat trangThaiPhieuDat, int i) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 
     /**
      * @return the maPhieuDat

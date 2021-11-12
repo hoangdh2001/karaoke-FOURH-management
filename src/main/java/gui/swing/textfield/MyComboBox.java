@@ -107,4 +107,6 @@ public class MyComboBox<E> extends JComboBox {
         int y = (getHeight() - arrowIcon.getIconHeight()) / 2;
         g2.drawImage(icon, getWidth() - arrowIcon.getIconWidth() - 10, y, this);
     }
+
+
 }

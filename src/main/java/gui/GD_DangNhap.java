@@ -1,80 +1,131 @@
 package gui;
 
+import entity.NhanVien;
+import gui.component.Message;
+import gui.dialog.DL_Progress;
+import gui.swing.event.EventOnClick;
 import java.awt.Color;
+import org.jdesktop.animation.timing.Animator;
+import org.jdesktop.animation.timing.TimingTarget;
+import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+public class GD_DangNhap extends javax.swing.JFrame {
 
-import gui.component.PanelForm;
-import gui.swing.image.BackgroundImage;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import net.miginfocom.swing.MigLayout;
-
-public class GD_DangNhap extends JFrame {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-    private BackgroundImage bg;
-    private MigLayout layout;
-    private PanelForm form;
+    private boolean show = true;
+    private boolean close = true;
+    private final Animator animator;
+    private NhanVien nhanVien;
 
     public GD_DangNhap(String title) {
         super(title);
         initComponents();
-        buidGD_DangNhap();
-    }
-    /**
-     * Xây dựng giao diện đăng nhập
-     */
-    private void buidGD_DangNhap() {
-        bg = new BackgroundImage(new ImageIcon(getClass().getResource("/icon/background2.jpg")), new Color(0, 0, 0, 0.7f));
-        setContentPane(bg);
-        setLocationRelativeTo(null);
-        layout = new MigLayout("fill", "push[center]push"); // layout hiện thị các thành phần ở giữa
-        form = new PanelForm();
-        form.login(new ActionListener() {
+        setBackground(new Color(0, 0, 0, 0));
+        setOpacity(0);
+        TimingTarget target = new TimingTargetAdapter() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
-                form.showMessage(gui.component.Message.MessageType.SUCCESS, "Đăng nhập thành công");
-                // Dừng lại 2s để open GD_Chính
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(2000);
-                            GD_DangNhap.this.dispose();
-                            new GD_Chinh("Quản lý Karaoke FourH").setVisible(true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+            public void timingEvent(float fraction) {
+                if (show) {
+                    setOpacity(fraction);
+                } else {
+                    setOpacity(1f - fraction);
+                }
+            }
+
+            @Override
+            public void end() {
+                if (!show) {
+                    dispose();
+                    if(!close)
+                        new DL_Progress(GD_DangNhap.this, nhanVien).setVisible(true);
+                }
+            }
+        };
+        animator = new Animator(300, target);
+        animator.setResolution(0);
+        animator.setAcceleration(0.5f);
+        
+        pnlForm.addEventLogin(new EventOnClick() {
+            @Override
+            public void onClick(Object object) {
+                if(object != null) {
+                    NhanVien nhanVien = (NhanVien) object;
+                    GD_DangNhap.this.nhanVien = nhanVien;
+                    showDLProgress();
+                } else {
+                    pnlForm.showMessage(Message.MessageType.ERROR, "Sai mật khẩu!");
+                }
             }
         });
-        bg.setLayout(layout);
-        bg.add(form, "width 90%, height 70%");
     }
 
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        show = b;
+        if(show) {
+            animator.start();
+        }
+    }
+    
+    private void close() {
+        if(animator.isRunning()) 
+            animator.stop();
+        show = false;
+        close = true;
+        animator.start();
+    }
+    
+    private void showDLProgress() {
+        if(animator.isRunning())
+            animator.stop();
+        show = false;
+        close = false;
+        animator.start();
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        bg = new gui.swing.panel.PanelShadow();
+        pnlForm = new gui.component.PanelForm();
 
-        GroupLayout layout = new GroupLayout(getContentPane());
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+
+        bg.setBackground(new java.awt.Color(255, 255, 255));
+        bg.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        bg.setShadowOpacity(0.2F);
+        bg.setShadowSize(15);
+
+        javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
+        bg.setLayout(bgLayout);
+        bgLayout.setHorizontalGroup(
+            bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)
+        );
+        bgLayout.setVerticalGroup(
+            bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlForm, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1000, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGap(0, 700, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
-    }
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private gui.swing.panel.PanelShadow bg;
+    private gui.component.PanelForm pnlForm;
+    // End of variables declaration//GEN-END:variables
 }

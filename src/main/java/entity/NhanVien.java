@@ -269,6 +269,6 @@ public class NhanVien {
         String caLamString = caLam.getGioBatDau() + "-" + caLam.getGioKetThuc();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         
-        return new Object[]{"", maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai, canCuocCD, diaChiString, email, caLamString, loaiNhanVien.getTenLoaiNV(), new ModelAction(this, event)};
+        return new Object[]{"", maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai,caLamString, loaiNhanVien.getTenLoaiNV(), new ModelAction(this, event)};
     }
 }

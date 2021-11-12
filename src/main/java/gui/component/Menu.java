@@ -12,10 +12,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import gui.event.EventMenu;
-import gui.event.EventMenuSelected;
-import gui.event.EventShowPopupMenu;
-import gui.model.ModelMenu;
+import gui.swing.event.EventMenu;
+import gui.swing.event.EventMenuSelected;
+import gui.swing.event.EventShowPopupMenu;
+import gui.swing.model.ModelMenu;
 import gui.swing.menu.MenuAnimation;
 import gui.swing.menu.MenuItem;
 import gui.swing.scrollbar.ScrollBarCustom;
