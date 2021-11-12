@@ -15,4 +15,5 @@ import java.util.List;
 public interface HoaDonService {
     public List<HoaDon> getDsHoaDon();
     public HoaDon getHoaDon(String maHoaDon);
+    public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to);
 }

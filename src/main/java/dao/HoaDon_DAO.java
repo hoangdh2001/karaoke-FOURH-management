@@ -69,5 +69,26 @@ public class HoaDon_DAO implements HoaDonService{
         }
         return null;
     }
+
+    @Override
+    public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select h.* from [dbo].[HoaDon] h\n" +
+                        "where h.ngayLapHoaDon between '"+from+"' and '"+to+"'";
+        try {
+            tr.begin();
+            List<HoaDon> dsHoaDon = session
+                    .createNativeQuery(sql, HoaDon.class)
+                    .getResultList();
+            tr.commit();
+            return dsHoaDon;
+        } catch (Exception e) {
+            System.err.println(e);
+            tr.rollback();
+        }
+        session.close();
+        return null;
+    }
     
 }
