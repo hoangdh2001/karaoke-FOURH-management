@@ -17,8 +17,18 @@ import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -34,9 +44,9 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author NGUYE
  */
-public class GD_HoaDon extends javax.swing.JPanel {
+public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     private HoaDon_DAO hoaDon_Dao;
-    private List<HoaDon> dsHoaDon = null;
+    private List<HoaDon> dsHoaDon = new ArrayList<HoaDon>();
     private EventAction event;
     
     JCheckBox chkSapXepThuTu;
@@ -46,7 +56,6 @@ public class GD_HoaDon extends javax.swing.JPanel {
     
     private PanelShadow panelHidden;
     private EventOnClick eventOnClick;
-
     
     public void addEvent(EventOnClick eventOnClick) {
         this.eventOnClick= eventOnClick;
@@ -57,6 +66,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
     public GD_HoaDon() {
         hoaDon_Dao = new HoaDon_DAO();
         initComponents();
+        loadData();
         build_GDHoaDon();
     }
 
@@ -103,12 +113,15 @@ public class GD_HoaDon extends javax.swing.JPanel {
         // Chọn thời gian bắt đầu
         dscBatDau = new JDateChooser();
         dscBatDau.setOpaque(false);
+        dscBatDau.setDateFormatString("yyyy-MM-dd");
         dscBatDau.setFont(new Font(fontName, fontPlain, font16));
         pnlThoiGianHD.add(dscBatDau, "w 50%, h 36!");
 
         // Chọn thời gian kết thúc
         dscKetThuc = new JDateChooser();
         dscKetThuc.setOpaque(false);
+        
+        //dscKetThuc.setDateFormatString("yyyy-MM-dd");
         dscKetThuc.setFont(new Font(fontName, fontPlain, font16));
         pnlThoiGianHD.add(dscKetThuc, "w 50%, h 36!, wrap");
 
@@ -145,20 +158,20 @@ public class GD_HoaDon extends javax.swing.JPanel {
         lblTimKiem.setForeground(colorLabel);
         pnlTimKiemHD.add(lblTimKiem, "span, w 100%, h 30!, wrap");
 
+        //Chọn cột cần tìm
+        cmbCot = new MyComboBox<>(new Object[]{"Chọn cột cần tìm","Mã hóa đơn","Khách hàng","Phòng"});
+        cmbCot.setFont(new Font(fontName, fontPlain, font16));
+        cmbCot.setBorderLine(true);
+        cmbCot.setBorderRadius(10);
+        //cmbCot.addItem("Chọn cột cần tìm");
+        pnlTimKiemHD.add(cmbCot, "w 100%, h 36!, wrap");
+        
         // Tìm kiếm  
         txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
         txtTimKiem.setBorderLine(true);
         txtTimKiem.setBorderRadius(5);
-        pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!, wrap");
-
-        //Chọn cột cần tìm
-        cmbCot = new MyComboBox<>();
-        cmbCot.setFont(new Font(fontName, fontPlain, font16));
-        cmbCot.setBorderLine(true);
-        cmbCot.setBorderRadius(10);
-        cmbCot.addItem("Chọn cột cần tìm");
-        pnlTimKiemHD.add(cmbCot, "w 100%, h 36!");
+        pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!");
 
         /*
          * End: group Tìm kiếm
@@ -182,11 +195,10 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlSapXepHD.add(lblSapXep, "span, w 100%, h 30!, wrap");
 
         //Chọn cột cần sắp xếp  
-        cmbSapXep = new MyComboBox<>();
+        cmbSapXep = new MyComboBox<>(new Object[]{"Tất cả","Đơn giá phòng","Số giờ hát","Tổng hóa đơn","Tổng tiền mặt hàng"});
         cmbSapXep.setFont(new Font(fontName, fontPlain, font16));
         cmbSapXep.setBorderLine(true);
         cmbSapXep.setBorderRadius(10);
-        cmbSapXep.addItem("Tất cả");
         pnlSapXepHD.add(cmbSapXep, "span, w 100%, h 36!, wrap");
 
         //Sắp xếp từ bé đến lớn
@@ -204,18 +216,10 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
         pnlSapXepHD.add(pnlSapXepThuTu, "w 100%"); 
         
-        tblHoaDon.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                //Nếu click chuột trái và click 2 lần
-                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
-                    int row = tblHoaDon.getSelectedRow();
-                    String maHoaDon = tblHoaDon.getValueAt(row, 0).toString();
-                    System.out.println(hoaDon_Dao.getHoaDon(maHoaDon));
-                    eventOnClick.onClick(hoaDon_Dao.getHoaDon(maHoaDon));
-                }
-            }
-        });
+        /*Đăng ký sự kiện*/
+        cmbSapXep.addActionListener(this);
+
+        xuLySuKien();
     }
     
     private JPanel createPanelTitle() {
@@ -233,8 +237,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
     
     private void createTable(){
         tblHoaDon.fixTable(scrHoaDon);
-        loadData();
-        
+       
     }
     
     public void xoaDuLieu(){
@@ -243,9 +246,9 @@ public class GD_HoaDon extends javax.swing.JPanel {
     }
     
     public void taiLaiDuLieu(List<HoaDon> dsHoaDon){
-        for(HoaDon hoaDon : dsHoaDon){
+        dsHoaDon.forEach((hoaDon)->{
             tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), hoaDon.getNgayLapHoaDon(), hoaDon.getThoiGianBatDau(), hoaDon.getThoiGianKetThuc(), hoaDon.getTongTienMatHang(), hoaDon.getDonGiaPhong(), hoaDon.getTongHoaDon(), hoaDon.getNhanVien().getTenNhanVien()});
-        }
+        });
     }
     
     private void loadData() {
@@ -255,6 +258,157 @@ public class GD_HoaDon extends javax.swing.JPanel {
         });
     }
 
+    private void xuLySuKien(){
+        tblHoaDon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //Nếu click chuột trái và click 2 lần
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    int row = tblHoaDon.getSelectedRow();
+                    String maHoaDon = tblHoaDon.getValueAt(row, 0).toString();
+                    System.out.println(hoaDon_Dao.getHoaDon(maHoaDon));
+                    eventOnClick.onClick(hoaDon_Dao.getHoaDon(maHoaDon));
+                }
+            }
+        });
+        
+        chkSapXepThuTu.addItemListener(new ItemListener() {
+                    @Override
+                    public void itemStateChanged(ItemEvent e) {
+                        if(e.getStateChange()==1){
+                            String tieuChi = traVeTieuChiSapXep(cmbSapXep.getSelectedItem().toString());
+                            dsHoaDon = hoaDon_Dao.sapXepTheo(tieuChi, "asc");
+                            xoaDuLieu();
+                            taiLaiDuLieu(dsHoaDon);
+                        }else{
+                            String tieuChi = traVeTieuChiSapXep(cmbSapXep.getSelectedItem().toString());
+                            dsHoaDon = hoaDon_Dao.sapXepTheo(tieuChi, "desc");
+                            xoaDuLieu();
+                            taiLaiDuLieu(dsHoaDon);
+                        }
+                    }
+                });
+        
+        txtTimKiem.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent arg0) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent arg0) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent arg0) {
+                if(cmbCot.getSelectedIndex()!=0){
+                    String tk;
+                    String s = txtTimKiem.getText().trim();
+                    String tieuChi = cmbCot.getSelectedItem().toString();
+                   switch(tieuChi){
+                        case "Mã hóa đơn":
+                            tk = "maHoaDon";
+                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTieuChiKhac(tk, s);
+                            break;
+                        case "Khách hàng":
+                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTenKhachHang(s);
+                            break;
+                        case "Phòng":
+                            dsHoaDon= hoaDon_Dao.getDSHoaDonByTenPhong(s);
+                            break;
+                        default:
+                            dsHoaDon = hoaDon_Dao.getDsHoaDon();
+                            break;
+                    }
+                   xoaDuLieu();
+                   taiLaiDuLieu(dsHoaDon);
+                }else{
+                    dsHoaDon = hoaDon_Dao.getDsHoaDon();
+                    xoaDuLieu();
+                    taiLaiDuLieu(dsHoaDon);
+                }
+            }
+        });
+
+                      
+        dscBatDau.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+           public void propertyChange(PropertyChangeEvent arg0) {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                if(dscBatDau.getDate()!=null){
+                    System.out.println(df.format(dscBatDau.getDate()));
+                    if(dscKetThuc.getDate()==null){
+                        dsHoaDon = hoaDon_Dao.getDSHoaDonAfter_Date(df.format(dscBatDau.getDate()));
+                        xoaDuLieu();
+                        taiLaiDuLieu(dsHoaDon);
+                    }else{
+                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), df.format(dscKetThuc.getDate()));
+                        xoaDuLieu();
+                        taiLaiDuLieu(dsHoaDon);
+                    }
+                }else{
+                    if(dscKetThuc.getDate()==null){
+                        xoaDuLieu();
+                        loadData();
+                    }else{
+                        dsHoaDon = hoaDon_Dao.getDSHoaDonBefore_Date(df.format(dscKetThuc.getDate()));
+                        xoaDuLieu();
+                        taiLaiDuLieu(dsHoaDon);
+                    }
+                }
+
+            }
+        });
+        
+        dscKetThuc.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent arg0) {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                if(dscKetThuc.getDate()!=null){
+                    if(dscBatDau.getDate()==null){
+                        dsHoaDon = hoaDon_Dao.getDSHoaDonBefore_Date(df.format(dscKetThuc.getDate()));
+                        xoaDuLieu();
+                        taiLaiDuLieu(dsHoaDon);
+                    }else{
+                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), df.format(dscKetThuc.getDate()));
+                        xoaDuLieu();
+                        taiLaiDuLieu(dsHoaDon);
+                    }
+                }else{
+                    if(dscBatDau.getDate()==null){
+                        xoaDuLieu();
+                        loadData();
+                    }else{
+                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), df.format(dscKetThuc.getDate()));
+                        xoaDuLieu();
+                        taiLaiDuLieu(dsHoaDon);
+                    }
+                }
+            }
+        });
+    }
+    
+    public String traVeTieuChiSapXep(String tieuChi){
+        String s;
+        switch(tieuChi){
+            case "Đơn giá phòng":
+                s = "donGiaPhong";
+                break;
+            case "Số giờ hát":
+                s = "gioHat";
+                break;
+            case "Tổng hóa đơn":
+                s = "tongHoaDon";
+                break;
+            case "Tổng tiền mặt hàng":
+                s = "tongTienMatHang";
+                break;
+            default:
+                s = "ngayLapHoaDon";
+                break;
+        }
+        return s;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -305,7 +459,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblHoaDon.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        tblHoaDon.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         scrHoaDon.setViewportView(tblHoaDon);
 
         lblBang.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
@@ -352,4 +506,28 @@ public class GD_HoaDon extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrHoaDon;
     private gui.swing.table2.MyTable tblHoaDon;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
+        if(obj.equals(cmbSapXep)){
+            if(cmbSapXep.getSelectedIndex()!=0){
+                String tieuChi = cmbSapXep.getSelectedItem().toString();
+                String s = traVeTieuChiSapXep(tieuChi);
+                if(chkSapXepThuTu.isEnabled()==true){
+                    dsHoaDon = hoaDon_Dao.sapXepTheo(s, "desc");
+                    xoaDuLieu();
+                    taiLaiDuLieu(dsHoaDon);
+                }else{
+                    dsHoaDon = hoaDon_Dao.sapXepTheo(s, "desc");
+                    xoaDuLieu();
+                    taiLaiDuLieu(dsHoaDon);
+                }
+            }else{
+                dsHoaDon = hoaDon_Dao.getDsHoaDon();
+                xoaDuLieu();
+                taiLaiDuLieu(dsHoaDon);
+            }
+        }
+    }
 }

@@ -6,6 +6,7 @@
 package service;
 
 import entity.HoaDon;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,5 +16,11 @@ import java.util.List;
 public interface HoaDonService {
     public List<HoaDon> getDsHoaDon();
     public HoaDon getHoaDon(String maHoaDon);
+    public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang);
+    public List<HoaDon> getDSHoaDonByTenPhong(String tenPhong);
+    public List<HoaDon> getDSHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu);
     public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to);
+    public List<HoaDon> getDSHoaDonBefore_Date(String ngay);
+    public List<HoaDon> getDSHoaDonAfter_Date(String ngay);
+    public List<HoaDon> sapXepTheo(String tieuChi, String thuTu);
 }
