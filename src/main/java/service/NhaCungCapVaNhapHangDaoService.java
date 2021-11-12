@@ -5,11 +5,14 @@
 package service;
 
 import entity.ChiTietHoaDon;
+import entity.ChiTietNhapHang;
 import entity.HoaDon;
 import entity.LoaiDichVu;
 import entity.MatHang;
 import entity.NhaCungCap;
 import entity.KhachHang;
+import entity.LoHang;
+import entity.LoaiPhong;
 import entity.PhieuDatPhong;
 import entity.NhanVien;
 import entity.Phong;
@@ -44,17 +47,39 @@ public interface NhaCungCapVaNhapHangDaoService {
     public NhanVien getNhanVienByID(String maNhanVien);
     
     public boolean addKhachHang(KhachHang kh);
-    public boolean updatePhieuDatHang(String maPhieu);
+    public boolean updatePhieuDatPhong(String maPhieu);
     public boolean updateSLMatHang(String maMH,int sl,String type);
     public boolean updatePhong(String maPhong,TrangThaiPhong trangThai);
-    public boolean insertHoaDon(HoaDon hoasDon);
+    public boolean insertHoaDon(HoaDon hoasDon,double tienCoc);
     public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon);
     public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon);
     public HoaDon getHoaDon(Phong phong);
-    public boolean updateHoaDon(HoaDon hoaDon,double tongTienPhong,double tongTien,double tongTienMatHang,String date);
+    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang);
     
     public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangThai);
     
     public String getlastMaHoaDonTang();
     public String getlastKhachHangTang();
+    public String getLastPhieuDatPhong();
+    public String getLastMatHang();
+    public String getLastLoHang();
+    
+    public boolean updateHoaDonDoiPhong(HoaDon hoaDon,double tongTienPhong,String maPhongMoi);
+    
+    public List<LoaiPhong> getDSLoaiPhong();
+    
+    public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong);
+    
+    public boolean addPhieuDatPhong(PhieuDatPhong phieu,String ngayDat);
+    
+    public double getTienCoc(String maPhieuDat);
+    
+    public LoaiDichVu getLoaiDichVuByMa(String ma);
+    
+    public boolean insertMatHang(MatHang matHang);
+    public boolean updateMatHang(MatHang matHang);
+    
+    public boolean insertLohang(LoHang loHang);
+    
+    public boolean insertCTNhapHang(ChiTietNhapHang ctNhaphang,String maLoHang);
 }

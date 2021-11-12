@@ -29,6 +29,7 @@ import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -46,7 +47,8 @@ public class GD_Chinh extends JFrame {
     private Content content; // thành phần content chứa nội dung
     private boolean tabShow;
     private MigLayout layout;
-    private final DecimalFormat df = new DecimalFormat("##0.##");
+    private DecimalFormat df = new DecimalFormat("##0.###");
+    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     private TabLayout tab;
     public GD_Chinh(String title) {
 	super(title);
@@ -56,6 +58,8 @@ public class GD_Chinh extends JFrame {
      * Xây dựng GD_Chính
      */
     private void buidGD_Chinh() {
+        dfs.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
         createBackground();
 	setContentPane(background);
@@ -242,7 +246,7 @@ public class GD_Chinh extends JFrame {
     }
     
     /**
-     * tạo ngăn tab
+     * tạo ngăn ts
      */
     private TabLayout createTabPane() {
         tab = new TabLayout();
@@ -309,6 +313,7 @@ public class GD_Chinh extends JFrame {
                 }
             }
         });
+//        tab.showDetail(new RoomDetail());
         tab.showDetail(new RoomDetail());
         return tab;
     }

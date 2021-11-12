@@ -20,7 +20,9 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -32,6 +34,9 @@ import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import objectcombobox.ObjectComboBox;
 
 /**
  *
@@ -60,9 +65,14 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     private HoaDon hoaDon;
     private NhanVien nhanVien;
     
+    private Button btnHuy;
+    private Button btnDoiPhong;
+    
     private DecimalFormat df;
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
+    
+    private String gioHat;
     
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
@@ -231,7 +241,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         
         pnlLoc.add(txtGioDaHat, "w 100:260:350, h 36! , wrap");
         
-        JLabel lblTongTienCu = new JLabel("Tổng tiền :");
+        JLabel lblTongTienCu = new JLabel("Tổng tiền phòng :");
         lblTongTienCu.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblTongTienCu, "align right");
 
@@ -255,7 +265,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         pnlDanhSachPhong = new JPanel();
         pnlDanhSachPhong.setOpaque(false);
         
-        pnlDanhSachPhong.setLayout(new MigLayout("","[]","10[][]16"));
+        pnlDanhSachPhong.setLayout(new MigLayout("","[]","40[][]16"));
             pnlDanhSachPhong.setBackground(Color.WHITE);    
             
         JLabel lblPhongMoi = new JLabel("Thông tin các phòng có thể đổi");
@@ -263,14 +273,13 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         lblPhongMoi.setForeground(colorLabel);
         pnlDanhSachPhong.add(lblPhongMoi, "span, w 100%, h 30!, wrap");
  
-        String col[] = {"Tên phòng","Loại phòng","Giá phòng/Giờ","Chon"};
         DefaultTableModel model = new DefaultTableModel(
             new String [] {
-            "Tên phòng","Loại phòng","Tầng","Giá phòng/Giờ","Chọn"
+            "Tên phòng","Loại phòng","Tầng","Giá phòng/Giờ"
             },0
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false,false,true
+                false, false, false,false
             }; 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -296,7 +305,6 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     
         table.setModel(model);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.getColumnModel().getColumn(4).setPreferredWidth(40);
         table.getColumnModel().getColumn(3).setPreferredWidth(80);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(1).setPreferredWidth(100);
@@ -313,7 +321,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     public void initNewRoomInfo(){
 
         JPanel pnlThongTin = new JPanel();
-        pnlThongTin.setLayout(new MigLayout("","[][]","20[]10[]10[]"));
+        pnlThongTin.setLayout(new MigLayout("","40[][]","20[]10[]10[]"));
         
         JLabel lblKhachHang = new JLabel("Khách Hàng :");
         lblKhachHang.setFont(new Font(fontName, fontPlain, font14));
@@ -365,12 +373,12 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         pnlButton.setLayout(new MigLayout("","push[]10[]20","push[]10"));
         pnlButton.setBackground(Color.WHITE);
         
-        Button btnHuy = new Button("Hủy đổi phòng");
+        btnHuy = new Button("Hủy đổi phòng");
         btnHuy.setFont(new Font(fontName, fontPlain, font14));
         btnHuy.setBackground(colorBtn);
         btnHuy.setBorderRadius(5);
         
-        Button btnDoiPhong = new Button("đổi phòng");
+        btnDoiPhong = new Button("đổi phòng");
         btnDoiPhong.setFont(new Font(fontName, fontPlain, font14));
         btnDoiPhong.setBackground(colorBtn);
         btnDoiPhong.setBorderRadius(5);
@@ -412,33 +420,110 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     }
     
     public void initData(){
+        hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
+        
         txtTenPhong.setText(phong.getTenPhong());
         txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         txtGiaPhong.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
-//        txtGioDaHat.setText(phong.getTenPhong());
-//        txtTongTienCu.setText(fontName);
+        try {
+            TongTienPhongCu();
+        } catch (ParseException ex) {
+            Logger.getLogger(GD_DoiPhong.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        txtGioDaHat.setText(gioHat);
+        txtKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
         
         List<Phong> dsPhong  = nhaCungCapVaNhapHang_DAO.getDSPhongByTrangThai(TrangThaiPhong.TRONG);
         dsPhong.forEach(phong -> table.addRow(phong.convertToRowTableInGDoiPhong()));
     }
     
-    public void addAction(){
-        table.addMouseListener(new action());
+    public double TongTienPhongCu() throws ParseException{
+        SimpleDateFormat formatterGio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        Date date = new Date(System.currentTimeMillis());
+        
+        String txtgioBatDau = formatterGio.format(hoaDon.getThoiGianBatDau());
+        String txtgioKetThuc = formatterGio.format(date);
+        
+        SimpleDateFormat gio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
+        Date dateGioBatDau = (Date) gio.parse(txtgioBatDau);
+        Date dateGioKetThuc = (Date) gio.parse(txtgioKetThuc);
+        
+        long ngayDaSuDung = ChronoUnit.DAYS.between(dateGioBatDau.toInstant(), dateGioKetThuc.toInstant()) - 1;
+        
+        long millisBatDau = dateGioBatDau.getTime();
+        long millisKetThuc = dateGioKetThuc.getTime();
+        long tongThoiGian = 0;
+        int hours = 0;
+        int minutes = 0;
+        double tienPhong = 0;
+        double giaPhong = phong.getLoaiPhong().getGiaPhong();
+        if(ngayDaSuDung > 0){
+            int hoursBatDau= 0;
+            int minutesBatDau = 60 - (int) ((millisBatDau / (1000*60)) % 60);
+            if((int) ((millisBatDau / (1000*60)) % 60) > 0){
+                hoursBatDau = 24 - (int) ((millisBatDau / (1000*60*60)) % 24) - 1;
+            }else{
+                hoursBatDau = 24 - (int) ((millisBatDau / (1000*60*60)) % 24);
+            }
+            int minutesKetThuc = (int) ((millisKetThuc / (1000*60)) % 60);
+            int hoursKetThuc = (int) ((millisKetThuc / (1000*60*60)) % 24);
+            
+            hours = hoursBatDau + hoursKetThuc;
+            minutes = minutesBatDau + minutesKetThuc ;
+            if(minutes >= 60){
+                hours += 1;
+                minutes -= 60;
+            }
+            tienPhong =(ngayDaSuDung-1)*24*giaPhong + hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
+            gioHat = String.valueOf((ngayDaSuDung - 1)*24+hours) +":"+String.valueOf(minutes);
+        }else{
+            tongThoiGian = millisKetThuc - millisBatDau;
+            minutes = (int) ((tongThoiGian / (1000*60)) % 60);
+            hours   = (int) ((tongThoiGian / (1000*60*60)) % 24);
+            tienPhong = hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
+            System.out.println(tongThoiGian);
+            gioHat = String.valueOf(hours) +":"+String.valueOf(minutes);
+        }
+        System.out.println(gioHat);
+        txtTongTienCu.setText(df.format(tienPhong));
+        return tienPhong;
     }
     
-    private class action implements MouseListener{
+    public void addAction(){
+        table.addMouseListener(new actionMouseListener());
+        btnHuy.addMouseListener(new actionMouseListener());
+        btnDoiPhong.addMouseListener(new actionMouseListener());
+    }
+    
+    private class actionMouseListener implements MouseListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if(e.getSource().equals(table)){
-//                boolean cb = (Boolean)table.getValueAt(, 3);
-//                System.err.println(cb);
-            }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            
+            Object obj = e.getSource();
+            if(obj.equals(table)){
+                ObjectComboBox cb = (ObjectComboBox)table.getValueAt(table.getSelectedRow(), 0);
+                txtLoaiPhongMoi.setText(cb.toString() +" - "+ table.getValueAt(table.getSelectedRow(), 1));
+            }else if (obj.equals(btnHuy)){
+                dispose();
+            }else if (obj.equals(btnDoiPhong)){
+                if(table.getSelectedRow() != -1){
+                    double tienPhongCu = 0;
+                    try {
+                        tienPhongCu = TongTienPhongCu();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    ObjectComboBox cb = (ObjectComboBox)table.getValueAt(table.getSelectedRow(), 0);
+                    nhaCungCapVaNhapHang_DAO.updateHoaDonDoiPhong(hoaDon,tienPhongCu, cb.getMa());
+                    nhaCungCapVaNhapHang_DAO.updatePhong(cb.getMa(),TrangThaiPhong.DANG_HAT);
+                    nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
+                }
+            }
         }
 
         @Override

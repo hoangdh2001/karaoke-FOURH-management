@@ -13,9 +13,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.swing.JCheckBox;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "getDSPhieuDatPhong", query = "select p from PhieuDatPhong p")
+})
 public class PhieuDatPhong {
 
     @Id
@@ -64,14 +69,12 @@ public class PhieuDatPhong {
      * @param trangThai
      * @param tienCoc
      */
-    public PhieuDatPhong(String maPhieuDat, KhachHang khachHang, Phong phong, Date ngayDat, TrangThaiPhieuDat trangThai, double tienCoc) {
+    public PhieuDatPhong(String maPhieuDat, KhachHang khachHang, Phong phong, TrangThaiPhieuDat trangThai, double tienCoc) {
         this.maPhieuDat = maPhieuDat;
         this.khachHang = khachHang;
         this.phong = phong;
         this.tienCoc = tienCoc;
-        this.ngayDat = ngayDat;
         this.trangThai = trangThai;
-//        this.ngayTao = Date.valueOf(LocalDate.now());
         this.ngayTao = new Date();
     }
 
@@ -188,11 +191,12 @@ public class PhieuDatPhong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
-        return new Object[]{JCheckBox.class, maPhieuDat, ngayTao, khachHang.getTenKhachHang(), phong.getTenPhong(), ngayDat, trangThai, tienCoc, new ModelAction(this, event)};
+        SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        return new Object[]{JCheckBox.class, maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, tienCoc, new ModelAction(this, event)};
     }
     
     public Object[] convertToRowTableInGDTiepNhanDatPhong(){
-        SimpleDateFormat formatterGio = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat formatterGio = new SimpleDateFormat("HH:mm");
         System.out.println(formatterGio.format(ngayDat.getTime()));
         return new Object[]{maPhieuDat,khachHang.getTenKhachHang(),formatterGio.format(ngayDat.getTime())};
     }
