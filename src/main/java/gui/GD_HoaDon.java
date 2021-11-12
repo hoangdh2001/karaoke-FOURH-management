@@ -6,17 +6,29 @@
 package gui;
 
 import com.toedter.calendar.JDateChooser;
+import dao.HoaDon_DAO;
+import entity.HoaDon;
+import gui.swing.event.EventOnClick;
+import gui.swing.graphics.ShadowType;
+import gui.swing.panel.PanelShadow;
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -24,16 +36,47 @@ import net.miginfocom.swing.MigLayout;
  * @author NGUYE
  */
 public class GD_HoaDon extends javax.swing.JPanel {
+    private HoaDon_DAO hoaDon_Dao;
+    private List<HoaDon> dsHoaDon = null;
+    private EventAction event;
+    
+    JCheckBox chkSapXepThuTu;
+    JDateChooser dscBatDau, dscKetThuc;
+    MyComboBox<String> cmbTuyChinh, cmbCot, cmbSapXep;
+    MyTextField txtTimKiem;
+    
+    private PanelShadow panelHidden;
+    private EventOnClick eventOnClick;
 
+    
+    public void addEvent(EventOnClick eventOnClick) {
+        this.eventOnClick= eventOnClick;
+    }
     /**
      * Creates new form GD_HoaDon
      */
     public GD_HoaDon() {
+        hoaDon_Dao = new HoaDon_DAO();
         initComponents();
         build_GDHoaDon();
     }
 
     private void build_GDHoaDon() {
+        createForm();
+        createTable();
+        setOpaque(false);
+        setPreferredSize(new Dimension(getWidth(), 950));
+        createPanelHidden();
+        add(panelHidden);
+    }
+    
+    private void createPanelHidden() {
+        panelHidden = new PanelShadow();
+        panelHidden.setShadowType(ShadowType.CENTER);
+        panelHidden.setShadowOpacity(0.3f);
+    }
+    
+    private void createForm(){
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
@@ -59,19 +102,19 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlThoiGianHD.add(lblChonThoiGian, "span, w 100%, h 30!, wrap");
 
         // Chọn thời gian bắt đầu
-        JDateChooser dscBatDau = new JDateChooser();
+        dscBatDau = new JDateChooser();
         dscBatDau.setOpaque(false);
         dscBatDau.setFont(new Font(fontName, fontPlain, font16));
         pnlThoiGianHD.add(dscBatDau, "w 50%, h 36!");
 
         // Chọn thời gian kết thúc
-        JDateChooser dscKetThuc = new JDateChooser();
+        dscKetThuc = new JDateChooser();
         dscKetThuc.setOpaque(false);
         dscKetThuc.setFont(new Font(fontName, fontPlain, font16));
         pnlThoiGianHD.add(dscKetThuc, "w 50%, h 36!, wrap");
 
         //Tùy chỉnh
-        MyComboBox<String> cmbTuyChinh = new MyComboBox<>();
+        cmbTuyChinh = new MyComboBox<>();
         cmbTuyChinh.setFont(new Font(fontName, fontPlain, font16));
         cmbTuyChinh.setBorderLine(true);
         cmbTuyChinh.setBorderRadius(10);
@@ -103,15 +146,15 @@ public class GD_HoaDon extends javax.swing.JPanel {
         lblTimKiem.setForeground(colorLabel);
         pnlTimKiemHD.add(lblTimKiem, "span, w 100%, h 30!, wrap");
 
-        // Tìm kiếm
-        MyTextField txtTimKiem = new MyTextField();
+        // Tìm kiếm  
+        txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
         txtTimKiem.setBorderLine(true);
         txtTimKiem.setBorderRadius(5);
         pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!, wrap");
 
         //Chọn cột cần tìm
-        MyComboBox<String> cmbCot = new MyComboBox<>();
+        cmbCot = new MyComboBox<>();
         cmbCot.setFont(new Font(fontName, fontPlain, font16));
         cmbCot.setBorderLine(true);
         cmbCot.setBorderRadius(10);
@@ -139,8 +182,8 @@ public class GD_HoaDon extends javax.swing.JPanel {
         lblSapXep.setForeground(colorLabel);
         pnlSapXepHD.add(lblSapXep, "span, w 100%, h 30!, wrap");
 
-        //Chọn cột cần sắp xếp
-        MyComboBox<String> cmbSapXep = new MyComboBox<>();
+        //Chọn cột cần sắp xếp  
+        cmbSapXep = new MyComboBox<>();
         cmbSapXep.setFont(new Font(fontName, fontPlain, font16));
         cmbSapXep.setBorderLine(true);
         cmbSapXep.setBorderRadius(10);
@@ -152,7 +195,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         pnlSapXepThuTu.setOpaque(false);
         pnlSapXepThuTu.setLayout(new MigLayout("", "push[]0[]0", "[]"));
 
-        JCheckBox chkSapXepThuTu = new JCheckBox();
+        chkSapXepThuTu = new JCheckBox();
         chkSapXepThuTu.setOpaque(false);
         pnlSapXepThuTu.add(chkSapXepThuTu);
 
@@ -160,13 +203,20 @@ public class GD_HoaDon extends javax.swing.JPanel {
         lblSapXepThuTu.setFont(new Font(fontName, fontPlain, font16));
         pnlSapXepThuTu.add(lblSapXepThuTu);
 
-        pnlSapXepHD.add(pnlSapXepThuTu, "w 100%");  
-        /*
-         * End: group Sắp xếp
-         */
-        createTable();
-        setOpaque(false);
-        setPreferredSize(new Dimension(getWidth(), 950));
+        pnlSapXepHD.add(pnlSapXepThuTu, "w 100%"); 
+        
+        tblHoaDon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //Nếu click chuột trái và click 2 lần
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    int row = tblHoaDon.getSelectedRow();
+                    String maHoaDon = tblHoaDon.getValueAt(row, 0).toString();
+                    System.out.println(hoaDon_Dao.getHoaDon(maHoaDon));
+                    eventOnClick.onClick(hoaDon_Dao.getHoaDon(maHoaDon));
+                }
+            }
+        });
     }
     
     private JPanel createPanelTitle() {
@@ -184,6 +234,26 @@ public class GD_HoaDon extends javax.swing.JPanel {
     
     private void createTable(){
         tblHoaDon.fixTable(scrHoaDon);
+        loadData();
+        
+    }
+    
+    public void xoaDuLieu(){
+        DefaultTableModel df = (DefaultTableModel) tblHoaDon.getModel();
+        df.setRowCount(0);
+    }
+    
+    public void taiLaiDuLieu(List<HoaDon> dsHoaDon){
+        for(HoaDon hoaDon : dsHoaDon){
+            tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), hoaDon.getNgayLapHoaDon(), hoaDon.getThoiGianBatDau(), hoaDon.getThoiGianKetThuc(), hoaDon.getTongTienMatHang(), hoaDon.getDonGiaPhong(), hoaDon.getTongHoaDon(), hoaDon.getNhanVien().getTenNhanVien()});
+        }
+    }
+    
+    private void loadData() {
+        dsHoaDon = hoaDon_Dao.getDsHoaDon();
+        dsHoaDon.forEach((hoaDon)->{
+            tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), hoaDon.getNgayLapHoaDon(), hoaDon.getThoiGianBatDau(), hoaDon.getThoiGianKetThuc(), hoaDon.getTongTienMatHang(), hoaDon.getDonGiaPhong(), hoaDon.getTongHoaDon(), hoaDon.getNhanVien().getTenNhanVien()});
+        });
     }
 
     /**

@@ -5,17 +5,59 @@
  */
 package gui.component;
 
+import entity.HoaDon;
+import gui.swing.event.EventTabSelected;
+import java.awt.Component;
+
 /**
  *
  * @author Hao
  */
 public class HoaDonDetail extends javax.swing.JPanel {
 
+    private HoaDonDetail hoaDonDetail;
+    private HoaDon hoaDon;
+    private PanelThongTinHoaDon pnlThongTinHoaDon;
+    
     /**
      * Creates new form HoaDonDetail
      */
-    public HoaDonDetail() {
+    public HoaDonDetail(HoaDon hoaDon) {
+        this.hoaDon = hoaDon;
         initComponents();
+        buildDisplay();
+       
+    }
+    
+    private void buildDisplay() {
+        pnlThongTinHoaDon = new PanelThongTinHoaDon(hoaDon);
+        createTabButton();
+    }
+    
+    private void createTabButton() {
+        tabButton.setEvent(new EventTabSelected() {
+            @Override
+            public boolean selected(int index, boolean selectedTab) {
+                if(index == 0) {
+                    showTab(pnlThongTinHoaDon);
+                }
+                else if(index == 1) {
+                    showTab(new PanelSuaHoaDon());
+                }
+                tabButton.check();
+                return true;
+            }
+        });
+        tabButton.addTabButtonItem("Thông tin");
+        tabButton.addTabButtonItem("Sửa");
+        pnlBottom.add(pnlThongTinHoaDon);
+    }    
+    
+    private void showTab(Component com) {
+        pnlBottom.removeAll();
+        pnlBottom.add(com);
+        pnlBottom.repaint();
+        pnlBottom.revalidate();
     }
 
     /**
@@ -30,46 +72,53 @@ public class HoaDonDetail extends javax.swing.JPanel {
         pnlTop = new javax.swing.JPanel();
         lblTen = new javax.swing.JLabel();
         tabButton = new gui.swing.panel.TabButton();
-        lblBottom = new javax.swing.JPanel();
+        pnlBottom = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblTen.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        lblTen.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         lblTen.setText("Nguyễn Thị Hảo");
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTopLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTen, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(tabButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblTen, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+            .addComponent(tabButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTopLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lblTen, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                .addComponent(tabButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(24, 24, 24)
+                .addComponent(lblTen, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                .addComponent(tabButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         add(pnlTop, java.awt.BorderLayout.PAGE_START);
 
-        lblBottom.setBackground(new java.awt.Color(255, 255, 255));
-        lblBottom.setLayout(new java.awt.BorderLayout());
-        add(lblBottom, java.awt.BorderLayout.CENTER);
+        pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
+        pnlBottom.setLayout(pnlBottomLayout);
+        pnlBottomLayout.setHorizontalGroup(
+            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 617, Short.MAX_VALUE)
+        );
+        pnlBottomLayout.setVerticalGroup(
+            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 408, Short.MAX_VALUE)
+        );
+
+        add(pnlBottom, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel lblBottom;
     private javax.swing.JLabel lblTen;
+    private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlTop;
     private gui.swing.panel.TabButton tabButton;
     // End of variables declaration//GEN-END:variables

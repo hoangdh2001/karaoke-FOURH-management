@@ -1,5 +1,6 @@
 package gui;
 
+import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
@@ -18,6 +19,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
+import gui.component.HoaDonDetail;
 import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
@@ -274,7 +276,24 @@ public class GD_Chinh extends JFrame {
                         
                         break;
                     case 3:
-                        content.showForm(new GD_HoaDon());
+                        GD_HoaDon giaoDienHoaDon = new GD_HoaDon();
+                        content.showForm(giaoDienHoaDon);
+                        
+                        giaoDienHoaDon.addEvent(new EventOnClick() {
+                            @Override
+                            public void onClick(Object object) {
+                                HoaDon hoaDon = (HoaDon) object;
+                                if(!animator2.isRunning()){
+                                    if(!tabShow){
+                                        tab.setVisible(true);
+                                        
+                                        HoaDonDetail hoaDonDetail =  new HoaDonDetail(hoaDon);
+                                        tab.showDetail(hoaDonDetail);
+                                        animator2.start();
+                                    }
+                                }
+                            }
+                        });
                         break;
                     case 4:
                         GD_NhanVien gD_NhanVien = new GD_NhanVien();
