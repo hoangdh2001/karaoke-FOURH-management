@@ -93,25 +93,14 @@ public class HoaDonDetail extends javax.swing.JPanel {
             .addGroup(pnlTopLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(lblTen, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(tabButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         add(pnlTop, java.awt.BorderLayout.PAGE_START);
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
-        pnlBottom.setLayout(pnlBottomLayout);
-        pnlBottomLayout.setHorizontalGroup(
-            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 617, Short.MAX_VALUE)
-        );
-        pnlBottomLayout.setVerticalGroup(
-            pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
-        );
-
+        pnlBottom.setLayout(new java.awt.BorderLayout());
         add(pnlBottom, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
