@@ -1,5 +1,6 @@
 package gui.component;
 
+import gui.swing.event.EventLogin;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,9 +13,10 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
-import gui.swing.event.EventOnClick;
+import gui.swing.panel.PanelTransparent;
+import gui.swing.event.EventSelectedRow;
 
-public class PanelForm extends javax.swing.JPanel {
+public class PanelForm extends PanelTransparent {
 
     private MigLayout layout;
     private boolean isLogin;
@@ -24,11 +26,13 @@ public class PanelForm extends javax.swing.JPanel {
     private final double loginSize = 60; // 60 phần trăm
     private final double addSize = 30; // 30 phần trăm
     private final DecimalFormat df = new DecimalFormat("##0.###");
+    private Animator animator;
 
     public PanelForm() {
         initComponents();
         buildPanelLogin();
     }
+
     /**
      * Xây dựng pane đăng nhập
      */
@@ -73,6 +77,7 @@ public class PanelForm extends javax.swing.JPanel {
                 // hiển thị giao diện quên mật khẩu khi isLogin true và ngược lại
                 if (fraction >= 0.5f) {
                     login.showForgetPass(isLogin);
+                    login.showPanel();
                 }
                 fractionCover = Double.valueOf(df.format(fractionCover)); // các giá trị số thực tránh số vô hạn tuần hoàn hoặc các số có số thập phân dài
                 fractionForm = Double.valueOf(df.format(fractionForm));
@@ -86,7 +91,7 @@ public class PanelForm extends javax.swing.JPanel {
                 isLogin = !isLogin; // đặt cho isLogin = false để hiểu theo pane đăng nhập không được hiện thị và ngược lại
             }
         };
-        Animator animator = new Animator(1000, target); // Xảy ra sự kiện timing trong 1s
+        animator = new Animator(1000, target); // Xảy ra sự kiện timing trong 1s
         animator.setAcceleration(0.5f);
         animator.setDeceleration(0.5f);
         animator.setResolution(0); // mượt
@@ -103,9 +108,18 @@ public class PanelForm extends javax.swing.JPanel {
 
     }
 
-    public void addEventLogin(EventOnClick evt) {
-        System.out.println("Done");
+    public void display() {
+        if (!animator.isRunning()) {
+            animator.start();
+        }
+    }
+
+    public void addEventLogin(EventLogin evt) {
         login.addEventLogin(evt);
+    }
+
+    public void setTextWhenBack() {
+        login.setTextWhenBack();
     }
 
     public void showMessage(Message.MessageType messageType, String message) {
@@ -114,7 +128,7 @@ public class PanelForm extends javax.swing.JPanel {
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void begin() {
-                if(!ms.isShow()) {
+                if (!ms.isShow()) {
                     PanelForm.this.add(ms, "pos 0.5al -30", 0); // Chèn thêm message vào panel login
                     ms.setVisible(true);
                     PanelForm.this.repaint();
@@ -124,43 +138,41 @@ public class PanelForm extends javax.swing.JPanel {
             @Override
             public void timingEvent(float fraction) {
                 float f;
-                if(ms.isShow()) {
+                if (ms.isShow()) {
                     f = 40 * (1f - fraction);
-                }
-                else {
+                } else {
                     f = 40 * fraction;
                 }
                 layout.setComponentConstraints(ms, "pos 0.5al " + (int) (f - 30)); // Hiện thị message theo 
                 PanelForm.this.repaint();
                 PanelForm.this.revalidate();
             }
-            
+
             // Sau khi kết thúc sự kiện timing thì xóa ms ra khỏi Panel login
             @Override
             public void end() {
-                if(ms.isShow()) {
+                if (ms.isShow()) {
                     PanelForm.this.remove(ms);
                     PanelForm.this.repaint();
                     PanelForm.this.revalidate();
-                }
-                else {
+                } else {
                     ms.setShow(true);
                 }
             }
         };
-        Animator animator = new Animator(300, target);
-        animator.setResolution(0);
-        animator.setAcceleration(0.5f);
-        animator.setDeceleration(0.5f);
-        animator.start();
-        
+        Animator animator2 = new Animator(300, target);
+        animator2.setResolution(0);
+        animator2.setAcceleration(0.5f);
+        animator2.setDeceleration(0.5f);
+        animator2.start();
+
         // Lập lại sự kiện timing để tắt message, message sẽ hiện thị trong 2s
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(2000);
-                    animator.start();
+                    animator2.start();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
