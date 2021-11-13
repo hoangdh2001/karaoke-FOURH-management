@@ -38,13 +38,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventSelectedRow;
+import java.awt.PopupMenu;
 
 /**
  *
@@ -52,8 +53,6 @@ import gui.swing.event.EventSelectedRow;
  */
 public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener, KeyListener{
     
-    
-    private PanelShadow panelHidden;
     private PhieuDatPhong_DAO phieuDatPhong_Dao;
     private Phong_DAO phong_Dao;
     private List<PhieuDatPhong> dsPhieu = new ArrayList<PhieuDatPhong>();
@@ -61,9 +60,10 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     private Button btnHuyDatPhieu, btnLamMoi;
     private JDateChooser dcsNgayDatTK; 
     MyComboBox<String> cmbTrangThaiTK;
-    private EventAction event;
     
     private EventSelectedRow eventSelectedRow;
+    private EventAction event;
+    private PanelShadow panelHidden;
     /**
      * Creates new form GD_QLDatPhong
      */
@@ -203,16 +203,16 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
         tblPhieuDatPhong.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                int row = tblPhieuDatPhong.getSelectedRow();
-                String ngayLap = tblPhieuDatPhong.getValueAt(row, 2).toString();
-                //txtNgayLap.setText(ngayLap);
-                
-                String ngayDat = tblPhieuDatPhong.getValueAt(row, 5).toString();
-                //txtNgayDat.setText(ngayDat);
+            public void mousePressed(MouseEvent e) {
+                //Nếu click chuột trái và click 2 lần
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    int row = tblPhieuDatPhong.getSelectedRow();
+                    String maPhieu = tblPhieuDatPhong.getValueAt(row, 1).toString();
+                    System.out.println(phieuDatPhong_Dao.getPhieuDatPhong(maPhieu));
+                    eventSelectedRow.selectedRow(phieuDatPhong_Dao.getPhieuDatPhong(maPhieu));
+                }
             }
-       });
-        
+        });
     }
     
     private void loadDataToCombobox() {
@@ -490,7 +490,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         int nam = dcsNgayDatTK.getJCalendar().getYearChooser().getYear();
         String tuKhoa = txtTimKiem.getText().trim();
         String s=   cmbTrangThaiTK.getSelectedItem().toString();
-        //String s = cbModel.getSelectedItem().toString();
         TrangThaiPhieuDat trangThai = TrangThaiPhieuDat.getTrangThaiPhieuDatByTrangThai(s);
         if(tuKhoa!=null){
             if(cmbTrangThaiTK.getSelectedIndex()==0 && dcsNgayDatTK.getDate()==null){

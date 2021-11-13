@@ -274,4 +274,21 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         return Collections.emptyList();
     }
 
+    @Override
+    public PhieuDatPhong getPhieuDatPhong(String maPhieuDat) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+
+        try {
+            tr.begin();
+            PhieuDatPhong phieu = session.find(PhieuDatPhong.class, maPhieuDat);
+            tr.commit();
+
+            return phieu;
+        } catch (Exception e) {
+            System.err.println(e);
+            tr.rollback();
+        }
+        return null;
+    }
 }

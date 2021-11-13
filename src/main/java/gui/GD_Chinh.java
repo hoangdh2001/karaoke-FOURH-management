@@ -1,7 +1,9 @@
 package gui;
 
+import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
+import entity.PhieuDatPhong;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,9 +19,11 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
+import gui.component.HoaDonDetail;
 import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
+import gui.component.PhieuDatPhongDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
@@ -234,23 +238,22 @@ public class GD_Chinh extends JFrame {
                     }
                     break;
                     case 1:
-                       // GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
-                        content.showForm(new GD_QLDatPhong());
-                        
-//                        qlDatPhong.addEvent(new EventSelectedRow() {
-//                            @Override
-//                            public void selectedRow(Object object) {
-//                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
-//                                
-//                                if(!animator2.isRunning()){
-//                                    if(!tabShow){
-//                                        tab.setVisible(true);
-//                                        //Phi
-//                                    }
-//                                }
-//
-//                            }
-//                        });
+                        GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
+                        content.showForm(qlDatPhong);
+                        qlDatPhong.addEvent(new EventSelectedRow() {
+                            @Override
+                            public void selectedRow(Object object) {
+                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
+                                    if(!animator2.isRunning()){
+                                        if(!tabShow){
+                                            tab.setVisible(true);
+                                            PhieuDatPhongDetail phieuDetail = new PhieuDatPhongDetail(phieuDatPhong);
+                                            tab.showDetail(phieuDetail);
+                                            animator2.start();
+                                        }
+                                    }
+                                }
+                        });
                         
                         break;
                     case 2:
@@ -276,7 +279,24 @@ public class GD_Chinh extends JFrame {
                         
                         break;
                     case 3:
-                        content.showForm(new GD_HoaDon());
+                        GD_HoaDon giaoDienHoaDon = new GD_HoaDon();
+                        content.showForm(giaoDienHoaDon);
+                        
+                        giaoDienHoaDon.addEvent(new EventSelectedRow() {
+                            @Override
+                            public void selectedRow(Object object) {
+                                HoaDon hoaDon = (HoaDon) object;
+                                if(!animator2.isRunning()){
+                                    if(!tabShow){
+                                        tab.setVisible(true);
+                                        
+                                        HoaDonDetail hoaDonDetail =  new HoaDonDetail(hoaDon);
+                                        tab.showDetail(hoaDonDetail);
+                                        animator2.start();
+                                    }
+                                }
+                            }
+                        });
                         break;
                     case 4:
                         GD_NhanVien gD_NhanVien = new GD_NhanVien();
