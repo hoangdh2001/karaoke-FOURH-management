@@ -6,7 +6,6 @@
 package gui.component;
 
 import entity.HoaDon;
-import gui.swing.event.EventTabSelected;
 import java.awt.Component;
 
 /**
@@ -35,31 +34,8 @@ public class HoaDonDetail extends javax.swing.JPanel {
     }
     
     private void createTabButton() {
-//        tabButton.setEvent(new EventTabSelected() {
-//            @Override
-//            public boolean selected(int index, boolean selectedTab) {
-//                if(index == 0) {
-//                    showTab(pnlThongTinHoaDon);
-//                }
-//                else if(index == 1) {
-//                    showTab(new PanelSuaHoaDon());
-//                }
-//                tabButton.check();
-//                return true;
-//            }
-//        });
-//        tabButton.addTabButtonItem("Thông tin");
-//        tabButton.addTabButtonItem("Sửa");
         pnlBottom.add(pnlThongTinHoaDon);
     }    
-    
-    private void showTab(Component com) {
-        pnlBottom.removeAll();
-        pnlBottom.add(com);
-        pnlBottom.repaint();
-        pnlBottom.revalidate();
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

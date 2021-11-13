@@ -207,7 +207,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         JSeparator spr2 = new JSeparator(SwingConstants.VERTICAL);
         spr2.setPreferredSize(new Dimension(2, separatorHeight));
         pnlForm.add(spr2,"pos 0.8al 0.9al n n");
-        
         /*
          * Begin: group Sắp xếp
          */
