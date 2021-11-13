@@ -546,7 +546,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         @Override
         public void keyReleased(KeyEvent e) {
             Object obj = e.getSource();
-            if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE){
+            if (e.getKeyChar() == KeyEvent.VK_ENTER){
                if(obj.equals(txtSdt) || obj.equals(txtTenKhachHang) || obj.equals(txtCCCD)){
                     if((txtSdt.getText().trim() + txtTenKhachHang.getText().trim() +  txtCCCD.getText().trim()).equals("") ){
                         tablePhieuDatPhong.clearSelection();

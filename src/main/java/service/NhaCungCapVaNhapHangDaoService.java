@@ -82,4 +82,6 @@ public interface NhaCungCapVaNhapHangDaoService {
     public boolean insertLohang(LoHang loHang);
     
     public boolean insertCTNhapHang(ChiTietNhapHang ctNhaphang,String maLoHang);
+    public String getLastNhaCungCap();
+    public boolean insertNhaCungCap(NhaCungCap ncc);
 }

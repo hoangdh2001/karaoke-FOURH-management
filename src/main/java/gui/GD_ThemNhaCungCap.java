@@ -16,8 +16,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -33,6 +36,7 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
     private MyTextField txtSoNha_Duong;
     
     private Button btnThemVaSua;
+    private Button btnHuy;
     private DiaChi_DAO diaChi_Dao;
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
     /**
@@ -129,7 +133,7 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         pnlRight.add(cmbXaPhuong, "w 250!, h 36!, wrap");
         
         //Nút hủy
-        Button btnHuy = new Button("Hủy");
+        btnHuy = new Button("Hủy");
         btnHuy.setFont(new Font(fontName, fontStyle, fontSize));
         btnHuy.setBackground(colorBtn);
         pnlRight.add(btnHuy, "w 100!, h 40!");
@@ -144,24 +148,18 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         setResizable(false);
         setLocationRelativeTo(null);
         
-        initModel();
         initDao();
+        initModel();
+        
     }
     
-    public void loadXaPhuong(){
-        List<String> dsXaPhuong = diaChi_Dao.getDSXaPhuong();
-        dsXaPhuong.forEach((p)->{
-            cmbXaPhuong.addItem(p);
-            
-        });
-    }
     public void loadTinhThanh(){
         List<String> dsTinhThanh = diaChi_Dao.getDSTinhThanh();
         dsTinhThanh.forEach((p)->{
             cmbTinh.addItem(p);
-            
         });
     }
+    
     public void loadQuanHuyen(){
         List<String> dsQuanHuyen = diaChi_Dao.getDSQuanHuyen();
         dsQuanHuyen.forEach((p)->{
@@ -169,60 +167,189 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
             
         });
     }
+    public void loadQuanHuyenByTinh(String tinh){
+        List<String> dsQuanHuyen = diaChi_Dao.getDSQuanHuyenByTinh(tinh);
+        dsQuanHuyen.forEach((p)->{
+            cmbQuan_Huyen.addItem(p);
+            
+        });
+    }
+    public void loadXaPhuong(){
+        List<String> dsXaPhuong = diaChi_Dao.getDSXaPhuong();
+        dsXaPhuong.forEach((p)->{
+            cmbXaPhuong.addItem(p);
+            
+        });
+    }
+    
+    public void loadXaPhuongByTinhQuan(String tinh,String quanHuyen){
+        List<String> dsXaPhuong = diaChi_Dao.getDSXaPhuongByQuanHuyen(tinh, quanHuyen);
+        dsXaPhuong.forEach((p)->{
+            cmbXaPhuong.addItem(p);
+            
+        });
+    }
     
     private void initModel() {
         if(model != null){
             btnThemVaSua.setText("Sửa");
-            
             NhaCungCap ncc = (NhaCungCap) model;
             txtSDT.setText(ncc.getSoDienThoai());
             txtSoNha_Duong.setText(ncc.getDiaChi().getSoNha()+" - "+ncc.getDiaChi().getTenDuong());
             txtTenNCC.setText(ncc.getTenNCC());
-        }
-    }
-    
-    
-    private void addAction(){
-        if(model != null){
-//          sua
-            btnThemVaSua.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {   
-                    NhaCungCap ncc = (NhaCungCap) model;
-                    
-                    String[] soNhaSoDuong = txtSoNha_Duong.getText().split("-");
-                    
-                    DiaChi diachi = new DiaChi("31/9A","Duong so 7","Hiep Binh Chanh","Thu Duc","TP Ho Chi Minh");
-                    diachi.setSoNha(soNhaSoDuong[0]);
-                    diachi.setTenDuong(soNhaSoDuong[1]);
-                    ncc.setDiaChi(diachi);
-                    
-                    ncc.setSoDienThoai(txtSDT.getText());
-                    
-                    ncc.setTenNCC(txtTenNCC.getText());
-                    
-                    nhaCungCapVaNhapHang_DAO.updateNhaCungCap(ncc);
-                }
-            });
-        }else{
-//          them
-            btnThemVaSua.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-//                    System.out.println("them");
-//                    System.err.println(nhaCungCapVaNhapHang_DAO.getlastNhaCungCap());
-                }
-            });
+            
+            cmbTinh.setSelectedItem(ncc.getDiaChi().getTinhThanh());
+            cmbQuan_Huyen.setSelectedItem(ncc.getDiaChi().getQuanHuyen());
+            cmbXaPhuong.setSelectedItem(ncc.getDiaChi().getXaPhuong());
         }
     }
     
     public void initDao(){
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
         diaChi_Dao = new DiaChi_DAO();
-        loadTinhThanh();
-        loadQuanHuyen();
-        loadXaPhuong();
+        if(model == null){
+            loadTinhThanh();
+            loadQuanHuyen();
+            loadXaPhuong();
+        }else {
+            NhaCungCap ncc = (NhaCungCap) model;
+            loadTinhThanh();
+            cmbTinh.setSelectedItem(ncc.getDiaChi().getTinhThanh());
+            loadQuanHuyenByTinh(cmbTinh.getSelectedItem().toString());
+            cmbQuan_Huyen.setSelectedItem(ncc.getDiaChi().getQuanHuyen());
+            loadXaPhuongByTinhQuan(cmbTinh.getSelectedItem().toString(), cmbQuan_Huyen.getSelectedItem().toString());
+            cmbXaPhuong.setSelectedItem(ncc.getDiaChi().getXaPhuong());
+        }
     }
+    
+    public void resetQuanHuyen(){
+        cmbQuan_Huyen.removeAllItems();
+        cmbQuan_Huyen.addItem("--chọn--");
+        loadQuanHuyenByTinh(cmbTinh.getSelectedItem().toString());
+        cmbXaPhuong.removeAllItems();
+        cmbXaPhuong.addItem("--chọn--");
+    }
+    public void resetxaPhuong(){
+        cmbXaPhuong.removeAllItems();
+        cmbXaPhuong.addItem("--chọn--");
+        if(cmbQuan_Huyen.getSelectedIndex() > 0){
+            loadXaPhuongByTinhQuan(cmbTinh.getSelectedItem().toString(), cmbQuan_Huyen.getSelectedItem().toString());
+        }
+    }
+    
+    private boolean valiDataNull(){
+        String Sdt = txtSDT.getText().trim();
+        String tenNCC = txtTenNCC.getText().trim();
+        String soDuong = txtSoNha_Duong.getText().trim();
+        
+        if(tenNCC.equals("")){
+            showMsg("Nhập tên nhà cung cấp");  
+            txtTenNCC.requestFocus();
+            return false;
+        }
+        if(Sdt.equals("")){
+            showMsg("Nhập số điện thoại liên lạc !");  
+            txtSDT.requestFocus();
+            return false;
+        } 
+        if(soDuong.equals("")){
+            showMsg("Nhập số nhà - tên đường !");  
+            txtSoNha_Duong.requestFocus();
+            return false;
+        }
+        
+        if(cmbTinh.getSelectedIndex() == 0){
+            showMsg("Chọn tỉnh/thành phố !");  
+            return false;
+        }
+        
+        if(cmbQuan_Huyen.getSelectedIndex() == 0){
+            showMsg("Chọn quận/huyện !");  
+            return false;
+        }
+        
+        if(cmbXaPhuong.getSelectedIndex() == 0){
+            showMsg("Chọn xã/phường !");  
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private boolean valiDataSDT(){
+        String sdt = txtSDT.getText().trim();
+//        (028) 38222855
+        if (!(sdt.matches("^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$"))) {
+				showMsg("Số điện thoại của nhà cung cấp không hợp lệ");
+				txtSDT.requestFocus();
+				txtSDT.selectAll();
+				return false;
+			}
+        return true;
+    }
+    
+    private void showMsg(String msg) {
+	JOptionPane.showMessageDialog(null, msg);
+    }
+    
+    private void addAction(){
+        btnThemVaSua.addActionListener(new createActionListener());
+        cmbTinh.addActionListener(new createActionListener());
+        cmbQuan_Huyen.addActionListener(new createActionListener());
+        txtSDT.setFocusTraversalKeysEnabled(false);
+        txtSDT.addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_TAB || e.getKeyChar() == KeyEvent.VK_ENTER){
+                    valiDataSDT();
+                    txtSoNha_Duong.requestFocus();
+                }
+            }
+        });
+        
+    }
+    
+    private class createActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object obj = e.getSource();
+            if(obj.equals(btnThemVaSua) && valiDataNull()){
+                    NhaCungCap nccMoi = new NhaCungCap();
+                
+                    String tinhThanh = cmbTinh.getSelectedItem().toString();
+                    String quanHuyen = cmbQuan_Huyen.getSelectedItem().toString();
+                    String xaPhuong = cmbXaPhuong.getSelectedItem().toString();
+                    
+                    String[] soNhaSoDuong = txtSoNha_Duong.getText().split("-");
+                    
+                    DiaChi diachi = new DiaChi(soNhaSoDuong[0],soNhaSoDuong[1],xaPhuong,quanHuyen,tinhThanh);
+                    
+                    nccMoi.setDiaChi(diachi);
+                    nccMoi.setSoDienThoai(txtSDT.getText().trim());
+                    nccMoi.setTenNCC(txtTenNCC.getText().trim());
+                    
+                    if(model != null){
+                        NhaCungCap nccCu = (NhaCungCap) model;
+                        nccMoi.setMaNCC(nccCu.getMaNCC());
+                        nhaCungCapVaNhapHang_DAO.updateNhaCungCap(nccMoi);
+                        showMsg("Sửa thành công nhà cung cấp: "+ nccMoi.getTenNCC());
+                    }else{
+                        nhaCungCapVaNhapHang_DAO.insertNhaCungCap(nccMoi);
+                        showMsg("Thêm thành công nhà cung cấp: "+ nccMoi.getTenNCC());
+                    }
+                    
+                    dispose();
+            }else if(obj.equals(cmbTinh)){
+                resetQuanHuyen();
+            }else if(obj.equals(cmbQuan_Huyen)){
+                resetxaPhuong();
+            }else if(obj.equals(btnHuy)){
+                dispose();
+            }
+        }
+    
+    }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -326,10 +453,6 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GD_ThemNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {

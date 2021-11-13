@@ -786,8 +786,31 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
     public boolean updateMatHang(MatHang matHang) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()+" where maMatHang = '"+matHang.getMaMatHang()+"'";
+        
+        String matHangQuery = "select donGia from MatHang where maMatHang = '"+matHang.getMaMatHang()+"'";
+        double donGiaCu = 0;
+        try {
+            tr.begin();
+                BigDecimal obj = (BigDecimal)session.createNativeQuery(matHangQuery).getSingleResult();
+                donGiaCu = obj.doubleValue();
+            tr.commit();
+            session.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        String sql = "";
+        if(matHang.getDonGia() > donGiaCu){
+            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()+""
+                + ",donGia = "+matHang.getDonGia()+" "
+                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
+        }else{
+            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()
+                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
+        }
+        
          try {
+             
             tr.begin();
                 session.createNativeQuery(sql).executeUpdate();
             tr.commit();
@@ -871,6 +894,56 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
          try {
             tr.begin();
                 session.createNativeQuery(sql).executeUpdate();
+            tr.commit();
+            session.clear();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+    
+    @Override
+    public String getLastNhaCungCap() {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select top 1 maNCC from NhaCungCap order by maNCC desc";
+        
+        try {
+            tr.begin();
+            String maKhachCuoi="";
+            String maCuoiCung = "NCC";
+            try {
+                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
+                int so = Integer.parseInt(maKhachCuoi.split("NCC")[1]) + 1;
+                int soChuSo = String.valueOf(so).length();
+                
+                for (int i = 0; i< 3 - soChuSo; i++){
+                    maCuoiCung += "0";
+                }
+                maCuoiCung += String.valueOf(so);
+            } catch (Exception e) {
+                maCuoiCung = "NCC001";
+            } 
+            tr.commit();
+            session.clear();
+            return maCuoiCung;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean insertNhaCungCap(NhaCungCap ncc) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        ncc.setMaNCC(getLastNhaCungCap());
+        try {
+            tr.begin();
+                session.save(ncc);
             tr.commit();
             session.clear();
             return true;
