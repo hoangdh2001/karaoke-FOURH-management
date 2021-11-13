@@ -13,17 +13,13 @@ import gui.swing.event.EventOnClick;
 import gui.swing.graphics.ShadowType;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
-import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.color.ColorSpace;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -37,7 +33,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
@@ -49,7 +44,7 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  *
- * @author NGUYE
+ * @author NGUYEN HAO
  */
 public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     private HoaDon_DAO hoaDon_Dao;
@@ -166,12 +161,9 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         cmbThang.addItem("Lọc theo tháng");
         cmbThang.setBorderRadius(10);
         pnlCmbThoiGian.add(cmbThang, "w 30%, h 36!");
-        
-        
         /*
          * End: group Chọn thời gian bắt đầu
          */
-
         JSeparator spr1 = new JSeparator(SwingConstants.VERTICAL);
         spr1.setPreferredSize(new Dimension(2, separatorHeight));
         pnlForm.add(spr1,"pos 0.4al 0.9al n n");
@@ -256,12 +248,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         btnLamMoi.setBorderline(true);
         pnlSapXepThuTu.add(btnLamMoi, " w 100!, h 38!");
 
-//        JLabel lblSapXepThuTu = new JLabel("Bé đến lớn");
-//        lblSapXepThuTu.setFont(new Font(fontName, fontPlain, font16));
-//        pnlSapXepThuTu.add(lblSapXepThuTu);
-
-        
-        
         /*Đăng ký sự kiện*/
         btnLamMoi.addActionListener(this);
         cmbSapXep.addActionListener(this);
@@ -300,11 +286,8 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     };
     tblHoaDon.setModel(model);
     RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-    
     tblHoaDon.setRowSorter(sorter);
-    //scrHoaDon = new JScrollPane(tblHoaDon);
     tblHoaDon.fixTable(scrHoaDon);
-       
     }
     
     public void xoaDuLieu(){
@@ -329,7 +312,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         tblHoaDon.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //Nếu click chuột trái và click 2 lần
+                //Nếu click chuột trái 2 lần
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
                     int row = tblHoaDon.getSelectedRow();
                     String maHoaDon = tblHoaDon.getValueAt(row, 0).toString();
@@ -339,32 +322,13 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
             }
         });
         
-        chkSapXepThuTu.addItemListener(new ItemListener() {
-                    @Override
-                    public void itemStateChanged(ItemEvent e) {
-                        if(e.getStateChange()==1){
-                            String tieuChi = traVeTieuChiSapXep(cmbSapXep.getSelectedItem().toString());
-                            dsHoaDon = hoaDon_Dao.sapXepTheo(tieuChi, "asc");
-                            xoaDuLieu();
-                            taiLaiDuLieu(dsHoaDon);
-                        }else{
-                            String tieuChi = traVeTieuChiSapXep(cmbSapXep.getSelectedItem().toString());
-                            dsHoaDon = hoaDon_Dao.sapXepTheo(tieuChi, "desc");
-                            xoaDuLieu();
-                            taiLaiDuLieu(dsHoaDon);
-                        }
-                    }
-                });
-        
         txtTimKiem.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent arg0) {
             }
-
             @Override
             public void keyPressed(KeyEvent arg0) {
             }
-
             @Override
             public void keyReleased(KeyEvent arg0) {
                 if(cmbCot.getSelectedIndex()!=0){
@@ -475,28 +439,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         dsNam.forEach(t->{
             cmbNam.addItem(t);
         });
-    }
-    
-    public String traVeTieuChiSapXep(String tieuChi){
-        String s;
-        switch(tieuChi){
-            case "Đơn giá phòng":
-                s = "donGiaPhong";
-                break;
-            case "Số giờ hát":
-                s = "gioHat";
-                break;
-            case "Tổng hóa đơn":
-                s = "tongHoaDon";
-                break;
-            case "Tổng tiền mặt hàng":
-                s = "tongTienMatHang";
-                break;
-            default:
-                s = "ngayLapHoaDon";
-                break;
-        }
-        return s;
     }
     
     public String kiemTraNgayBatDau(){
@@ -622,25 +564,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
-        if(obj.equals(cmbSapXep)){
-            if(cmbSapXep.getSelectedIndex()!=0){
-                String tieuChi = cmbSapXep.getSelectedItem().toString();
-                String s = traVeTieuChiSapXep(tieuChi);
-                if(chkSapXepThuTu.isEnabled()==true){
-                    dsHoaDon = hoaDon_Dao.sapXepTheo(s, "asc");
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else{
-                    dsHoaDon = hoaDon_Dao.sapXepTheo(s, "desc");
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }
-            }else{
-                dsHoaDon = hoaDon_Dao.getDsHoaDon();
-                xoaDuLieu();
-                taiLaiDuLieu(dsHoaDon);
-            }
-        }
         if(obj.equals(btnLamMoi)){
             dscBatDau.setDate(null);
             dscKetThuc.setDate(null);
@@ -696,7 +619,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
                 }
             }
         }
-        
         if(obj.equals(cmbQuy)){
             String from = kiemTraNgayBatDau();
             String to =kiemTraNgayKetThuc();
@@ -738,7 +660,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
                 }
             }
         }
-        
         if(obj.equals(cmbThang)){
             String from = kiemTraNgayBatDau();
             String to =kiemTraNgayKetThuc();
