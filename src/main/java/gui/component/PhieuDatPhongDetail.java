@@ -69,7 +69,6 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
         pnlBottom = new javax.swing.JPanel();
         pnlTop = new javax.swing.JPanel();
         tabButton = new gui.swing.panel.TabButton();
-        lblTen = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -82,30 +81,17 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
 
         tabButton.setBackground(new java.awt.Color(204, 255, 255));
 
-        lblTen.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        lblTen.setText("Nguyễn Thị Hảo");
-
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTopLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(lblTen, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(508, Short.MAX_VALUE))
-            .addGroup(pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(tabButton, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE))
+            .addComponent(tabButton, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTopLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTen, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
-            .addGroup(pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopLayout.createSequentialGroup()
-                    .addGap(0, 60, Short.MAX_VALUE)
-                    .addComponent(tabButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopLayout.createSequentialGroup()
+                .addGap(0, 60, Short.MAX_VALUE)
+                .addComponent(tabButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         add(pnlTop, java.awt.BorderLayout.PAGE_START);
@@ -113,7 +99,6 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblTen;
     private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlTop;
     private gui.swing.panel.TabButton tabButton;
