@@ -45,7 +45,6 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
                 return true;
             }
         });
-        
         tabButton.addTabButtonItem("Thông tin");
         tabButton.addTabButtonItem("Sửa");
         pnlBottom.add(pnlThongTinPDP);
