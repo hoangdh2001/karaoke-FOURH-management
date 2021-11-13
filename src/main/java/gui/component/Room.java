@@ -1,8 +1,12 @@
 package gui.component;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
+import gui.GD_Chinh;
+import gui.GD_TiepNhanDatPhong;
+import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import java.awt.BorderLayout;
@@ -19,7 +23,10 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.LookAndFeel;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
@@ -47,7 +54,6 @@ public class Room extends PanelShadow {
     private JMenuItem mniDonPhong;
     private JMenuItem mniSuaPhong;
     private int index;
-    private Button btnThue = new Button("Thuê", true);
     
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -261,18 +267,35 @@ public class Room extends PanelShadow {
         btnDat.setForeground(Color.WHITE);
         btnDat.setBackground(new Color(0, 31, 63));
         btnDat.setBorderRadius(5);
+        btnDat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                new GD_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
+            }
+        });
         pnlPhongTrong.add(btnDat, "split 2");
-
+        
+        Button btnThue = new Button("Thuê", true);
         btnThue.setForeground(Color.WHITE);
         btnThue.setBackground(new Color(0, 31, 63));
         btnThue.setBorderRadius(5);
+        btnThue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    LookAndFeel previousLF = UIManager.getLookAndFeel();
+                    UIManager.setLookAndFeel(new FlatIntelliJLaf()); //Add whatever other settings you want to the method
+                    new DL_TiepNhanDatPhong().setVisible(true);
+                    UIManager.setLookAndFeel(previousLF);
+                } catch (UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         pnlPhongTrong.add(btnThue);
         return pnlPhongTrong;
     }
     
-    public void addActionBtnThue(ActionListener evt) {
-        btnThue.addActionListener(evt);
-    }
 
     /**
      * Xây dựng phòng sửa

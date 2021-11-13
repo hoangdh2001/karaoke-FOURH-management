@@ -94,8 +94,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private Phong phong;
     private NhanVien nhanVien;
     
-    public GD_TiepNhanDatPhong(Frame frame, Phong phong,NhanVien nhanVien) {
-        super(frame, true);
+    public GD_TiepNhanDatPhong(Phong phong,NhanVien nhanVien) {
         setTitle("Giao phòng");
         setModal(true);
 //        setResizable(false);
@@ -119,11 +118,11 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 932, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 533, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
