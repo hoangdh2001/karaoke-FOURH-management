@@ -35,22 +35,23 @@ import net.miginfocom.swing.MigLayout;
  * @author NGUYE
  */
 public class GD_HoaDon extends javax.swing.JPanel {
+
     private HoaDon_DAO hoaDon_Dao;
     private List<HoaDon> dsHoaDon = null;
     private EventAction event;
-    
+
     JCheckBox chkSapXepThuTu;
     JDateChooser dscBatDau, dscKetThuc;
     MyComboBox<String> cmbTuyChinh, cmbCot, cmbSapXep;
     MyTextField txtTimKiem;
-    
+
     private PanelShadow panelHidden;
     private EventSelectedRow eventOnClick;
 
-    
     public void addEvent(EventSelectedRow eventOnClick) {
-        this.eventOnClick= eventOnClick;
+        this.eventOnClick = eventOnClick;
     }
+
     /**
      * Creates new form GD_HoaDon
      */
@@ -68,14 +69,14 @@ public class GD_HoaDon extends javax.swing.JPanel {
         createPanelHidden();
         add(panelHidden);
     }
-    
+
     private void createPanelHidden() {
         panelHidden = new PanelShadow();
         panelHidden.setShadowType(ShadowType.CENTER);
         panelHidden.setShadowOpacity(0.3f);
     }
-    
-    private void createForm(){
+
+    private void createForm() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
@@ -83,7 +84,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
         Color colorBtn = new Color(184, 238, 241);
         Color colorLabel = new Color(47, 72, 210);
         int separatorHeight = 150;
-       
+
         pnlForm.setLayout(new MigLayout("", "[center][center][center]", "[center][center]"));
         pnlForm.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!, wrap");
         /*
@@ -125,8 +126,8 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
         JSeparator spr1 = new JSeparator(SwingConstants.VERTICAL);
         spr1.setPreferredSize(new Dimension(2, separatorHeight));
-        pnlForm.add(spr1,"pos 0.4al 0.9al n n");
-        
+        pnlForm.add(spr1, "pos 0.4al 0.9al n n");
+
         /* 
          * Begin: group Tìm kiếm
          */
@@ -165,8 +166,8 @@ public class GD_HoaDon extends javax.swing.JPanel {
          */
         JSeparator spr2 = new JSeparator(SwingConstants.VERTICAL);
         spr2.setPreferredSize(new Dimension(2, separatorHeight));
-        pnlForm.add(spr2,"pos 0.8al 0.9al n n");
-        
+        pnlForm.add(spr2, "pos 0.8al 0.9al n n");
+
         /*
          * Begin: group Sắp xếp
          */
@@ -175,7 +176,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
 
         pnlSapXepHD.setLayout(new MigLayout("", "10[][]10", "60[][center]10[center]10"));
         pnlForm.add(pnlSapXepHD, "w 20%, h 200!");
-        
+
         JLabel lblSapXep = new JLabel("Sắp xếp");
         lblSapXep.setFont(new Font(fontName, fontPlain, font16));
         lblSapXep.setForeground(colorLabel);
@@ -202,8 +203,8 @@ public class GD_HoaDon extends javax.swing.JPanel {
         lblSapXepThuTu.setFont(new Font(fontName, fontPlain, font16));
         pnlSapXepThuTu.add(lblSapXepThuTu);
 
-        pnlSapXepHD.add(pnlSapXepThuTu, "w 100%"); 
-        
+        pnlSapXepHD.add(pnlSapXepThuTu, "w 100%");
+
         tblHoaDon.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -217,7 +218,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
             }
         });
     }
-    
+
     private JPanel createPanelTitle() {
         JPanel pnlTitle = new JPanel();
         pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
@@ -228,31 +229,33 @@ public class GD_HoaDon extends javax.swing.JPanel {
         lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
         lblTitle.setForeground(new Color(68, 68, 68));
         pnlTitle.add(lblTitle);
-        return  pnlTitle;
+        return pnlTitle;
     }
-    
-    private void createTable(){
+
+    private void createTable() {
         tblHoaDon.fixTable(scrHoaDon);
         loadData();
-        
+
     }
-    
-    public void xoaDuLieu(){
+
+    public void xoaDuLieu() {
         DefaultTableModel df = (DefaultTableModel) tblHoaDon.getModel();
         df.setRowCount(0);
     }
-    
-    public void taiLaiDuLieu(List<HoaDon> dsHoaDon){
-        for(HoaDon hoaDon : dsHoaDon){
+
+    public void taiLaiDuLieu(List<HoaDon> dsHoaDon) {
+        for (HoaDon hoaDon : dsHoaDon) {
             tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), hoaDon.getNgayLapHoaDon(), hoaDon.getThoiGianBatDau(), hoaDon.getThoiGianKetThuc(), hoaDon.getTongTienMatHang(), hoaDon.getDonGiaPhong(), hoaDon.getTongHoaDon(), hoaDon.getNhanVien().getTenNhanVien()});
         }
     }
-    
+
     private void loadData() {
         dsHoaDon = hoaDon_Dao.getDsHoaDon();
-        dsHoaDon.forEach((hoaDon)->{
-            tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), hoaDon.getNgayLapHoaDon(), hoaDon.getThoiGianBatDau(), hoaDon.getThoiGianKetThuc(), hoaDon.getTongTienMatHang(), hoaDon.getDonGiaPhong(), hoaDon.getTongHoaDon(), hoaDon.getNhanVien().getTenNhanVien()});
-        });
+        if (dsHoaDon != null) {
+            dsHoaDon.forEach((hoaDon) -> {
+                tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), hoaDon.getNgayLapHoaDon(), hoaDon.getThoiGianBatDau(), hoaDon.getThoiGianKetThuc(), hoaDon.getTongTienMatHang(), hoaDon.getDonGiaPhong(), hoaDon.getTongHoaDon(), hoaDon.getNhanVien().getTenNhanVien()});
+            });
+        }
     }
 
     /**
