@@ -13,6 +13,7 @@ import gui.swing.event.EventOnClick;
 import gui.swing.graphics.ShadowType;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
+import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
@@ -36,10 +37,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -280,7 +285,25 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     }
     
     private void createTable(){
-        tblHoaDon.fixTable(scrHoaDon);
+        Object rows[][] = { {"","","","","","","","","","",""},{"","","","","","","","","","",""}, };
+        String columns[] = {"Mã hóa đơn","Khách hàng","Phòng","Số giờ hát", "Ngày lập hóa đơn","Giờ bắt đầu","giờ kết thúc","Tổng mặt hàng","giá phòng","Tổng hóa đơn","Nhân viên"};
+        TableModel model = new DefaultTableModel(rows, columns){
+        public Class getColumnClass(int column) {
+        Class returnValue;
+        if ((column >= 0) && (column < getColumnCount())) {
+          returnValue = getValueAt(0, column).getClass();
+        } else {
+          returnValue = Object.class;
+        }
+        return returnValue;
+      }
+    };
+    tblHoaDon.setModel(model);
+    RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    
+    tblHoaDon.setRowSorter(sorter);
+    //scrHoaDon = new JScrollPane(tblHoaDon);
+    tblHoaDon.fixTable(scrHoaDon);
        
     }
     
@@ -541,7 +564,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

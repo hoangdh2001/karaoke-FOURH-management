@@ -21,7 +21,6 @@ public interface HoaDonService {
     public List<HoaDon> getDSHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu);
     public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to);
     public List<HoaDon> sapXepTheo(String tieuChi, String thuTu);
-    
     public String layNgayLapNhoNhat();
     public String layNgayLapLonNhat();
     public List<HoaDon> sapXepHoaDonByThang(String from, String to, int thang);
@@ -31,7 +30,6 @@ public interface HoaDonService {
     public List<HoaDon> sapXepHoaDonByThang_Nam(String from, String to, int thang, int nam);
     public List<HoaDon> sapXepHoaDonByQuy_Nam(String from, String to, int quy, int nam);
     public List<HoaDon> sapXepHoaDonByThang_Quy_Nam(String from, String to, int thang, int quy, int nam);
-    
     public List<Integer> getDSThangTheoNgayLap();
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();

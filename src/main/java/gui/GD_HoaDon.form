@@ -100,8 +100,8 @@
                     <Column editable="false" title="Gi&#x1edd; K&#x1ebf;t Th&#xfa;c" type="java.lang.Object"/>
                     <Column editable="false" title="T&#x1ed5;ng M&#x1eb7;t H&#xe0;ng" type="java.lang.Object"/>
                     <Column editable="false" title="Gi&#xe1; Ph&#xf2;ng" type="java.lang.Object"/>
-                    <Column editable="true" title="T&#x1ed5;ng H&#xf3;a &#x110;&#x1a1;n" type="java.lang.Object"/>
-                    <Column editable="true" title="Nh&#xe2;n Vi&#xea;n" type="java.lang.Object"/>
+                    <Column editable="false" title="T&#x1ed5;ng H&#xf3;a &#x110;&#x1a1;n" type="java.lang.Object"/>
+                    <Column editable="false" title="Nh&#xe2;n Vi&#xea;n" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
