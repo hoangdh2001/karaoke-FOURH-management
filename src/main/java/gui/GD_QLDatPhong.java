@@ -44,7 +44,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import gui.swing.event.EventOnClick;
+import gui.swing.event.EventSelectedRow;
 
 /**
  *
@@ -63,7 +63,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     MyComboBox<String> cmbTrangThaiTK;
     private EventAction event;
     
-    private EventOnClick eventSelectedRow;
+    private EventSelectedRow eventSelectedRow;
     /**
      * Creates new form GD_QLDatPhong
      */
@@ -72,7 +72,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         buildGD_QLDatPhong();
     }
     
-    public void addEvent(EventOnClick event) {
+    public void addEvent(EventSelectedRow event) {
         this.eventSelectedRow = event;
     }
     

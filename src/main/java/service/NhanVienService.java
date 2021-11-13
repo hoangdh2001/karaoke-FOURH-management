@@ -4,6 +4,7 @@ import entity.NhanVien;
 import java.util.List;
 
 public interface NhanVienService {
+    public boolean checkConnect();
     public boolean addNhanVien(NhanVien nhanVien);
     public boolean updateNhanVien(NhanVien nhanVien);
     public boolean deleteNhanVien(String id);

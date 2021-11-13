@@ -39,8 +39,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import gui.swing.event.EventOnClick;
 import java.awt.Frame;
+import gui.swing.event.EventSelectedRow;
 
 public class GD_Chinh extends JFrame {
     
@@ -257,9 +257,9 @@ public class GD_Chinh extends JFrame {
                         GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
                         content.showForm(giaoDienKhachHang);
                         
-                        giaoDienKhachHang.addEvent(new EventOnClick() {
+                        giaoDienKhachHang.addEvent(new EventSelectedRow() {
                             @Override
-                            public void onClick(Object object) {
+                            public void selectedRow(Object object) {
                                 KhachHang khachHang = (KhachHang) object;
                                 if(!animator2.isRunning()){
                                     if(!tabShow){
@@ -283,9 +283,9 @@ public class GD_Chinh extends JFrame {
 
                         content.showForm(gD_NhanVien);
 
-                        gD_NhanVien.addEvent(new EventOnClick() {
+                        gD_NhanVien.addEvent(new EventSelectedRow() {
                             @Override
-                            public void onClick(Object object) {
+                            public void selectedRow(Object object) {
                                 
                                 
                                 NhanVien nhanVien = (NhanVien) object;

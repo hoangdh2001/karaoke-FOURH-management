@@ -20,10 +20,15 @@ import util.HibernateUtil;
 public class NhanVien_DAO implements NhanVienService {
 
     private SessionFactory sessionFactory;
-
+    
     public NhanVien_DAO() {
         HibernateUtil hibernateUtil = HibernateUtil.getInstance();
         this.sessionFactory = hibernateUtil.getSessionFactory();
+    }
+    
+    @Override
+    public boolean checkConnect() {
+        return sessionFactory.openSession().isConnected();
     }
 
     @Override
@@ -169,7 +174,6 @@ public class NhanVien_DAO implements NhanVienService {
         String sql = "select top 1 * from NhanVien "
                 + "where sdt = :x "
                 + "and email = :y";
-        
         try {
             tr.begin();
             NhanVien nhanVien = session
@@ -184,5 +188,8 @@ public class NhanVien_DAO implements NhanVienService {
         }
         return null;
     }
+
+    
+    
     
 }

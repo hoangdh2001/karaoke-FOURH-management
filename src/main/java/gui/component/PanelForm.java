@@ -1,5 +1,6 @@
 package gui.component;
 
+import gui.swing.event.EventLogin;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,9 +13,10 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
-import gui.swing.event.EventOnClick;
+import gui.swing.panel.PanelTransparent;
+import gui.swing.event.EventSelectedRow;
 
-public class PanelForm extends javax.swing.JPanel {
+public class PanelForm extends PanelTransparent {
 
     private MigLayout layout;
     private boolean isLogin;
@@ -103,8 +105,7 @@ public class PanelForm extends javax.swing.JPanel {
 
     }
 
-    public void addEventLogin(EventOnClick evt) {
-        System.out.println("Done");
+    public void addEventLogin(EventLogin evt) {
         login.addEventLogin(evt);
     }
     
