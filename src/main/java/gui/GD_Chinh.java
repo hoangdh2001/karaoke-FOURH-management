@@ -28,7 +28,6 @@ import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
 import gui.swing.event.EventMenuSelected;
-import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
@@ -45,6 +44,7 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Frame;
 import gui.swing.event.EventSelectedRow;
+import gui.swing.event.EventShowInfoOver;
 
 public class GD_Chinh extends JFrame {
     

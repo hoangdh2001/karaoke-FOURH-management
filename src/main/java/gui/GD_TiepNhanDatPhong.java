@@ -37,6 +37,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 import entity.PhieuDatPhong;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -93,11 +94,11 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private Phong phong;
     private NhanVien nhanVien;
     
-    public GD_TiepNhanDatPhong(Phong phong,NhanVien nhanVien) {
-        super();
+    public GD_TiepNhanDatPhong(Frame frame, Phong phong,NhanVien nhanVien) {
+        super(frame, true);
         setTitle("Giao phòng");
         setModal(true);
-        setResizable(false);
+//        setResizable(false);
         initComponents();
         initForm();
         this.phong = phong;
