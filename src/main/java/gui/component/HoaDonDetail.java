@@ -6,14 +6,11 @@
 package gui.component;
 
 import entity.HoaDon;
-import java.awt.Component;
-
 /**
  *
  * @author Hao
  */
 public class HoaDonDetail extends javax.swing.JPanel {
-
     private HoaDonDetail hoaDonDetail;
     private HoaDon hoaDon;
     private PanelThongTinHoaDon pnlThongTinHoaDon;
@@ -25,7 +22,6 @@ public class HoaDonDetail extends javax.swing.JPanel {
         this.hoaDon = hoaDon;
         initComponents();
         buildDisplay();
-       
     }
     
     private void buildDisplay() {
