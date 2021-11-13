@@ -7,7 +7,6 @@ import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
 import gui.swing.table2.ModelAction;
-import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,10 +23,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventOnClick;
@@ -53,10 +49,6 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         
     }
     
-    public void addEvent(EventOnClick event) {
-        this.eventSelectedRow = event;
-    }
-
     private void buildGD(){
         khachHang_Dao = new KhachHang_DAO();
 
@@ -65,7 +57,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         int fontSize = 14;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setLayout(new MigLayout("", "200[center]5[center] 20[center]push", "60[center]10"));
+        pnlTop.setLayout(new MigLayout("", "push[center]5[center] 20[center]push", "60[center]10"));
         pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
       
         JLabel lblKhachHang = new JLabel("Nhập tên/ số điện thoại (các số cuối)");
@@ -89,19 +81,12 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         btnLamMoi.addActionListener(this);
         txtTimKiem.addKeyListener(this);
         
-        createPanelHidden();
-        add(panelHidden);
         //xuLySuKien();
         createTable();
         setOpaque(false);
         setPreferredSize(new Dimension(getWidth(), 950));
     }
     
-    private void createPanelHidden() {
-        panelHidden = new PanelShadow();
-        panelHidden.setShadowType(ShadowType.CENTER);
-        panelHidden.setShadowOpacity(0.3f);
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -242,13 +227,6 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         tblKhachHang.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //Nếu click chuột trái và click 2 lần
-                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
-                    int row = tblKhachHang.getSelectedRow();
-                    String maKhachHang = tblKhachHang.getValueAt(row, 1).toString();
-                    System.out.println(khachHang_Dao.getKhachHang(maKhachHang));
-                    eventSelectedRow.onClick(khachHang_Dao.getKhachHang(maKhachHang));
-                }
             }
         });
     }
@@ -270,25 +248,6 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         loadData();
         
     }
-    
-//    private void xuLySuKien(){
-//        /*Đăng ký sự kiện*/
-//        btnLamMoi.addActionListener(this);
-//        txtTimKiem.addKeyListener(this);
-//         tblKhachHang.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                //Nếu click chuột trái và click 2 lần
-//                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
-//
-//                    String maKhachHang = tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 1).toString();
-//                    
-//                    eventSelectedRow.selectedRow(khachHang_Dao.getKhachHang(maKhachHang));
-//                }
-//            }
-//        });
-//    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblTitleBang;
