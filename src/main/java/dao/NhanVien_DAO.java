@@ -144,42 +144,19 @@ public class NhanVien_DAO implements NhanVienService {
     }
 
     @Override
-    public NhanVien getNhanVienBySdt(String sdt) {
+    public NhanVien getNhanVienBySdtOrEmail(String sdtOrEmail) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         
         String sql = "select * from NhanVien "
-                + "where sdt = :x";
-        
-        try {
-            tr.begin();
-            NhanVien nhanVien = session
-                    .createNativeQuery(sql, NhanVien.class)
-                    .setParameter("x", sdt)
-                    .getSingleResult();
-            tr.commit();
-            return nhanVien;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return null;
-    }
-
-    @Override
-    public NhanVien getNhanVienBySdt(String sdt, String email) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select top 1 * from NhanVien "
                 + "where sdt = :x "
-                + "and email = :y";
+                + "or email = :x";
+        
         try {
             tr.begin();
             NhanVien nhanVien = session
                     .createNativeQuery(sql, NhanVien.class)
-                    .setParameter("x", sdt)
-                    .setParameter("y", email)
+                    .setParameter("x", sdtOrEmail)
                     .getSingleResult();
             tr.commit();
             return nhanVien;
@@ -189,7 +166,4 @@ public class NhanVien_DAO implements NhanVienService {
         return null;
     }
 
-    
-    
-    
 }

@@ -11,6 +11,5 @@ public interface NhanVienService {
     public NhanVien getNhanVien(String id);
     public List<NhanVien> getNhanViens();
     public NhanVien getNhanVienByLogin(String sdt, byte[] matKhau);
-    public NhanVien getNhanVienBySdt(String sdt);
-    public NhanVien getNhanVienBySdt(String sdt, String email);
+    public NhanVien getNhanVienBySdtOrEmail(String sdtOrEmail);
 }

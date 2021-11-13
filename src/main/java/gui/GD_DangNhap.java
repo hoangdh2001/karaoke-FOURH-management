@@ -12,6 +12,7 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.swing.event.EventSelectedRow;
+import java.awt.Component;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLayeredPane;
@@ -79,7 +80,6 @@ public class GD_DangNhap extends javax.swing.JFrame {
                         Thread.sleep(2000);
                         nhanVien = nhanVienService.getNhanVienByLogin(sdt, matKhau);
                         if (nhanVien != null) {
-                            GD_DangNhap.this.nhanVien = nhanVien;
                             pnlLoading.setVisible(false);
                             showDLProgress();
                         } else {
@@ -93,19 +93,41 @@ public class GD_DangNhap extends javax.swing.JFrame {
             }
 
             @Override
-            public void forgotPass(String sdt, String email, byte[] rePass) {
+            public void searchUser(String sdtOrEmail, Component comShow, Component comHidden) {
                 pnlLoading.setAlpha(0.5f);
                 pnlLoading.setVisible(true);
                 new Thread(() -> {
                     try {
                         Thread.sleep(2000);
-                        NhanVien nhanVien1 = nhanVienService.getNhanVienBySdt(sdt, email);
-                            nhanVien1.setMatKhau(rePass);
-                            if (nhanVienService.updateNhanVien(nhanVien1)) {
-                                pnlForm.showMessage(Message.MessageType.SUCCESS, "Đổi mật khẩu thành công");
-                            } else {
-                                pnlForm.showMessage(Message.MessageType.ERROR, "Số điện thoại hoặc email không đúng");
-                            }
+                        nhanVien = nhanVienService.getNhanVienBySdtOrEmail(sdtOrEmail);
+                        if (nhanVien != null) {
+                            pnlLoading.setVisible(false);
+                            comShow.setVisible(true);
+                            comHidden.setVisible(false);
+                        } else {
+                            pnlLoading.setVisible(false);
+                            pnlForm.showMessage(Message.MessageType.ERROR, "Số điện thoại hoặc email không tồn tại!");
+                        }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }).start();
+            }
+
+            @Override
+            public void forgotPass(byte[] rePass) {
+                pnlLoading.setAlpha(0.5f);
+                pnlLoading.setVisible(true);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(2000);
+                        nhanVien.setMatKhau(rePass);
+                        if (nhanVienService.updateNhanVien(nhanVien)) {
+                            pnlForm.showMessage(Message.MessageType.SUCCESS, "Đổi mật khẩu thành công");
+                            pnlForm.display();
+                        } else {
+                            pnlForm.showMessage(Message.MessageType.ERROR, "Số điện thoại hoặc email không đúng");
+                        }
                         pnlLoading.setVisible(false);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
@@ -193,11 +215,11 @@ public class GD_DangNhap extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
         );
 
         pack();
