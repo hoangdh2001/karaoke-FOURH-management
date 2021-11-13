@@ -358,7 +358,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
                 }
             }
         });
-
                       
         dscBatDau.addPropertyChangeListener(new PropertyChangeListener() {
             @Override

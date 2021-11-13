@@ -7,7 +7,6 @@ package dao;
 
 import entity.HoaDon;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,11 +19,10 @@ import util.HibernateUtil;
  * @author Hao
  */
 public class HoaDon_DAO implements HoaDonService{
-    
     List<HoaDon> dsPhieu = Collections.emptyList();
     private SessionFactory sessionFactory;
 
-        public HoaDon_DAO() {
+    public HoaDon_DAO() {
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
@@ -57,12 +55,10 @@ public class HoaDon_DAO implements HoaDonService{
     public HoaDon getHoaDon(String maHoaDon) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-
         try {
             tr.begin();
             HoaDon hoaDon = session.find(HoaDon.class, maHoaDon);
             tr.commit();
-
             return hoaDon;
         } catch (Exception e) {
             System.err.println(e);
@@ -77,27 +73,6 @@ public class HoaDon_DAO implements HoaDonService{
         Transaction tr = session.getTransaction();
         String sql = "select h.* from [dbo].[HoaDon] h\n" +
                         "where h.ngayLapHoaDon between CONVERT(date, '"+from+"') and CONVERT(date, '"+to+"')";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepTheo(String tieuChi, String thuTu) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select h.* from [dbo].[HoaDon] h\n" +
-                        "  order by h."+tieuChi+" "+thuTu+"";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -218,7 +193,7 @@ public class HoaDon_DAO implements HoaDonService{
     @Override
     public List<HoaDon> sapXepHoaDonByThang(String from, String to, int thang) {
         Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();//"+from+""+to+"
+        Transaction tr = session.getTransaction();
         String sql = "select * from [dbo].[HoaDon]  \n" +
                 "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '"+from+"') and CONVERT(date, '"+to+"')) \n" +
                 "	and (DATEPART(month, ngayLapHoaDon) = "+thang+")";
@@ -240,7 +215,7 @@ public class HoaDon_DAO implements HoaDonService{
     @Override
     public List<HoaDon> sapXepHoaDonByNam(String from, String to, int nam) {
         Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();//"+from+""+to+"
+        Transaction tr = session.getTransaction();
         String sql = "select * from [dbo].[HoaDon]  \n" +
                 "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '"+from+"') and CONVERT(date, '"+to+"')) \n" +
                 "	and (DATEPART(year, ngayLapHoaDon) = "+nam+")";
@@ -284,7 +259,7 @@ public class HoaDon_DAO implements HoaDonService{
     @Override
     public List<HoaDon> sapXepHoaDonByThang_Quy(String from, String to, int thang, int quy) {
         Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();//"+from+""+to+"
+        Transaction tr = session.getTransaction();
         String sql = "select * from [dbo].[HoaDon]  \n" +
                 "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '"+from+"') and CONVERT(date, '"+to+"')) \n" +
                 "	and (DATEPART(quarter, ngayLapHoaDon) = "+quy+" and DATEPART(month, ngayLapHoaDon) = "+thang+")";
@@ -306,7 +281,7 @@ public class HoaDon_DAO implements HoaDonService{
     @Override
     public List<HoaDon> sapXepHoaDonByThang_Nam(String from, String to, int thang, int nam) {
         Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();//"+from+""+to+"
+        Transaction tr = session.getTransaction();
         String sql = "select * from [dbo].[HoaDon]  \n" +
                 "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '"+from+"') and CONVERT(date, '"+to+"')) \n" +
                 "	and (DATEPART(year, ngayLapHoaDon) = "+nam+" and DATEPART(month, ngayLapHoaDon) = "+thang+")";
@@ -328,7 +303,7 @@ public class HoaDon_DAO implements HoaDonService{
     @Override
     public List<HoaDon> sapXepHoaDonByQuy_Nam(String from, String to, int quy, int nam) {
         Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();//"+from+""+to+"
+        Transaction tr = session.getTransaction();
         String sql = "select * from [dbo].[HoaDon]  \n" +
                 "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '"+from+"') and CONVERT(date, '"+to+"')) \n" +
                 "	and (DATEPART(year, ngayLapHoaDon) = "+nam+" and DATEPART(quarter, ngayLapHoaDon) = "+quy+")";
@@ -350,7 +325,7 @@ public class HoaDon_DAO implements HoaDonService{
     @Override
     public List<HoaDon> sapXepHoaDonByThang_Quy_Nam(String from, String to, int thang, int quy, int nam) {
         Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();//"+from+""+to+"
+        Transaction tr = session.getTransaction();
         String sql = "select * from [dbo].[HoaDon]  \n" +
                 "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '"+from+"') and CONVERT(date, '"+to+"')) \n" +
                 "	and (DATEPART(year, ngayLapHoaDon) = "+nam+" and DATEPART(quarter, ngayLapHoaDon) = "+quy+" and DATEPART(month, ngayLapHoaDon) = "+thang+")";
@@ -428,7 +403,4 @@ public class HoaDon_DAO implements HoaDonService{
         session.close();
         return null;
     }
-
-    
-
 }

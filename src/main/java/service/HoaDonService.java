@@ -20,7 +20,6 @@ public interface HoaDonService {
     public List<HoaDon> getDSHoaDonByTenPhong(String tenPhong);
     public List<HoaDon> getDSHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu);
     public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to);
-    public List<HoaDon> sapXepTheo(String tieuChi, String thuTu);
     public String layNgayLapNhoNhat();
     public String layNgayLapLonNhat();
     public List<HoaDon> sapXepHoaDonByThang(String from, String to, int thang);
@@ -33,7 +32,4 @@ public interface HoaDonService {
     public List<Integer> getDSThangTheoNgayLap();
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();
-    
-    
-    
 }
