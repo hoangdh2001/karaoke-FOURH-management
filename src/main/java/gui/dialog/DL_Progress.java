@@ -98,6 +98,8 @@ public class DL_Progress extends javax.swing.JDialog {
         bg.setShadowSize(15);
         bg.setLayout(new java.awt.CardLayout());
 
+        pnlProfile.setBackground(new java.awt.Color(255, 255, 255));
+
         imageAvatar1.setForeground(new java.awt.Color(51, 51, 51));
         imageAvatar1.setBorderSize(3);
         imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/1200px-Image_created_with_a_mobile_phone.png"))); // NOI18N
@@ -161,6 +163,8 @@ public class DL_Progress extends javax.swing.JDialog {
         );
 
         bg.add(pnlProfile, "card2");
+
+        pnlProgress.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout pnlProgressLayout = new javax.swing.GroupLayout(pnlProgress);
         pnlProgress.setLayout(pnlProgressLayout);

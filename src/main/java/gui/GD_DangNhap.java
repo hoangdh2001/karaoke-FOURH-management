@@ -72,9 +72,9 @@ public class GD_DangNhap extends javax.swing.JFrame {
         pnlForm.addEventLogin(new EventLogin() {
             @Override
             public void login(String sdt, byte[] matKhau) {
+                pnlLoading.setAlpha(0.5f);
+                pnlLoading.setVisible(true);
                 new Thread(() -> {
-                    pnlLoading.setAlpha(0.5f);
-                    pnlLoading.setVisible(true);
                     try {
                         Thread.sleep(2000);
                         nhanVien = nhanVienService.getNhanVienByLogin(sdt, matKhau);
@@ -94,17 +94,23 @@ public class GD_DangNhap extends javax.swing.JFrame {
 
             @Override
             public void forgotPass(String sdt, String email, byte[] rePass) {
-                NhanVien nhanVien = nhanVienService.getNhanVienBySdt(sdt, email);
-                if (nhanVien != null) {
-                    nhanVien.setMatKhau(rePass);
-                    if (nhanVienService.updateNhanVien(nhanVien)) {
-                        System.out.println("Đổi mật khẩu thành công");
-                    } else {
-                        System.out.println("Đổi mật khẩu thất bại");
+                pnlLoading.setAlpha(0.5f);
+                pnlLoading.setVisible(true);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(2000);
+                        NhanVien nhanVien1 = nhanVienService.getNhanVienBySdt(sdt, email);
+                            nhanVien1.setMatKhau(rePass);
+                            if (nhanVienService.updateNhanVien(nhanVien1)) {
+                                pnlForm.showMessage(Message.MessageType.SUCCESS, "Đổi mật khẩu thành công");
+                            } else {
+                                pnlForm.showMessage(Message.MessageType.ERROR, "Số điện thoại hoặc email không đúng");
+                            }
+                        pnlLoading.setVisible(false);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else {
-                    System.out.println("Sdt hoặc email sai");
-                }
+                }).start();
             }
         });
     }
@@ -187,11 +193,11 @@ public class GD_DangNhap extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
         );
 
         pack();

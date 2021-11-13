@@ -7,12 +7,12 @@ import java.awt.event.MouseAdapter;
 import javax.swing.JPanel;
 
 public class PanelTransparent extends JPanel {
+    
+    private float alpha = 1f;
 
     public void setAlpha(float alpha) {
         this.alpha = alpha;
     }
-
-    private float alpha = 1f;
 
     public PanelTransparent() {
         setOpaque(false);
