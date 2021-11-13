@@ -113,7 +113,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         pnlThoiGianHD.setOpaque(false);
 
         pnlThoiGianHD.setLayout(new MigLayout("", "10[][center] 50[] [center]10", "60[][center]10[center]"));
-        pnlForm.add(pnlThoiGianHD, "w 50%, h 200!");
+        pnlForm.add(pnlThoiGianHD, "w 60%, h 200!");
 
         JLabel lblChonThoiGian = new JLabel("Chọn thời gian");
         lblChonThoiGian.setFont(new Font(fontName, fontPlain, font16));
@@ -128,7 +128,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         dscBatDau.setOpaque(false);
         dscBatDau.setDateFormatString("yyyy-MM-dd");
         dscBatDau.setFont(new Font(fontName, fontPlain, font16));
-        pnlThoiGianHD.add(dscBatDau, "w 60%, h 36!");
+        pnlThoiGianHD.add(dscBatDau, "w 50%, h 36!");
         JLabel lblDen;
 
         // Chọn thời gian kết thúc
@@ -148,7 +148,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         cmbNam.setBorderLine(true);
         cmbNam.setBorderRadius(10);
         cmbNam.addItem("Lọc theo năm");
-        pnlCmbThoiGian.add(cmbNam, "w 30%, h 36!");
+        pnlCmbThoiGian.add(cmbNam, "w 32%, h 36!");
         
         //Tùy chỉnh
         cmbQuy = new MyComboBox<>();
@@ -156,14 +156,14 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         cmbQuy.setBorderLine(true);
         cmbQuy.addItem("Lọc theo quý");
         cmbQuy.setBorderRadius(10);
-        pnlCmbThoiGian.add(cmbQuy, "w 30%, h 36!");
+        pnlCmbThoiGian.add(cmbQuy, "w 32%, h 36!");
         
         cmbThang = new MyComboBox<>();
         cmbThang.setFont(new Font(fontName, fontPlain, font16));
         cmbThang.setBorderLine(true);
         cmbThang.addItem("Lọc theo tháng");
         cmbThang.setBorderRadius(10);
-        pnlCmbThoiGian.add(cmbThang, "w 30%, h 36!");
+        pnlCmbThoiGian.add(cmbThang, "w 32%, h 36!");
         /*
          * End: group Chọn thời gian bắt đầu
          */
