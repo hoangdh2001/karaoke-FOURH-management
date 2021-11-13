@@ -104,10 +104,10 @@ public class GD_Chinh extends JFrame {
             public void timingEvent(float fraction) {
                 double width;
                 if (menu.isShowMenu()) {
-                    width = 70 + (160 * (1f - fraction));
+                    width = 50 + (180 * (1f - fraction));
                     menu.setAlpha(1f - fraction);
                 } else {
-                    width = 70 + (160 * fraction);
+                    width = 50 + (180 * fraction);
                     menu.setAlpha(fraction);
                 }
                 layout.setComponentConstraints(menu, "w " + width + "!, spany 2");
@@ -325,7 +325,7 @@ public class GD_Chinh extends JFrame {
             public void showPopup(Component com) {
                 MenuItem item = (MenuItem) com;
                 PopupMenu popup = new PopupMenu(GD_Chinh.this, item.getIndex(), item.getEventSelected(), Color.WHITE, item.getMenu().getSubMenu());
-                int x = GD_Chinh.this.getX() + 70;
+                int x = GD_Chinh.this.getX() + 50;
                 int y = GD_Chinh.this.getY() + com.getY() + 90;
                 popup.setLocation(x, y);
                 popup.setVisible(true);

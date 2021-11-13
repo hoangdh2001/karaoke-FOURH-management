@@ -59,7 +59,7 @@ public class MenuButton extends JButton {
         setForeground(foreground);
         setFocusable(false);
         buidMenuButton();
-        setBorder(new EmptyBorder(1, 20, 1, 1));
+        setBorder(new EmptyBorder(1, 13, 1, 1));
     }
 
     public MenuButton(String text, Color foreground) {
