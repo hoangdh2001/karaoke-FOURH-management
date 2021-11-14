@@ -9,7 +9,7 @@ import com.toedter.calendar.JDateChooser;
 import dao.HoaDon_DAO;
 import entity.HoaDon;
 import gui.swing.button.Button;
-import gui.swing.event.EventOnClick;
+import gui.swing.event.EventSelectedRow;
 import gui.swing.graphics.ShadowType;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
@@ -57,14 +57,18 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     MyTextField txtTimKiem;
     
     private PanelShadow panelHidden;
-    private EventOnClick eventOnClick;
+
     private MyComboBox<Object> cmbQuy;
     private MyComboBox<Object> cmbThang;
     private MyComboBox<Object> cmbNam;
     private Button btnLamMoi;
     private List<Integer> dsThang, dsQuy, dsNam;
+
+    private EventSelectedRow eventOnClick;
+
+
     
-    public void addEvent(EventOnClick eventOnClick) {
+    public void addEvent(EventSelectedRow eventOnClick) {
         this.eventOnClick= eventOnClick;
     }
     /**
@@ -197,6 +201,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         //cmbCot.addItem("Chọn cột cần tìm");
         pnlTimKiemHD.add(cmbCot, "span,w 100%, h 36!, wrap");
         
+
         // Tìm kiếm  
         txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
@@ -220,6 +225,20 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         cmbThang.addActionListener(this);
         cmbNam.addActionListener(this);
         xuLySuKien();
+
+        tblHoaDon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //Nếu click chuột trái và click 2 lần
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    int row = tblHoaDon.getSelectedRow();
+                    String maHoaDon = tblHoaDon.getValueAt(row, 0).toString();
+                    System.out.println(hoaDon_Dao.getHoaDon(maHoaDon));
+                    eventOnClick.selectedRow(hoaDon_Dao.getHoaDon(maHoaDon));
+                }
+            }
+        });
+
     }
     
     private JPanel createPanelTitle() {
@@ -282,7 +301,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
                     int row = tblHoaDon.getSelectedRow();
                     String maHoaDon = tblHoaDon.getValueAt(row, 0).toString();
                     System.out.println(hoaDon_Dao.getHoaDon(maHoaDon));
-                    eventOnClick.onClick(hoaDon_Dao.getHoaDon(maHoaDon));
+                    eventOnClick.selectedRow(hoaDon_Dao.getHoaDon(maHoaDon));
                 }
             }
         });

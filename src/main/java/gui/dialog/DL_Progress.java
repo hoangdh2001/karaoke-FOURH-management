@@ -3,6 +3,7 @@ package gui.dialog;
 import entity.NhanVien;
 import gui.GD_Chinh;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.jdesktop.animation.timing.Animator;
@@ -35,7 +36,7 @@ public class DL_Progress extends javax.swing.JDialog {
                 if (!show) {
                     dispose();
                     if(openGD_Chinh) {
-                        new GD_Chinh("Quản lý KaraokeFourH", nhanVien).setVisible(true);
+                        new GD_Chinh((Frame) getParent(), "Quản lý KaraokeFourH", nhanVien).setVisible(true);
                     } else {
                         getParent().setVisible(true);
                     }
@@ -45,8 +46,11 @@ public class DL_Progress extends javax.swing.JDialog {
         animator = new Animator(300, target);
         animator.setResolution(0);
         animator.setAcceleration(0.5f);
+        
+        lblName.setText(nhanVien.getTenNhanVien());
+        lblRole.setText(nhanVien.getLoaiNhanVien().getTenLoaiNV());
     }
-
+    
     @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
@@ -79,10 +83,10 @@ public class DL_Progress extends javax.swing.JDialog {
         bg = new gui.swing.panel.LayerPaneShadow();
         pnlProfile = new gui.swing.panel.PanelTransparent();
         imageAvatar1 = new gui.swing.image.ImageAvatar();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        button1 = new gui.swing.button.Button();
-        button2 = new gui.swing.button.Button();
+        lblName = new javax.swing.JLabel();
+        lblRole = new javax.swing.JLabel();
+        btnCancel = new gui.swing.button.Button();
+        btnContinue = new gui.swing.button.Button();
         pnlProgress = new gui.swing.panel.PanelTransparent();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -94,31 +98,33 @@ public class DL_Progress extends javax.swing.JDialog {
         bg.setShadowSize(15);
         bg.setLayout(new java.awt.CardLayout());
 
+        pnlProfile.setBackground(new java.awt.Color(255, 255, 255));
+
         imageAvatar1.setForeground(new java.awt.Color(51, 51, 51));
         imageAvatar1.setBorderSize(3);
         imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/1200px-Image_created_with_a_mobile_phone.png"))); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel1.setText("Đỗ Huy Hoàng");
+        lblName.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        lblName.setText("Đỗ Huy Hoàng");
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel2.setText("Admin");
+        lblRole.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        lblRole.setText("Admin");
 
-        button1.setText("Hủy");
-        button1.setBorderRadius(5);
-        button1.setBorderline(true);
-        button1.addActionListener(new java.awt.event.ActionListener() {
+        btnCancel.setText("Hủy");
+        btnCancel.setBorderRadius(5);
+        btnCancel.setBorderline(true);
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
+                btnCancelActionPerformed(evt);
             }
         });
 
-        button2.setText("Tiếp tục");
-        button2.setBorderRadius(5);
-        button2.setBorderline(true);
-        button2.addActionListener(new java.awt.event.ActionListener() {
+        btnContinue.setText("Tiếp tục");
+        btnContinue.setBorderRadius(5);
+        btnContinue.setBorderline(true);
+        btnContinue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button2ActionPerformed(evt);
+                btnContinueActionPerformed(evt);
             }
         });
 
@@ -129,15 +135,15 @@ public class DL_Progress extends javax.swing.JDialog {
             .addGroup(pnlProfileLayout.createSequentialGroup()
                 .addGap(148, 148, 148)
                 .addGroup(pnlProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1)
+                    .addComponent(lblName)
                     .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(lblRole))
                 .addContainerGap(148, Short.MAX_VALUE))
             .addGroup(pnlProfileLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
         );
         pnlProfileLayout.setVerticalGroup(
@@ -146,17 +152,19 @@ public class DL_Progress extends javax.swing.JDialog {
                 .addGap(24, 24, 24)
                 .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
+                .addComponent(lblName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addComponent(lblRole)
                 .addGap(18, 18, 18)
                 .addGroup(pnlProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
         bg.add(pnlProfile, "card2");
+
+        pnlProgress.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout pnlProgressLayout = new javax.swing.GroupLayout(pnlProgress);
         pnlProgress.setLayout(pnlProgressLayout);
@@ -186,21 +194,21 @@ public class DL_Progress extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         backGD_DangNhap();
-    }//GEN-LAST:event_button1ActionPerformed
+    }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+    private void btnContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinueActionPerformed
         openGD_Chinh();
-    }//GEN-LAST:event_button2ActionPerformed
+    }//GEN-LAST:event_btnContinueActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.swing.panel.LayerPaneShadow bg;
-    private gui.swing.button.Button button1;
-    private gui.swing.button.Button button2;
+    private gui.swing.button.Button btnCancel;
+    private gui.swing.button.Button btnContinue;
     private gui.swing.image.ImageAvatar imageAvatar1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblRole;
     private gui.swing.panel.PanelTransparent pnlProfile;
     private gui.swing.panel.PanelTransparent pnlProgress;
     // End of variables declaration//GEN-END:variables

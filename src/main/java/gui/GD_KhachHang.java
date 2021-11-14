@@ -26,7 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import gui.swing.event.EventOnClick;
+import gui.swing.event.EventSelectedRow;
 
 /**
  *
@@ -39,7 +39,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     private Button btnLamMoi;
     private EventAction eventAction;
     private PanelShadow panelHidden;
-    private EventOnClick eventSelectedRow;
+    private EventSelectedRow eventSelectedRow;
     /**
      * Creates new form GD_KhachHang
      */

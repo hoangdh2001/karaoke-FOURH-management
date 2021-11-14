@@ -13,7 +13,6 @@ import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TrangThaiPhieuDat;
 import gui.swing.graphics.ShadowType;
-import gui.swing.event.EventOnClick;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
@@ -45,6 +44,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
+
+import gui.swing.event.EventSelectedRow;
+
 /**
  *
  * @author Hao
@@ -59,9 +61,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     private JDateChooser dcsNgayDatTK; 
     MyComboBox<String> cmbTrangThaiTK;
     
+    private EventSelectedRow eventSelectedRow;
     private EventAction event;
     private PanelShadow panelHidden;
-    private EventOnClick eventOnClick;
     /**
      * Creates new form GD_QLDatPhong
      */
@@ -70,8 +72,8 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         buildGD_QLDatPhong();
     }
     
-    public void addEvent(EventOnClick eventOnClick) {
-        this.eventOnClick= eventOnClick;
+    public void addEvent(EventSelectedRow event) {
+        this.eventSelectedRow = event;
     }
     
     private void buildGD_QLDatPhong() {
@@ -206,7 +208,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                     int row = tblPhieuDatPhong.getSelectedRow();
                     String maPhieu = tblPhieuDatPhong.getValueAt(row, 1).toString();
                     System.out.println(phieuDatPhong_Dao.getPhieuDatPhong(maPhieu));
-                    eventOnClick.onClick(phieuDatPhong_Dao.getPhieuDatPhong(maPhieu));
+                    eventSelectedRow.selectedRow(phieuDatPhong_Dao.getPhieuDatPhong(maPhieu));
                 }
             }
         });
