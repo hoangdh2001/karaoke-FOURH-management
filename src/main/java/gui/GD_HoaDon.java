@@ -104,7 +104,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         Color colorLabel = new Color(47, 72, 210);
         int separatorHeight = 150;
        
-        pnlForm.setLayout(new MigLayout("", "[center][center][center]", "[center][center]"));
+        pnlForm.setLayout(new MigLayout("", "[center][center]", "[center][center]"));
         pnlForm.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!, wrap");
         /*
          * Begin: group Chọn thời gian 
@@ -112,29 +112,34 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         JPanel pnlThoiGianHD = new JPanel();
         pnlThoiGianHD.setOpaque(false);
 
-        pnlThoiGianHD.setLayout(new MigLayout("", "10[center] 10 [center]10", "60[][center]10[center]"));
-        pnlForm.add(pnlThoiGianHD, "w 40%, h 200!");
+        pnlThoiGianHD.setLayout(new MigLayout("", "10[][center] 50[] [center]10", "60[][center]10[center]"));
+        pnlForm.add(pnlThoiGianHD, "w 60%, h 200!");
 
         JLabel lblChonThoiGian = new JLabel("Chọn thời gian");
         lblChonThoiGian.setFont(new Font(fontName, fontPlain, font16));
         lblChonThoiGian.setForeground(colorLabel);
         pnlThoiGianHD.add(lblChonThoiGian, "span, w 100%, h 30!, wrap");
+        JLabel lblTu;
 
         // Chọn thời gian bắt đầu
+        pnlThoiGianHD.add(lblTu = new JLabel("Từ: "));
+        lblTu.setFont(new Font(fontName, fontPlain, font16));
         dscBatDau = new JDateChooser();
         dscBatDau.setOpaque(false);
         dscBatDau.setDateFormatString("yyyy-MM-dd");
         dscBatDau.setFont(new Font(fontName, fontPlain, font16));
         pnlThoiGianHD.add(dscBatDau, "w 50%, h 36!");
+        JLabel lblDen;
 
         // Chọn thời gian kết thúc
+        pnlThoiGianHD.add(lblDen = new JLabel("Đến: "));
+        lblDen.setFont(new Font(fontName, fontPlain, font16));
         dscKetThuc = new JDateChooser();
         dscKetThuc.setOpaque(false);
-        //dscKetThuc.setDateFormatString("yyyy-MM-dd");
         dscKetThuc.setFont(new Font(fontName, fontPlain, font16));
         pnlThoiGianHD.add(dscKetThuc, "w 50%, h 36!, wrap");
 
-        JPanel pnlCmbThoiGian = new JPanel(new MigLayout("", "0[center]20[center]20[center]0", "[center][center]"));
+        JPanel pnlCmbThoiGian = new JPanel(new MigLayout("", "0[center]push[center]push[center]0", "[center][center]"));
         pnlCmbThoiGian.setBackground(Color.WHITE);
         pnlThoiGianHD.add(pnlCmbThoiGian, "span, w 100%");
         
@@ -143,30 +148,28 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         cmbNam.setBorderLine(true);
         cmbNam.setBorderRadius(10);
         cmbNam.addItem("Lọc theo năm");
-        pnlCmbThoiGian.add(cmbNam, "w 30%, h 36!");
+        pnlCmbThoiGian.add(cmbNam, "w 32%, h 36!");
         
         //Tùy chỉnh
         cmbQuy = new MyComboBox<>();
-        //new Object[]{"Lọc theo quý","Quý 1","Quý 2","Quý 3","Quý 4"}
         cmbQuy.setFont(new Font(fontName, fontPlain, font16));
         cmbQuy.setBorderLine(true);
         cmbQuy.addItem("Lọc theo quý");
         cmbQuy.setBorderRadius(10);
-        pnlCmbThoiGian.add(cmbQuy, "w 30%, h 36!");
+        pnlCmbThoiGian.add(cmbQuy, "w 32%, h 36!");
         
         cmbThang = new MyComboBox<>();
-        //new Object[]{"Lọc theo tháng","Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"}
         cmbThang.setFont(new Font(fontName, fontPlain, font16));
         cmbThang.setBorderLine(true);
         cmbThang.addItem("Lọc theo tháng");
         cmbThang.setBorderRadius(10);
-        pnlCmbThoiGian.add(cmbThang, "w 30%, h 36!");
+        pnlCmbThoiGian.add(cmbThang, "w 32%, h 36!");
         /*
          * End: group Chọn thời gian bắt đầu
          */
         JSeparator spr1 = new JSeparator(SwingConstants.VERTICAL);
         spr1.setPreferredSize(new Dimension(2, separatorHeight));
-        pnlForm.add(spr1,"pos 0.4al 0.9al n n");
+        pnlForm.add(spr1,"pos 0.6al 0.9al n n");
         
         /* 
          * Begin: group Tìm kiếm
@@ -192,64 +195,27 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         cmbCot.setBorderLine(true);
         cmbCot.setBorderRadius(10);
         //cmbCot.addItem("Chọn cột cần tìm");
-        pnlTimKiemHD.add(cmbCot, "w 100%, h 36!, wrap");
+        pnlTimKiemHD.add(cmbCot, "span,w 100%, h 36!, wrap");
         
         // Tìm kiếm  
         txtTimKiem = new MyTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font16));
         txtTimKiem.setBorderLine(true);
         txtTimKiem.setBorderRadius(5);
+        txtTimKiem.setHint("Nhập thông tin tìm kiếm theo tùy chọn của bạn.");
         pnlTimKiemHD.add(txtTimKiem, "w 100%, h 36!");
 
-        /*
-         * End: group Tìm kiếm
-         */
-        JSeparator spr2 = new JSeparator(SwingConstants.VERTICAL);
-        spr2.setPreferredSize(new Dimension(2, separatorHeight));
-        pnlForm.add(spr2,"pos 0.8al 0.9al n n");
-        /*
-         * Begin: group Sắp xếp
-         */
-        JPanel pnlSapXepHD = new JPanel();
-        pnlSapXepHD.setOpaque(false);
-
-        pnlSapXepHD.setLayout(new MigLayout("", "10[][]10", "60[][center]15[center]10"));
-        pnlForm.add(pnlSapXepHD, "w 20%, h 200!");
-        
-        JLabel lblSapXep = new JLabel("Sắp xếp");
-        lblSapXep.setFont(new Font(fontName, fontPlain, font16));
-        lblSapXep.setForeground(colorLabel);
-        pnlSapXepHD.add(lblSapXep, "span, w 100%, h 30!, wrap");
-
-        //Chọn cột cần sắp xếp  
-        cmbSapXep = new MyComboBox<>(new Object[]{"Tất cả","Đơn giá phòng","Số giờ hát","Tổng hóa đơn","Tổng tiền mặt hàng"});
-        cmbSapXep.setFont(new Font(fontName, fontPlain, font16));
-        cmbSapXep.setBorderLine(true);
-        cmbSapXep.setBorderRadius(10);
-        pnlSapXepHD.add(cmbSapXep, "span, w 100%, h 36!, wrap");
-        
-        //Sắp xếp từ bé đến lớn
-        JPanel pnlSapXepThuTu = new JPanel();
-        pnlSapXepThuTu.setOpaque(false);
-        pnlSapXepThuTu.setLayout(new MigLayout("", "0[]push[]0", "0[center]0"));
-        pnlSapXepHD.add(pnlSapXepThuTu, "span,w 100%,h 40! "); 
-        
-        chkSapXepThuTu = new JCheckBox("Bé đến lớn");
-        chkSapXepThuTu.setOpaque(false);
-        chkSapXepThuTu.setFont(new Font(fontName, fontPlain, font14));
-        pnlSapXepThuTu.add(chkSapXepThuTu);
-        
         // Nút Làm mới
         btnLamMoi = new Button("Làm mới");
         btnLamMoi.setFont(new Font(fontName, fontPlain, font14));
         btnLamMoi.setBackground(colorBtn);
         btnLamMoi.setBorderRadius(5);
         btnLamMoi.setBorderline(true);
-        pnlSapXepThuTu.add(btnLamMoi, " w 100!, h 38!");
+        pnlTimKiemHD.add(btnLamMoi, " w 100!, h 38!");
 
         /*Đăng ký sự kiện*/
+        cmbCot.addActionListener(this);
         btnLamMoi.addActionListener(this);
-        cmbSapXep.addActionListener(this);
         cmbQuy.addActionListener(this);
         cmbThang.addActionListener(this);
         cmbNam.addActionListener(this);
@@ -569,8 +535,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
             cmbThang.setSelectedIndex(0);
             cmbCot.setSelectedIndex(0);
             cmbNam.setSelectedIndex(0);
-            cmbSapXep.setSelectedIndex(0);
-            chkSapXepThuTu.setSelected(false);
             cmbQuy.setSelectedIndex(0);
             txtTimKiem.requestFocus();
             xoaDuLieu();
@@ -698,6 +662,17 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
                     taiLaiDuLieu(dsHoaDon);
                 }
             }
+        }
+        if(obj.equals(cmbCot)){
+            if(cmbCot.getSelectedIndex()==0){
+                    txtTimKiem.setHint("Nhập thông tin tìm kiếm theo tùy chọn của bạn.");
+                }else if(cmbCot.getSelectedItem().toString().equals("Mã hóa đơn")){
+                    txtTimKiem.setHint("Nhập mã hóa đơn muốn tìm.");
+                }else if(cmbCot.getSelectedItem().toString().equals("Khách hàng")){
+                    txtTimKiem.setHint("Nhập tên khách hàng muốn tìm.");
+                }else{
+                    txtTimKiem.setHint("Nhập tên phòng hát muốn tìm.");
+                }
         }
     }
 }
