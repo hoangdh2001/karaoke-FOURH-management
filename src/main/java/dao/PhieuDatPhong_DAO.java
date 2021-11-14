@@ -21,9 +21,10 @@ import util.HibernateUtil;
  *
  * @author Hao
  */
-public class PhieuDatPhong_DAO implements PhieuDatPhongService {
-
-    List<PhieuDatPhong> dsPhieu = Collections.emptyList();
+public class PhieuDatPhong_DAO implements PhieuDatPhongService{
+    
+    List<PhieuDatPhong> dsPhieu = new ArrayList<>();
+            //Collections.emptyList();
     private SessionFactory sessionFactory;
 
     public PhieuDatPhong_DAO() {

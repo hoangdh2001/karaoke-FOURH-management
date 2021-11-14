@@ -32,7 +32,7 @@ public class HoaDon {
     private Date thoiGianKetThuc;
     @OneToMany(mappedBy = "hoaDon")
     private List<ChiTietHoaDon> dsChiTietHoaDon;
-    private float gioHat;
+    private String gioHat;
     @Column(columnDefinition = "money")
     private double donGiaPhong;
     @Column(columnDefinition = "money")
@@ -49,22 +49,21 @@ public class HoaDon {
      * @param thoiGianBatDau
      * @param thoiGianKetThuc
      */
-    public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien, Date ngayLapHoaDon,
-            Date thoiGianBatDau, Date thoiGianKetThuc) {
-        this.maHoaDon = maHoaDon;
-        this.khachHang = khachHang;
-        this.phong = phong;
-        this.nhanVien = nhanVien;
-        this.ngayLapHoaDon = ngayLapHoaDon;
-        this.thoiGianBatDau = thoiGianBatDau;
-        this.thoiGianKetThuc = thoiGianKetThuc;
-        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
-        this.gioHat = getGioHat();
-        this.donGiaPhong = getDonGiaPhong();
-        this.tongTienMatHang = getTongTienMatHang();
-        this.tongHoaDon = getTongHoaDon();
-        
-    }
+//    public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien,Date ngayLapHoaDon,
+//            Date thoiGianBatDau, Date thoiGianKetThuc) {
+//        this.maHoaDon = maHoaDon;
+//        this.khachHang = khachHang;
+//        this.phong = phong;
+//        this.nhanVien = nhanVien;
+//        this.ngayLapHoaDon = ngayLapHoaDon;
+//        this.thoiGianBatDau = thoiGianBatDau;
+//        this.thoiGianKetThuc = thoiGianKetThuc;
+//        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+//        this.donGiaPhong = getDonGiaPhong();
+//        this.tongTienMatHang = getTongTienMatHang();
+//        this.tongHoaDon = getTongHoaDon();
+//        
+//    }
 
     /**
      * @param maHoaDon
@@ -209,15 +208,20 @@ public class HoaDon {
     /**
      * @return the gioHat
      */
-    public float getGioHat() {
-        return ((thoiGianKetThuc.getTime() - thoiGianBatDau.getTime()) / 1000 / 60 / 60);
+    public String getGioHat() {
+        return gioHat;
     }
 
     /**
      * @return the donGiaPhong
      */
     public double getDonGiaPhong() {
-        return gioHat * phong.getLoaiPhong().getGiaPhong();
+        String[] time = gioHat.split(":");
+        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
+    }
+    
+    public double  getDonGiaPhongCu(){
+        return donGiaPhong;
     }
 
     /**

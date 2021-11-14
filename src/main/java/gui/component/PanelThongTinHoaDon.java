@@ -34,12 +34,12 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
         SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
         lblTTMaHD.setText(hoaDon.getMaHoaDon());
         lblTTTenKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
-        lblTTGia.setText(dcf.format(hoaDon.getDonGiaPhong()));
+        lblTTGia.setText(dcf.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()));
         lblTTTenPhong.setText(hoaDon.getPhong().getTenPhong());
         lblTTLoaiPhong.setText(hoaDon.getPhong().getLoaiPhong().getTenLoaiPhong());
         lblTTNgayLap.setText(fm1.format(hoaDon.getNgayLapHoaDon()));
         lblTTSDTKH.setText(hoaDon.getKhachHang().getSoDienThoai());
-        lblTTSoGio.setText(Float.toString(hoaDon.getGioHat()));
+        lblTTSoGio.setText(hoaDon.getGioHat());
         lblTTTGBatDau.setText(fm2.format(hoaDon.getThoiGianBatDau()));
         lblTTTGKetThuc.setText(fm2.format(hoaDon.getThoiGianKetThuc()));
         lblTTTongTien.setText(dcf.format(hoaDon.getTongHoaDon()));

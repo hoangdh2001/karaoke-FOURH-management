@@ -178,9 +178,6 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="lblHinh">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="D:\PT_N1\QL_KARAOKE_FOUH\src\main\resources\icon\audio.jpg"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="jLabel1"/>
       </Properties>
     </Component>
