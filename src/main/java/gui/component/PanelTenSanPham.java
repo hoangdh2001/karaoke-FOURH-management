@@ -85,7 +85,7 @@ public class PanelTenSanPham extends javax.swing.JPanel {
         cbSPDaCo.removeAllItems();
         cbSPDaCo.addItem("Chọn sản phẩm");
         if(!id.equalsIgnoreCase("")){
-            List<MatHang> listMH = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang(id);
+            List<MatHang> listMH = nhaCungCapVaNhapHang_DAO.getDanhSachMatHangByLoaiDichVu(id);
             for (int i = 0; i < listMH.size(); i++) {
                 MatHang dv = listMH.get(i);
                 cbSPDaCo.addItem(new ObjectComboBox(dv.getTenMatHang(),dv.getMaMatHang()));  

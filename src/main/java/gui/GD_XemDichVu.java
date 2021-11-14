@@ -4,6 +4,7 @@
  */
 package gui;
 
+import dao.NhaCungCapVaNhapHang_DAO;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.MyTable;
@@ -11,11 +12,30 @@ import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -24,6 +44,14 @@ import net.miginfocom.swing.MigLayout;
 public class GD_XemDichVu extends javax.swing.JPanel {
     
     private MyTable table;
+    
+    private MyTextField txtNhap;
+    
+    private MyComboBox<String> cbLoaiPhong;
+    
+    private Button btnXuatFile;
+    
+    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
     
     private String fontName = "sansserif";
     private int fontPlain = Font.PLAIN;
@@ -40,6 +68,8 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         initComponents();
         initSearch();
         initTable();
+        initData();
+        addAction();
     }
     
     public void initSearch(){
@@ -49,18 +79,18 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         JLabel lblTimKiem = new JLabel("Tìm Kiếm :");
         lblTimKiem.setFont(new Font(fontName, fontPlain, font14));
         
-        MyTextField txtNhap = new MyTextField();
+        txtNhap = new MyTextField();
         txtNhap.setFont(new Font(fontName, fontPlain, font14));
         txtNhap.setBorderLine(true);
         txtNhap.setBorderRadius(5);
         
-        MyComboBox<String> cbLoaiPhong = new MyComboBox<>(new String[] {"--Tất cả--"});
+        cbLoaiPhong = new MyComboBox<>(new String[] {"--Tất cả--"});
         cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
         cbLoaiPhong.setBorderLine(true);
         cbLoaiPhong.setBorderRadius(10);
 //        panelForm.add(cbLoaiPhong, "w 20%, h 30!");
 
-        Button btnXuatFile = new Button("Xuất file");
+        btnXuatFile = new Button("Xuất file");
         btnXuatFile.setFont(new Font(fontName, fontPlain, font14));
         btnXuatFile.setBackground(colorBtn);
         btnXuatFile.setBorderRadius(5);
@@ -68,7 +98,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         pnlSearch.add(lblTimKiem);
         pnlSearch.add(txtNhap,"w 100:300:500, h 36!");
         pnlSearch.add(cbLoaiPhong,"w 200,h 36!");
-        pnlSearch.add(btnXuatFile,"h 36!");
+        pnlSearch.add(btnXuatFile,"w 150,h 36!");
         
         this.add(pnlSearch,"w 100%,wrap");
     }
@@ -85,16 +115,11 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         JPanel pnlTable = new PanelShadow();
         pnlTable.setLayout(new MigLayout("fill"));
         pnlTable.setBackground(Color.WHITE);
-        Object data[][] = { 
-                {  "Tran Van Minh","a", "60","60000","60000","60000"}, 
-                {  "Phan Van Tai","a", "80","60000","60000","60000"}, 
-                {  "Do Cao Hoc","a", "70","60000","60000","60000"},             
-        };
-        String col[] = {"Tên","loại sản phẩm","Số lượng","Giá nhập","Giá bán","Tổng"};
+        String col[] = {"Tên sản phẩm","loại sản phẩm","Số lượng","Giá bán"};
         
         DefaultTableModel model = new DefaultTableModel(
-            data,
-            col
+            col,
+            0
         ) {
             boolean[] canEdit = new boolean [] {
                 false, true, false,false
@@ -113,14 +138,8 @@ public class GD_XemDichVu extends javax.swing.JPanel {
 					return String.class;
 				case 2:
 					return String.class;
-				case 3:
-					return Integer.class;
-                                case 4:
-					return String.class;
-                                case 5:
-					return String.class;
 				default:
-					return Boolean.class;
+					return String.class;
 				}
 			}
         };
@@ -133,6 +152,147 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         pnlTable.add(sp,"w 100%,h 100%");
         lbldsDichVu.add(pnlTable,"w 100%,h 100%");
     }
+    
+    public void addAction(){
+        btnXuatFile.addActionListener(new createActionListener());
+    }
+    
+    public void initData(){
+        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+        nhaCungCapVaNhapHang_DAO.getDanhSachMatHang().forEach(doc -> {
+            table.addRow(doc.convertToRowTableInGDXemDichVu());
+        });
+    }
+    
+    public void exportTableToExcel() throws FileNotFoundException{
+        
+        FileOutputStream excelFos = null;
+        Workbook excelJTableExport = null;
+        try {
+            
+            JFileChooser excelFileChooser = new JFileChooser("D:\\");
+            excelFileChooser.setDialogTitle("Save As ..");
+            FileNameExtensionFilter fnef = new FileNameExtensionFilter("Files", "xls", "xlsx", "xlsm");
+            excelFileChooser.setFileFilter(fnef);
+            int chooser = excelFileChooser.showSaveDialog(null);
+            
+            Workbook wb = new XSSFWorkbook(); //Excell workbook
+            Sheet sheet = wb.createSheet(); //WorkSheet
+            Row row = sheet.createRow(2); //Row created at line 3
+            TableModel model = table.getModel(); //Table model
+            
+            if (chooser == JFileChooser.APPROVE_OPTION) {
+                Row headerRow = sheet.createRow(0);
+                for(int headings = 0; headings < model.getColumnCount(); headings++){ 
+                    headerRow.createCell(headings).setCellValue(model.getColumnName(headings));
+                }
+
+                for(int rows = 0; rows < model.getRowCount(); rows++){ 
+                    for(int cols = 0; cols < table.getColumnCount(); cols++){ 
+                        row.createCell(cols).setCellValue(model.getValueAt(rows, cols).toString()); 
+                    }
+
+                    row = sheet.createRow((rows + 3)); 
+                }
+                wb.write(new FileOutputStream(excelFileChooser.getSelectedFile()+ ".xlsx")); 
+            }
+ 
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        } finally {
+            try {
+                if (excelFos != null) {
+                    excelFos.close();
+                }
+                if (excelJTableExport != null) {
+                    excelJTableExport.close();
+                }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+
+            //First Download Apache POI Library For Dealing with excel files.
+        //Then add the library to the current project
+//        FileOutputStream excelFos = null;
+//        XSSFWorkbook excelJTableExport = null;
+//        BufferedOutputStream excelBos = null;
+//        try {
+// 
+//            //Choosing Saving Location
+//            //Set default location to C:\Users\Authentic\Desktop or your preferred location
+//            JFileChooser excelFileChooser = new JFileChooser("C:\\Users\\Authentic\\Desktop");
+//            //Dialog box title
+//            excelFileChooser.setDialogTitle("Save As ..");
+//            //Filter only xls, xlsx, xlsm files
+//            FileNameExtensionFilter fnef = new FileNameExtensionFilter("Files", "xls", "xlsx", "xlsm");
+//            //Setting extension for selected file names
+//            excelFileChooser.setFileFilter(fnef);
+//            int chooser = excelFileChooser.showSaveDialog(null);
+//            //Check if save button has been clicked
+//            if (chooser == JFileChooser.APPROVE_OPTION) {
+//                //If button is clicked execute this code
+//                excelJTableExport = new XSSFWorkbook();
+//                XSSFSheet excelSheet = excelJTableExport.createSheet("Jtable Export");
+//                //Loop through the jtable columns and rows to get its values
+//                Row headerRow = sheet.createRow(0); //Create row at line 0
+//                for(int headings = 0; headings < model.getColumnCount(); headings++){ //For each column
+//                    headerRow.createCell(headings).setCellValue(model.getColumnName(headings));//Write column name
+//                }
+//
+//                for (int i = 0; i < table.getRowCount(); i++) {
+//                    XSSFRow excelRow = excelSheet.createRow(i);
+//                    for (int j = 0; j< table.getColumnCount(); j++) {
+//                        XSSFCell excelCell = excelRow.createCell(j);
+//                        excelCell.setCellValue(table.getValueAt(i, j).toString());
+//                    }
+//                }
+//                excelFos = new FileOutputStream(excelFileChooser.getSelectedFile() + ".xlsx");
+//                excelBos = new BufferedOutputStream(excelFos);
+//                excelJTableExport.write(excelBos);
+//                JOptionPane.showMessageDialog(null, "Exported Successfully");
+//            }
+// 
+//        } catch (FileNotFoundException ex) {
+//            JOptionPane.showMessageDialog(null, ex);
+//        } catch (IOException ex) {
+//            JOptionPane.showMessageDialog(null, ex);
+//        } finally {
+//            try {
+//                if (excelFos != null) {
+//                    excelFos.close();
+//                }
+//                if (excelBos != null) {
+//                    excelBos.close();
+//                }
+//                if (excelJTableExport != null) {
+//                    
+//                }
+//            } catch (IOException ex) {
+//                JOptionPane.showMessageDialog(null, ex);
+//            }
+//        }
+    } 
+    
+    private class createActionListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object obj = e.getSource();
+            if(obj.equals(btnXuatFile)){
+                try {
+                    exportTableToExcel();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(GD_XemDichVu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+            }
+        }
+        
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

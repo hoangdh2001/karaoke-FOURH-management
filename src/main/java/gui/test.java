@@ -20,7 +20,7 @@ public class test extends javax.swing.JFrame {
     public test() {
         initComponents();
         NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
-        GD_ThemSanPham themSP = new GD_ThemSanPham(nhanVien);
+        GD_XemDichVu themSP = new GD_XemDichVu();
         this.setLayout(new MigLayout());
         this.add(themSP,"w 100%, h 100%");
     }

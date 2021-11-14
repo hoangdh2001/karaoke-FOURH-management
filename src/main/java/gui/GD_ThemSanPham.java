@@ -292,17 +292,22 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         this.add(pnlTable,"w 100%,h 100%");
     }
     
+    public void loadNCC(){
+        List<NhaCungCap> listNCC = nhaCungCapVaNhapHang_DAO.getNhaCungCap();
+        for (int i = 0; i < listNCC.size(); i++) {
+            NhaCungCap ncc = listNCC.get(i);
+            cbNhaCungCap.addItem(new ObjectComboBox(ncc.getTenNCC(),ncc.getMaNCC()));  
+        }
+    }
+    
     public void initDao(){
         loHang = new LoHang();
         isNewSP = new HashMap<MatHang,Boolean>();
         df = new DecimalFormat("#,##0.00");
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
         isNew = new ArrayList<Boolean>();
-        List<NhaCungCap> listNCC = nhaCungCapVaNhapHang_DAO.getNhaCungCap();
-        for (int i = 0; i < listNCC.size(); i++) {
-            NhaCungCap ncc = listNCC.get(i);
-            cbNhaCungCap.addItem(new ObjectComboBox(ncc.getTenNCC(),ncc.getMaNCC()));  
-        }
+        
+        loadNCC();
         
         List<LoaiDichVu> listDV = nhaCungCapVaNhapHang_DAO.getLoaiDichVu();
         for (int i = 0; i < listDV.size(); i++) {
@@ -314,12 +319,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     }
     
     public void initAction(){     
-        btnThemNCC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GD_ThemNhaCungCap(null).setVisible(true);
-            }
-        });
+        btnThemNCC.addActionListener(new createActionListenner());
         
         cbNhaCungCap.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
@@ -471,11 +471,24 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     
     private boolean valiData() {
                 int ncc = cbNhaCungCap.getSelectedIndex();
+                String sl = txtSoLuong.getText().trim();
+                String giaNhap = txtGiaNhap.getText().trim();
+                String giaBan = txtGiaban.getText().trim();
+                
+                if(table.getRowCount() == 0){
+                    showMsg("Không có sản phẩm nào được thêm !");  
+                    return false;
+                }
                 
                 if (ncc == 0) {
                     showMsg("Chọn nhà cung vấp !");  
                     return false;
 		}
+                
+                if(!(sl.equals("") ||giaNhap.equals("") ||giaBan.equals(""))){
+                    showMsg("Còn dữ liệu chưa được thêm. Hãy thêm dữ liệu trước khi lưu!");  
+                    return false;
+                }
                 
 		return true;
 	}
@@ -536,6 +549,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
                 });
            
                 resetData();
+                showMsg("Lưu thành công");
             }else if(o.equals(btnXemThongTin)){
                 if(cbNhaCungCap.getSelectedIndex() !=0){
                     ObjectComboBox maNCC = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
@@ -571,6 +585,9 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
                 xoaRong();
             }else if(o.equals(btnXoa)){
                 xoaRong();
+            }else if(o.equals(btnThemNCC)){
+                new GD_ThemNhaCungCap(null).setVisible(true);
+                loadNCC();
             }
         }
     }
