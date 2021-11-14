@@ -139,6 +139,12 @@ public class Phong {
     public Object[] convertToRowTableInGDoiPhong() {
         DecimalFormat df;
             df = new DecimalFormat("#,##0.00");
-        return new Object[]{new ObjectComboBox(tenPhong,maPhong),loaiPhong.getTenLoaiPhong(), tang, df.format(loaiPhong.getGiaPhong()),false};
+        return new Object[]{new ObjectComboBox(tenPhong,maPhong),loaiPhong.getTenLoaiPhong(), tang, df.format(loaiPhong.getGiaPhong())};
+    }
+
+    public Object[] convertToRowTableInGDDatPhong() {
+        DecimalFormat df;
+        df = new DecimalFormat("#,##0.00");
+        return new Object[]{new ObjectComboBox(tenPhong,maPhong),loaiPhong.getTenLoaiPhong(), df.format(loaiPhong.getGiaPhong())};
     }
 }

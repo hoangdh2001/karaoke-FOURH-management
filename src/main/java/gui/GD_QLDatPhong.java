@@ -44,8 +44,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
+
 import gui.swing.event.EventSelectedRow;
-import java.awt.PopupMenu;
 
 /**
  *
@@ -68,6 +68,8 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
      * Creates new form GD_QLDatPhong
      */
     public GD_QLDatPhong() {
+        phieuDatPhong_Dao = new PhieuDatPhong_DAO();
+        phong_Dao = new Phong_DAO();
         initComponents();
         buildGD_QLDatPhong();
     }
@@ -108,7 +110,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         txtTimKiem.setBorderRadius(5);
         pnlTop.add(txtTimKiem, "w 25%, h 36!");
 
-        //cbModel = new DefaultComboBoxModel<TrangThaiPhieuDat>();
         cmbTrangThaiTK = new MyComboBox<String>();//cbModel
         cmbTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
         cmbTrangThaiTK.setBorderLine(true);
@@ -204,7 +205,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         tblPhieuDatPhong.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //Nếu click chuột trái và click 2 lần
+                //Nếu click chuột trái 2 lần
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
                     int row = tblPhieuDatPhong.getSelectedRow();
                     String maPhieu = tblPhieuDatPhong.getValueAt(row, 1).toString();
@@ -233,7 +234,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlTitle.add(lblTitle);
         return  pnlTitle;
     }
-
     
     private void createTable() {
         tblPhieuDatPhong.fixTable(sp);
@@ -259,7 +259,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             @Override
             public void delete(Object obj) {
             }
-
             @Override
             public void update(ModelAction action) {
                 try {
@@ -294,7 +293,51 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         tblPhieuDatPhong.getColumnModel().getColumn(tblPhieuDatPhong.getColumnCount() - 1).setMaxWidth(100);
         tblPhieuDatPhong.getColumnModel().getColumn(tblPhieuDatPhong.getColumnCount() - 1).setMinWidth(100);
     }
+   
     
+    public void loadTrangThai(){
+        List<String> dsTrangThai = phieuDatPhong_Dao.getDSTrangThaiPhieu();
+        dsTrangThai.forEach((p)->{
+//            cmbTrangThai.addItem(p);
+            cmbTrangThaiTK.addItem(p);
+        });
+    }
+    
+    
+//    public void xoaDuLieu(){
+//        DefaultTableModel df = (DefaultTableModel) table.getModel();
+//        df.setRowCount(0);
+//    }
+    
+    
+//    public void taiLaiDuLieu(List<PhieuDatPhong> dsPhieu){
+//        xoaDuLieu();
+//        if(dsPhieu != null){
+//            dsPhieu.forEach((phieu) -> {
+//                 table.addRow(phieu.convertToRowTable(event));
+//                 System.out.println(phieu);
+//                 System.out.println("Here");
+//            });
+//            
+//        }else if(dsPhieu.size() == 0){
+//            xoaDuLieu();
+//            System.out.println("null cmmr");
+//        }
+//    }
+    
+    
+//    private JPanel createPanelTitle() {
+//        JPanel pnlTitle = new JPanel();
+//        pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
+//        pnlTitle.setOpaque(false);
+//        pnlTitle.setLayout(new MigLayout("fill", "", ""));
+//        JLabel lblTitle = new JLabel();
+//        lblTitle.setText("QUẢN LÝ ĐẶT PHÒNG");
+//        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
+//        lblTitle.setForeground(new Color(68, 68, 68));
+//        pnlTitle.add(lblTitle);
+//        return  pnlTitle;
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -476,7 +519,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
      @Override
     public void keyTyped(KeyEvent e) {
     }
-
     @Override
     public void keyPressed(KeyEvent e) {
     }

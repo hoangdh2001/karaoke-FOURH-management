@@ -21,19 +21,20 @@ import util.HibernateUtil;
  *
  * @author Hao
  */
-public class PhieuDatPhong_DAO implements PhieuDatPhongService {
-
-    List<PhieuDatPhong> dsPhieu = Collections.emptyList();
+public class PhieuDatPhong_DAO implements PhieuDatPhongService{
+    
+    List<PhieuDatPhong> dsPhieu = new ArrayList<>();
+            //Collections.emptyList();
     private SessionFactory sessionFactory;
 
     public PhieuDatPhong_DAO() {
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-
-    public PhieuDatPhong_DAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    // Này để làm gì v
+//    public PhieuDatPhong_DAO(SessionFactory sessionFactory) {
+//        this.sessionFactory = sessionFactory;
+//    }
 
     @Override
     public List<PhieuDatPhong> getDsPhieuDatPhong() {
@@ -48,7 +49,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
             tr.commit();
             return dsPhieuDatPhong;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();

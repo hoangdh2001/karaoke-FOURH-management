@@ -33,6 +33,10 @@ public class LoHang {
 	 * @param ngayNhap
 	 * @param nguoiNhap
 	 */
+        public LoHang(){
+            this.dsChiTietNhapHang = new ArrayList<ChiTietNhapHang>();
+        }
+        
 	public LoHang(String maLoHang, NhaCungCap nhaCungCap, Date ngayNhap, NhanVien nguoiNhap) {
 		this.maLoHang = maLoHang;
 		this.nhaCungCap = nhaCungCap;
@@ -57,9 +61,7 @@ public class LoHang {
 	/**
 	 * 
 	 */
-	public LoHang() {
-	}
-	public void themCT_NhapHang(MatHang matHang, int soLuongNhap, int giaNhap) {
+	public void themCT_NhapHang(MatHang matHang, int soLuongNhap, double giaNhap) {
 		ChiTietNhapHang chiTietNhapHang = new ChiTietNhapHang(this, matHang, soLuongNhap, giaNhap);
 		dsChiTietNhapHang.add(chiTietNhapHang);
 	}
@@ -137,5 +139,9 @@ public class LoHang {
 	public String toString() {
 		return "LoHang [maLoHang=" + maLoHang + ", nhaCungCap=" + nhaCungCap + ", ngayNhap=" + ngayNhap + ", nguoiNhap="
 				+ nguoiNhap + ", dsChiTietNhapHang=" + dsChiTietNhapHang + ", tongTien=" + tongTien + "]";
+	}
+        
+        public String toStringtest() {
+		return "dsChiTietNhapHang=" + dsChiTietNhapHang;
 	}
 }

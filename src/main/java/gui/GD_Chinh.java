@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -62,7 +63,8 @@ public class GD_Chinh extends JFrame {
     private Content content; // thành phần content chứa nội dung
     private boolean tabShow;
     private MigLayout layout;
-    private final DecimalFormat df = new DecimalFormat("##0.##");
+    private DecimalFormat df = new DecimalFormat("##0.###");
+    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     private TabLayout tab;
     private JScrollPane sp;
     
@@ -77,7 +79,9 @@ public class GD_Chinh extends JFrame {
      * Xây dựng GD_Chính
      */
     private void buidGD_Chinh() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        dfs.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
+	setDefaultCloseOperation(EXIT_ON_CLOSE);
         createBackground();
         setContentPane(background);
         setMinimumSize(new Dimension(1200, 500));
@@ -259,24 +263,7 @@ public class GD_Chinh extends JFrame {
                     case 2:
                         GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
                         content.showForm(giaoDienKhachHang);
-                        
-                        giaoDienKhachHang.addEvent(new EventSelectedRow() {
-                            @Override
-                            public void selectedRow(Object object) {
-                                KhachHang khachHang = (KhachHang) object;
-                                if(!animator2.isRunning()){
-                                    if(!tabShow){
-                                        tab.setVisible(true);
-                                        
-                                        KhachHangDetail khachHangDetail =  new KhachHangDetail(khachHang);
-                                        tab.showDetail(khachHangDetail);
-                                        animator2.start();
-                                    }
-                                }
-                            }
-                        });
-                        
-                        
+
                         break;
                     case 3:
                         GD_HoaDon giaoDienHoaDon = new GD_HoaDon();
@@ -411,7 +398,7 @@ public class GD_Chinh extends JFrame {
     }
 
     /**
-     * tạo ngăn tab
+     * tạo ngăn ts
      */
     private TabLayout createTabPane() {
         

@@ -1,10 +1,6 @@
 package entity;
 
-import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.swing.JCheckBox;
 import javax.transaction.Transactional;
 
 @Entity
@@ -37,7 +32,7 @@ public class HoaDon {
     private Date thoiGianKetThuc;
     @OneToMany(mappedBy = "hoaDon")
     private List<ChiTietHoaDon> dsChiTietHoaDon;
-    private float gioHat;
+    private String gioHat;
     @Column(columnDefinition = "money")
     private double donGiaPhong;
     @Column(columnDefinition = "money")
@@ -45,31 +40,30 @@ public class HoaDon {
     @Column(columnDefinition = "money")
     private double tongHoaDon;
 
-    /**
-     * @param maHoaDon
-     * @param khachHang
-     * @param phong
-     * @param nhanVien
-     * @param ngayLapHoaDon
-     * @param thoiGianBatDau
-     * @param thoiGianKetThuc
-     */
-    public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien, Date ngayLapHoaDon,
-            Date thoiGianBatDau, Date thoiGianKetThuc) {
-        this.maHoaDon = maHoaDon;
-        this.khachHang = khachHang;
-        this.phong = phong;
-        this.nhanVien = nhanVien;
-        this.ngayLapHoaDon = ngayLapHoaDon;
-        this.thoiGianBatDau = thoiGianBatDau;
-        this.thoiGianKetThuc = thoiGianKetThuc;
-        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
-        this.gioHat = getGioHat();
-        this.donGiaPhong = getDonGiaPhong();
-        this.tongTienMatHang = getTongTienMatHang();
-        this.tongHoaDon = getTongHoaDon();
-        
-    }
+//    /**
+//     * @param maHoaDon
+//     * @param khachHang
+//     * @param phong
+//     * @param nhanVien
+//     * @param ngayLapHoaDon
+//     * @param thoiGianBatDau
+//     * @param thoiGianKetThuc
+//     */
+//    public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien,Date ngayLapHoaDon,
+//            Date thoiGianBatDau, Date thoiGianKetThuc) {
+//        this.maHoaDon = maHoaDon;
+//        this.khachHang = khachHang;
+//        this.phong = phong;
+//        this.nhanVien = nhanVien;
+//        this.ngayLapHoaDon = ngayLapHoaDon;
+//        this.thoiGianBatDau = thoiGianBatDau;
+//        this.thoiGianKetThuc = thoiGianKetThuc;
+//        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+//        this.donGiaPhong = getDonGiaPhong();
+//        this.tongTienMatHang = getTongTienMatHang();
+//        this.tongHoaDon = getTongHoaDon();
+//        
+//    }
 
     /**
      * @param maHoaDon
@@ -85,11 +79,13 @@ public class HoaDon {
         this.thoiGianBatDau = new Date();
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
     }
-
+    
     /**
      *
      */
     public HoaDon() {
+        this.thoiGianBatDau = new Date();
+        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
     }
 
     /**
@@ -214,15 +210,20 @@ public class HoaDon {
     /**
      * @return the gioHat
      */
-    public float getGioHat() {
-        return ((thoiGianKetThuc.getTime() - thoiGianBatDau.getTime()) / 1000 / 60 / 60);
+    public String getGioHat() {
+        return gioHat;
     }
 
     /**
      * @return the donGiaPhong
      */
     public double getDonGiaPhong() {
-        return gioHat * phong.getLoaiPhong().getGiaPhong();
+        String[] time = gioHat.split(":");
+        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
+    }
+    
+    public double  getDonGiaPhongCu(){
+        return donGiaPhong;
     }
 
     /**
@@ -245,9 +246,6 @@ public class HoaDon {
 
     @Override
     public String toString() {
-//        SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-//        SimpleDateFormat fm1 = new SimpleDateFormat("hh:mm");
-//        SimpleDateFormat fm2 = new SimpleDateFormat("dd-MM-yyyy");
         return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong=" 
                 + phong + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", thoiGianBatDau=" 
                 + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + ", dsChiTietHoaDon=" + dsChiTietHoaDon 

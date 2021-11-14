@@ -279,8 +279,8 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     
         tableDichVuDaChon.setModel(modelSelected);
         tableDichVuDaChon.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        tableDichVuDaChon.getColumnModel().getColumn(0).setPreferredWidth(165);
-        tableDichVuDaChon.getColumnModel().getColumn(1).setPreferredWidth(70);
+        tableDichVuDaChon.getColumnModel().getColumn(0).setPreferredWidth(160);
+        tableDichVuDaChon.getColumnModel().getColumn(1).setPreferredWidth(75);
         tableDichVuDaChon.setCellSelectionEnabled(true);
         
         TableColumnModel tcm = tableDichVuDaChon.getColumnModel();
@@ -501,7 +501,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         @Override
         public void keyReleased(KeyEvent e) {
             Object obj = e.getSource();
-            if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE){
+            if (e.getKeyChar() == KeyEvent.VK_ENTER){
                if(obj.equals(txtSdt) || obj.equals(txtTenKhachHang) || obj.equals(txtCCCD)){
                     if((txtSdt.getText().trim() + txtTenKhachHang.getText().trim() +  txtCCCD.getText().trim()).equals("") ){
                         tablePhieuDatPhong.clearSelection();
@@ -556,7 +556,10 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                     for(int i = 0; i < listDaChon.size(); i++){
                         ObjectComboBox cb = (ObjectComboBox) listDaChon.get(i);
                         tableDichVuDaChon.addRow(new Object[]{cb,Integer.parseInt(listDaChonSoLuong.get(i).getMa())});
+                        
                     }
+                    repaint();
+                    revalidate();
                     lt.countDown();
                 });
                 
@@ -632,7 +635,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 		}
 
 		if (CCCD.trim().equals("")) {
-			showMsg("Địa chỉ không được trống !");
+			showMsg("Căn cước công dân không được trống !");
 			txtCCCD.selectAll();
 			txtCCCD.requestFocus();
 			return false;
@@ -659,6 +662,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
             if(obj.equals(btnGiaoPhong) && validateData()){
+                double tienCoc = 0;
                 KhachHang kh = nhaCungCapVaNhaphang_DAO.getKhachHangBySDT(txtSdt.getText());
                 if(kh == null){
                     String maKhachhang = nhaCungCapVaNhaphang_DAO.getlastKhachHangTang();
@@ -670,14 +674,15 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                 }
                 if(tablePhieuDatPhong.getSelectedRow() != -1){
                     String maPhieuDatPhong = tablePhieuDatPhong.getValueAt(tablePhieuDatPhong.getSelectedRow(), 0).toString();
-                    nhaCungCapVaNhaphang_DAO.updatePhieuDatHang(maPhieuDatPhong);
+                    nhaCungCapVaNhaphang_DAO.updatePhieuDatPhong(maPhieuDatPhong);
+                    tienCoc = nhaCungCapVaNhaphang_DAO.getTienCoc(maPhieuDatPhong);
                 }
                 nhaCungCapVaNhaphang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_HAT);
                 
                 String maHoaDon = nhaCungCapVaNhaphang_DAO.getlastMaHoaDonTang();
                 
                 HoaDon hoaDon = new HoaDon(maHoaDon, kh, phong, nhanVien);
-                nhaCungCapVaNhaphang_DAO.insertHoaDon(hoaDon);
+                nhaCungCapVaNhaphang_DAO.insertHoaDon(hoaDon,tienCoc);
 //insert chi tiet hoa don
                 if(tableDichVuDaChon.getRowCount() != 0){
                     for( int i = 0 ; i< tableDichVuDaChon.getRowCount(); i++){

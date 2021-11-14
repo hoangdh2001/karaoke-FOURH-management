@@ -29,6 +29,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.ParseException;
+import java.time.temporal.ChronoUnit;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -60,13 +61,14 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     
     private MyTextField txtTongDV;
     
-    private MyTextField txtNgay;
+    private MyTextField txtKhachHang;
     private MyTextField txtTenPhong;
     private MyTextField txtLoai;
     private MyTextField txtGia;
     private MyTextField txtNhanVien;
     private MyTextField txtStart;
     private MyTextField txtEnd;
+    private MyTextField txtTongTienPhongCu;
     private MyTextField txtTongTienPhong;
     
     private MyTextField txtTongTien;
@@ -83,6 +85,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     private NhanVien nhanVien;
     private HoaDon hoaDon;
     
+    private String GioHat;
+    
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
     
     private int fontPlain = Font.PLAIN;
@@ -98,7 +102,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         this.nhanVien= nhanVien;
         setModal(true);
         initComponents();
-        setSize(new Dimension(1200,740));
+        setSize(new Dimension(1200,780));
         setLocation(150, 10);
         initForm();
         addAction();
@@ -276,18 +280,18 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         pnlInfoRoom = new JPanel();
         pnlInfoRoom.setLayout(new MigLayout("","28[][]10","10[]5"));
 
-        JLabel lblNgay= new JLabel("Ngày: ");
-        lblNgay.setFont(new Font(fontName, fontPlain, font14));
+        JLabel lblKhachHang= new JLabel("Khách hàng: ");
+        lblKhachHang.setFont(new Font(fontName, fontPlain, font14));
         
-        pnlInfoRoom.add(lblNgay, "align right");
+        pnlInfoRoom.add(lblKhachHang, "align right");
 
-        txtNgay = new MyTextField();
-        txtNgay.setFont(new Font(fontName, fontPlain, font14));
-        txtNgay.setEnabled(false);
-        txtNgay.setBorderLine(true);
-        txtNgay.setBorderRadius(5);
+        txtKhachHang = new MyTextField();
+        txtKhachHang.setFont(new Font(fontName, fontPlain, font14));
+        txtKhachHang.setEnabled(false);
+        txtKhachHang.setBorderLine(true);
+        txtKhachHang.setBorderRadius(5);
         
-        pnlInfoRoom.add(txtNgay, "w 100%, h 36! , wrap");
+        pnlInfoRoom.add(txtKhachHang, "w 100%, h 36! , wrap");
         
         JLabel lblTenPhong= new JLabel("Tên phòng :");
         lblTenPhong.setFont(new Font(fontName, fontPlain, font14));
@@ -362,6 +366,19 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         txtEnd.setBorderRadius(5);
         
         pnlInfoRoom.add(txtEnd, "w 100%, h 36! , wrap");
+        
+        JLabel lblTienCu = new JLabel("Tiền phòng cũ :");
+        lblTienCu.setFont(new Font(fontName, fontPlain, font14));
+        pnlInfoRoom.add(lblTienCu, "align right");
+
+        txtTongTienPhongCu = new MyTextField();
+        txtTongTienPhongCu.setFont(new Font(fontName, fontPlain, font14));
+        txtTongTienPhongCu.setEnabled(false);
+        txtTongTienPhongCu.setBorderLine(true);
+        txtTongTienPhongCu.setBorderRadius(5);
+        
+        pnlInfoRoom.add(txtTongTienPhongCu, "w 100%, h 36! , wrap");
+        
         pnlInfoRoom.setBackground(Color.WHITE);
         
         JPanel tongTienPhong =  new JPanel();
@@ -482,7 +499,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
         
         hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
-        
+        txtTongTienPhongCu.setText(String.valueOf(hoaDon.getDonGiaPhongCu()));
         List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
         dsCTHoaDon.forEach(ctHoaDon -> {
             tableSelected.addRow(ctHoaDon.convertToRowTableInGDLapHoaDon());
@@ -494,10 +511,11 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         
         Date date = new Date(System.currentTimeMillis());
         String strNgay = formatterNgay.format(date);
+        
         String strBatDau = formatterGio.format(hoaDon.getThoiGianBatDau());
         String strGio = formatterGio.format(date);
         
-        txtNgay.setText(strNgay);
+        txtKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
         txtTenPhong.setText(phong.getTenPhong());
         txtLoai.setText(phong.getLoaiPhong().getTenLoaiPhong());
         txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
@@ -529,32 +547,57 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
             tong += soluong * giathanh;
 	}
         txtTongDV.setText(df.format(tong));
+        
         return tong;
     }
     
     public double TongTienPhong() throws ParseException{
+        
         String txtgioBatDau = txtStart.getText().trim();
         String txtgioKetThuc = txtEnd.getText().trim();
-        
         SimpleDateFormat gio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        
+
         Date dateGioBatDau = (Date) gio.parse(txtgioBatDau);
         Date dateGioKetThuc = (Date) gio.parse(txtgioKetThuc);
         
+        long ngayDaSuDung = ChronoUnit.DAYS.between(dateGioBatDau.toInstant(), dateGioKetThuc.toInstant()) - 1;
+        
         long millisBatDau = dateGioBatDau.getTime();
         long millisKetThuc = dateGioKetThuc.getTime();
-        
-        long tongThoiGian = millisKetThuc - millisBatDau;
-        
-        int seconds = (int) (tongThoiGian / 1000) % 60 ;
-        int minutes = (int) ((tongThoiGian / (1000*60)) % 60);
-        int hours   = (int) ((tongThoiGian / (1000*60*60)) % 24);
-        
-        System.out.println(hours + ":" + minutes + ":" + seconds);
-        
+        long tongThoiGian = 0;
+        int hours = 0;
+        int minutes = 0;
+        double tienPhong = hoaDon.getDonGiaPhongCu();
         double giaPhong = phong.getLoaiPhong().getGiaPhong();
-        
-        double tienPhong = hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
+        if(ngayDaSuDung > 0){
+            int hoursBatDau= 0;
+            int minutesBatDau = 60 - (int) ((millisBatDau / (1000*60)) % 60);
+            if((int) ((millisBatDau / (1000*60)) % 60) > 0){
+                hoursBatDau = 24 - (int) ((millisBatDau / (1000*60*60)) % 24) - 1;
+            }else{
+                hoursBatDau = 24 - (int) ((millisBatDau / (1000*60*60)) % 24);
+            }
+            int minutesKetThuc = (int) ((millisKetThuc / (1000*60)) % 60);
+            int hoursKetThuc = (int) ((millisKetThuc / (1000*60*60)) % 24);
+            
+            hours = hoursBatDau + hoursKetThuc;
+            minutes = minutesBatDau + minutesKetThuc ;
+            if(minutes >= 60){
+                hours += 1;
+                minutes -= 60;
+            }
+            tienPhong += (ngayDaSuDung-1)*24*giaPhong + hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
+             GioHat = String.valueOf((ngayDaSuDung - 1)*24+hours) +":"+String.valueOf(minutes);
+        }else{
+            tongThoiGian = millisKetThuc - millisBatDau;
+            minutes = (int) ((tongThoiGian / (1000*60)) % 60);
+            hours   = (int) ((tongThoiGian / (1000*60*60)) % 24);
+            tienPhong += hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
+            System.out.println(tongThoiGian);
+            GioHat = String.valueOf(hours) +":"+String.valueOf(minutes);
+        }
+
+        System.out.println(GioHat);
         txtTongTienPhong.setText(df.format(tienPhong));
         return tienPhong;
     }
@@ -581,7 +624,10 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
 				tienKhachTra = Double.parseDouble(tienKT);
 				tongTien = TongTien();
 			} catch (Exception e) {
+                            e.printStackTrace();
 				showMsg("Tiền khách trả không hợp lệ");
+                                txtTienDua.requestFocus();
+                                txtTienDua.selectAll();
 				return false;
 			}
 			if (tienKT.matches("^\\d+$") && tienKhachTra >= tongTien) {
@@ -608,6 +654,15 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     
     private void showMsg(String msg) {
 	JOptionPane.showMessageDialog(null, msg);
+    }
+    
+    private double convertMoneyToDouble(String money){
+        String[] text = money.trim().split("\\,")[0].split("\\.");
+        String tienTra = "";
+        for(int i=0;i< text.length;i++){
+            tienTra+=text[i];
+        }
+        return Double.parseDouble(tienTra);
     }
     
     private class actionMouselistenner implements MouseListener{
@@ -660,6 +715,10 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
             Object obj = e.getSource();
             if (e.getKeyChar() == KeyEvent.VK_ENTER && obj.equals(tableSelected)){
                 TongTien();
+                if(!txtTienDua.getText().trim().equals("")){
+                    double tienTraLai = convertMoneyToDouble(txtTienDua.getText()) - TongTien();
+                    txtTraLai.setText(df.format(tienTraLai));
+                }
             }
         }
         
@@ -671,10 +730,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
             Object obj = e.getSource();
             if(obj.equals(btnThanhToan) && validateData()){
                 try {
-                    SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    Date date = new Date(System.currentTimeMillis());
-                    String ngayLapHoaDon = gio.format(date);
-                    nhaCungCapVaNhapHang_DAO.updateHoaDon(hoaDon,TongTienPhong(),TongTien(),TongTienDichVu(),ngayLapHoaDon);
+                    
+                    nhaCungCapVaNhapHang_DAO.updateHoaDon(hoaDon,GioHat,TongTienPhong(),TongTien(),TongTienDichVu());
                     
                     List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
                     for (int i = 0 ; i< tableSelected.getRowCount(); i++){
@@ -690,7 +747,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
                         dsCTHoaDon.get(i).setSoLuong(soLuongMoi);
                         nhaCungCapVaNhapHang_DAO.updateCTHoaDon(dsCTHoaDon.get(i));
                     }
-                    nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_DON);
+                    nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
                     dispose();
                 } catch (Exception e2) {
                     e2.printStackTrace();
