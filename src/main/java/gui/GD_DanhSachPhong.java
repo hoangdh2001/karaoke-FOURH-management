@@ -153,7 +153,6 @@ public class GD_DanhSachPhong extends JPanel {
 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
-
         sp = new javax.swing.JScrollPane();
         table = new gui.swing.table2.MyTable();
         jLabel1 = new javax.swing.JLabel();

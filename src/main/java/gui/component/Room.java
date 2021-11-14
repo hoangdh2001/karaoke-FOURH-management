@@ -285,7 +285,7 @@ public class Room extends PanelShadow {
                 try {
                     LookAndFeel previousLF = UIManager.getLookAndFeel();
                     UIManager.setLookAndFeel(new FlatIntelliJLaf()); //Add whatever other settings you want to the method
-                    new DL_TiepNhanDatPhong().setVisible(true);
+                    new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
                     UIManager.setLookAndFeel(previousLF);
                 } catch (UnsupportedLookAndFeelException e) {
                     e.printStackTrace();
