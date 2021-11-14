@@ -85,4 +85,6 @@ public interface NhaCungCapVaNhapHangDaoService {
     public boolean insertCTNhapHang(ChiTietNhapHang ctNhaphang,String maLoHang);
     public String getLastNhaCungCap();
     public boolean insertNhaCungCap(NhaCungCap ncc);
+    
+    public List<MatHang> findMatHang(String textFind,int type);
 }

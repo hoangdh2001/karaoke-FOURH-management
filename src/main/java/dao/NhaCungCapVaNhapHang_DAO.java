@@ -246,7 +246,7 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "select * from MatHang";
+        String sql = "select * from MatHang order by maLoaiDichVu ";
         try {
             tr.begin();
                 List<MatHang> dsMatHang = session.createNativeQuery(sql,MatHang.class).getResultList();
@@ -953,5 +953,38 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
             tr.rollback();
         }
         return false;
+    }
+
+    @Override
+    public List<MatHang> findMatHang(String textFind, int type) {
+        String sql = "select * from MatHang order by maLoaiDichVu";
+        
+        switch (type) {
+            case 0:
+                break;
+            case 1:
+                sql = "select * from MatHang where tenMatHang like N'%"+textFind+"%' order by maLoaiDichVu";
+                break;
+            case 2:
+                sql = "select * from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu where ldv.tenLoaiDichVu like N'%"+textFind+"%' order by ldv.maLoaiDichVu";;
+                break;
+            default:
+                sql = "select * from MatHang order by maLoaiDichVu";
+	}
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                List<MatHang> dsMatHang = session.createNativeQuery(sql,MatHang.class).getResultList();
+            tr.commit();
+            return dsMatHang;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    
     }
 }   

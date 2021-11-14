@@ -222,7 +222,8 @@ public class HoaDon {
      */
     public double getDonGiaPhong() {
         String[] time = gioHat.split(":");
-        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
+//        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
+        return 0;
     }
     
     public double  getDonGiaPhongCu(){
