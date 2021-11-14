@@ -498,6 +498,19 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         });
         tblHoaDon.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         scrHoaDon.setViewportView(tblHoaDon);
+        if (tblHoaDon.getColumnModel().getColumnCount() > 0) {
+            tblHoaDon.getColumnModel().getColumn(0).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(1).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(2).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(3).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(4).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(5).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(6).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(7).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(8).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(9).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(10).setResizable(false);
+        }
 
         lblBang.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         lblBang.setForeground(new java.awt.Color(4, 72, 210));
