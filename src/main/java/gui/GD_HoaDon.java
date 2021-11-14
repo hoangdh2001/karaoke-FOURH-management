@@ -8,7 +8,7 @@ package gui;
 import com.toedter.calendar.JDateChooser;
 import dao.HoaDon_DAO;
 import entity.HoaDon;
-import gui.swing.event.EventOnClick;
+import gui.swing.event.EventSelectedRow;
 import gui.swing.graphics.ShadowType;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
@@ -45,10 +45,10 @@ public class GD_HoaDon extends javax.swing.JPanel {
     MyTextField txtTimKiem;
     
     private PanelShadow panelHidden;
-    private EventOnClick eventOnClick;
+    private EventSelectedRow eventOnClick;
 
     
-    public void addEvent(EventOnClick eventOnClick) {
+    public void addEvent(EventSelectedRow eventOnClick) {
         this.eventOnClick= eventOnClick;
     }
     /**
@@ -212,7 +212,7 @@ public class GD_HoaDon extends javax.swing.JPanel {
                     int row = tblHoaDon.getSelectedRow();
                     String maHoaDon = tblHoaDon.getValueAt(row, 0).toString();
                     System.out.println(hoaDon_Dao.getHoaDon(maHoaDon));
-                    eventOnClick.onClick(hoaDon_Dao.getHoaDon(maHoaDon));
+                    eventOnClick.selectedRow(hoaDon_Dao.getHoaDon(maHoaDon));
                 }
             }
         });

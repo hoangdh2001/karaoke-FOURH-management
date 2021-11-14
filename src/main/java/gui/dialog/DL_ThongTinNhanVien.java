@@ -1,6 +1,8 @@
 
 package gui.dialog;
 
+import entity.NhanVien;
+import gui.GD_Chinh;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -51,6 +53,14 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
                 }
             }
         });
+        NhanVien nhanVien = GD_Chinh.NHAN_VIEN;
+        lblCCCD.setText("CCCD: " + nhanVien.getCanCuocCD());
+        lblGioiTinh.setText("Giới tính: " + (nhanVien.isGioiTinh() == true ? "Nữ":"Nam"));
+        lblNgaySinh.setText("Ngày sinh: " + nhanVien.getNgaySinh());
+        lblSdt.setText("Số điện thoại: " + nhanVien.getSoDienThoai());
+        lblEmail.setText("Email: " + nhanVien.getEmail());
+        lblDiaChi.setText(nhanVien.getDiaChi().toString());
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -156,7 +166,7 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
         lblEmail.setText("Email: huyhoang14901@gmail.com");
 
         lblDiaChi.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        lblDiaChi.setText("Địa chỉ:");
+        lblDiaChi.setText("Số nhà:");
 
         btnXemLich.setBackground(new java.awt.Color(22, 27, 34));
         btnXemLich.setForeground(new java.awt.Color(255, 255, 255));

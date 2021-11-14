@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import gui.swing.event.EventOnClick;
+import gui.swing.event.EventSelectedRow;
 
 /**
  *
@@ -43,7 +43,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     private Button btnLamMoi;
     private EventAction eventAction;
     private PanelShadow panelHidden;
-    private EventOnClick eventSelectedRow;
+    private EventSelectedRow eventSelectedRow;
     /**
      * Creates new form GD_KhachHang
      */
@@ -53,7 +53,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         
     }
     
-    public void addEvent(EventOnClick event) {
+    public void addEvent(EventSelectedRow event) {
         this.eventSelectedRow = event;
     }
 
@@ -247,7 +247,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                     int row = tblKhachHang.getSelectedRow();
                     String maKhachHang = tblKhachHang.getValueAt(row, 1).toString();
                     System.out.println(khachHang_Dao.getKhachHang(maKhachHang));
-                    eventSelectedRow.onClick(khachHang_Dao.getKhachHang(maKhachHang));
+                    eventSelectedRow.selectedRow(khachHang_Dao.getKhachHang(maKhachHang));
                 }
             }
         });
