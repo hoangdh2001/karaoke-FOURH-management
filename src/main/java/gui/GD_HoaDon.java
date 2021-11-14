@@ -287,9 +287,11 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     
     private void loadData() {
         dsHoaDon = hoaDon_Dao.getDsHoaDon();
-        dsHoaDon.forEach((hoaDon)->{
-            tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), hoaDon.getNgayLapHoaDon(), hoaDon.getThoiGianBatDau(), hoaDon.getThoiGianKetThuc(), hoaDon.getTongTienMatHang(), hoaDon.getPhong().getLoaiPhong().getGiaPhong(), hoaDon.getTongHoaDon(), hoaDon.getNhanVien().getTenNhanVien()});
-        });
+        if(dsHoaDon != null) {
+            dsHoaDon.forEach((hoaDon)->{
+                tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), hoaDon.getNgayLapHoaDon(), hoaDon.getThoiGianBatDau(), hoaDon.getThoiGianKetThuc(), hoaDon.getTongTienMatHang(), hoaDon.getPhong().getLoaiPhong().getGiaPhong(), hoaDon.getTongHoaDon(), hoaDon.getNhanVien().getTenNhanVien()});
+            });
+        }
     }
 
     private void xuLySuKien(){
