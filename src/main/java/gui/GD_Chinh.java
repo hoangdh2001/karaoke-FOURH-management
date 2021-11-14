@@ -263,24 +263,7 @@ public class GD_Chinh extends JFrame {
                     case 2:
                         GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
                         content.showForm(giaoDienKhachHang);
-                        
-                        giaoDienKhachHang.addEvent(new EventSelectedRow() {
-                            @Override
-                            public void selectedRow(Object object) {
-                                KhachHang khachHang = (KhachHang) object;
-                                if(!animator2.isRunning()){
-                                    if(!tabShow){
-                                        tab.setVisible(true);
-                                        
-                                        KhachHangDetail khachHangDetail =  new KhachHangDetail(khachHang);
-                                        tab.showDetail(khachHangDetail);
-                                        animator2.start();
-                                    }
-                                }
-                            }
-                        });
-                        
-                        
+
                         break;
                     case 3:
                         GD_HoaDon giaoDienHoaDon = new GD_HoaDon();

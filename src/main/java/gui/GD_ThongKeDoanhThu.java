@@ -5,6 +5,7 @@
  */
 package gui;
 
+import com.toedter.calendar.JDateChooser;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
@@ -18,6 +19,9 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
+
+    private JDateChooser dscBatDau;
+    private JDateChooser dscKetThuc;
 
     public GD_ThongKeDoanhThu() {
         initComponents();
@@ -37,19 +41,22 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         
         pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
         pnlThongKeTheo.setOpaque(false);
-        pnlThongKeTheo.setLayout(new MigLayout("", "10[center]10[center] 20 [center]10[center] 250 [center]10[center]10", "70[center] push"));
+        pnlThongKeTheo.setLayout(new MigLayout("", "10[center]10[center]20 [center]10[center] 20 [center]10[center]10", "70[center] push"));
         pnlTop.add(pnlThongKeTheo, "w 100%, h 15%, wrap");
         
-         //Loại thống kê
-        JLabel lblLoaiTK = new JLabel("Loại thống kê:");
-        lblLoaiTK.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongKeTheo.add(lblLoaiTK,"align right");
+        // Chọn thời gian băt đầu
+        dscBatDau = new JDateChooser();
+        dscBatDau.setOpaque(false);
+        dscBatDau.setDateFormatString("yyyy-MM-dd");
+        dscBatDau.setFont(new Font(fontName, fontStyle, fontSize));
+        pnlThongKeTheo.add(dscBatDau, "w 80%, h 36!");
         
-        MyComboBox<String> cmbLoaiTK = new MyComboBox<>(new String[] {"Doanh thu", "Hàng hóa"});
-        cmbLoaiTK.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbLoaiTK.setBorderLine(true);
-        cmbLoaiTK.setBorderRadius(10);
-        pnlThongKeTheo.add(cmbLoaiTK, " w 60%, h 36!");
+
+        // Chọn thời gian kết thúc
+        dscKetThuc = new JDateChooser();
+        dscKetThuc.setOpaque(false);
+        dscKetThuc.setFont(new Font(fontName, fontStyle, fontSize));
+        pnlThongKeTheo.add(dscKetThuc, "w 80%, h 36!");
         
         //Thống kê theo
         JLabel lblTKTheo = new JLabel("Thống kê theo:");
@@ -61,7 +68,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         cmbTKTheo.setFont(new Font(fontName, fontStyle, fontSize));
         cmbTKTheo.setBorderLine(true);
         cmbTKTheo.setBorderRadius(10);
-        pnlThongKeTheo.add(cmbTKTheo, "w 60%, h 36!");
+        pnlThongKeTheo.add(cmbTKTheo, "w 80%, h 36!");
         
         //Khác
         JLabel lblKhac = new JLabel("Khác:");
@@ -72,7 +79,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         cmbKhac.setFont(new Font(fontName, fontStyle, fontSize));
         cmbKhac.setBorderLine(true);
         cmbKhac.setBorderRadius(10);
-        pnlThongKeTheo.add(cmbKhac, ",w 60%, h 36!");
+        pnlThongKeTheo.add(cmbKhac, ",w 80%, h 36!");
        
         pnlBangThongKe.setOpaque(false);
         pnlBangThongKe.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 1), "Bảng thống kê", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), new Color(4, 72, 210)));

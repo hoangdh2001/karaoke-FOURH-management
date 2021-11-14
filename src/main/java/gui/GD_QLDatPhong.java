@@ -44,8 +44,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
+
 import gui.swing.event.EventSelectedRow;
-import java.awt.PopupMenu;
 
 /**
  *
@@ -110,7 +110,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         txtTimKiem.setBorderRadius(5);
         pnlTop.add(txtTimKiem, "w 25%, h 36!");
 
-        //cbModel = new DefaultComboBoxModel<TrangThaiPhieuDat>();
         cmbTrangThaiTK = new MyComboBox<String>();//cbModel
         cmbTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
         cmbTrangThaiTK.setBorderLine(true);
@@ -206,7 +205,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         tblPhieuDatPhong.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //Nếu click chuột trái và click 2 lần
+                //Nếu click chuột trái 2 lần
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
                     int row = tblPhieuDatPhong.getSelectedRow();
                     String maPhieu = tblPhieuDatPhong.getValueAt(row, 1).toString();
@@ -235,7 +234,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlTitle.add(lblTitle);
         return  pnlTitle;
     }
-
     
     private void createTable() {
         tblPhieuDatPhong.fixTable(sp);
@@ -261,7 +259,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             @Override
             public void delete(Object obj) {
             }
-
             @Override
             public void update(ModelAction action) {
                 try {
@@ -522,7 +519,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
      @Override
     public void keyTyped(KeyEvent e) {
     }
-
     @Override
     public void keyPressed(KeyEvent e) {
     }
