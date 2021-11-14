@@ -10,6 +10,8 @@ import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhong;
 import gui.GD_TiepNhanDatPhong;
+import gui.swing.table.SpinnerEditor;
+import gui.swing.table2.TableCellAction;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -18,8 +20,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,20 +41,26 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     
     private ArrayList<ObjectComboBox> listDaChon;
     private ArrayList<ObjectComboBox> listDaChonSoLuong;
+    
+    private final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     public DL_TiepNhanDatPhong(Phong phong, NhanVien nv) {
         nhaCungCapVaNhapHangDaoService = new NhaCungCapVaNhapHang_DAO();
         this.phong = phong;
         this.nhanVien = nv;
+        listDaChon = new ArrayList<ObjectComboBox>();
+        listDaChonSoLuong = new ArrayList<ObjectComboBox>();
         initComponents();
         setModal(true);
         setResizable(false);
         setTitle("Tiếp nhận đặt phòng");
         buildDisplay();
         openTablePhieuDatPhong();
+        addAction();
     }
 
     private void buildDisplay() {
+        tableAddMatHang.getColumnModel().getColumn(2).setCellEditor(new SpinnerEditor(2000));
         initData();
     }
 
@@ -60,11 +71,15 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 //            txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
             lblNhanVien.setText("Nhân viên: " + nhanVien.getTenNhanVien());
             List<MatHang> dsMatHang = nhaCungCapVaNhapHangDaoService.getDanhSachMatHang();
-            for (MatHang matHang : dsMatHang) {
+            dsMatHang.forEach(matHang -> {
                 ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong());
-            }
-//            List<MatHang> dsMatHang = nhaCungCapVaNhapHangDaoService.getDanhSachMatHang();
-//            dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
+            });
+            
+            List<PhieuDatPhong> dsPhieuDatPhong = nhaCungCapVaNhapHangDaoService.getPhieuHomNay(phong.getMaPhong());
+            dsPhieuDatPhong.forEach(phieuDatPhong -> {
+                ((DefaultTableModel) tablePhieuDatPhong.getModel()).addRow(phieuDatPhong.convertToRowTableInGDTiepNhanDatPhong());
+                System.out.println(phieuDatPhong);
+            });
         }
     }
 
@@ -78,7 +93,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 if (state == ItemEvent.SELECTED) {
                     setSize(new java.awt.Dimension(getPreferredSize()));
                 } else {
-                    setSize(new java.awt.Dimension(916, 631));
+                    setSize(new java.awt.Dimension(926, 631));
                 }
             }
         });
@@ -160,6 +175,8 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     for (int i = 0; i < tableMatHang.getRowCount(); i++) {
                         ObjectComboBox cb = (ObjectComboBox) tableMatHang.getModel().getValueAt(i, 0);
                         ObjectComboBox sl = new ObjectComboBox(cb.getMa(), "1");
+//                        Map<MatHang, Integer> sl2 = new HashMap<>();
+//                        sl2.put(arg0, i)
                         if ((Boolean) tableMatHang.getValueAt(i, 3)) {
                             if (!listDaChon.contains(cb)) {
                                 listDaChon.add(cb);
@@ -176,7 +193,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
                     for (int i = 0; i < listDaChon.size(); i++) {
                         ObjectComboBox cb = (ObjectComboBox) listDaChon.get(i);
-                        ((DefaultTableModel)tableAddMatHang.getModel()).addRow(new Object[]{cb, Integer.parseInt(listDaChonSoLuong.get(i).getMa())});
+                        model.addRow(new Object[]{cb, Integer.parseInt(listDaChonSoLuong.get(i).getMa())});
                     }
                     lt.countDown();
                 });
@@ -323,6 +340,11 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
         bg = new javax.swing.JPanel();
         pnlMain = new javax.swing.JPanel();
+        pnlBottomBar = new javax.swing.JPanel();
+        btnGiaoPhong = new javax.swing.JButton();
+        btnHuy = new javax.swing.JButton();
+        lblNhanVien = new javax.swing.JLabel();
+        jSplitPane1 = new javax.swing.JSplitPane();
         pnlMatHang = new javax.swing.JPanel();
         txtSearch = new gui.swing.textfield.MyTextField();
         lblTitleM = new javax.swing.JLabel();
@@ -364,10 +386,6 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         lblMaHoaDon = new javax.swing.JLabel();
         txtChietKhau = new javax.swing.JTextField();
         lblChietKhau = new javax.swing.JLabel();
-        pnlBottomBar = new javax.swing.JPanel();
-        btnGiaoPhong = new javax.swing.JButton();
-        btnHuy = new javax.swing.JButton();
-        lblNhanVien = new javax.swing.JLabel();
         pnlExpand = new javax.swing.JPanel();
         spPhieuDatPhong = new javax.swing.JScrollPane();
         tablePhieuDatPhong = new javax.swing.JTable();
@@ -381,6 +399,49 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
         pnlMain.setBackground(new java.awt.Color(255, 255, 255));
         pnlMain.setLayout(new java.awt.BorderLayout());
+
+        pnlBottomBar.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBottomBar.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)));
+
+        btnGiaoPhong.setText("Giao phòng");
+
+        btnHuy.setText("Hủy");
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
+
+        lblNhanVien.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblNhanVien.setText("Nhân viên: Đỗ Huy Hoàng");
+
+        javax.swing.GroupLayout pnlBottomBarLayout = new javax.swing.GroupLayout(pnlBottomBar);
+        pnlBottomBar.setLayout(pnlBottomBarLayout);
+        pnlBottomBarLayout.setHorizontalGroup(
+            pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBottomBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblNhanVien)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 495, Short.MAX_VALUE)
+                .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnGiaoPhong)
+                .addGap(22, 22, 22))
+        );
+        pnlBottomBarLayout.setVerticalGroup(
+            pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBottomBarLayout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGiaoPhong)
+                    .addComponent(btnHuy)
+                    .addComponent(lblNhanVien))
+                .addGap(12, 12, 12))
+        );
+
+        pnlMain.add(pnlBottomBar, java.awt.BorderLayout.SOUTH);
+
+        jSplitPane1.setBackground(new java.awt.Color(255, 255, 255));
 
         pnlMatHang.setOpaque(false);
 
@@ -422,7 +483,6 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         tableMatHang.setFillsViewportHeight(true);
         spTbMatHang.setViewportView(tableMatHang);
         if (tableMatHang.getColumnModel().getColumnCount() > 0) {
-            tableMatHang.getColumnModel().getColumn(0).setResizable(false);
             tableMatHang.getColumnModel().getColumn(1).setResizable(false);
             tableMatHang.getColumnModel().getColumn(2).setResizable(false);
             tableMatHang.getColumnModel().getColumn(3).setResizable(false);
@@ -437,21 +497,19 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 .addGroup(pnlMatHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlMatHangLayout.createSequentialGroup()
-                        .addComponent(spe6, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spe6, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTitleM)
+                        .addComponent(lblTitleM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spe5)))
+                        .addComponent(spe5, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(pnlMatHangLayout.createSequentialGroup()
-                .addGroup(pnlMatHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlMatHangLayout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addComponent(lblLoaiDichVu)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(spTbMatHang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(63, 63, 63)
+                .addComponent(lblLoaiDichVu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbLoaiDichVu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(35, 35, 35))
+            .addComponent(spTbMatHang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         pnlMatHangLayout.setVerticalGroup(
             pnlMatHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,10 +526,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLoaiDichVu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spTbMatHang, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))
+                .addComponent(spTbMatHang, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE))
         );
 
-        pnlMain.add(pnlMatHang, java.awt.BorderLayout.LINE_START);
+        jSplitPane1.setLeftComponent(pnlMatHang);
 
         pnlCenter.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(204, 204, 204)));
         pnlCenter.setOpaque(false);
@@ -540,7 +598,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
+                        .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTGThuePhongLayout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -664,7 +722,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(lblChietKhau))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTTHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtGiamGia, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                    .addComponent(txtGiamGia)
                     .addComponent(txtMaHoaDon)
                     .addComponent(txtChietKhau))
                 .addContainerGap())
@@ -692,26 +750,26 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlCenterLayout.setHorizontalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
-                .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlDatTruoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(lblTenPhong)
+                .addComponent(lblTenPhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtTenPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTenPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
                 .addGap(46, 46, 46)
                 .addComponent(lblLoaiPhong)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLoaiPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnExpand)
+                .addComponent(txtLoaiPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnExpand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
             .addComponent(spTbAddMatHang)
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addComponent(pnlTTKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlTTHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlTTHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -733,51 +791,12 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlDatTruoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
-        pnlMain.add(pnlCenter, java.awt.BorderLayout.CENTER);
+        jSplitPane1.setRightComponent(pnlCenter);
 
-        pnlBottomBar.setBackground(new java.awt.Color(255, 255, 255));
-        pnlBottomBar.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)));
-
-        btnGiaoPhong.setText("Giao phòng");
-
-        btnHuy.setText("Hủy");
-        btnHuy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHuyActionPerformed(evt);
-            }
-        });
-
-        lblNhanVien.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lblNhanVien.setText("Nhân viên: Đỗ Huy Hoàng");
-
-        javax.swing.GroupLayout pnlBottomBarLayout = new javax.swing.GroupLayout(pnlBottomBar);
-        pnlBottomBar.setLayout(pnlBottomBarLayout);
-        pnlBottomBarLayout.setHorizontalGroup(
-            pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBottomBarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblNhanVien)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 488, Short.MAX_VALUE)
-                .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnGiaoPhong)
-                .addGap(22, 22, 22))
-        );
-        pnlBottomBarLayout.setVerticalGroup(
-            pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBottomBarLayout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGiaoPhong)
-                    .addComponent(btnHuy)
-                    .addComponent(lblNhanVien))
-                .addGap(12, 12, 12))
-        );
-
-        pnlMain.add(pnlBottomBar, java.awt.BorderLayout.SOUTH);
+        pnlMain.add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
         bg.add(pnlMain, java.awt.BorderLayout.CENTER);
 
@@ -849,7 +868,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(916, 631));
+        setSize(new java.awt.Dimension(926, 631));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -868,6 +887,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblCCCD;
     private javax.swing.JLabel lblChietKhau;
