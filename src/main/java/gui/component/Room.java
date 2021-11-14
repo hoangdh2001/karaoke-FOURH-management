@@ -3,14 +3,20 @@ package gui.component;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
+import gui.GD_Chinh;
+import gui.GD_TiepNhanDatPhong;
+import gui.swing.event.EventMenuSelected;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -50,7 +56,8 @@ public class Room extends PanelShadow {
     private JMenuItem mniDatPhong;
     private JMenuItem mniDonPhong;
     private JMenuItem mniSuaPhong;
-
+    private int index;
+    
     public HoaDon getHoaDon() {
         return hoaDon;
     }
@@ -70,6 +77,14 @@ public class Room extends PanelShadow {
     public Room(Phong phong) {
         this.phong = phong;
         buildRoom();
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
     
     public Room() {
@@ -99,6 +114,7 @@ public class Room extends PanelShadow {
         pop.add(mniSuaPhong);
         setComponentPopupMenu(pop);
         checkTrangThai();
+        
     }
 
     private void checkTrangThai() {
@@ -260,6 +276,12 @@ public class Room extends PanelShadow {
         btnThue.setForeground(Color.WHITE);
         btnThue.setBackground(new Color(0, 31, 63));
         btnThue.setBorderRadius(5);
+        btnThue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                new GD_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
+            }
+        });
         pnlPhongTrong.add(btnThue);
         return pnlPhongTrong;
     }

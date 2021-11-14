@@ -1,7 +1,7 @@
 package gui.component;
 
-import gui.dropshadow.ShadowType;
-import gui.event.EventShowPopupMenu;
+import gui.swing.graphics.ShadowType;
+import gui.swing.event.EventShowPopupMenu;
 import gui.swing.panel.PanelShadow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -86,7 +86,7 @@ public class Header extends PanelShadow {
         setBackground(new java.awt.Color(255, 255, 255));
         setShadowOpacity(0.3F);
         setShadowSize(2);
-        setShadowType(gui.dropshadow.ShadowType.BOT);
+        setShadowType(gui.swing.graphics.ShadowType.BOT);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 

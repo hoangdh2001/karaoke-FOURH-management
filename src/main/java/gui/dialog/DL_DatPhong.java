@@ -302,7 +302,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
         pnlTop.setShadowSize(3);
-        pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlTop.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         pnlLoc.setBackground(new java.awt.Color(255, 255, 255));
         pnlLoc.setShadowOpacity(0.0F);
@@ -377,7 +377,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
         pnlBottom.setShadowOpacity(0.3F);
         pnlBottom.setShadowSize(3);
-        pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
         pnlBottom.setLayout(pnlBottomLayout);

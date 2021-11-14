@@ -79,35 +79,6 @@ public class GD_DanhSachPhong extends JPanel {
         cmbLoaiPhong.setBorderRadius(10);
         pnlTop.add(cmbLoaiPhong, "w 20%, h 30!");
 
-//        //   Panel nút chức năng
-//        JPanel pnlButton = new JPanel();
-//        pnlButton.setOpaque(false);
-//        pnlButton.setLayout(new MigLayout());
-//        pnlTop.add(pnlButton, "align right,w 50%, h 30%");
-//
-//        // Nút Thêm
-//        Button btnThemPhong = new Button("Thêm");
-//        btnThemPhong .setFont(new Font(fontName, fontStyle, fontSize));
-//        btnThemPhong .setBackground(colorBtn);
-//        pnlButton.add(btnThemPhong , "w 100!, h 36!, gap 0 20px");//, growx
-//
-//        // Nút Xóa
-//        Button btnXoaPhong  = new Button("Xóa");
-//        btnXoaPhong .setFont(new Font(fontName, fontStyle, fontSize));
-//        btnXoaPhong .setBackground(colorBtn);
-//        pnlButton.add(btnXoaPhong , "w 100!, h 36!, gap 0 20px");
-//
-//        // Nút Sửa
-//        Button btnSuaPhong  = new Button("Sửa");
-//        btnSuaPhong .setFont(new Font(fontName, fontStyle, fontSize));
-//        btnSuaPhong .setBackground(colorBtn);
-//        pnlButton.add(btnSuaPhong , "w 100!, h 36!, gap 0 20px");
-//
-//        // Nút Làm mới
-//        Button btnLamMoi = new Button("Làm mới");
-//        btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
-//        btnLamMoi.setBackground(colorBtn);
-//        pnlButton.add(btnLamMoi, "w 100!, h 36!");
         /**
          * end: group thông tin phòng hát
          */
@@ -192,7 +163,7 @@ public class GD_DanhSachPhong extends JPanel {
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
         pnlTop.setShadowSize(2);
-        pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlTop.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
@@ -209,7 +180,7 @@ public class GD_DanhSachPhong extends JPanel {
         pnlBottom.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
         pnlBottom.setShadowOpacity(0.3F);
         pnlBottom.setShadowSize(2);
-        pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setShadowType(gui.swing.graphics.ShadowType.TOP);
         pnlBottom.setLayout(new java.awt.BorderLayout());
 
         table.setModel(new javax.swing.table.DefaultTableModel(

@@ -78,7 +78,8 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         return null;
     }
     
-    public List<MatHang> getDanhSachMatHang(String id){
+    @Override
+    public List<MatHang> getDanhSachMatHangByLoaiDichVu(String id){
         
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();

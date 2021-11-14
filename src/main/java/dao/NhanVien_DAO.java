@@ -28,12 +28,38 @@ public class NhanVien_DAO implements NhanVienService {
 
     @Override
     public boolean addNhanVien(NhanVien nhanVien) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction.begin();
+            session.save(nhanVien);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+
+        }
+        return false;                
     }
 
     @Override
     public NhanVien getNhanVien(String maNhanVien) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction.begin();
+            NhanVien nhanVien = session.find(NhanVien.class, maNhanVien);
+            transaction.commit();
+
+            return nhanVien;
+        } catch (Exception e) {
+            System.err.println(e);
+            transaction.rollback();
+        }
+        return null;
     }
 
     @Override
@@ -55,4 +81,26 @@ public class NhanVien_DAO implements NhanVienService {
         return null;
     }
 
+    @Override
+    public NhanVien getNhanVienByLogin(String sdt, byte[] matKhau) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from NhanVien "
+                + "where sdt = '"+ sdt +"' "
+                + "and matKhau = :x";
+        
+        try {
+            tr.begin();
+            NhanVien nhanVien = session
+                    .createNativeQuery(sql, NhanVien.class)
+                    .setParameter("x", matKhau)
+                    .getSingleResult();
+            tr.commit();
+            return nhanVien;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
 }

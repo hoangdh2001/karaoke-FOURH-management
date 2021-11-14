@@ -1,5 +1,8 @@
 package entity;
 
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.swing.JCheckBox;
 import javax.transaction.Transactional;
 
 @Entity
@@ -245,10 +249,15 @@ public class HoaDon {
 
     @Override
     public String toString() {
+//        SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+//        SimpleDateFormat fm1 = new SimpleDateFormat("hh:mm");
+//        SimpleDateFormat fm2 = new SimpleDateFormat("dd-MM-yyyy");
         return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong=" 
                 + phong + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", thoiGianBatDau=" 
                 + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + ", dsChiTietHoaDon=" + dsChiTietHoaDon 
                 + ", gioHat=" + gioHat + ", donGiaPhong=" + donGiaPhong + ", tongTienMatHang=" + tongTienMatHang 
                 + ", tongHoaDon=" + tongHoaDon + '}';
     }
+
+    
 }

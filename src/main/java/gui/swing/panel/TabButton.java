@@ -5,7 +5,7 @@
  */
 package gui.swing.panel;
 
-import gui.event.EventTabSelected;
+import gui.swing.event.EventTabSelected;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,7 +19,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Admin
  */
-public class TabButton extends  JPanel {
+public class TabButton extends JPanel {
     private EventTabSelected event;
     private List<TabButtonItem> tabButtonItems  = new ArrayList<>();
 

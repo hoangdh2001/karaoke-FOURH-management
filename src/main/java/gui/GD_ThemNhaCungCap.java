@@ -362,10 +362,9 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnlMain.setBackground(new java.awt.Color(255, 255, 255));
-        pnlMain.setShadowColor(new java.awt.Color(255, 255, 255));
-        pnlMain.setShadowOpacity(0.0F);
-        pnlMain.setShadowSize(1);
-        pnlMain.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlMain.setShadowOpacity(0.3F);
+        pnlMain.setShadowSize(3);
+        pnlMain.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         pnlLeft.setBackground(new java.awt.Color(255, 255, 255));
         pnlLeft.setShadowColor(new java.awt.Color(255, 255, 255));

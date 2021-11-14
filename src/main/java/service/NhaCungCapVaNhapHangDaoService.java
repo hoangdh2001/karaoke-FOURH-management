@@ -17,8 +17,6 @@ import entity.PhieuDatPhong;
 import entity.NhanVien;
 import entity.Phong;
 import entity.TrangThaiPhong;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 /**
@@ -31,6 +29,9 @@ public interface NhaCungCapVaNhapHangDaoService {
     public boolean updateNhaCungCap(NhaCungCap ncc);
 //  
     public List<NhaCungCap> getNhaCungCap();
+    
+    public List<MatHang> getDanhSachMatHangByLoaiDichVu(String id);
+    
     public NhaCungCap getNhaCungCapById(String id);
     
     public List<LoaiDichVu> getLoaiDichVu();

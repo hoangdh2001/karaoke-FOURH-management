@@ -54,6 +54,6 @@ public class LoaiNhanVien {
 	}
 	@Override
 	public String toString() {
-		return "LoaiNhanVien [maLoaiNV=" + maLoaiNV + ", tenLoaiNV=" + tenLoaiNV + "]";
+		return tenLoaiNV;
 	}
 }

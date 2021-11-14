@@ -96,7 +96,7 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
         header.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
         header.setShadowOpacity(0.3F);
         header.setShadowSize(3);
-        header.setShadowType(gui.dropshadow.ShadowType.BOT);
+        header.setShadowType(gui.swing.graphics.ShadowType.BOT);
         header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 headerMouseDragged(evt);
