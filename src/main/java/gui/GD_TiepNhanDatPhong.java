@@ -459,7 +459,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                     tablePhieuDatPhong.addRow(phieu.convertToRowTableInGDTiepNhanDatPhong()));
 
             List<MatHang> dsMatHang = nhaCungCapVaNhaphang_DAO.getDanhSachMatHang();
-            dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
+//            dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
         }
     }
     

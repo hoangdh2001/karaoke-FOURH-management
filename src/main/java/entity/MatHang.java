@@ -1,6 +1,9 @@
 package entity;
 
+import gui.swing.event.EventAdd;
+import gui.swing.model.ModelAdd;
 import java.text.DecimalFormat;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -126,15 +129,40 @@ public class MatHang {
                 + ", sLTonKho=" + sLTonKho + ", donGia=" + donGia + "]";
     }
 
-    public Object[] convertToRowTableInGDTiepNhanDatPhong() {
+    public Object[] convertToRowTableInGDTiepNhanDatPhong(EventAdd event) {
         DecimalFormat df;
         df = new DecimalFormat("#,##0.00");
-        return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), false};
+        return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), new ModelAdd(this, event)};
     }
 
     public Object[] convertToRowTableInGDXemDichVu() {
         DecimalFormat df;
         df = new DecimalFormat("#,##0.00");
         return new Object[]{tenMatHang, loaiDichVu.getTenLoaiDichVu(), sLTonKho, df.format(donGia)};
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.maMatHang);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MatHang other = (MatHang) obj;
+        if (!Objects.equals(this.maMatHang, other.maMatHang)) {
+            return false;
+        }
+        return true;
     }
 }

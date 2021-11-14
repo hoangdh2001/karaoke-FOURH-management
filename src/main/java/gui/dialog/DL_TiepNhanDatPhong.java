@@ -2,11 +2,13 @@ package gui.dialog;
 
 import dao.HoaDon_DAO;
 import dao.MatHang_DAO;
+import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.MatHang;
 import entity.Phong;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
+import gui.swing.event.EventAdd;
 import gui.swing.table.SpinnerEditor;
 import java.awt.event.ItemEvent;
 import java.text.DecimalFormat;
@@ -67,14 +69,24 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void loadDataTableMatHang() {
         List<MatHang> dsMatHang = matHangService.getDsMatHang();
         if (dsMatHang != null) {
-            for (MatHang matHang : dsMatHang) {
-                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong());
-            }
+            EventAdd event = (Object obj) -> {
+                MatHang matHang = (MatHang) obj;
+                hoaDon.themCT_HoaDon(matHang, 1, 0);
+                loadDataTableCTHoaDon();
+            };
+            
+            dsMatHang.forEach(matHang -> {
+                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+            });
         }
     }
 
     private void loadDataTableCTHoaDon() {
-
+        ((DefaultTableModel) tableCTHoaDon.getModel()).setRowCount(0);
+        List<ChiTietHoaDon> dsChiTietHoaDon = hoaDon.getDsChiTietHoaDon();
+        for (ChiTietHoaDon chiTietHoaDon : dsChiTietHoaDon) {
+            ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -213,27 +225,20 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 "Tên mặt hàng", "Tồn kho", "Giá bán", ""
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Object.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tableMatHang.setColumnSelectionAllowed(true);
         tableMatHang.setFillsViewportHeight(true);
         tableMatHang.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tableMatHang.setRowHeight(30);
+        tableMatHang.setShowGrid(true);
         tableMatHang.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tableMatHang);
-        tableMatHang.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tableMatHang.getColumnModel().getColumnCount() > 0) {
             tableMatHang.getColumnModel().getColumn(1).setResizable(false);
             tableMatHang.getColumnModel().getColumn(2).setResizable(false);
@@ -266,7 +271,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLoaiDichVu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(pnlMatHang);
@@ -302,6 +307,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             }
         });
         tableCTHoaDon.setFillsViewportHeight(true);
+        tableCTHoaDon.setShowGrid(true);
         spTbAddMatHang.setViewportView(tableCTHoaDon);
         if (tableCTHoaDon.getColumnModel().getColumnCount() > 0) {
             tableCTHoaDon.getColumnModel().getColumn(0).setResizable(false);
@@ -338,7 +344,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
+                        .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTGThuePhongLayout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -420,7 +426,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(lblSdt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTTKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSdt, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                    .addComponent(txtSdt)
                     .addComponent(txtCCCD)
                     .addComponent(txtTenKhachHang))
                 .addContainerGap())
@@ -495,25 +501,25 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlCenterLayout.setHorizontalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
-                .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlDatTruoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createSequentialGroup()
-                .addComponent(pnlTTKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlTTKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlTTHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(lblTenPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                .addComponent(lblTenPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtTenPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTenPhong)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblLoaiPhong)
+                .addComponent(lblLoaiPhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLoaiPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtLoaiPhong)
                 .addGap(30, 30, 30)
-                .addComponent(btnExpand, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
-            .addComponent(spTbAddMatHang, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(btnExpand, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
+            .addComponent(spTbAddMatHang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,7 +589,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             pnlExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlExpandLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(spPhieuDatPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+                .addComponent(spPhieuDatPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -597,10 +603,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(942, 595));
+        setSize(new java.awt.Dimension(933, 607));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -613,8 +619,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
         if (state == ItemEvent.SELECTED) {
             setSize(new java.awt.Dimension(getPreferredSize()));
+            setLocationRelativeTo(null);
         } else {
-            setSize(new java.awt.Dimension(926, 631));
+            setSize(new java.awt.Dimension(933, 607));
+            setLocationRelativeTo(null);
         }
     }//GEN-LAST:event_btnExpandItemStateChanged
 

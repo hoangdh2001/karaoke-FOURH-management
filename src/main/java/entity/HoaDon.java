@@ -94,8 +94,13 @@ public class HoaDon {
      * @param chietKhau
      */
     public void themCT_HoaDon(MatHang matHang, int soLuong, float chietKhau) {
-        ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon(matHang, soLuong, chietKhau);
-        this.dsChiTietHoaDon.add(chiTietHoaDon);
+        ChiTietHoaDon newChiTietHoaDon = new ChiTietHoaDon(this, matHang, soLuong, chietKhau);
+        if(dsChiTietHoaDon.contains(newChiTietHoaDon)) {
+            ChiTietHoaDon chiTietHoaDon = dsChiTietHoaDon.get(dsChiTietHoaDon.indexOf(newChiTietHoaDon));
+            chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + newChiTietHoaDon.getSoLuong());
+        } else {
+            dsChiTietHoaDon.add(newChiTietHoaDon);
+        }
     }
 
     /**
