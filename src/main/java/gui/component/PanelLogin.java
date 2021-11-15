@@ -211,7 +211,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         txtUser.selectAll();
         txtPass.setText("");
     }
-
+    
 //    private void forgetPass() {
 //        
 //        txtSdt.addKeyListener(new KeyAdapter() {

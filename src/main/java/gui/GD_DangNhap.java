@@ -73,6 +73,14 @@ public class GD_DangNhap extends javax.swing.JFrame {
         pnlForm.addEventLogin(new EventLogin() {
             @Override
             public void login(String sdt, byte[] matKhau) {
+                if (sdt.equals("") || matKhau.equals("")) {
+                    pnlForm.showMessage(Message.MessageType.ERROR, "Nhập tên tài khoản");
+                    return;
+                }
+                if (matKhau.length <= 0) {
+                    pnlForm.showMessage(Message.MessageType.ERROR, "Nhập mật khẩu");
+                    return;
+                }
                 pnlLoading.setAlpha(0.5f);
                 pnlLoading.setVisible(true);
                 new Thread(() -> {
@@ -84,7 +92,7 @@ public class GD_DangNhap extends javax.swing.JFrame {
                             showDLProgress();
                         } else {
                             pnlLoading.setVisible(false);
-                            pnlForm.showMessage(Message.MessageType.ERROR, "Sai mật khẩu!");
+                            pnlForm.showMessage(Message.MessageType.ERROR, "Tên tài khoản hoặc mật khẩu bạn đã nhập không chính xác");
                         }
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);

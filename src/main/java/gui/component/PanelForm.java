@@ -14,7 +14,6 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.swing.panel.PanelTransparent;
-import gui.swing.event.EventSelectedRow;
 
 public class PanelForm extends PanelTransparent {
 
@@ -128,6 +127,9 @@ public class PanelForm extends PanelTransparent {
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void begin() {
+                if(messageType == Message.MessageType.ERROR) {
+                    login.setTextWhenBack();
+                }
                 if (!ms.isShow()) {
                     PanelForm.this.add(ms, "pos 0.5al -30", 0); // Chèn thêm message vào panel login
                     ms.setVisible(true);
