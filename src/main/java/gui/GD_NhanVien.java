@@ -1,6 +1,7 @@
 package gui;
 
 import dao.CaLam_DAO;
+import dao.DiaChiMau_DAO;
 import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
 import entity.CaLam;
@@ -8,6 +9,7 @@ import entity.LoaiNhanVien;
 import entity.NhanVien;
 
 import gui.dropshadow.ShadowType;
+import gui.event.EventAddNhanVien;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.textfield.MyComboBox;
@@ -28,6 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import gui.event.EventSelectedRow;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -55,12 +59,15 @@ public class GD_NhanVien extends JPanel {
     private final NhanVien_DAO nhanVien_DAO;
     private LoaiNhanVien_DAO loaiNhanVien_DAO;
     private CaLam_DAO caLam_DAO;
+    private DiaChiMau_DAO diaChiMau_DAO;
 
     private List<NhanVien> listNhanVien;
     private List<LoaiNhanVien> loaiNhanViens;
     private List<CaLam> caLams;
 
     private EventSelectedRow eventSelectedRow;
+    private EventAddNhanVien eventAddNhanVien;
+
     private DefaultComboBoxModel<LoaiNhanVien> cmbModelLNV;
     private DefaultComboBoxModel<CaLam> cmbModelCaLam;
 
@@ -76,10 +83,15 @@ public class GD_NhanVien extends JPanel {
         FormHandler();
 
         SearchHandler();
+        AddHandler();
     }
 
-    public void addEvent(EventSelectedRow event) {
+    public void addEventSelectedRow(EventSelectedRow event) {
         this.eventSelectedRow = event;
+    }
+
+    public void addEventAddNhanVien(EventAddNhanVien event) {
+        this.eventAddNhanVien = event;
     }
 
     private void buildGD() {
@@ -190,8 +202,8 @@ public class GD_NhanVien extends JPanel {
         pnlTimKiemNV.add(cmbCaLamTK, "w 10%,h 40!");
 
         //Button tìm kiếm
-        btnTimKiem = new Button("Tìm kiếm");
-        btnTimKiem.setFont(new Font(fontName, fontPlain, font16));
+        btnTimKiem = new Button("Thêm");
+        btnTimKiem.setFont(new Font(fontName, Font.BOLD, font16));
         btnTimKiem.setBackground(colorBtn);
         btnTimKiem.setBorderline(true);
         btnTimKiem.setBorderRadius(5);
@@ -342,6 +354,21 @@ public class GD_NhanVien extends JPanel {
                     i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
                     i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
         }
+    }
+
+    private void AddHandler() {
+        btnTimKiem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Thêm Nhân viên");
+                eventAddNhanVien.AddNhanVien();
+                
+//                diaChiMau_DAO = new DiaChiMau_DAO();
+//                diaChiMau_DAO.getAllTinhThanh().forEach(i -> {
+//                    System.out.println(i);
+//                });
+            }
+        });
     }
 
     private void setSizeColumnTable() {

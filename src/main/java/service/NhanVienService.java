@@ -16,5 +16,6 @@ public interface NhanVienService {
     public boolean addNhanVien(NhanVien nhanVien);
     public NhanVien getNhanVien(String maNhanVien);
     public List<NhanVien> getNhanViens();
+    public NhanVien getLastNhanVien();
     public  List<NhanVien> searchNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV, String maCaLam);
 }

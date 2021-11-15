@@ -82,6 +82,27 @@ public class NhanVien_DAO implements NhanVienService {
     }
 
     @Override
+    public NhanVien getLastNhanVien() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction.begin();
+            String query = "SELECT * FROM NhanVien "
+                    + " WHERE maNhanVien = (SELECT MAX(maNhanVien) FROM NhanVien)";
+            NhanVien nhanVien = session.createNativeQuery(query, NhanVien.class).getSingleResult();
+            transaction.commit();
+
+            return nhanVien;
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        }
+
+        return null;
+    }
+
+    @Override
     public List<NhanVien> searchNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV, String maCaLam) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
