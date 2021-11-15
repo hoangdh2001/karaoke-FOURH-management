@@ -124,8 +124,8 @@ public class ChiTietHoaDon {
     
     public Object[] convertToRowTableInTiepNhanHoaDon() {
         DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
-        return new Object[] {matHang.getMaMatHang(), matHang.getTenMatHang(), soLuong, df.format(matHang.getDonGia()), getThanhTien()};
+        df = new DecimalFormat("#,##0 VND");
+        return new Object[] {matHang.getMaMatHang(), matHang.getTenMatHang(), soLuong, df.format(matHang.getDonGia()), df.format(getThanhTien())};
     }
 
     @Override

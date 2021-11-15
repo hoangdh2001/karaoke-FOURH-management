@@ -7,13 +7,22 @@ import entity.HoaDon;
 import entity.MatHang;
 import entity.Phong;
 import entity.NhanVien;
-import entity.PhieuDatPhong;
+import gui.GD_TiepNhanDatPhong;
 import gui.swing.event.EventAdd;
-import gui.swing.table.SpinnerEditor;
+import gui.swing.model.ModelAdd;
+import gui.swing.table2.SpinnerEditor;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import objectcombobox.ObjectComboBox;
 import service.HoaDonService;
 import service.MatHangService;
 import service.PhieuDatPhongService;
@@ -26,7 +35,6 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private Phong phong;
     private NhanVien nhanVien;
     private HoaDon hoaDon;
-
     private final DecimalFormat df = new DecimalFormat("#,##0.00");
 
     public DL_TiepNhanDatPhong(Phong phong, NhanVien nv) {
@@ -71,10 +79,16 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         if (dsMatHang != null) {
             EventAdd event = (Object obj) -> {
                 MatHang matHang = (MatHang) obj;
-                hoaDon.themCT_HoaDon(matHang, 1, 0);
-                loadDataTableCTHoaDon();
+                try {
+                    matHang.setsLTonKho(matHang.getsLTonKho() - 1);
+                    hoaDon.themCT_HoaDon(matHang, 1, 0);
+                    loadDataTableCTHoaDon();
+                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Mặt hàng này đã hết!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                }
             };
-            
+
             dsMatHang.forEach(matHang -> {
                 ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
             });
@@ -84,9 +98,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void loadDataTableCTHoaDon() {
         ((DefaultTableModel) tableCTHoaDon.getModel()).setRowCount(0);
         List<ChiTietHoaDon> dsChiTietHoaDon = hoaDon.getDsChiTietHoaDon();
-        for (ChiTietHoaDon chiTietHoaDon : dsChiTietHoaDon) {
+        dsChiTietHoaDon.forEach(chiTietHoaDon -> {
             ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon());
-        }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -308,6 +322,11 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         });
         tableCTHoaDon.setFillsViewportHeight(true);
         tableCTHoaDon.setShowGrid(true);
+        tableCTHoaDon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tableCTHoaDonKeyReleased(evt);
+            }
+        });
         spTbAddMatHang.setViewportView(tableCTHoaDon);
         if (tableCTHoaDon.getColumnModel().getColumnCount() > 0) {
             tableCTHoaDon.getColumnModel().getColumn(0).setResizable(false);
@@ -625,6 +644,30 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             setLocationRelativeTo(null);
         }
     }//GEN-LAST:event_btnExpandItemStateChanged
+
+    private void tableCTHoaDonKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableCTHoaDonKeyReleased
+        int row = tableCTHoaDon.getSelectedRow();
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+            int sl = (int) ((DefaultTableModel) tableCTHoaDon.getModel()).getValueAt(row, 2);
+            MatHang matHang = hoaDon.getDsChiTietHoaDon().get(row).getMatHang();
+            try {
+                matHang.setsLTonKho(matHangService.getMatHang(matHang.getMaMatHang()).getsLTonKho() - sl);
+                hoaDon.getDsChiTietHoaDon().get(tableCTHoaDon.getSelectedRow()).setSoLuong(0);
+                hoaDon.themCT_HoaDon(matHang, sl, 0);
+                loadDataTableCTHoaDon();
+                for (int i = 0; i < tableMatHang.getRowCount(); i++) {
+                    ModelAdd data = (ModelAdd) ((DefaultTableModel) tableMatHang.getModel()).getValueAt(i, 3);
+                    MatHang mh = (MatHang) data.getObj();
+                    if(mh.equals(matHang)) {
+                        ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), i, 1);
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Mặt hàng không đủ số lượng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                loadDataTableCTHoaDon();
+            }
+        }
+    }//GEN-LAST:event_tableCTHoaDonKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;

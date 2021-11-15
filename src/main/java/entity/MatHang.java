@@ -105,8 +105,12 @@ public class MatHang {
     /**
      * @param sLTonKho the sLTonKho to set
      */
-    public void setsLTonKho(int sLTonKho) {
-        this.sLTonKho = sLTonKho;
+    public void setsLTonKho(int sLTonKho) throws Exception {
+        if(sLTonKho >= 0) {
+            this.sLTonKho = sLTonKho;
+        } else {
+            throw new Exception("Số lượng tồn kho phải lớn hơn hoặc = 0");
+        }
     }
 
     /**
@@ -131,7 +135,7 @@ public class MatHang {
 
     public Object[] convertToRowTableInGDTiepNhanDatPhong(EventAdd event) {
         DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
+        df = new DecimalFormat("#,##0 VND");
         return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), new ModelAdd(this, event)};
     }
 
