@@ -1,5 +1,7 @@
 package entity;
 
+import gui.swing.event.EventMinus;
+import gui.swing.model.ModelMinus;
 import java.text.DecimalFormat;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -122,10 +124,10 @@ public class ChiTietHoaDon {
         return new Object[]{new ObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()), soLuong, df.format(matHang.getDonGia()), getThanhTien()};
     }
     
-    public Object[] convertToRowTableInTiepNhanHoaDon() {
+    public Object[] convertToRowTableInTiepNhanHoaDon(EventMinus event) {
         DecimalFormat df;
         df = new DecimalFormat("#,##0 VND");
-        return new Object[] {matHang.getMaMatHang(), matHang.getTenMatHang(), soLuong, df.format(matHang.getDonGia()), df.format(getThanhTien())};
+        return new Object[] {matHang.getMaMatHang(), matHang.getTenMatHang(), soLuong, df.format(matHang.getDonGia()), df.format(getThanhTien()), new ModelMinus(this, event)};
     }
 
     @Override

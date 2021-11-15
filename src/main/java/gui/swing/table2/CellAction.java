@@ -1,5 +1,6 @@
 package gui.swing.table2;
 
+import gui.swing.model.ModelAction;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;

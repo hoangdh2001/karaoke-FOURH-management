@@ -8,7 +8,7 @@ import gui.swing.button.Button;
 import gui.swing.table.TableCustom;
 
 import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
+import gui.swing.model.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 

@@ -1,6 +1,7 @@
 package gui.component;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
@@ -284,7 +285,7 @@ public class Room extends PanelShadow {
             public void actionPerformed(ActionEvent arg0) {
                 try {
                     LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatIntelliJLaf()); //Add whatever other settings you want to the method
+                    UIManager.setLookAndFeel(new FlatLightLaf());
                     new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
                     UIManager.setLookAndFeel(previousLF);
                 } catch (UnsupportedLookAndFeelException e) {

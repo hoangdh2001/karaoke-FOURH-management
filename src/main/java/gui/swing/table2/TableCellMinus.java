@@ -1,25 +1,23 @@
 package gui.swing.table2;
 
-import gui.swing.model.ModelAction;
+import gui.swing.model.ModelMinus;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 
-public class TableCellAction extends DefaultCellEditor {
-
-    private ModelAction data;
-
-    public TableCellAction() {
+public class TableCellMinus extends DefaultCellEditor {
+    private ModelMinus data;
+    public TableCellMinus() {
         super(new JCheckBox());
     }
-
+    
     @Override
     public Component getTableCellEditorComponent(JTable jtable, Object o, boolean bln, int i, int i1) {
-        data = (ModelAction) o;
-        CellAction cell = new CellAction(data);
-        cell.setBackground(new Color(239, 244, 255));
+        data = (ModelMinus) o;
+        CellMinus cell = new CellMinus(data);
+        cell.setBackground(new Color(212, 212, 212));
         return cell;
     }
 

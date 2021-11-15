@@ -81,9 +81,9 @@ public class SpinnerEditor extends DefaultCellEditor {
                 KeyEvent ke = (KeyEvent)eo;
                 System.err.println("key event: "+ke.getKeyChar());
                 textField.setText(String.valueOf(ke.getKeyChar()));
-                //textField.select(1,1);
-                //textField.setCaretPosition(1);
-                //textField.moveCaretPosition(1);
+                textField.select(1,1);
+                textField.setCaretPosition(1);
+                textField.moveCaretPosition(1);
                 valueSet = true;
             } else {
                 valueSet = false;

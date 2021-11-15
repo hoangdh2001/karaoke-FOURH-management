@@ -8,7 +8,7 @@ import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
+import gui.swing.model.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;

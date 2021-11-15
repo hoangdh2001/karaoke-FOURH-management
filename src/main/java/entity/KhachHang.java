@@ -1,7 +1,7 @@
 package entity;
 
 import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
+import gui.swing.model.ModelAction;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
