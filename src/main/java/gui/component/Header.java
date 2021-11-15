@@ -1,7 +1,7 @@
 package gui.component;
 
-import gui.dropshadow.ShadowType;
-import gui.event.EventShowPopupMenu;
+import gui.swing.graphics.ShadowType;
+import gui.swing.event.EventShowPopupMenu;
 import gui.swing.panel.PanelShadow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,9 +14,6 @@ public class Header extends PanelShadow {
     private Thread thread;
     private boolean start = true;
     
-    public void addAction(ActionListener evt) {
-        jButton1.addActionListener(evt);
-    }
     public void addEvent(ActionListener event) {
         btnOpenMenu.addActionListener(event);
     }
@@ -81,12 +78,11 @@ public class Header extends PanelShadow {
         lblTime = new javax.swing.JLabel();
         btnOpenMenu = new gui.swing.button.Button();
         btnDropMenu = new gui.swing.button.ButtonInfo();
-        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setShadowOpacity(0.3F);
         setShadowSize(2);
-        setShadowType(gui.dropshadow.ShadowType.BOT);
+        setShadowType(gui.swing.graphics.ShadowType.BOT);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -107,8 +103,6 @@ public class Header extends PanelShadow {
         btnDropMenu.setTextName("Đỗ Huy Hoàng");
         btnDropMenu.setTextRoll("Quản lý");
 
-        jButton1.setText("jButton1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,9 +110,7 @@ public class Header extends PanelShadow {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnOpenMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 315, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(251, 251, 251)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 639, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDate)
                     .addGroup(layout.createSequentialGroup()
@@ -148,10 +140,6 @@ public class Header extends PanelShadow {
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                 .addComponent(btnDropMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -159,7 +147,6 @@ public class Header extends PanelShadow {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.swing.button.ButtonInfo btnDropMenu;
     private gui.swing.button.Button btnOpenMenu;
-    private javax.swing.JButton jButton1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblTime;

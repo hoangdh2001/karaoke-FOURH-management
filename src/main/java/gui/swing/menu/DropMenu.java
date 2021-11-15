@@ -1,6 +1,6 @@
 package gui.swing.menu;
 
-import gui.event.EventMenuSelected;
+import gui.swing.event.EventMenuSelected;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

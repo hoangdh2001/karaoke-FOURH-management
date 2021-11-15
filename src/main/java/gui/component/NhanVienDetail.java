@@ -1,7 +1,7 @@
 package gui.component;
 
 import entity.NhanVien;
-import gui.event.EventTabSelected;
+import gui.swing.event.EventTabSelected;
 import gui.swing.panel.TabButton;
 import java.awt.BorderLayout;
 import java.awt.Component;

@@ -15,6 +15,15 @@ public enum TrangThaiPhieuDat {
         this.trangThai = trangThai;
         this.statusColor = statusColor;
     }
+    
+     public static TrangThaiPhieuDat getTrangThaiPhieuDatByTrangThai(String trangThai) {
+       for (TrangThaiPhieuDat trangThaiPhieuDat : TrangThaiPhieuDat.values()) {
+           if (trangThaiPhieuDat.trangThai.equals(trangThai)) {
+               return trangThaiPhieuDat;
+           }
+       }
+       return null;
+   }
 
     public String getTrangThai() {
         return trangThai;
@@ -23,9 +32,5 @@ public enum TrangThaiPhieuDat {
     public Color getStatusColor() {
         return statusColor;
     }
-
-    @Override
-    public String toString() {
-        return trangThai;
-    }
+    
 }

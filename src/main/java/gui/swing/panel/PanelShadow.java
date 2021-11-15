@@ -1,6 +1,7 @@
 package gui.swing.panel;
 
-import gui.dropshadow.*;
+import gui.swing.graphics.ShadowType;
+import gui.swing.graphics.ShadowRenderer;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

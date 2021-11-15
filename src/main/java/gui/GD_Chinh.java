@@ -1,6 +1,9 @@
 package gui;
 
+import entity.HoaDon;
+import entity.KhachHang;
 import entity.NhanVien;
+import entity.PhieuDatPhong;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -16,16 +19,17 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
 import gui.component.Header;
+import gui.component.HoaDonDetail;
 import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
-import gui.component.RoomDetail;
+import gui.component.PhieuDatPhongDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
-import gui.event.EventMenuSelected;
-import gui.event.EventShowInfoOver;
-import gui.event.EventShowPopupMenu;
+import gui.swing.event.EventMenuSelected;
+import gui.swing.event.EventShowInfoOver;
+import gui.swing.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
@@ -35,18 +39,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import gui.event.EventSelectedRow;
+import java.awt.Frame;
+import gui.swing.event.EventSelectedRow;
 
 public class GD_Chinh extends JFrame {
-
+    
     /**
      *
      */
     private static final long serialVersionUID = 1L;
+    public static NhanVien NHAN_VIEN;
+    public static Frame FRAME;
     private JLayeredPane background;
     private Animator animator; // thực thi animation
     private Animator animator2; // thực thi animation2
@@ -55,12 +63,15 @@ public class GD_Chinh extends JFrame {
     private Content content; // thành phần content chứa nội dung
     private boolean tabShow;
     private MigLayout layout;
-    private final DecimalFormat df = new DecimalFormat("##0.##");
+    private DecimalFormat df = new DecimalFormat("##0.###");
+    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     private TabLayout tab;
     private JScrollPane sp;
     
-    public GD_Chinh(String title) {
+    public GD_Chinh(Frame frame, String title, NhanVien nhanVien) {
         super(title);
+        GD_Chinh.NHAN_VIEN = nhanVien;
+        GD_Chinh.FRAME = frame;
         buidGD_Chinh();
     }
 
@@ -68,7 +79,9 @@ public class GD_Chinh extends JFrame {
      * Xây dựng GD_Chính
      */
     private void buidGD_Chinh() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        dfs.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
+	setDefaultCloseOperation(EXIT_ON_CLOSE);
         createBackground();
         setContentPane(background);
         setMinimumSize(new Dimension(1200, 500));
@@ -150,7 +163,7 @@ public class GD_Chinh extends JFrame {
                     new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
                 }
                 if (subMenuIndex == 3) {
-                    new GD_DangNhap("Đăng nhập").setVisible(true);
+                    FRAME.setVisible(true);
                     dispose();
                 }
             }
@@ -229,14 +242,48 @@ public class GD_Chinh extends JFrame {
                     }
                     break;
                     case 1:
-                        content.showForm(new GD_QLDatPhong());
+                        GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
+                        content.showForm(qlDatPhong);
+                        qlDatPhong.addEvent(new EventSelectedRow() {
+                            @Override
+                            public void selectedRow(Object object) {
+                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
+                                    if(!animator2.isRunning()){
+                                        if(!tabShow){
+                                            tab.setVisible(true);
+                                            PhieuDatPhongDetail phieuDetail = new PhieuDatPhongDetail(phieuDatPhong);
+                                            tab.showDetail(phieuDetail);
+                                            animator2.start();
+                                        }
+                                    }
+                                }
+                        });
+                        
                         break;
                     case 2:
-                        content.showForm(new GD_KhachHang());
-                        tab.showDetail(new KhachHangDetail());
+                        GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
+                        content.showForm(giaoDienKhachHang);
+
                         break;
                     case 3:
-                        content.showForm(new GD_HoaDon());
+                        GD_HoaDon giaoDienHoaDon = new GD_HoaDon();
+                        content.showForm(giaoDienHoaDon);
+                        
+                        giaoDienHoaDon.addEvent(new EventSelectedRow() {
+                            @Override
+                            public void selectedRow(Object object) {
+                                HoaDon hoaDon = (HoaDon) object;
+                                if(!animator2.isRunning()){
+                                    if(!tabShow){
+                                        tab.setVisible(true);
+                                        
+                                        HoaDonDetail hoaDonDetail =  new HoaDonDetail(hoaDon);
+                                        tab.showDetail(hoaDonDetail);
+                                        animator2.start();
+                                    }
+                                }
+                            }
+                        });
                         break;
                     case 4:
                         GD_NhanVien gD_NhanVien = new GD_NhanVien();
@@ -351,7 +398,7 @@ public class GD_Chinh extends JFrame {
     }
 
     /**
-     * tạo ngăn tab
+     * tạo ngăn ts
      */
     private TabLayout createTabPane() {
         
@@ -391,17 +438,6 @@ public class GD_Chinh extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 if (!animator2.isRunning()) {
                     if (tabShow) {
-                        animator2.start();
-                    }
-                }
-            }
-        });
-        header.addAction(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (!animator2.isRunning()) {
-                    if (!tabShow) {
-                        tab.setVisible(true);
                         animator2.start();
                     }
                 }

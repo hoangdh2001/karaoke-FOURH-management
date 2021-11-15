@@ -5,7 +5,7 @@
  */
 package gui.swing.panel;
 
-import gui.event.EventTabSelected;
+import gui.swing.event.EventTabSelected;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

@@ -4,7 +4,7 @@ import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
-import gui.dropshadow.ShadowType;
+import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
@@ -24,8 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import gui.event.EventSelectedRow;
 import javax.swing.DefaultComboBoxModel;
+import gui.swing.event.EventSelectedRow;
 
 public class GD_NhanVien extends JPanel {
 

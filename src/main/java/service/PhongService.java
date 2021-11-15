@@ -11,7 +11,8 @@ public interface PhongService {
     public boolean deletePhong(String maPhong);
     public Phong getPhong(String maPhong);
     public List<Phong> getDsPhong();
-    public List<Integer> getDsTang();
     public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai);
-    public List<Phong> getPhongByAttributes(String tenPhong, LoaiPhong loaiPhong, TrangThaiPhong trangThai);
+    public List<Phong> getPhongByAttributes(int tang, String tenPhong, LoaiPhong loaiPhong, TrangThaiPhong trangThai);
+    public List<Phong> getPhongBySDT(String sdt, int tang);
+    
 }
