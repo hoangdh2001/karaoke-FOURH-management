@@ -1,7 +1,7 @@
 package gui.swing.table2;
 
+import gui.swing.event.EventMinus;
 import gui.swing.model.ModelAdd;
-import gui.swing.model.ModelMinus;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JTable;
@@ -25,8 +25,8 @@ public class MyTableFlatlaf extends JTable {
                         button.setForeground(Color.BLACK);
                     }
                     return button;
-                } else if (value instanceof ModelMinus) {
-                    ModelMinus data = (ModelMinus) value;
+                } else if (value instanceof EventMinus) {
+                    EventMinus data = (EventMinus) value;
                     CellMinus button = new CellMinus(data);
                     if (isSelected) {
                         button.setBackground(getSelectionBackground());
@@ -56,7 +56,7 @@ public class MyTableFlatlaf extends JTable {
     public TableCellEditor getCellEditor(int row, int column) {
         if (getValueAt(row, column) instanceof ModelAdd) {
             return new TableCellAdd();
-        } else if(getValueAt(row, column) instanceof ModelMinus) {
+        } else if(getValueAt(row, column) instanceof EventMinus) {
             return new TableCellMinus();
         }
         return super.getCellEditor(row, column);

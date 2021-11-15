@@ -3,6 +3,7 @@ package gui.swing.table2;
 import gui.swing.model.ModelAdd;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
 
 public class CellAdd extends javax.swing.JPanel {
 
@@ -16,6 +17,10 @@ public class CellAdd extends javax.swing.JPanel {
         });
     }
 
+    public JButton getBtnAdd() {
+        return btnAdd;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

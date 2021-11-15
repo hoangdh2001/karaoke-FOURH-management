@@ -10,9 +10,10 @@ import service.KhachHangService;
 import util.HibernateUtil;
 
 public class KhachHang_DAO implements KhachHangService {
-        private SessionFactory sessionFactory;
 
-        public KhachHang_DAO() {
+    private SessionFactory sessionFactory;
+
+    public KhachHang_DAO() {
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
@@ -21,6 +22,7 @@ public class KhachHang_DAO implements KhachHangService {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     public boolean themKhachHang(KhachHang khachHang) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
@@ -35,7 +37,8 @@ public class KhachHang_DAO implements KhachHangService {
         }
         return false;
     }
-        
+
+    @Override
     public boolean capNhatKhachHang(KhachHang khachHang) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
@@ -51,10 +54,8 @@ public class KhachHang_DAO implements KhachHangService {
         return false;
     }
 
-    
-
     public KhachHang getKhachHang(String maKhachHang) {
-       Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
 
         try {
@@ -70,6 +71,7 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
+    @Override
     public List<KhachHang> getDSKhachHang() {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
@@ -88,23 +90,24 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
+    @Override
     public List<KhachHang> layDSKhachHang(String tuKhoa) {
-            Session session = sessionFactory.openSession();
-            Transaction tr = session.getTransaction();
-            try {
-                    tr.begin();
-                    String sql = "select * from [dbo].[KhachHang] where [dbo].[ufn_removeMark]([tenKhachHang]) like N'%"+tuKhoa+"%' or [sdt] like '%"+tuKhoa+"'";
-                    List<KhachHang> dsKhachHang = session
-                                .createNativeQuery(sql, KhachHang.class)
-                                .getResultList();
-                    tr.commit();
-                    return dsKhachHang;
-            } catch (Exception e) {
-                System.err.println(e);
-                    tr.rollback();
-            }
-            session.close();
-            return null;
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+            String sql = "select * from [dbo].[KhachHang] where [dbo].[ufn_removeMark]([tenKhachHang]) like N'%" + tuKhoa + "%' or [sdt] like '%" + tuKhoa + "'";
+            List<KhachHang> dsKhachHang = session
+                    .createNativeQuery(sql, KhachHang.class)
+                    .getResultList();
+            tr.commit();
+            return dsKhachHang;
+        } catch (Exception e) {
+            System.err.println(e);
+            tr.rollback();
+        }
+        session.close();
+        return null;
     }
 
     @Override
@@ -114,14 +117,14 @@ public class KhachHang_DAO implements KhachHangService {
         try {
             tr.begin();
             List<KhachHang> dsKhachHang = session
-                            .createNamedQuery("getDSKhachHangByName", KhachHang.class)
-                            .setParameter(1, tuKhoa)
-                            .getResultList();
+                    .createNamedQuery("getDSKhachHangByName", KhachHang.class)
+                    .setParameter(1, tuKhoa)
+                    .getResultList();
             tr.commit();
             return dsKhachHang;
         } catch (Exception e) {
             System.err.println(e);
-                tr.rollback();
+            tr.rollback();
         }
         session.close();
         return null;
@@ -142,4 +145,29 @@ public class KhachHang_DAO implements KhachHangService {
         }
         return false;
     }
+
+    @Override
+    public List<KhachHang> getDsKhachHangLimit(String tuKhoa) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+
+        String sql = "select Top 6 * from [dbo].[KhachHang] "
+                + "where [dbo].[ufn_removeMark]([tenKhachHang]) like N'%"+ tuKhoa +"%' "
+                + "or [CCCD] like '%"+ tuKhoa +"%' "
+                + "or [sdt] like '%"+ tuKhoa +"%' "
+                + "order by tenKhachHang";
+        
+        try {
+            tr.begin();
+            List<KhachHang> rs = session
+                    .createNativeQuery(sql, KhachHang.class)
+                    .getResultList();
+            tr.commit();
+            return rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
+
 }

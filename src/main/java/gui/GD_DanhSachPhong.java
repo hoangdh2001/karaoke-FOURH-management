@@ -94,12 +94,13 @@ public class GD_DanhSachPhong extends JPanel {
         eventAction = new EventAction() {
             @Override
             public void delete(Object obj) {
-                Phong phong = (Phong) obj;
+                String maPhong = String.valueOf(((DefaultTableModel) table.getModel()).getValueAt(table.getSelectedRow(), 1));
+                Phong phong = phong_DAO.getPhong(maPhong);
                 if (JOptionPane.showConfirmDialog(GD_DanhSachPhong.this, "Bạn có muốn xóa mã " + phong.getMaPhong(), "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     String s = phong_DAO.deletePhong(phong.getMaPhong()) == true ? "Xóa thành công mã " + phong.getMaPhong() : "Xóa thất bại mã " + phong.getMaPhong();
                     JOptionPane.showMessageDialog(GD_DanhSachPhong.this, s);
                     DefaultTableModel df = (DefaultTableModel) table.getModel();
-                    df.getDataVector().removeAllElements();
+                    df.setRowCount(0);
                     table.clearSelection();
                     loadData();
                 }

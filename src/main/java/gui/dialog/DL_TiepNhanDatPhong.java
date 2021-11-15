@@ -1,21 +1,34 @@
 package gui.dialog;
 
 import dao.HoaDon_DAO;
+import dao.KhachHang_DAO;
 import dao.MatHang_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
+import entity.KhachHang;
 import entity.MatHang;
 import entity.Phong;
 import entity.NhanVien;
 import gui.swing.event.EventAdd;
 import gui.swing.event.EventMinus;
+import gui.swing.event.EventSelectedRow;
+import gui.swing.model.ModelAdd;
 import gui.swing.table2.SpinnerEditor;
+import gui.swing.textfield.PanelSearch;
+import java.awt.Color;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import service.HoaDonService;
+import service.KhachHangService;
 import service.MatHangService;
 import service.PhieuDatPhongService;
 
@@ -24,14 +37,18 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private MatHangService matHangService;
     private HoaDonService hoaDonService;
     private PhieuDatPhongService phieuDatPhongService;
+    private KhachHangService khachHangService;
     private Phong phong;
     private NhanVien nhanVien;
     private HoaDon hoaDon;
     private final DecimalFormat df = new DecimalFormat("#,##0.00");
+    private PanelSearch search;
+    private JPopupMenu menu;
 
     public DL_TiepNhanDatPhong(Phong phong, NhanVien nv) {
         this.hoaDonService = new HoaDon_DAO();
         this.matHangService = new MatHang_DAO();
+        this.khachHangService = new KhachHang_DAO();
         this.phong = phong;
         this.nhanVien = nv;
         this.hoaDon = new HoaDon();
@@ -46,6 +63,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         loadDataForm();
         createTableMatHang();
         createTableCTHoaDon();
+        createTxtKhachHang();
     }
 
     private void createTableMatHang() {
@@ -92,19 +110,60 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         List<ChiTietHoaDon> dsChiTietHoaDon = hoaDon.getDsChiTietHoaDon();
         EventMinus event = new EventMinus() {
             @Override
-            public void minus(Object obj) {
-                System.out.println("Minus");
-            }
-
-            @Override
-            public void cancel(Object obj) {
-                System.out.println("Cancel");
+            public void cancel() {
+                try {
+                    int row = tableCTHoaDon.getSelectedRow();
+                    ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
+                    MatHang matHang = chiTietHoaDon.getMatHang();
+                    matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
+                    hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
+                    loadDataTableCTHoaDon();
+                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                } catch (Exception ex) {
+                    Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
-        
         dsChiTietHoaDon.forEach(chiTietHoaDon -> {
             ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon(event));
         });
+    }
+
+    private void createTxtKhachHang() {
+        menu = new JPopupMenu();
+        search = new PanelSearch("tenKhachHang");
+        menu.setBorder(BorderFactory.createLineBorder(new Color(164, 164, 164)));
+        menu.add(search);
+        menu.setFocusable(false);
+        search.addEventClick(new EventSelectedRow() {
+            @Override
+            public void selectedRow(Object obj) {
+                loadDataTTKH();
+            }
+        });
+    }
+
+    private void searchKhachHang(JTextField textField) {
+        try {
+            String text = textField.getText().trim().toLowerCase();
+            search.setData(khachHangService.getDsKhachHangLimit(text));
+            if (search.getItemSize() > 0) {
+                menu.show(textField, 0, textField.getHeight());
+                menu.setPopupSize(menu.getWidth(), (search.getItemSize() * 30) + 2);
+            } else {
+                menu.setVisible(false);
+            }
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void loadDataTTKH() {
+        KhachHang khachHang = (KhachHang) search.getSelectedRow();
+        txtTenKhachHang.setText(khachHang.getTenKhachHang());
+        txtCCCD.setText(khachHang.getCanCuocCD());
+        txtSdt.setText(khachHang.getSoDienThoai());
+        menu.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -294,7 +353,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLoaiDichVu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(pnlMatHang);
@@ -403,11 +462,56 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         lblTenKhachHang.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblTenKhachHang.setText("Tên khách hàng");
 
+        txtTenKhachHang.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtTenKhachHang.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtTenKhachHangFocusGained(evt);
+            }
+        });
+        txtTenKhachHang.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTenKhachHangKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTenKhachHangKeyReleased(evt);
+            }
+        });
+
         lblCCCD.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblCCCD.setText("CCCD");
 
+        txtCCCD.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtCCCD.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCCCDFocusGained(evt);
+            }
+        });
+        txtCCCD.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCCCDKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCCCDKeyReleased(evt);
+            }
+        });
+
         lblSdt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblSdt.setText("Số điện thoại");
+
+        txtSdt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtSdt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtSdtFocusGained(evt);
+            }
+        });
+        txtSdt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSdtKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSdtKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlTTKHLayout = new javax.swing.GroupLayout(pnlTTKH);
         pnlTTKH.setLayout(pnlTTKHLayout);
@@ -421,9 +525,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(lblSdt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTTKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSdt)
-                    .addComponent(txtCCCD)
-                    .addComponent(txtTenKhachHang))
+                    .addComponent(txtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         pnlTTKHLayout.setVerticalGroup(
@@ -447,11 +551,17 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlTTHD.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true), "Thông tin hóa đơn", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         pnlTTHD.setOpaque(false);
 
+        txtGiamGia.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
         lblGiamGia.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblGiamGia.setText("Giảm giá");
 
+        txtMaHoaDon.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
         lblMaHoaDon.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblMaHoaDon.setText("Mã hóa đơn");
+
+        txtChietKhau.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         lblChietKhau.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblChietKhau.setText("Chiết khấu");
@@ -468,7 +578,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(lblChietKhau))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTTHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtGiamGia)
+                    .addComponent(txtGiamGia, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                     .addComponent(txtMaHoaDon)
                     .addComponent(txtChietKhau))
                 .addContainerGap())
@@ -498,7 +608,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Mã mặt hàng", "Tên mặt hàng", "Số lượng", "Đơn giá", "Thành tiền", ""
+                "ID", "Tên mặt hàng", "Số lượng", "Đơn giá", "Thành tiền", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -512,13 +622,22 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         tableCTHoaDon.setFillsViewportHeight(true);
         tableCTHoaDon.setRowHeight(30);
         tableCTHoaDon.setShowGrid(true);
+        tableCTHoaDon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tableCTHoaDonKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(tableCTHoaDon);
         if (tableCTHoaDon.getColumnModel().getColumnCount() > 0) {
             tableCTHoaDon.getColumnModel().getColumn(0).setResizable(false);
-            tableCTHoaDon.getColumnModel().getColumn(1).setResizable(false);
+            tableCTHoaDon.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tableCTHoaDon.getColumnModel().getColumn(1).setPreferredWidth(200);
             tableCTHoaDon.getColumnModel().getColumn(2).setResizable(false);
+            tableCTHoaDon.getColumnModel().getColumn(2).setPreferredWidth(60);
             tableCTHoaDon.getColumnModel().getColumn(3).setResizable(false);
+            tableCTHoaDon.getColumnModel().getColumn(3).setPreferredWidth(100);
             tableCTHoaDon.getColumnModel().getColumn(4).setResizable(false);
+            tableCTHoaDon.getColumnModel().getColumn(4).setPreferredWidth(100);
             tableCTHoaDon.getColumnModel().getColumn(5).setResizable(false);
         }
 
@@ -533,7 +652,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addComponent(pnlTTKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlTTHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlTTHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -626,7 +745,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             pnlExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlExpandLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(spPhieuDatPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                .addComponent(spPhieuDatPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -640,10 +759,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1026, 607));
+        setSize(new java.awt.Dimension(1026, 611));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -657,10 +776,112 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             setSize(new java.awt.Dimension(getPreferredSize()));
             setLocationRelativeTo(null);
         } else {
-            setSize(new java.awt.Dimension(1026, 607));
+            setSize(new java.awt.Dimension(1026, 611));
             setLocationRelativeTo(null);
         }
     }//GEN-LAST:event_btnExpandItemStateChanged
+
+    private void tableCTHoaDonKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableCTHoaDonKeyReleased
+        int row = tableCTHoaDon.getSelectedRow();
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+            int sl = (int) ((DefaultTableModel) tableCTHoaDon.getModel()).getValueAt(row, 2);
+            MatHang matHang = hoaDon.getDsChiTietHoaDon().get(row).getMatHang();
+            try {
+                matHang.setsLTonKho(matHangService.getMatHang(matHang.getMaMatHang()).getsLTonKho() - sl);
+                hoaDon.getDsChiTietHoaDon().get(tableCTHoaDon.getSelectedRow()).setSoLuong(0);
+                hoaDon.themCT_HoaDon(matHang, sl, 0);
+                loadDataTableCTHoaDon();
+                for (int i = 0; i < tableMatHang.getRowCount(); i++) {
+                    ModelAdd data = (ModelAdd) ((DefaultTableModel) tableMatHang.getModel()).getValueAt(i, 3);
+                    MatHang mh = (MatHang) data.getObj();
+                    if (mh.equals(matHang)) {
+                        ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), i, 1);
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Mặt hàng không đủ số lượng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                loadDataTableCTHoaDon();
+            }
+        } else {
+
+        }
+    }//GEN-LAST:event_tableCTHoaDonKeyReleased
+
+    private void txtTenKhachHangKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenKhachHangKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN && evt.getKeyCode() != KeyEvent.VK_ENTER) {
+            searchKhachHang(txtTenKhachHang);
+        }
+    }//GEN-LAST:event_txtTenKhachHangKeyReleased
+
+    private void txtTenKhachHangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTenKhachHangKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            search.keyUp();
+        } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            search.keyDown();
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            loadDataTTKH();
+        }
+    }//GEN-LAST:event_txtTenKhachHangKeyPressed
+
+    private void txtCCCDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCCCDKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN && evt.getKeyCode() != KeyEvent.VK_ENTER) {
+            searchKhachHang(txtCCCD);
+        }
+    }//GEN-LAST:event_txtCCCDKeyReleased
+
+    private void txtCCCDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCCCDKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            search.keyUp();
+        } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            search.keyDown();
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            loadDataTTKH();
+        }
+    }//GEN-LAST:event_txtCCCDKeyPressed
+
+    private void txtTenKhachHangFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTenKhachHangFocusGained
+        search.setColumnName("tenKhachHang");
+        if (search.getItemSize() > 0) {
+            menu.show(txtTenKhachHang, 0, txtTenKhachHang.getHeight());
+            search.clearSelected();
+            searchKhachHang(txtTenKhachHang);
+
+        }
+    }//GEN-LAST:event_txtTenKhachHangFocusGained
+
+    private void txtCCCDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCCCDFocusGained
+        search.setColumnName("canCuocCD");
+        if (search.getItemSize() > 0) {
+            menu.show(txtCCCD, 0, txtCCCD.getHeight());
+            search.clearSelected();
+            searchKhachHang(txtCCCD);
+        }
+    }//GEN-LAST:event_txtCCCDFocusGained
+
+    private void txtSdtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSdtFocusGained
+        search.setColumnName("canCuocCD");
+        if (search.getItemSize() > 0) {
+            menu.show(txtSdt, 0, txtSdt.getHeight());
+            search.clearSelected();
+            searchKhachHang(txtSdt);
+        }
+    }//GEN-LAST:event_txtSdtFocusGained
+
+    private void txtSdtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSdtKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN && evt.getKeyCode() != KeyEvent.VK_ENTER) {
+            searchKhachHang(txtSdt);
+        }
+    }//GEN-LAST:event_txtSdtKeyReleased
+
+    private void txtSdtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSdtKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            search.keyUp();
+        } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            search.keyDown();
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            loadDataTTKH();
+        }
+    }//GEN-LAST:event_txtSdtKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
