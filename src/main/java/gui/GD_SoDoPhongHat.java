@@ -6,7 +6,6 @@ import gui.component.PanelMap;
 import gui.component.PanelStatus;
 import gui.component.Slide1;
 import gui.component.Slide2;
-import gui.component.Slide3;
 import gui.dropshadow.ShadowType;
 import gui.event.EventShowInfoOver;
 import gui.swing.button.Button;
