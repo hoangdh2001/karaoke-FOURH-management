@@ -37,6 +37,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 import entity.PhieuDatPhong;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private JPanel pnlInfoBottom;
     private JPanel pnlKhachHang;
     private JPanel pnlThongTinKhachHang;
+    
+    private HoaDon hoaDon;
     
     private MyTable tableDichVu;
     private MyTable tableDichVuDaChon;
@@ -92,7 +95,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     
     private Phong phong;
     private NhanVien nhanVien;
-    
+
     public GD_TiepNhanDatPhong(Phong phong,NhanVien nhanVien) {
         super();
         setTitle("Giao phòng");
@@ -104,6 +107,48 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         this.nhanVien = nhanVien;
         initData();
         addAction();
+    }
+    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GD_LapHoaDon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GD_LapHoaDon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GD_LapHoaDon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GD_LapHoaDon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                Phong phong = new Phong_DAO().getPhong("PH0001");
+                System.out.println(phong);
+                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+                GD_TiepNhanDatPhong dialog = new GD_TiepNhanDatPhong(phong,nhanVien);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
     }
     
     @SuppressWarnings("unchecked")
@@ -430,7 +475,11 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         nhaCungCapVaNhaphang_DAO = new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
         setSize(new Dimension(1300,650));
-        setLocation(150, 150);
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        final Dimension screenSize = toolkit.getScreenSize();
+        final int x = (screenSize.width - this.getWidth()) / 2;
+        final int y = (screenSize.height - this.getHeight()) / 2;
+        setLocation(x, y);
         mainPanel.setLayout(new MigLayout("","20[center]20"));
         pnlInfoTop = new PanelShadow();
         pnlInfoTop.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]20"));
@@ -502,7 +551,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         @Override
         public void keyReleased(KeyEvent e) {
             Object obj = e.getSource();
-            if (e.getKeyChar() == KeyEvent.VK_ENTER){
+            if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE ){
                if(obj.equals(txtSdt) || obj.equals(txtTenKhachHang) || obj.equals(txtCCCD)){
                     if((txtSdt.getText().trim() + txtTenKhachHang.getText().trim() +  txtCCCD.getText().trim()).equals("") ){
                         tablePhieuDatPhong.clearSelection();
@@ -512,17 +561,23 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                int idx = (int)tableDichVuDaChon.getSelectedRow();
                ObjectComboBox cb = (ObjectComboBox)tableDichVuDaChon.getValueAt(idx, 0);
                int soLuong = 0;
-               for(int i = 0; i < tableDichVu.getRowCount(); i++) {
+               
+                for(int i = 0; i < tableDichVu.getRowCount(); i++) {
                     if(tableDichVu.getValueAt(i, 0).equals(cb)) {
                         soLuong = (int)tableDichVu.getValueAt(i, 1);
-                        listDaChonSoLuong.get(i).setMa(String.valueOf(tableDichVuDaChon.getValueAt(idx, 1)));
-                        break;
+                        
+                        if((int)tableDichVuDaChon.getValueAt(idx, 1) > soLuong){
+                            JOptionPane.showMessageDialog(GD_TiepNhanDatPhong.this,cb.toString()+ " số lượng chỉ còn " + soLuong);
+                            tableDichVuDaChon.editCellAt(idx,1);
+                            break;
+                        } else{
+                            listDaChonSoLuong.get(idx).setMa(String.valueOf(tableDichVuDaChon.getValueAt(idx, 1)));
+                            int newSL = Integer.parseInt(tableDichVu.getValueAt(i, 1).toString()) - Integer.parseInt(tableDichVuDaChon.getValueAt(idx, 1).toString());
+                            tableDichVu.getModel().setValueAt(newSL, i, 1);
+                            break;
+                        }  
                     }
                 }
-               if((int)tableDichVuDaChon.getValueAt(idx, 1) > soLuong){
-                   JOptionPane.showMessageDialog(GD_TiepNhanDatPhong.this,cb.toString()+ " số lượng chỉ còn " + soLuong);
-                   tableDichVuDaChon.editCellAt(idx,1);
-               }
            }
         }
         
@@ -548,6 +603,14 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 			}else {
                             listDaChon.remove(cb);
                             listDaChonSoLuong.remove(sl);
+                            for(int j = 0; j < tableDichVuDaChon.getRowCount(); j++) {
+                                ObjectComboBox cb2 = (ObjectComboBox) tableDichVuDaChon.getModel().getValueAt(j, 0);
+                                if(cb.getMa() == cb2.getMa()){
+                                    int newSL = Integer.parseInt(tableDichVu.getValueAt(i, 1).toString()) + Integer.parseInt(tableDichVuDaChon.getValueAt(j, 1).toString());
+                                    tableDichVu.getModel().setValueAt(newSL, i, 1);
+                                    break;
+                                }
+                            }
 			}
                     }
                     
@@ -557,7 +620,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                     for(int i = 0; i < listDaChon.size(); i++){
                         ObjectComboBox cb = (ObjectComboBox) listDaChon.get(i);
                         tableDichVuDaChon.addRow(new Object[]{cb,Integer.parseInt(listDaChonSoLuong.get(i).getMa())});
-                        
+                        System.out.println(listDaChonSoLuong.get(i).getMa());
                     }
                     repaint();
                     revalidate();
@@ -655,8 +718,6 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
 	JOptionPane.showMessageDialog(null, msg);
     }
     
-    
-    
     private class createActionListenner implements ActionListener{
 
         @Override
@@ -681,15 +742,16 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                 nhaCungCapVaNhaphang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_HAT);
                 
                 String maHoaDon = nhaCungCapVaNhaphang_DAO.getlastMaHoaDonTang();
+                hoaDon = new HoaDon(maHoaDon, kh, phong, nhanVien);
                 
-                HoaDon hoaDon = new HoaDon(maHoaDon, kh, phong, nhanVien);
-                nhaCungCapVaNhaphang_DAO.insertHoaDon(hoaDon,tienCoc);
-//insert chi tiet hoa don
+                nhaCungCapVaNhaphang_DAO.insertHoaDon(hoaDon);
+//                MatHang matHang = nhaCungCapVaNhaphang_DAO.getMatHang("MH0001");
+//                ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(hoaDon,matHang, 10, 0.0f);
+//                hoaDon.themCT_HoaDon(matHang, 10, 0.0f);
                 if(tableDichVuDaChon.getRowCount() != 0){
                     for( int i = 0 ; i< tableDichVuDaChon.getRowCount(); i++){
                         ObjectComboBox cb = (ObjectComboBox)tableDichVuDaChon.getValueAt(i, 0);
                         int soluong = Integer.parseInt(tableDichVuDaChon.getValueAt(i, 1).toString());
-                        System.out.println(soluong);
                         if(soluong > 0){
                             MatHang matHang = nhaCungCapVaNhaphang_DAO.getMatHang(cb.getMa());
                             ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(hoaDon,matHang, soluong, 0.0f);
@@ -698,6 +760,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                         }
                     }  
                 }
+                showMsg("Giao phòng thành công");
                 dispose();
             }
         }

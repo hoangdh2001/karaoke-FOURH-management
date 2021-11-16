@@ -448,6 +448,12 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         if(dscBatDau.getDate() == null || dscKetThuc.getDate() == null){
             return false;
         }
+        
+        if(dscBatDau.getDate().getTime() > dscKetThuc.getDate().getTime()){
+            showMsg("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+            return false;
+        }
+        
         return true;
     }
     

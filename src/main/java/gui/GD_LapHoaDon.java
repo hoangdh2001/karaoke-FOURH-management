@@ -9,6 +9,7 @@ import dao.Phong_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.NhanVien;
+import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
@@ -19,6 +20,7 @@ import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -102,8 +104,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         this.nhanVien= nhanVien;
         setModal(true);
         initComponents();
-        setSize(new Dimension(1200,780));
-        setLocation(150, 10);
+        
         initForm();
         addAction();
         initData(phong,nhanVien);
@@ -174,7 +175,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Phong phong = new Phong_DAO().getPhong("PH0001");
+                Phong phong = new Phong_DAO().getPhong("PH0008");
                 System.out.println(phong);
                 NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
                 GD_LapHoaDon dialog = new GD_LapHoaDon(phong,nhanVien);
@@ -474,6 +475,12 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     }
 
      public void initForm(){
+        setSize(new Dimension(1200,780));
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        final Dimension screenSize = toolkit.getScreenSize();
+        final int x = (screenSize.width - this.getWidth()) / 2;
+        final int y = (screenSize.height - this.getHeight()) / 2;
+        setLocation(x, y);
         nhaCungCapVaNhapHang_DAO= new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
         mainPanel.setLayout(new MigLayout("","20[center]20"));
@@ -499,6 +506,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
         
         hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
+        
         txtTongTienPhongCu.setText(String.valueOf(hoaDon.getDonGiaPhongCu()));
         List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
         dsCTHoaDon.forEach(ctHoaDon -> {
@@ -567,6 +575,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         long tongThoiGian = 0;
         int hours = 0;
         int minutes = 0;
+        
         double tienPhong = hoaDon.getDonGiaPhongCu();
         double giaPhong = phong.getLoaiPhong().getGiaPhong();
         if(ngayDaSuDung > 0){
@@ -587,7 +596,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
                 minutes -= 60;
             }
             tienPhong += (ngayDaSuDung-1)*24*giaPhong + hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
-             GioHat = String.valueOf((ngayDaSuDung - 1)*24+hours) +":"+String.valueOf(minutes);
+            GioHat = String.valueOf((ngayDaSuDung - 1)*24+hours) +":"+String.valueOf(minutes);
         }else{
             tongThoiGian = millisKetThuc - millisBatDau;
             minutes = (int) ((tongThoiGian / (1000*60)) % 60);
@@ -596,13 +605,14 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
             System.out.println(tongThoiGian);
             GioHat = String.valueOf(hours) +":"+String.valueOf(minutes);
         }
-
-        System.out.println(GioHat);
+        
         txtTongTienPhong.setText(df.format(tienPhong));
         return tienPhong;
     }
     
     public double TongTien(){
+        PhieuDatPhong pdp = nhaCungCapVaNhapHang_DAO.getPhieuCuaPhong(hoaDon.getKhachHang().getMaKhachHang());
+        double tong =0;
         double tongTienDichVu = TongTienDichVu();
 	double tongTienPhong = 0;
         try {
@@ -610,8 +620,12 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         } catch (ParseException ex) {
             Logger.getLogger(GD_LapHoaDon.class.getName()).log(Level.SEVERE, null, ex);
         }
+        tong = tongTienDichVu + tongTienPhong;
+        if(tong > pdp.getTienCoc()){
+            tong -= pdp.getTienCoc();
+        }
         
-        txtTongTien.setText(df.format(tongTienDichVu + tongTienPhong));
+        txtTongTien.setText(df.format(tong));
 	return tongTienDichVu + tongTienPhong;
     }
      
@@ -743,7 +757,6 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
                         }else{
                             nhaCungCapVaNhapHang_DAO.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soluongCu - soLuongMoi,"increase");
                         }
-
                         dsCTHoaDon.get(i).setSoLuong(soLuongMoi);
                         nhaCungCapVaNhapHang_DAO.updateCTHoaDon(dsCTHoaDon.get(i));
                     }

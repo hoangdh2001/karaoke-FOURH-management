@@ -17,6 +17,7 @@ import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -272,7 +273,12 @@ public class DL_DatPhong extends javax.swing.JDialog {
         setSize(1000, 680);
         setTitle("CỬA SỔ PHÒNG ĐẶT");
         setResizable(false);
-        setLocationRelativeTo(null);
+        setSize(new Dimension(1200,780));
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        final Dimension screenSize = toolkit.getScreenSize();
+        final int x = (screenSize.width - this.getWidth()) / 2;
+        final int y = (screenSize.height - this.getHeight()) / 2;
+        setLocation(x, y);
     }
 
     /**

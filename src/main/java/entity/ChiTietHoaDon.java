@@ -41,6 +41,7 @@ public class ChiTietHoaDon {
 		this.matHang = matHang;
 		this.soLuong = soLuong;
 		this.chietKhau = chietKhau;
+                this.thanhTien = getThanhTien();
 	}
 	/**
 	 * 

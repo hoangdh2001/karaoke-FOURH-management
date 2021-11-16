@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -32,7 +33,7 @@ public class HoaDon {
     private Date ngayLapHoaDon;
     private Date thoiGianBatDau;
     private Date thoiGianKetThuc;
-    @OneToMany(mappedBy = "hoaDon")
+    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.EAGER)
     private List<ChiTietHoaDon> dsChiTietHoaDon;
     private String gioHat;
     @Column(columnDefinition = "money")
@@ -80,6 +81,7 @@ public class HoaDon {
         this.nhanVien = nhanVien;
         this.thoiGianBatDau = new Date();
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.gioHat = "00:00";
     }
 
     /**
@@ -94,7 +96,7 @@ public class HoaDon {
      * @param chietKhau
      */
     public void themCT_HoaDon(MatHang matHang, int soLuong, float chietKhau) {
-        ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon(matHang, soLuong, chietKhau);
+        ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon(this,matHang, soLuong, chietKhau);
         this.dsChiTietHoaDon.add(chiTietHoaDon);
     }
 
@@ -219,14 +221,12 @@ public class HoaDon {
      */
     public double getDonGiaPhong() {
         String[] time = gioHat.split(":");
-//        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
-        return 0;
+        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
     }
     
-    public double  getDonGiaPhongCu(){
+    public double getDonGiaPhongCu(){
         return donGiaPhong;
     }
-
     /**
      * @return the tongTienMatHang
      */
