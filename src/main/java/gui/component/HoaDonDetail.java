@@ -60,8 +60,8 @@ public class HoaDonDetail extends javax.swing.JPanel {
 
         btnIn.setBackground(new java.awt.Color(255, 255, 255));
         btnIn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/print_24.png"))); // NOI18N
         btnIn.setText("IN");
-        btnIn.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/print_24.png"));
         btnIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInActionPerformed(evt);
@@ -73,15 +73,13 @@ public class HoaDonDetail extends javax.swing.JPanel {
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopLayout.createSequentialGroup()
-                .addContainerGap(518, Short.MAX_VALUE)
-                .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(515, Short.MAX_VALUE)
+                .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopLayout.createSequentialGroup()
-                .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(btnIn, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
         );
 
         add(pnlTop, java.awt.BorderLayout.PAGE_START);

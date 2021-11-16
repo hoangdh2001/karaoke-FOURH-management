@@ -94,8 +94,8 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
 
         btnIn.setBackground(new java.awt.Color(255, 255, 255));
         btnIn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/print_24.png"))); // NOI18N
         btnIn.setText("IN");
-	btnIn.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/print_24.png"));
         btnIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInActionPerformed(evt);

@@ -65,7 +65,6 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
         lblTTNgayDat = new javax.swing.JLabel();
         lblTTTrangThai = new javax.swing.JLabel();
         lblTTTienCoc = new javax.swing.JLabel();
-        lblHinh = new javax.swing.JLabel();
         lblTenCT = new javax.swing.JLabel();
         lblDiaChi = new javax.swing.JLabel();
         lblDienThoai = new javax.swing.JLabel();
@@ -80,6 +79,7 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
         lblTTGiaPhong = new javax.swing.JLabel();
         lblTang = new javax.swing.JLabel();
         lblTTTang = new javax.swing.JLabel();
+        pictureBox1 = new gui.swing.image.PictureBox();
 
         pnlThongTin.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -128,11 +128,6 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
         lblTTTienCoc.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         lblTTTienCoc.setText("150,000");
 
-        lblHinh.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/logo.png")); // NOI18N
-
-        lblHinh.setText("   ");
-
-
         lblTenCT.setFont(new java.awt.Font("SansSerif", 1, 28)); // NOI18N
         lblTenCT.setText("CÔNG TY KARAOKE FOUR- H");
 
@@ -177,6 +172,8 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
 
         lblTTTang.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         lblTTTang.setText("1");
+
+        pictureBox1.setImage(new javax.swing.ImageIcon(getClass().getResource("/icon/logo.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlThongTinLayout = new javax.swing.GroupLayout(pnlThongTin);
         pnlThongTin.setLayout(pnlThongTinLayout);
@@ -238,29 +235,27 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(lblTTTienCoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlThongTinLayout.createSequentialGroup()
-                                .addComponent(lblHinh, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pictureBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addGroup(pnlThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblDiaChi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblTenCT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblDienThoai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                    .addComponent(lblDienThoai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblTenCT, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addContainerGap())
         );
         pnlThongTinLayout.setVerticalGroup(
             pnlThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlThongTinLayout.createSequentialGroup()
-                .addGroup(pnlThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(16, 16, 16)
+                .addGroup(pnlThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(pnlThongTinLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
                         .addComponent(lblTenCT, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblDienThoai, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlThongTinLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblHinh, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(pictureBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(54, 54, 54)
                 .addComponent(lblPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlThongTinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -325,7 +320,6 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
     private javax.swing.JLabel lblDiaChi;
     private javax.swing.JLabel lblDienThoai;
     private javax.swing.JLabel lblGiaPhong;
-    private javax.swing.JLabel lblHinh;
     private javax.swing.JLabel lblKhachHang;
     private javax.swing.JLabel lblLoaiPhong;
     private javax.swing.JLabel lblMaPhieu;
@@ -350,6 +344,7 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
     private javax.swing.JLabel lblTenCT;
     private javax.swing.JLabel lblTienCoc;
     private javax.swing.JLabel lblTrangThaiPhieu;
+    private gui.swing.image.PictureBox pictureBox1;
     private javax.swing.JPanel pnlThongTin;
     // End of variables declaration//GEN-END:variables
 }

@@ -65,7 +65,6 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblHinh = new javax.swing.JLabel();
         lblCT = new javax.swing.JLabel();
         lblDiaChi = new javax.swing.JLabel();
         lblLienHe = new javax.swing.JLabel();
@@ -98,11 +97,9 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
         lblTTTienMatHang = new javax.swing.JLabel();
         scrChiTiet = new javax.swing.JScrollPane();
         tblChiTiet = new gui.swing.table2.MyTable();
+        pictureBox1 = new gui.swing.image.PictureBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
-
-        lblHinh.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/logo.png")); // NOI18N
-        lblHinh.setText("jLabel1");
 
         lblCT.setFont(new java.awt.Font("SansSerif", 1, 28)); // NOI18N
         lblCT.setText("CÔNG TY KARAOKE FOUR- H");
@@ -178,7 +175,7 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
 
         lblSoGio.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         lblSoGio.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblSoGio.setText("Số giờ hát: ");
+        lblSoGio.setText("Số phút hát: ");
 
         lblTTSoGio.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         lblTTSoGio.setText("5");
@@ -229,6 +226,8 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
             tblChiTiet.getColumnModel().getColumn(3).setMinWidth(80);
             tblChiTiet.getColumnModel().getColumn(3).setMaxWidth(80);
         }
+
+        pictureBox1.setImage(new javax.swing.ImageIcon(getClass().getResource("/icon/logo.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -281,7 +280,7 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTTTongTien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblHinh, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pictureBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblCT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -298,18 +297,18 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblCT, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblLienHe, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTTMaHD)
-                            .addComponent(lblMaHD, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addComponent(lblHinh, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblLienHe, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pictureBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTTMaHD)
+                    .addComponent(lblMaHD, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTieuDe)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -363,7 +362,6 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
     private javax.swing.JLabel lblCT;
     private javax.swing.JLabel lblDiaChi;
     private javax.swing.JLabel lblGia;
-    private javax.swing.JLabel lblHinh;
     private javax.swing.JLabel lblLienHe;
     private javax.swing.JLabel lblLoaiPhong;
     private javax.swing.JLabel lblMaHD;
@@ -391,6 +389,7 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
     private javax.swing.JLabel lblTienMatHang;
     private javax.swing.JLabel lblTieuDe;
     private javax.swing.JLabel lblTongHoaDon;
+    private gui.swing.image.PictureBox pictureBox1;
     private javax.swing.JScrollPane scrChiTiet;
     private gui.swing.table2.MyTable tblChiTiet;
     // End of variables declaration//GEN-END:variables
