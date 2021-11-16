@@ -36,7 +36,7 @@ public class PanelSearch extends javax.swing.JPanel {
         selectedIndex = -1;
         this.removeAll();
         for (Object obj : data) {
-            Search_Item item = new Search_Item(obj, columnName);
+            SearchItem item = new SearchItem(obj, columnName);
             item.addEvent(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -79,7 +79,7 @@ public class PanelSearch extends javax.swing.JPanel {
 
     public Object getSelectedRow() {
         if (selectedIndex != -1 && selectedIndex < getComponentCount()) {
-            return ((Search_Item) getComponent(selectedIndex)).getObject();
+            return ((SearchItem) getComponent(selectedIndex)).getObject();
         }
         return "";
     }
@@ -92,7 +92,7 @@ public class PanelSearch extends javax.swing.JPanel {
     private void showSelected() {
         Component com[] = getComponents();
         for (int i = 0; i < com.length; i++) {
-            ((Search_Item) com[i]).setSelected(i == selectedIndex);
+            ((SearchItem) com[i]).setSelected(i == selectedIndex);
         }
     }
 

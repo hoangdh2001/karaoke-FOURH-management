@@ -1,5 +1,8 @@
 package gui.dialog;
 
+import com.github.lgooddatepicker.components.TimePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
+import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
 import dao.MatHang_DAO;
@@ -18,7 +21,10 @@ import gui.swing.textfield.PanelSearch;
 import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.sql.Date;
+import java.sql.Time;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +47,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private Phong phong;
     private NhanVien nhanVien;
     private HoaDon hoaDon;
-    private final DecimalFormat df = new DecimalFormat("#,##0.00");
+    private final DecimalFormat df = new DecimalFormat("#,##0");
     private PanelSearch search;
     private JPopupMenu menu;
 
@@ -77,10 +83,23 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
     private void loadDataForm() {
         if (phong != null | nhanVien != null) {
+            tPTGBatDau.setTimeToNow();
+            tPTGBatDau.addTimeChangeListener(new TimeChangeListener() {
+                @Override
+                public void timeChanged(TimeChangeEvent event) {
+                    tPTGBatDauTimeChanged(event);
+                }
+            });
+            tPTGBatDau.getSettings().setDisplaySpinnerButtons(true);
+            tPTGBatDau.getSettings().setDisplayToggleTimeMenuButton(false);
+            tPTGKetThuc.setTimeToNow();
+            tPTGKetThuc.getSettings().setDisplaySpinnerButtons(true);
+            tPTGKetThuc.getSettings().setDisplayToggleTimeMenuButton(false);
             txtTenPhong.setText(phong.getTenPhong());
             txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
             lblNhanVien.setText("Nhân viên: " + nhanVien.getTenNhanVien());
             lblRole.setText(nhanVien.getLoaiNhanVien().getTenLoaiNV());
+            txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
         }
     }
 
@@ -94,6 +113,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     hoaDon.themCT_HoaDon(matHang, 1, 0);
                     loadDataTableCTHoaDon();
                     ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                    txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Mặt hàng này đã hết!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 }
@@ -108,20 +128,17 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void loadDataTableCTHoaDon() {
         ((DefaultTableModel) tableCTHoaDon.getModel()).setRowCount(0);
         List<ChiTietHoaDon> dsChiTietHoaDon = hoaDon.getDsChiTietHoaDon();
-        EventMinus event = new EventMinus() {
-            @Override
-            public void cancel() {
-                try {
-                    int row = tableCTHoaDon.getSelectedRow();
-                    ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
-                    MatHang matHang = chiTietHoaDon.getMatHang();
-                    matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
-                    hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
-                    loadDataTableCTHoaDon();
-                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
-                } catch (Exception ex) {
-                    Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        EventMinus event = () -> {
+            try {
+                int row = tableCTHoaDon.getSelectedRow();
+                ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
+                MatHang matHang = chiTietHoaDon.getMatHang();
+                matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
+                hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
+                loadDataTableCTHoaDon();
+                ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
             }
         };
         dsChiTietHoaDon.forEach(chiTietHoaDon -> {
@@ -135,11 +152,12 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         menu.setBorder(BorderFactory.createLineBorder(new Color(164, 164, 164)));
         menu.add(search);
         menu.setFocusable(false);
-        search.addEventClick(new EventSelectedRow() {
-            @Override
-            public void selectedRow(Object obj) {
-                loadDataTTKH();
-            }
+        search.addEventClick((Object obj) -> {
+            KhachHang khachHang = (KhachHang) obj;
+            menu.setVisible(false);
+            txtTenKhachHang.setText(khachHang.getTenKhachHang());
+            txtSdt.setText(khachHang.getSoDienThoai());
+            txtCCCD.setText(khachHang.getCanCuocCD());
         });
     }
 
@@ -165,11 +183,20 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         txtSdt.setText(khachHang.getSoDienThoai());
         menu.setVisible(false);
     }
+    
+    private void tPTGBatDauTimeChanged(TimeChangeEvent event) {
+        if(tPTGBatDau.getTime().compareTo(tPTGKetThuc.getTime()) == 1) {
+            Time gioBatDau = Time.valueOf(tPTGBatDau.getTime());
+            Time gioKetTHuc = Time.valueOf(tPTGKetThuc.getTime());
+            
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dateTimePicker1 = new com.github.lgooddatepicker.components.DateTimePicker();
         bg = new javax.swing.JPanel();
         pnlMain = new javax.swing.JPanel();
         pnlBottomBar = new javax.swing.JPanel();
@@ -190,12 +217,12 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         lblLoaiPhong = new javax.swing.JLabel();
         txtLoaiPhong = new javax.swing.JTextField();
         pnlTGThuePhong = new javax.swing.JPanel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jTextField6 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        tPTGBatDau = new com.github.lgooddatepicker.components.TimePicker();
+        tPTGKetThuc = new com.github.lgooddatepicker.components.TimePicker();
+        myTextFieldPerUnit1 = new gui.swing.textfield.MyTextFieldPerUnit();
         pnlDatTruoc = new javax.swing.JPanel();
         txtDaCoc = new javax.swing.JTextField();
         lblDaCoc = new javax.swing.JLabel();
@@ -214,10 +241,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         lblMaHoaDon = new javax.swing.JLabel();
         txtChietKhau = new javax.swing.JTextField();
         lblChietKhau = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableCTHoaDon = new gui.swing.table2.MyTableFlatlaf();
+        txtTongTienMatHang = new gui.swing.textfield.MyTextFieldPerUnit();
         pnlExpand = new javax.swing.JPanel();
         spPhieuDatPhong = new javax.swing.JScrollPane();
         tablePhieuDatPhong = new javax.swing.JTable();
@@ -353,7 +380,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLoaiDichVu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(pnlMatHang);
@@ -379,45 +406,47 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_advance_20px_3.png"))); // NOI18N
 
-        jTextField6.setEnabled(false);
-
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel12.setText("Tiền phòng dự kiến");
+
+        myTextFieldPerUnit1.setEnabled(false);
+        myTextFieldPerUnit1.setUnit("VND");
 
         javax.swing.GroupLayout pnlTGThuePhongLayout = new javax.swing.GroupLayout(pnlTGThuePhong);
         pnlTGThuePhong.setLayout(pnlTGThuePhongLayout);
         pnlTGThuePhongLayout.setHorizontalGroup(
             pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTGThuePhongLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(myTextFieldPerUnit1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTGThuePhongLayout.createSequentialGroup()
-                        .addComponent(jLabel12)
+                        .addComponent(tPTGKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField6)))
-                .addContainerGap())
+                        .addComponent(jLabel11)
+                        .addGap(12, 12, 12)
+                        .addComponent(tPTGBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(33, 33, 33))
         );
         pnlTGThuePhongLayout.setVerticalGroup(
             pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(13, 13, 13)
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tPTGBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
-                    .addComponent(jLabel10)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel10)
+                        .addComponent(tPTGKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(myTextFieldPerUnit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -433,10 +462,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlDatTruocLayout.setHorizontalGroup(
             pnlDatTruocLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDatTruocLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblDaCoc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtDaCoc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtDaCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         pnlDatTruocLayout.setVerticalGroup(
@@ -641,18 +670,13 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             tableCTHoaDon.getColumnModel().getColumn(5).setResizable(false);
         }
 
+        txtTongTienMatHang.setEnabled(false);
+        txtTongTienMatHang.setUnit("VND");
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
-                .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlDatTruoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(pnlCenterLayout.createSequentialGroup()
-                .addComponent(pnlTTKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlTTHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -667,11 +691,20 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                         .addGap(24, 24, 24)
                         .addComponent(btnExpand))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTongTienMatHang, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addComponent(jScrollPane2)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(pnlTTKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlTTHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlDatTruoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -687,9 +720,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(13, 13, 13)
+                    .addComponent(jLabel1)
+                    .addComponent(txtTongTienMatHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlTTKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlTTHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -743,9 +776,8 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         );
         pnlExpandLayout.setVerticalGroup(
             pnlExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlExpandLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(spPhieuDatPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlExpandLayout.createSequentialGroup()
+                .addComponent(spPhieuDatPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -759,10 +791,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1026, 611));
+        setSize(new java.awt.Dimension(1026, 616));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -859,7 +891,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     }//GEN-LAST:event_txtCCCDFocusGained
 
     private void txtSdtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSdtFocusGained
-        search.setColumnName("canCuocCD");
+        search.setColumnName("soDienThoai");
         if (search.getItemSize() > 0) {
             menu.show(txtSdt, 0, txtSdt.getHeight());
             search.clearSelected();
@@ -889,8 +921,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private javax.swing.JButton btnGiaoPhong;
     private javax.swing.JButton btnHuy;
     private javax.swing.JComboBox<String> cbLoaiDichVu;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -898,8 +929,6 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblCCCD;
     private javax.swing.JLabel lblChietKhau;
     private javax.swing.JLabel lblDaCoc;
@@ -912,6 +941,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private javax.swing.JLabel lblSdt;
     private javax.swing.JLabel lblTenKhachHang;
     private javax.swing.JLabel lblTenPhong;
+    private gui.swing.textfield.MyTextFieldPerUnit myTextFieldPerUnit1;
     private javax.swing.JPanel pnlBottomBar;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlDatTruoc;
@@ -922,6 +952,8 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private javax.swing.JPanel pnlTTHD;
     private javax.swing.JPanel pnlTTKH;
     private javax.swing.JScrollPane spPhieuDatPhong;
+    private com.github.lgooddatepicker.components.TimePicker tPTGBatDau;
+    private com.github.lgooddatepicker.components.TimePicker tPTGKetThuc;
     private gui.swing.table2.MyTableFlatlaf tableCTHoaDon;
     private gui.swing.table2.MyTableFlatlaf tableMatHang;
     private javax.swing.JTable tablePhieuDatPhong;
@@ -935,5 +967,6 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private gui.swing.textfield.MyTextField txtSearch;
     private javax.swing.JTextField txtTenKhachHang;
     private javax.swing.JTextField txtTenPhong;
+    private gui.swing.textfield.MyTextFieldPerUnit txtTongTienMatHang;
     // End of variables declaration//GEN-END:variables
 }

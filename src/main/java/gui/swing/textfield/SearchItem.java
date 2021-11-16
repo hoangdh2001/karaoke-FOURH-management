@@ -7,10 +7,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 
-public class Search_Item extends javax.swing.JPanel {
+public class SearchItem extends javax.swing.JPanel {
     private Object obj;
     private String columnName;
-    public Search_Item(Object obj, String columnName) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    public SearchItem(Object obj, String columnName) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         initComponents();
         this.obj = obj;
         this.columnName = columnName;
