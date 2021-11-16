@@ -13,6 +13,7 @@ import gui.component.Slide2;
 import gui.swing.button.Button;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.graphics.ShadowType;
+import gui.swing.button.Button;
 import gui.swing.panel.slideshow.Slideshow;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
@@ -31,6 +32,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
+import gui.swing.event.EventShowInfoOver;
 
 public class GD_SoDoPhongHat extends javax.swing.JPanel {
     

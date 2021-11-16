@@ -1,22 +1,22 @@
 package gui.component;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
 import gui.GD_Chinh;
 import gui.GD_TiepNhanDatPhong;
-import gui.swing.event.EventMenuSelected;
+import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -25,14 +25,13 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.LookAndFeel;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
-/**
- *
- * @author Admin
- */
 public class Room extends PanelShadow {
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
@@ -271,7 +270,7 @@ public class Room extends PanelShadow {
         btnDat.setBackground(new Color(0, 31, 63));
         btnDat.setBorderRadius(5);
         pnlPhongTrong.add(btnDat, "split 2");
-
+        
         Button btnThue = new Button("Thuê", true);
         btnThue.setForeground(Color.WHITE);
         btnThue.setBackground(new Color(0, 31, 63));
@@ -279,12 +278,20 @@ public class Room extends PanelShadow {
         btnThue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                new GD_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
+                try {
+                    LookAndFeel previousLF = UIManager.getLookAndFeel();
+                    UIManager.setLookAndFeel(new FlatLightLaf());
+                    new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
+                    UIManager.setLookAndFeel(previousLF);
+                } catch (UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
             }
         });
         pnlPhongTrong.add(btnThue);
         return pnlPhongTrong;
     }
+    
 
     /**
      * Xây dựng phòng sửa

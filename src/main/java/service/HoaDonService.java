@@ -14,6 +14,7 @@ import java.util.List;
  * @author Hao
  */
 public interface HoaDonService {
+    public boolean addHoaDon(HoaDon hoaDon);
     public List<HoaDon> getDsHoaDon();
     public HoaDon getHoaDon(String maHoaDon);
     public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang);
@@ -32,4 +33,5 @@ public interface HoaDonService {
     public List<Integer> getDSThangTheoNgayLap();
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();
+    public String getMaxID();
 }

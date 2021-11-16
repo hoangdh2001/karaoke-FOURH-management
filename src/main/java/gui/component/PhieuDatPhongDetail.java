@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package gui.component;
 
 import entity.PhieuDatPhong;
@@ -20,14 +14,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-/**
- *
- * @author Hao
- */
 public class PhieuDatPhongDetail extends javax.swing.JPanel {
     
     private PhieuDatPhong phieuDatPhong;
     private PanelThongTinPDP pnlThongTinPDP;
+    private PanelSuaPDP pnlSuaPDP;
 
     /** Creates new form PhieuDatPhongDetail */
     public PhieuDatPhongDetail(PhieuDatPhong phieuDatPhong) {
@@ -38,6 +29,7 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
 
      private void buildDisplay() {
         pnlThongTinPDP= new PanelThongTinPDP(phieuDatPhong);
+//        pnlSuaPDP = new PanelSuaPDP(phieuDatPhong);
         createTabButton();
     }
 
@@ -49,7 +41,7 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
 //                    showTab(pnlThongTinPDP);
 //                }
 //                else if(index == 1) {
-//                    showTab(new PanelSuaPDP());
+//                    showTab(pnlSuaPDP);
 //                }
 //                tabButton.check();
 //                return true;
@@ -58,6 +50,7 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
 //        tabButton.addTabButtonItem("Thông tin");
 //        tabButton.addTabButtonItem("Sửa");
         pnlBottom.add(pnlThongTinPDP);
+        //pnlBottom.add(pnlSuaPDP);
     }
     
 //    private void showTab(Component com) {
@@ -79,6 +72,7 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
         pnlBottom = new javax.swing.JPanel();
         pnlTop = new javax.swing.JPanel();
         btnIn = new javax.swing.JButton();
+        tabButton = new gui.swing.panel.TabButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -86,32 +80,38 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
         add(pnlBottom, java.awt.BorderLayout.CENTER);
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
-        pnlTop.setPreferredSize(new java.awt.Dimension(717, 40));
+        pnlTop.setPreferredSize(new java.awt.Dimension(717, 80));
 
         btnIn.setBackground(new java.awt.Color(255, 255, 255));
         btnIn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/print_24.png"))); // NOI18N
         btnIn.setText("IN");
-        btnIn.setIcon(new ImageIcon("./src/main/resources/icon/print_24.png"));
         btnIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInActionPerformed(evt);
             }
         });
 
+        tabButton.setBackground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopLayout.createSequentialGroup()
-                .addContainerGap(573, Short.MAX_VALUE)
+                .addContainerGap(688, Short.MAX_VALUE)
                 .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(tabButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTopLayout.createSequentialGroup()
-                .addComponent(btnIn, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tabButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
         );
 
         add(pnlTop, java.awt.BorderLayout.PAGE_START);
@@ -126,6 +126,7 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
     private javax.swing.JButton btnIn;
     private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlTop;
+    private gui.swing.panel.TabButton tabButton;
     // End of variables declaration//GEN-END:variables
     private void printRecord(JPanel panel){
             //Create printerJob Here

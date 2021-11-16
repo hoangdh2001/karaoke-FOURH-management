@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package gui;
 
 import dao.NhaCungCapVaNhapHang_DAO;
@@ -17,6 +13,7 @@ import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
@@ -24,7 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -36,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import objectcombobox.ObjectComboBox;
 
 /**
@@ -391,13 +388,18 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     }
     
     public void initForm(){
+        
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
         hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
         
         setSize(new Dimension(1350,560));
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        final Dimension screenSize = toolkit.getScreenSize();
+        final int x = (screenSize.width - this.getWidth()) / 2;
+        final int y = (screenSize.height - this.getHeight()) / 2;
+        setLocation(x, y);
         setResizable(false);
-        setLocation(150, 150);
         MainPanel.setLayout(new MigLayout("","20[center]10"));
 //        MainPanel.setBackground(Color.WHITE);
         
@@ -496,6 +498,10 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         btnDoiPhong.addMouseListener(new actionMouseListener());
     }
     
+    private void showMsg(String msg) {
+	JOptionPane.showMessageDialog(null, msg);
+    }
+    
     private class actionMouseListener implements MouseListener{
 
         @Override
@@ -522,6 +528,8 @@ public class GD_DoiPhong extends javax.swing.JDialog {
                     nhaCungCapVaNhapHang_DAO.updateHoaDonDoiPhong(hoaDon,tienPhongCu, cb.getMa());
                     nhaCungCapVaNhapHang_DAO.updatePhong(cb.getMa(),TrangThaiPhong.DANG_HAT);
                     nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
+                    
+                    showMsg("Đổi phòng thành công");
                 }
             }
         }

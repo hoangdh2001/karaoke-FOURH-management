@@ -1,9 +1,6 @@
 package gui.component;
 
-import dao.Phong_DAO;
 import entity.Phong;
-import gui.swing.event.EventShowInfoOver;
-import gui.swing.event.EventShowPopupMenu;
 import gui.swing.event.EventTabSelected;
 import gui.swing.layout.WrapLayout;
 import gui.swing.panel.PanelShadow;
@@ -13,7 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
@@ -23,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import gui.swing.event.EventShowInfoOver;
+import java.awt.event.ActionListener;
 
 public class PanelMap extends PanelShadow {
 
@@ -33,6 +31,7 @@ public class PanelMap extends PanelShadow {
     private JScrollPane sp;
     private int indexShowing;
     private EventShowInfoOver event;
+    private ActionListener action;
 
     public int getIndexShowing() {
         return indexShowing;

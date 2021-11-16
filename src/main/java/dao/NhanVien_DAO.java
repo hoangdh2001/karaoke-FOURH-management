@@ -247,8 +247,9 @@ public class NhanVien_DAO implements NhanVienService {
             tr.rollback();
         }
         session.close();
-        return null;}
     
+        return null;
+    }
     /**
      * Kiểm tra trùng số điện thoại
      *

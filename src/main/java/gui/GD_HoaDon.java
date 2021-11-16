@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import com.toedter.calendar.JDateChooser;
@@ -45,20 +40,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import net.miginfocom.swing.MigLayout;
-/**
- *
- * @author NGUYEN HAO
- */
+
 public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     private HoaDon_DAO hoaDon_Dao;
     private List<HoaDon> dsHoaDon = new ArrayList<HoaDon>();
     private EventAction event;
-    
+
     JCheckBox chkSapXepThuTu;
     JDateChooser dscBatDau, dscKetThuc;
     MyComboBox<String> cmbTuyChinh, cmbCot, cmbSapXep;
     MyTextField txtTimKiem;
-    
+
     private PanelShadow panelHidden;
 
     private MyComboBox<Object> cmbQuy;
@@ -73,8 +65,9 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
 
     
     public void addEvent(EventSelectedRow eventOnClick) {
-        this.eventOnClick= eventOnClick;
+        this.eventOnClick = eventOnClick;
     }
+
     /**
      * Creates new form GD_HoaDon
      */
@@ -97,14 +90,14 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         createPanelHidden();
         add(panelHidden);
     }
-    
+
     private void createPanelHidden() {
         panelHidden = new PanelShadow();
         panelHidden.setShadowType(ShadowType.CENTER);
         panelHidden.setShadowOpacity(0.3f);
     }
-    
-    private void createForm(){
+
+    private void createForm() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
         int font16 = 16;
@@ -124,7 +117,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         pnlThoiGianHD.setLayout(new MigLayout("", "10[][center] 50[] [center]10", "60[][center]10[center]"));
         pnlForm.add(pnlThoiGianHD, "w 60%, h 200!");
 
-        JLabel lblChonThoiGian = new JLabel("Chọn thời gian");
+        JLabel lblChonThoiGian = new JLabel("Tìm kiếm theo thời gian");
         lblChonThoiGian.setFont(new Font(fontName, fontPlain, font16));
         lblChonThoiGian.setForeground(colorLabel);
         pnlThoiGianHD.add(lblChonThoiGian, "span, w 100%, h 30!, wrap");
@@ -194,7 +187,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         pnlTimKiemHD.setLayout(new MigLayout("", "[]10[center]10", "60[][center]18[center]"));
         pnlForm.add(pnlTimKiemHD, "w 40%, h 200!");
 
-        JLabel lblTimKiem = new JLabel("Tìm kiếm");
+        JLabel lblTimKiem = new JLabel("Tìm kiếm cụ thể");
         lblTimKiem.setFont(new Font(fontName, fontPlain, font16));
         lblTimKiem.setForeground(colorLabel);
         pnlTimKiemHD.add(lblTimKiem, "span, w 100%, h 30!, wrap");
@@ -246,7 +239,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         });
 
     }
-    
+
     private JPanel createPanelTitle() {
         JPanel pnlTitle = new JPanel();
         pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
@@ -257,12 +250,12 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
         lblTitle.setForeground(new Color(68, 68, 68));
         pnlTitle.add(lblTitle);
-        return  pnlTitle;
+        return pnlTitle;
     }
     
     private void createTable(){
         Object rows[][] = { {"","","","","","","","","","",""},{"","","","","","","","","","",""}, };
-        String columns[] = {"Mã hóa đơn","Khách hàng","Phòng","Số giờ hát", "Ngày lập hóa đơn","Giờ bắt đầu","Tổng mặt hàng","giá phòng","Tổng hóa đơn","Nhân viên"};
+        String columns[] = {"Mã hóa đơn","Khách hàng","Phòng","Số phút hát", "Ngày lập hóa đơn","Giờ bắt đầu","Tổng mặt hàng","giá phòng","Tổng hóa đơn","Nhân viên"};
         TableModel model = new DefaultTableModel(rows, columns){
             boolean[] canEdit = new boolean [] {
                 false, false, false,false,true
@@ -286,8 +279,8 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         tblHoaDon.fixTable(scrHoaDon);
         tblHoaDon.setFont(new Font("sansserif", Font.PLAIN, 14));
     }
-    
-    public void xoaDuLieu(){
+
+    public void xoaDuLieu() {
         DefaultTableModel df = (DefaultTableModel) tblHoaDon.getModel();
         df.setRowCount(0);
     }
