@@ -39,36 +39,36 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
 
      private void buildDisplay() {
         pnlThongTinPDP= new PanelThongTinPDP(phieuDatPhong);
-        pnlSuaPDP = new PanelSuaPDP(phieuDatPhong);
+//        pnlSuaPDP = new PanelSuaPDP(phieuDatPhong);
         createTabButton();
     }
 
     private void createTabButton() {
-        tabButton.setEvent(new EventTabSelected() {
-            @Override
-            public boolean selected(int index, boolean selectedTab) {
-                if(index == 0) {
-                    showTab(pnlThongTinPDP);
-                }
-                else if(index == 1) {
-                    showTab(pnlSuaPDP);
-                }
-                tabButton.check();
-                return true;
-            }
-        });
-        tabButton.addTabButtonItem("Thông tin");
-        tabButton.addTabButtonItem("Sửa");
+//        tabButton.setEvent(new EventTabSelected() {
+//            @Override
+//            public boolean selected(int index, boolean selectedTab) {
+//                if(index == 0) {
+//                    showTab(pnlThongTinPDP);
+//                }
+//                else if(index == 1) {
+//                    showTab(pnlSuaPDP);
+//                }
+//                tabButton.check();
+//                return true;
+//            }
+//        });
+//        tabButton.addTabButtonItem("Thông tin");
+//        tabButton.addTabButtonItem("Sửa");
         pnlBottom.add(pnlThongTinPDP);
-        pnlBottom.add(pnlSuaPDP);
+        //pnlBottom.add(pnlSuaPDP);
     }
     
-    private void showTab(Component com) {
-        pnlBottom.removeAll();
-        pnlBottom.add(com);
-        pnlBottom.repaint();
-        pnlBottom.revalidate();
-    }
+//    private void showTab(Component com) {
+//        pnlBottom.removeAll();
+//        pnlBottom.add(com);
+//        pnlBottom.repaint();
+//        pnlBottom.revalidate();
+//    }
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -95,6 +95,7 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
         btnIn.setBackground(new java.awt.Color(255, 255, 255));
         btnIn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnIn.setText("IN");
+	btnIn.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/print_24.png"));
         btnIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInActionPerformed(evt);

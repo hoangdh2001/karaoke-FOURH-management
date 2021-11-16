@@ -262,7 +262,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     
     private void createTable(){
         Object rows[][] = { {"","","","","","","","","","",""},{"","","","","","","","","","",""}, };
-        String columns[] = {"Mã hóa đơn","Khách hàng","Phòng","Số giờ hát", "Ngày lập hóa đơn","Giờ bắt đầu","Tổng mặt hàng","giá phòng","Tổng hóa đơn","Nhân viên"};
+        String columns[] = {"Mã hóa đơn","Khách hàng","Phòng","Số phút hát", "Ngày lập hóa đơn","Giờ bắt đầu","Tổng mặt hàng","giá phòng","Tổng hóa đơn","Nhân viên"};
         TableModel model = new DefaultTableModel(rows, columns){
             boolean[] canEdit = new boolean [] {
                 false, false, false,false,true

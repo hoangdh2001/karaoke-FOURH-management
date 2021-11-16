@@ -101,7 +101,7 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        lblHinh.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/audio.jpg")); // NOI18N
+        lblHinh.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/logo.png")); // NOI18N
         lblHinh.setText("jLabel1");
 
         lblCT.setFont(new java.awt.Font("SansSerif", 1, 28)); // NOI18N

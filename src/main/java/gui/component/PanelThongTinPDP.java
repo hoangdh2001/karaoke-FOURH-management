@@ -128,7 +128,7 @@ public class PanelThongTinPDP extends javax.swing.JPanel {
         lblTTTienCoc.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         lblTTTienCoc.setText("150,000");
 
-        lblHinh.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/audio.jpg")); // NOI18N
+        lblHinh.setIcon(new javax.swing.ImageIcon("./src/main/resources/icon/logo.png")); // NOI18N
 
         lblHinh.setText("   ");
 

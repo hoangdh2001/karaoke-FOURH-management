@@ -235,8 +235,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             return false;
         }
         return true;
-    }
-    
+    }    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblTitleBang;
     private gui.swing.panel.PanelShadow pnlBottom;

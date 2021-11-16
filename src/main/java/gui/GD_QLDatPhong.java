@@ -12,6 +12,7 @@ import entity.KhachHang;
 import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TrangThaiPhieuDat;
+import gui.dialog.DL_DatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
@@ -214,6 +215,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                     System.out.println(phieuDatPhong_Dao.getPhieuDatPhong(maPhieu));
                     eventSelectedRow.selectedRow(phieuDatPhong_Dao.getPhieuDatPhong(maPhieu));
                 }
+//                if(SwingUtilities.isRightMouseButton(e)){
+//                    DL_DatPhong dl_DatPhong = new DL_DatPhong(this, true);
+//                }
             }
         });
     }
