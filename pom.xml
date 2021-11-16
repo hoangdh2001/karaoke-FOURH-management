@@ -11,7 +11,7 @@
             <artifactId>miglayout</artifactId>
             <version>4.0</version>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>com.jcalendar</groupId>
             <artifactId>jcalendar</artifactId>
             <version>1.4</version>
@@ -20,6 +20,21 @@
             <groupId>com.timing</groupId>
             <artifactId>timingframework</artifactId>
             <version>0.55</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>1.6.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -31,6 +46,22 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>9.4.0.jre11</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker -->
+        <dependency>
+            <groupId>com.github.lgooddatepicker</groupId>
+            <artifactId>LGoodDatePicker</artifactId>
+            <version>11.2.1</version>
+        </dependency>
+        <!--        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.3m</version>
+        </dependency>-->
+        <!--        <dependency>
+            <groupId>Tourist</groupId>
+            <artifactId>travel_manager</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>-->
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

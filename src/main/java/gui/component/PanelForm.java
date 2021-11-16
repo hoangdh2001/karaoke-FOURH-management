@@ -14,6 +14,7 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.swing.panel.PanelTransparent;
+import java.text.DecimalFormatSymbols;
 
 public class PanelForm extends PanelTransparent {
 
@@ -24,7 +25,7 @@ public class PanelForm extends PanelTransparent {
     private final double coverSize = 40; // 40 phần trăm
     private final double loginSize = 60; // 60 phần trăm
     private final double addSize = 30; // 30 phần trăm
-    private final DecimalFormat df = new DecimalFormat("##0.###");
+    private final DecimalFormat df = new DecimalFormat("###.##");
     private Animator animator;
 
     public PanelForm() {
