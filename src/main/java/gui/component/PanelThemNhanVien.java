@@ -8,7 +8,6 @@ import entity.CaLam;
 import entity.DiaChi;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
-import gui.swing.event.EventAddDataEntity;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
