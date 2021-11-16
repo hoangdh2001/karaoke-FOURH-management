@@ -8,9 +8,11 @@ import gui.component.PanelMap;
 import gui.component.PanelStatus;
 import gui.component.Slide1;
 import gui.component.Slide2;
-import gui.dropshadow.ShadowType;
-import gui.event.EventShowInfoOver;
+//import gui.dropshadow.ShadowType;
+//import gui.event.EventShowInfoOver;
 import gui.swing.button.Button;
+import gui.swing.event.EventShowInfoOver;
+import gui.swing.graphics.ShadowType;
 import gui.swing.panel.slideshow.Slideshow;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
@@ -23,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -37,7 +40,6 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private DefaultComboBoxModel<LoaiPhong> cbLoaiPhongModel;
     private DefaultComboBoxModel<TrangThaiPhong> cbTrangThaiModel;
     
-    
     public void addEvent(EventShowInfoOver event) {
         panelMap.addEvent(event);
     }
@@ -45,7 +47,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     public void addEventSp(MouseWheelListener event) {
         panelMap.addEventSp(event);
     }
-
+    
     public PanelMap getPanelMap() {
         return panelMap;
     }
@@ -57,10 +59,10 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         buildGD();
         
     }
-
+    
     private void buildGD() {
         pnlTop.setLayout(new MigLayout("fill, insets 0, wrap", "0[fill]0", "0[fill]0[fill]0[fill]0"));
-
+        
         pnlTop.add(createPanelTitle(), "h 40!, span 2");
         
         pnlTop.add(createPanelForm(), "split 2");
@@ -81,7 +83,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         JLabel lbSdt = new JLabel("Số điện thoại");
         lbSdt.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlForm.add(lbSdt);
-
+        
         MyTextField txtSdt = new MyTextField();
         txtSdt.setFont(new Font("sansserif", Font.PLAIN, 14));
         txtSdt.setBorderLine(true);
@@ -91,23 +93,23 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             public void keyReleased(KeyEvent e) {
                 String sdt = txtSdt.getText().trim();
                 panelMap.initSearchRoom(phong_DAO.getPhongBySDT(sdt, panelMap.getIndexShowing()));
-                if(sdt.length() == 0) {
+                if (sdt.length() == 0) {
                     panelMap.initSearchRoom(phong_DAO.getDsPhong());
                 }
             }
         });
         pnlForm.add(txtSdt, "w 25%");
-
+        
         JLabel lbTenPhong = new JLabel("Tên phòng:");
         lbTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlForm.add(lbTenPhong);
-
+        
         MyTextField txtTenPhong = new MyTextField();
         txtTenPhong.setBorderLine(true);
         txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         txtTenPhong.setBorderRadius(5);
         pnlForm.add(txtTenPhong, "w 25%, wrap");
-
+        
         JLabel lbLoaiPhong = new JLabel("Loại phòng:");
         lbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlForm.add(lbLoaiPhong);
@@ -119,7 +121,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         cbLoaiPhong.setBorderLine(true);
         cbLoaiPhong.setBorderRadius(10);
         pnlForm.add(cbLoaiPhong, "w 25%, h 30!");
-
+        
         JLabel lbTrangThai = new JLabel("Trạng thái");
         lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlForm.add(lbTrangThai);
@@ -131,7 +133,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         cbTrangThai.setBorderLine(true);
         cbTrangThai.setBorderRadius(10);
         pnlForm.add(cbTrangThai, "w 25%, h 30!, wrap");
-
+        
         Button timKiemBtn = new Button("Tìm kiếm");
         timKiemBtn.setFont(new Font("sansserif", Font.PLAIN, 14));
         timKiemBtn.setBorderline(true);
@@ -142,12 +144,14 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 String tenPhong = txtTenPhong.getText().trim();
                 LoaiPhong loaiPhong = null;
-                if(!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--"))
+                if (!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--")) {
                     loaiPhong = (LoaiPhong) cbLoaiPhongModel.getSelectedItem();
+                }
                 
                 TrangThaiPhong trangThaiPhong = null;
-                if(!cbTrangThaiModel.getSelectedItem().toString().equals("--Tất cả--"))
+                if (!cbTrangThaiModel.getSelectedItem().toString().equals("--Tất cả--")) {
                     trangThaiPhong = (TrangThaiPhong) cbTrangThaiModel.getSelectedItem();
+                }
                 
                 panelMap.initSearchRoom(phong_DAO.getPhongByAttributes(panelMap.getIndexShowing(), tenPhong,
                         loaiPhong,
@@ -162,7 +166,11 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     }
     
     private void loadDataForm() {
-        cbLoaiPhongModel.addAll(loaiPhong_DAO.getDsLoaiPhong());
+//        cbLoaiPhongModel.addAll(loaiPhong_DAO.getDsLoaiPhong());
+        List<LoaiPhong> loaiPhongs = loaiPhong_DAO.getDsLoaiPhong();
+        for (LoaiPhong lp : loaiPhongs) {
+            cbLoaiPhongModel.addElement(lp);
+        }
         
         TrangThaiPhong[] trangThaiPhongs = TrangThaiPhong.values();
         for (TrangThaiPhong trangThaiPhong : trangThaiPhongs) {
@@ -176,7 +184,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         slideshow.initSlideshow(new Slide1(), new Slide2());
         return slideshow;
     }
-
+    
     private JPanel createPanelTitle() {
         JPanel pnlTitle = new JPanel();
         pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
@@ -189,7 +197,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         pnlTitle.add(lblTitle);
         return pnlTitle;
     }
-
+    
     private JPanel createPaneStatus() {
         JPanel pnlStatus = new JPanel();
         pnlStatus.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(0, 0, 0, 0.1f)));
@@ -226,7 +234,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private void loaiMap() {
         panelMap.initRoom(phong_DAO.getDsPhong());
     }
-
+    
     private PanelMap panelMap() {
         panelMap = new PanelMap();
         panelMap.setBackground(Color.WHITE);
@@ -240,8 +248,6 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         return panelMap;
     }
     
-    
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
