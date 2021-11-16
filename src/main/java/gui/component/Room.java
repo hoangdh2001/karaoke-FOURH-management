@@ -1,5 +1,6 @@
 package gui.component;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import entity.HoaDon;
@@ -268,12 +269,6 @@ public class Room extends PanelShadow {
         btnDat.setForeground(Color.WHITE);
         btnDat.setBackground(new Color(0, 31, 63));
         btnDat.setBorderRadius(5);
-        btnDat.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                new GD_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
-            }
-        });
         pnlPhongTrong.add(btnDat, "split 2");
         
         Button btnThue = new Button("Thuê", true);

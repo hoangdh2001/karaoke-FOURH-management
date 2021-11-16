@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 import javax.transaction.Transactional;
 
 @Entity
@@ -19,7 +22,7 @@ public class HoaDon {
     @Id
     private String maHoaDon;
     @ManyToOne
-    @JoinColumn(name = "maKhachHang", nullable = false)
+    @JoinColumn(name = "maKhachHang")
     private KhachHang khachHang;
     @ManyToOne
     @JoinColumn(name = "maPhong", nullable = false)
@@ -27,9 +30,14 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "maNhanVien", nullable = false)
     private NhanVien nhanVien;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date ngayLapHoaDon;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date thoiGianBatDau;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date thoiGianKetThuc;
+    @Enumerated(EnumType.STRING)
+    private TrangThaiHoaDon trangThai;
     @OneToMany(mappedBy = "hoaDon")
     private List<ChiTietHoaDon> dsChiTietHoaDon;
     private String gioHat;
@@ -39,20 +47,36 @@ public class HoaDon {
     private double tongTienMatHang;
     @Column(columnDefinition = "money")
     private double tongHoaDon;
-
     /**
      * @param maHoaDon
-     * @param khachHang
      * @param phong
      * @param nhanVien
      */
+    public HoaDon(String maHoaDon, Phong phong, NhanVien nhanVien) {
+        this.maHoaDon = maHoaDon;
+        this.phong = phong;
+        this.nhanVien = nhanVien;
+        this.thoiGianBatDau = new Date();
+        this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
+        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.gioHat = "00:00";
+        this.donGiaPhong = 0;
+        this.tongTienMatHang = 0;
+        this.tongHoaDon = 0;
+    }
+    
     public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien) {
         this.maHoaDon = maHoaDon;
         this.khachHang = khachHang;
         this.phong = phong;
         this.nhanVien = nhanVien;
         this.thoiGianBatDau = new Date();
+        this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.gioHat = "00:00";
+        this.donGiaPhong = 0;
+        this.tongTienMatHang = 0;
+        this.tongHoaDon = 0;
     }
 
     /**
@@ -60,11 +84,12 @@ public class HoaDon {
      */
     public HoaDon() {
         this.thoiGianBatDau = new Date();
+        this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
         this.gioHat = "00:00";
-        this.donGiaPhong = getDonGiaPhong();
-        this.tongTienMatHang = getTongTienMatHang();
-        this.tongHoaDon = getTongHoaDon();
+        this.donGiaPhong = 0;
+        this.tongTienMatHang = 0;
+        this.tongHoaDon = 0;
     }
 
     /**
@@ -195,18 +220,27 @@ public class HoaDon {
      * @return the gioHat
      */
     public String getGioHat() {
-        long diff = thoiGianKetThuc.getTime() - thoiGianBatDau.getTime();
-        long diffMinutes = diff / (60 * 1000);
-        long diffHours = diff / (60 * 60 * 1000);
-        return diffHours + ":" + diffMinutes;
+        if (thoiGianKetThuc != null) {
+            long diff = thoiGianKetThuc.getTime() - thoiGianBatDau.getTime();
+            long diffMinutes = diff / (60 * 1000);
+            long diffHours = diff / (60 * 60 * 1000);
+            gioHat = diffHours + ":" + diffMinutes;
+            return gioHat;
+        }
+        gioHat = "00:00";
+        return gioHat;
     }
 
     /**
      * @return the donGiaPhong
      */
     public double getDonGiaPhong() {
-        String[] time = gioHat.split(":");
-        return Double.parseDouble(time[0]) * donGiaPhong + (Double.parseDouble(time[1]) / 60) * donGiaPhong;
+        if (phong != null) {
+            String[] time = getGioHat().split(":");
+            donGiaPhong = (Double.parseDouble(time[1]) / 60) * phong.getLoaiPhong().getGiaPhong();
+            return donGiaPhong;
+        }
+        return 0;
     }
 
     public double getDonGiaPhongCu() {
@@ -221,14 +255,15 @@ public class HoaDon {
         for (ChiTietHoaDon chiTietHoaDon : dsChiTietHoaDon) {
             tongTien += chiTietHoaDon.getThanhTien();
         }
-        return tongTien;
+        tongTienMatHang = tongTien;
+        return tongTienMatHang;
     }
 
     /**
      * @return the tongHoaDon
      */
     public double getTongHoaDon() {
-        return tongTienMatHang + donGiaPhong;
+        return getTongTienMatHang() + getDonGiaPhong();
     }
 
     @Override

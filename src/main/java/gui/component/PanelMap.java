@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import gui.swing.event.EventShowInfoOver;
+import java.awt.event.ActionListener;
 
 public class PanelMap extends PanelShadow {
 
@@ -30,6 +31,7 @@ public class PanelMap extends PanelShadow {
     private JScrollPane sp;
     private int indexShowing;
     private EventShowInfoOver event;
+    private ActionListener action;
 
     public int getIndexShowing() {
         return indexShowing;

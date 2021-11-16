@@ -2,7 +2,6 @@ package gui;
 
 import dao.KhachHang_DAO;
 import entity.KhachHang;
-import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
@@ -23,7 +22,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventSelectedRow;

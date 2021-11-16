@@ -14,8 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -47,12 +45,6 @@ public class NhanVien {
     private DiaChi diaChi;
     @Column(nullable = false)
     private byte[] matKhau;
-//    @OneToMany
-//    @Transient
-//    private List<NhanVien> dsNhanVien;
-//    @ManyToOne
-//    @JoinColumn(name = "maQuanLy")
-//    private NhanVien quanLy;
 
     /**
      * @param maNhanVien
@@ -60,6 +52,7 @@ public class NhanVien {
      * @param loaiNhanVien
      * @param caLam
      * @param canCuocCD
+     * @param gioiTinh
      * @param ngaySinh
      * @param soDienThoai
      * @param email

@@ -2,7 +2,6 @@ package gui;
 
 import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
-import entity.LoaiNhanVien;
 import entity.NhanVien;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
@@ -24,7 +23,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.DefaultComboBoxModel;
 import gui.swing.event.EventSelectedRow;
 
 public class GD_NhanVien extends JPanel {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import com.toedter.calendar.JDateChooser;
@@ -42,10 +37,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import net.miginfocom.swing.MigLayout;
 
-/**
- *
- * @author NGUYEN HAO
- */
 public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     private HoaDon_DAO hoaDon_Dao;
     private List<HoaDon> dsHoaDon = new ArrayList<HoaDon>();
