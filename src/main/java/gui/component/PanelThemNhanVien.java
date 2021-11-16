@@ -8,7 +8,6 @@ import entity.CaLam;
 import entity.DiaChi;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
-import gui.swing.event.EventAddDataEntity;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,7 +76,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
 
         //jDateChooser1.setBorderLine(true);
         //txtMaNV.setBorderRadius();
-        jDateChooser1.setDateFormatString("dd-MM-yyy");
+        jDateChooser1.setDateFormatString("dd-MM-yyyy");
         txtSDT.setBorderLine(true);
         txtSDT.setBorderRadius(txtRadius);
 
