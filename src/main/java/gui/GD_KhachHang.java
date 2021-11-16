@@ -23,7 +23,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventSelectedRow;
@@ -134,7 +133,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, true, true
+                false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -149,6 +148,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             tblKhachHang.getColumnModel().getColumn(2).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(3).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(4).setResizable(false);
+            tblKhachHang.getColumnModel().getColumn(5).setResizable(false);
         }
 
         pnlBottom.add(scrKhachHang, java.awt.BorderLayout.CENTER);
@@ -208,9 +208,8 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             public void update(ModelAction action) {
                 int row = tblKhachHang.getSelectedRow();
                 KhachHang kh = (KhachHang) action.getObj();
-                kh.setTenKhachHang(tblKhachHang.getValueAt(row, 2).toString());
-                
                 kh.setSoDienThoai(tblKhachHang.getValueAt(row, 4).toString());
+                
                 String s=  khachHang_Dao.capNhatKhachHang(kh)==true?"Cập nhật thành công":"Thất bại";
                 JOptionPane.showMessageDialog(null, s);
                 dsKhachHang = khachHang_Dao.getDSKhachHang();

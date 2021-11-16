@@ -166,4 +166,25 @@ public class NhanVien_DAO implements NhanVienService {
         return null;
     }
 
+    @Override
+    public List<String> getMaNhanVienQuanLy() {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+         String sql = "select n.maNhanVien from [dbo].[NhanVien] n\n" +
+                            "  where maLoaiNhanVien = 'LNV005'";
+        try {
+            tr.begin();
+            List<String> dsMa = session
+                    .createNativeQuery(sql)
+                    .getResultList();
+            tr.commit();
+            return dsMa;
+        } catch (Exception e) {
+            System.err.println(e);
+            tr.rollback();
+        }
+        session.close();
+        return null;
+    }
+
 }
