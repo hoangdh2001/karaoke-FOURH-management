@@ -232,8 +232,8 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     }
     
     public void addAction(){
-        dscKetThuc.getDateEditor().addPropertyChangeListener(new createPropertyChangeListener());
-        dscBatDau.getDateEditor().addPropertyChangeListener(new createPropertyChangeListener());
+        dscKetThuc.addPropertyChangeListener(new createPropertyChangeListener());
+        dscBatDau.addPropertyChangeListener(new createPropertyChangeListener());
         cmbTKTheo.addActionListener(new createActionListener());
         cmbTKChiTiet.addActionListener(new createActionListener());
         btnXuat.addActionListener(new createActionListener());
@@ -341,6 +341,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                        ObjectComboBox cb = (ObjectComboBox)cmbKhac.getSelectedItem();
                        ma = cb.getMa();
                     }
+        
         String batDau = gio.format(dscBatDau.getDate());
         String ketThuc = gio.format(dscKetThuc.getDate());
         List<HoaDon> dsHoaDon = nhaCungCapVaNhapHang_DAO.findHoaDon(batDau, ketThuc,ma);
@@ -453,11 +454,10 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     private class createPropertyChangeListener implements PropertyChangeListener{
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            Object obj = evt.getSource();
-            if( checkDate() ){
-                resetCombobox();
-                filterDateChooser();
-            }
+                if(checkDate()){
+                    resetCombobox();
+                    filterDateChooser();
+                }
         }
     }
     
