@@ -21,7 +21,6 @@ import javax.swing.JPanel;
  * @author Hao
  */
 public class HoaDonDetail extends javax.swing.JPanel {
-    private HoaDonDetail hoaDonDetail;
     private HoaDon hoaDon;
     private PanelThongTinHoaDon pnlThongTinHoaDon;
     
@@ -115,7 +114,6 @@ public class HoaDonDetail extends javax.swing.JPanel {
                     if(arg2>0){
                         return Printable.NO_SUCH_PAGE;
                     }
-
                     Graphics2D graphics2D = (Graphics2D) arg0;
                     graphics2D.translate(arg1.getImageableX(), arg1.getImageableY());
                     graphics2D.scale(0.73, 0.8);
@@ -123,10 +121,11 @@ public class HoaDonDetail extends javax.swing.JPanel {
                     return Printable.PAGE_EXISTS;
                 }
             });
-
             boolean returningResult = printerJob.printDialog();
+           
             if(returningResult){
                 try{
+                    
                     printerJob.print();
                 }catch(PrinterException p){
                     JOptionPane.showMessageDialog(this, "Print Error: "+p.getMessage());
