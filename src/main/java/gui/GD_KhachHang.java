@@ -26,6 +26,9 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventSelectedRow;
+import gui.swing.table2.MyTable;
+import javax.swing.ImageIcon;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -39,6 +42,8 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     private EventAction eventAction;
     private PanelShadow panelHidden;
     private EventSelectedRow eventSelectedRow;
+    private Button btnSua;
+    private Object evt;
     /**
      * Creates new form GD_KhachHang
      */
@@ -56,7 +61,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         int fontSize = 14;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setLayout(new MigLayout("", "push[center]5[center] 20[center]push", "60[center]10"));
+        pnlTop.setLayout(new MigLayout("", "push[center]5[center] 20[center]10[center]push", "60[center]10"));
         pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
       
         JLabel lblKhachHang = new JLabel("Nhập tên/ số điện thoại (các số cuối)");
@@ -77,9 +82,17 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         btnLamMoi.setBorderRadius(5);
         pnlTop.add(btnLamMoi, "w 100!, h 36!");
         
+        btnSua = new Button("Sửa");
+        btnSua.setFont(new Font(fontName, fontStyle, fontSize));
+        btnSua.setBackground(colorBtn);
+        btnSua.setBorderline(true);
+        btnSua.setBorderRadius(5);
+        pnlTop.add(btnSua, "w 100!, h 36!");
+        
         btnLamMoi.addActionListener(this);
         txtTimKiem.addKeyListener(this);
-        
+        btnSua.addActionListener(this);
+        tblKhachHang.addKeyListener(this);
         //xuLySuKien();
         createTable();
         setOpaque(false);
@@ -129,11 +142,11 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
 
             },
             new String [] {
-                "", "Mã khách hàng", "Tên khách hàng", "Căn cước công dân", "Số điện thoại", ""
+                "", "Mã khách hàng", "Tên khách hàng", "Căn cước công dân", "Số điện thoại"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -144,12 +157,12 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         tblKhachHang.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         scrKhachHang.setViewportView(tblKhachHang);
         if (tblKhachHang.getColumnModel().getColumnCount() > 0) {
-            tblKhachHang.getColumnModel().getColumn(0).setResizable(false);
+            tblKhachHang.getColumnModel().getColumn(0).setMinWidth(150);
+            tblKhachHang.getColumnModel().getColumn(0).setMaxWidth(250);
             tblKhachHang.getColumnModel().getColumn(1).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(2).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(3).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(4).setResizable(false);
-            tblKhachHang.getColumnModel().getColumn(5).setResizable(false);
         }
 
         pnlBottom.add(scrKhachHang, java.awt.BorderLayout.CENTER);
@@ -191,44 +204,9 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     }
     
     private void loadData() {
-        eventAction = new EventAction() {
-            @Override
-            public void delete(Object obj) {
-                int row = tblKhachHang.getSelectedRow();
-                KhachHang khachHang = (KhachHang) obj;
-                if(JOptionPane.showConfirmDialog(GD_KhachHang.this, "Bạn có chắc chắn muốn xóa khách hàng " +khachHang.getMaKhachHang(), "Delete", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-                    String s = khachHang_Dao.xoaKhachHang(khachHang.getMaKhachHang())==true? "Xóa thành công":"Thất bại";
-                    JOptionPane.showMessageDialog(GD_KhachHang.this,s);
-                    dsKhachHang = khachHang_Dao.getDSKhachHang();
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsKhachHang);
-                }
-            }
-
-            @Override
-            public void update(ModelAction action) {
-                int row = tblKhachHang.getSelectedRow();
-                KhachHang kh = (KhachHang) action.getObj();
-                kh.setSoDienThoai(tblKhachHang.getValueAt(row, 4).toString());
-                
-                String s=  khachHang_Dao.capNhatKhachHang(kh)==true?"Cập nhật thành công":"Thất bại";
-                JOptionPane.showMessageDialog(null, s);
-                dsKhachHang = khachHang_Dao.getDSKhachHang();
-                xoaDuLieu();
-                taiLaiDuLieu(dsKhachHang);
-            }
-                
-        };
-                dsKhachHang = khachHang_Dao.getDSKhachHang();
-                xoaDuLieu();
-                taiLaiDuLieu(dsKhachHang);
-                
-                
-        tblKhachHang.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-        });
+        dsKhachHang = khachHang_Dao.getDSKhachHang();
+        xoaDuLieu();
+        taiLaiDuLieu(dsKhachHang);
     }
     
     
@@ -238,9 +216,9 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     }
     
     public void taiLaiDuLieu(List<KhachHang> dsKhachHang){
-        dsKhachHang.forEach((khachHang) -> {
-             tblKhachHang.addRow(khachHang.convertToRowTable(eventAction));
-        });
+        for(KhachHang kh: dsKhachHang){
+            tblKhachHang.addRow(new Object[] {"",kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
+        }
     }
     
     private void createTable() {
@@ -249,6 +227,15 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         
     }
 
+    private boolean valiDataSDT(){
+        int row = tblKhachHang.getSelectedRow();
+        String sdt = tblKhachHang.getValueAt(row, 4).toString().trim();
+        if (!(sdt.matches("^(09|03|07|08|05)([0-9]{8})"))) {
+            JOptionPane.showMessageDialog(this,"Số điện thoại của khách hàng không hợp lệ");
+            return false;
+        }
+        return true;
+    }    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblTitleBang;
     private gui.swing.panel.PanelShadow pnlBottom;
@@ -263,8 +250,29 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         if(obj.equals(btnLamMoi)){
            txtTimKiem.setText("");
            dsKhachHang = khachHang_Dao.getDSKhachHang();
-            xoaDuLieu();
-            taiLaiDuLieu(dsKhachHang);
+           xoaDuLieu();
+           taiLaiDuLieu(dsKhachHang);
+        }
+        if(obj.equals(btnSua)){
+            KhachHang khachHang = new KhachHang();
+            int row = tblKhachHang.getSelectedRow();
+            if(row==-1){
+                JOptionPane.showMessageDialog(GD_KhachHang.this, "Bạn chưa chọn đối tượng khách hàng muốn cập nhật.");
+            }else{
+                if(valiDataSDT()){
+                    String soDienThoai = tblKhachHang.getValueAt(row, 4).toString();
+                    String maKhachHang = tblKhachHang.getValueAt(row, 1).toString();
+                    khachHang.setSoDienThoai(soDienThoai);
+                    if (khachHang_Dao.capNhatKhachHang(maKhachHang, soDienThoai)) {
+                        JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
+                        xoaDuLieu();
+                        dsKhachHang = khachHang_Dao.getDSKhachHang();
+                        taiLaiDuLieu(dsKhachHang);
+                    }else{
+                        JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng không thành công");
+                    }
+                }  
+            }
         }
     }
 
