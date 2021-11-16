@@ -36,8 +36,7 @@ public class KhachHang_DAO implements KhachHangService {
         }
         return false;
     }
-        
-    
+
     public KhachHang getKhachHang(String maKhachHang) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
@@ -136,12 +135,12 @@ public class KhachHang_DAO implements KhachHangService {
         Transaction tr = session.getTransaction();
 
         String sql = "select Top 6 * from [dbo].[KhachHang] "
-                + "where tenKhachHang like N'%"+ tuKhoa +"%̀̀̀̀̀̀̀' "
-                + "or [dbo].[ufn_removeMark]([tenKhachHang]) like N'%"+ tuKhoa +"%' "
-                + "or [CCCD] like '%"+ tuKhoa +"%' "
-                + "or [sdt] like '%"+ tuKhoa +"%' "
+                + "where tenKhachHang like N'%" + tuKhoa + "%̀̀̀̀̀̀̀' "
+                + "or [dbo].[ufn_removeMark]([tenKhachHang]) like N'%" + tuKhoa + "%' "
+                + "or [CCCD] like '%" + tuKhoa + "%' "
+                + "or [sdt] like '%" + tuKhoa + "%' "
                 + "order by tenKhachHang";
-        
+
         try {
             tr.begin();
             List<KhachHang> rs = session
@@ -159,9 +158,9 @@ public class KhachHang_DAO implements KhachHangService {
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        
+
         String sql = "select max(maKhachHang) from KhachHang";
-        
+
         try {
             tr.begin();
             String id = String.valueOf(session
@@ -179,9 +178,9 @@ public class KhachHang_DAO implements KhachHangService {
     public boolean checkKhachHang(String txt) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        
+
         String sql = "select * from KhachHang where soDienThoai = :x or CCCD = :y";
-        
+
         try {
             tr.begin();
             session.createNativeQuery(sql)
@@ -199,21 +198,21 @@ public class KhachHang_DAO implements KhachHangService {
     @Override
     public boolean capNhatKhachHang(String maKhachHang, String soDienThoaiMoi) {
         Session session = sessionFactory.openSession();
-            Transaction tr = session.getTransaction();
-            try {
-                    tr.begin();
-                    String sql = "  update KhachHang\n" +
-                                        "  set sdt = '"+soDienThoaiMoi+"'\n" +
-                                        "  where maKhachHang = '"+maKhachHang+"'";
-                    session.createQuery(sql)
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+            String sql = "  update KhachHang\n"
+                    + "  set sdt = '" + soDienThoaiMoi + "'\n"
+                    + "  where maKhachHang = '" + maKhachHang + "'";
+            session.createQuery(sql)
                     .executeUpdate();
-                    tr.commit();
-                    return true;
-            } catch (Exception e) {
-                System.err.println(e);
-                    tr.rollback();
-            }
-            session.close();
-            return false;
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            System.err.println(e);
+            tr.rollback();
+        }
+        session.close();
+        return false;
     }
 }
