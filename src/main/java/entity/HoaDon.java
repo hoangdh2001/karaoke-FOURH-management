@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -38,7 +39,7 @@ public class HoaDon {
     private Date thoiGianKetThuc;
     @Enumerated(EnumType.STRING)
     private TrangThaiHoaDon trangThai;
-    @OneToMany(mappedBy = "hoaDon")
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.EAGER)
     private List<ChiTietHoaDon> dsChiTietHoaDon;
     private String gioHat;
     @Column(columnDefinition = "money")

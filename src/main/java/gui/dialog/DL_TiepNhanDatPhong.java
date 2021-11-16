@@ -5,6 +5,7 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
+import dao.ChiTietHoaDon_DAO;
 import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
 import dao.MatHang_DAO;
@@ -41,6 +42,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import service.ChiTietHoaDonService;
 import service.HoaDonService;
 import service.KhachHangService;
 import service.MatHangService;
@@ -49,15 +51,17 @@ import service.PhongService;
 
 public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
-    private MatHangService matHangService;
-    private HoaDonService hoaDonService;
+    private final MatHangService matHangService;
+    private final HoaDonService hoaDonService;
+    private final PhongService phongService;
     private PhieuDatPhongService phieuDatPhongService;
-    private KhachHangService khachHangService;
-    private HoaDon hoaDon;
+    private final KhachHangService khachHangService;
+    private final ChiTietHoaDonService chiTietHoaDonService;
+    private final HoaDon hoaDon;
     private final DecimalFormat df = new DecimalFormat("#,##0");
     private PanelSearch search;
     private JPopupMenu menu;
-    private PhongService phongService;
+    
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public DL_TiepNhanDatPhong(Phong phong, NhanVien nv) {
@@ -65,6 +69,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         this.matHangService = new MatHang_DAO();
         this.khachHangService = new KhachHang_DAO();
         this.phongService = new Phong_DAO();
+        this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
         this.hoaDon = new HoaDon("HD0000012", phong, nv);
         WindowIcon.addWindowIcon(this);
         initComponents();
@@ -1011,6 +1016,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void btnGiaoPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiaoPhongActionPerformed
         hoaDon.getPhong().setTrangThai(TrangThaiPhong.DANG_HAT);
         hoaDonService.addHoaDon(hoaDon);
+        hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
+            chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
+        });
         phongService.updatePhong(hoaDon.getPhong());
         dispose();
     }//GEN-LAST:event_btnGiaoPhongActionPerformed
