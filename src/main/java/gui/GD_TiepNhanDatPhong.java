@@ -430,6 +430,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         nhaCungCapVaNhaphang_DAO = new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
         setSize(new Dimension(1300,650));
+        setLocation(150, 150);
         mainPanel.setLayout(new MigLayout("","20[center]20"));
         pnlInfoTop = new PanelShadow();
         pnlInfoTop.setLayout(new MigLayout("", "20[center] 20 [center]20", "20[]20"));

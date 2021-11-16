@@ -5,6 +5,7 @@
 package gui;
 
 import dao.NhaCungCapVaNhapHang_DAO;
+import entity.MatHang;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.MyTable;
@@ -14,10 +15,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import static java.awt.image.ImageObserver.WIDTH;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -47,11 +53,13 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     
     private MyTextField txtNhap;
     
-    private MyComboBox<String> cbLoaiPhong;
+    private MyComboBox<String> cmbLoaiTimKiem;
     
     private Button btnXuatFile;
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
+    
+    private List<MatHang> listMatHang;
     
     private String fontName = "sansserif";
     private int fontPlain = Font.PLAIN;
@@ -84,10 +92,10 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         txtNhap.setBorderLine(true);
         txtNhap.setBorderRadius(5);
         
-        cbLoaiPhong = new MyComboBox<>(new String[] {"--Tất cả--"});
-        cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
-        cbLoaiPhong.setBorderLine(true);
-        cbLoaiPhong.setBorderRadius(10);
+        cmbLoaiTimKiem = new MyComboBox<>(new String[] {"--Tất cả--"});
+        cmbLoaiTimKiem.setFont(new Font("sansserif", Font.PLAIN, 12));
+        cmbLoaiTimKiem.setBorderLine(true);
+        cmbLoaiTimKiem.setBorderRadius(10);
 //        panelForm.add(cbLoaiPhong, "w 20%, h 30!");
 
         btnXuatFile = new Button("Xuất file");
@@ -97,7 +105,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         
         pnlSearch.add(lblTimKiem);
         pnlSearch.add(txtNhap,"w 100:300:500, h 36!");
-        pnlSearch.add(cbLoaiPhong,"w 200,h 36!");
+        pnlSearch.add(cmbLoaiTimKiem,"w 200,h 36!");
         pnlSearch.add(btnXuatFile,"w 150,h 36!");
         
         this.add(pnlSearch,"w 100%,wrap");
@@ -155,11 +163,49 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     
     public void addAction(){
         btnXuatFile.addActionListener(new createActionListener());
+        txtNhap.addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String text = txtNhap.getText().trim();
+                int cmbSelected = cmbLoaiTimKiem.getSelectedIndex();
+                if(!text.equals("")){
+                    listMatHang = nhaCungCapVaNhapHang_DAO.findMatHang(txtNhap.getText().trim(), cmbSelected);
+                    addDataToTable();
+                }else{
+                    listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+                    addDataToTable();
+                }
+            }
+        });
+        cmbLoaiTimKiem.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            String text = txtNhap.getText().trim();
+                int cmbSelected = cmbLoaiTimKiem.getSelectedIndex();
+                if(!text.equals("")){
+                    listMatHang = nhaCungCapVaNhapHang_DAO.findMatHang(txtNhap.getText().trim(), cmbSelected);
+                    addDataToTable();
+                }else{
+                    listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+                    addDataToTable();
+                }
+            }
+        });
     }
     
     public void initData(){
+        cmbLoaiTimKiem.addItem("Sản phẩm");
+        cmbLoaiTimKiem.addItem("Loại sản phẩm");
+        
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
-        nhaCungCapVaNhapHang_DAO.getDanhSachMatHang().forEach(doc -> {
+        listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+        addDataToTable();
+    }
+    
+    public void addDataToTable(){
+        DefaultTableModel df =(DefaultTableModel) table.getModel();
+        df.setRowCount(0);
+        listMatHang.forEach(doc -> {
             table.addRow(doc.convertToRowTableInGDXemDichVu());
         });
     }
@@ -213,67 +259,6 @@ public class GD_XemDichVu extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, ex);
             }
         }
-
-            //First Download Apache POI Library For Dealing with excel files.
-        //Then add the library to the current project
-//        FileOutputStream excelFos = null;
-//        XSSFWorkbook excelJTableExport = null;
-//        BufferedOutputStream excelBos = null;
-//        try {
-// 
-//            //Choosing Saving Location
-//            //Set default location to C:\Users\Authentic\Desktop or your preferred location
-//            JFileChooser excelFileChooser = new JFileChooser("C:\\Users\\Authentic\\Desktop");
-//            //Dialog box title
-//            excelFileChooser.setDialogTitle("Save As ..");
-//            //Filter only xls, xlsx, xlsm files
-//            FileNameExtensionFilter fnef = new FileNameExtensionFilter("Files", "xls", "xlsx", "xlsm");
-//            //Setting extension for selected file names
-//            excelFileChooser.setFileFilter(fnef);
-//            int chooser = excelFileChooser.showSaveDialog(null);
-//            //Check if save button has been clicked
-//            if (chooser == JFileChooser.APPROVE_OPTION) {
-//                //If button is clicked execute this code
-//                excelJTableExport = new XSSFWorkbook();
-//                XSSFSheet excelSheet = excelJTableExport.createSheet("Jtable Export");
-//                //Loop through the jtable columns and rows to get its values
-//                Row headerRow = sheet.createRow(0); //Create row at line 0
-//                for(int headings = 0; headings < model.getColumnCount(); headings++){ //For each column
-//                    headerRow.createCell(headings).setCellValue(model.getColumnName(headings));//Write column name
-//                }
-//
-//                for (int i = 0; i < table.getRowCount(); i++) {
-//                    XSSFRow excelRow = excelSheet.createRow(i);
-//                    for (int j = 0; j< table.getColumnCount(); j++) {
-//                        XSSFCell excelCell = excelRow.createCell(j);
-//                        excelCell.setCellValue(table.getValueAt(i, j).toString());
-//                    }
-//                }
-//                excelFos = new FileOutputStream(excelFileChooser.getSelectedFile() + ".xlsx");
-//                excelBos = new BufferedOutputStream(excelFos);
-//                excelJTableExport.write(excelBos);
-//                JOptionPane.showMessageDialog(null, "Exported Successfully");
-//            }
-// 
-//        } catch (FileNotFoundException ex) {
-//            JOptionPane.showMessageDialog(null, ex);
-//        } catch (IOException ex) {
-//            JOptionPane.showMessageDialog(null, ex);
-//        } finally {
-//            try {
-//                if (excelFos != null) {
-//                    excelFos.close();
-//                }
-//                if (excelBos != null) {
-//                    excelBos.close();
-//                }
-//                if (excelJTableExport != null) {
-//                    
-//                }
-//            } catch (IOException ex) {
-//                JOptionPane.showMessageDialog(null, ex);
-//            }
-//        }
     } 
     
     private class createActionListener implements ActionListener{
@@ -293,7 +278,6 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         
     }
     
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

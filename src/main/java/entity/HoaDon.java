@@ -1,5 +1,7 @@
 package entity;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -217,7 +219,8 @@ public class HoaDon {
      */
     public double getDonGiaPhong() {
         String[] time = gioHat.split(":");
-        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
+//        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
+        return 0;
     }
     
     public double  getDonGiaPhongCu(){
@@ -251,5 +254,11 @@ public class HoaDon {
                 + ", tongHoaDon=" + tongHoaDon + '}';
     }
 
-    
+    public Object[] convertToRowTableInGDThongKeDoanhThu(){
+        DecimalFormat df;
+        df = new DecimalFormat("#,##0.00");
+        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String ngayLap = gio.format(ngayLapHoaDon);
+        return new Object[]{maHoaDon,ngayLap, khachHang.getTenKhachHang(),nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
+    }
 }

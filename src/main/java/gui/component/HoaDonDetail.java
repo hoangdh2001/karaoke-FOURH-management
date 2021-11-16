@@ -105,6 +105,7 @@ public class HoaDonDetail extends javax.swing.JPanel {
     
     //In
     private void printRecord(JPanel panel){
+        //panel = new PanelThongTinHoaDon(hoaDon);
             //Create printerJob Here
             PrinterJob printerJob = PrinterJob.getPrinterJob();
 
@@ -112,6 +113,7 @@ public class HoaDonDetail extends javax.swing.JPanel {
             printerJob.setPrintable(new Printable() {
                 @Override
                 public int print(Graphics arg0, PageFormat arg1, int arg2) throws PrinterException {
+                    
                     if(arg2>0){
                         return Printable.NO_SUCH_PAGE;
                     }
@@ -128,6 +130,7 @@ public class HoaDonDetail extends javax.swing.JPanel {
             if(returningResult){
                 try{
                     printerJob.print();
+                    printerJob.setJobName(hoaDon.getMaHoaDon());
                 }catch(PrinterException p){
                     JOptionPane.showMessageDialog(this, "Print Error: "+p.getMessage());
                 }
