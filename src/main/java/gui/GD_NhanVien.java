@@ -7,7 +7,6 @@ import dao.NhanVien_DAO;
 import entity.CaLam;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
-import gui.event.EventAddNhanVien;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
@@ -23,20 +22,21 @@ import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import net.miginfocom.swing.MigLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 import gui.swing.event.EventSelectedRow;
+import gui.swing.event.EventAddNhanVien;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.table.DefaultTableModel;
 
 public class GD_NhanVien extends JPanel {
 
@@ -359,7 +359,7 @@ public class GD_NhanVien extends JPanel {
         btnTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Thêm Nhân viên");
+//                System.out.println("Thêm Nhân viên");
                 eventAddNhanVien.AddNhanVien();
                 
 //                diaChiMau_DAO = new DiaChiMau_DAO();

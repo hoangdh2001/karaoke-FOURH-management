@@ -28,7 +28,7 @@ import gui.component.PhieuDatPhongDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
-import gui.event.EventAddNhanVien;
+import gui.swing.event.EventAddNhanVien;
 import gui.swing.event.EventMenuSelected;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventShowPopupMenu;

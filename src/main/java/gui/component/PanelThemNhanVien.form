@@ -16,7 +16,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,3,36,0,0,2,-59"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,3,-112,0,0,2,-59"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -25,6 +25,9 @@
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="cc" green="ff" red="99" type="rgb"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[709, 812]"/>
         </Property>
       </Properties>
       <Constraints>
@@ -78,24 +81,33 @@
                                   <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                                   <Component id="txtTenNV" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="lblCCCD" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblTenDuong" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblTinhTP" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                  <Component id="cmbTinhTP" pref="473" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblSoNha" min="-2" pref="77" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
+                                  <Component id="txtSoNha" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblCCCD" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="lblTenDuong" max="32767" attributes="0"/>
                                       <Component id="lblXaPhuong" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblSoNha" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblQuanHuyen" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblTinhTP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblQuanHuyen" alignment="1" max="32767" attributes="0"/>
                                       <Component id="lblMatKhau" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                  <EmptySpace min="60" pref="60" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="txtMatKhau" max="32767" attributes="0"/>
-                                      <Component id="txtTenDuong" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtSoNha" alignment="0" max="32767" attributes="0"/>
                                       <Component id="cmbXaPhuong" alignment="0" pref="473" max="32767" attributes="0"/>
                                       <Component id="cmbQuanHuyen" alignment="0" pref="473" max="32767" attributes="0"/>
-                                      <Component id="cmbTinhTP" alignment="0" pref="473" max="32767" attributes="0"/>
+                                      <Component id="txtTenDuong" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -161,18 +173,8 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblSoNha" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtSoNha" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblTenDuong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtTenDuong" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblXaPhuong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="cmbXaPhuong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTinhTP" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="cmbTinhTP" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -181,20 +183,30 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblTinhTP" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="cmbTinhTP" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblXaPhuong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="cmbXaPhuong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblSoNha" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtSoNha" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblTenDuong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtTenDuong" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblMatKhau" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                       <Component id="txtMatKhau" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnThem" alignment="3" pref="40" max="32767" attributes="0"/>
                       <Component id="btnLamMoi" alignment="3" pref="40" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

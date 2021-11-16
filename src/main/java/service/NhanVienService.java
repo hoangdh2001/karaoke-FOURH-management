@@ -14,4 +14,6 @@ public interface NhanVienService {
     public  List<NhanVien> searchNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV, String maCaLam);
     public NhanVien getNhanVienByLogin(String sdt, byte[] matKhau);
     public NhanVien getNhanVienBySdtOrEmail(String sdtOrEmail);
+    public boolean checkSDT(String sdt);
+    public boolean checkCCCD(String cccd);
 }
