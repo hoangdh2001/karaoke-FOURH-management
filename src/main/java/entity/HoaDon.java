@@ -1,5 +1,7 @@
 package entity;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -252,5 +254,11 @@ public class HoaDon {
                 + ", tongHoaDon=" + tongHoaDon + '}';
     }
 
-    
+    public Object[] convertToRowTableInGDThongKeDoanhThu(){
+        DecimalFormat df;
+        df = new DecimalFormat("#,##0.00");
+        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String ngayLap = gio.format(ngayLapHoaDon);
+        return new Object[]{maHoaDon,ngayLap, khachHang.getTenKhachHang(),nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
+    }
 }
