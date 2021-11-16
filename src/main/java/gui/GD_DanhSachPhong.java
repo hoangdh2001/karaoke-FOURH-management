@@ -163,7 +163,7 @@ public class GD_DanhSachPhong extends JPanel {
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
         pnlTop.setShadowSize(2);
-        pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlTop.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
@@ -180,7 +180,7 @@ public class GD_DanhSachPhong extends JPanel {
         pnlBottom.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
         pnlBottom.setShadowOpacity(0.3F);
         pnlBottom.setShadowSize(2);
-        pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setShadowType(gui.swing.graphics.ShadowType.TOP);
         pnlBottom.setLayout(new java.awt.BorderLayout());
 
         table.setModel(new javax.swing.table.DefaultTableModel(

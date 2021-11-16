@@ -1,11 +1,14 @@
 package entity;
 
+import gui.swing.table2.EventAction;
+import gui.swing.table2.ModelAction;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.swing.JCheckBox;
 
 @Entity
 @Table(name = "KhachHang")
@@ -92,4 +95,8 @@ public class KhachHang {
 		return "KhachHang [maKhachHang=" + maKhachHang + ", tenKhachHang=" + tenKhachHang + ", canCuocCD=" + canCuocCD
 				+ ", soDienThoai=" + soDienThoai + "]";
 	}
+        
+        public Object[] convertToRowTable(EventAction eventAction) {
+        return new Object[]{JCheckBox.class,maKhachHang, tenKhachHang, canCuocCD, soDienThoai, new ModelAction(this, eventAction)};
+    }
 }

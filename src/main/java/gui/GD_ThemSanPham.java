@@ -7,7 +7,10 @@ package gui;
 import entity.NhaCungCap;
 import java.util.List;
 import dao.NhaCungCapVaNhapHang_DAO;
+import entity.LoHang;
 import entity.LoaiDichVu;
+import entity.MatHang;
+import entity.NhanVien;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.textfield.MyComboBox;
@@ -21,9 +24,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -57,9 +68,19 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     
     private Date ngayNhap;
     
-    private JCheckBox spMoi;
+    private JCheckBox cbSpMoi;
     
     private MyTable table;
+    
+    private NhanVien nhanVien;
+    
+    private List<Boolean> isNew;
+    
+    private Map<MatHang,Boolean> isNewSP;
+    
+    private LoHang loHang;
+    
+    private DecimalFormat df;
 
     private String fontName = "sansserif";
     private int fontPlain = Font.PLAIN;
@@ -71,9 +92,10 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     /**
      * Creates new form GD_ThemDichVu
      */
-    public GD_ThemSanPham() {
+    public GD_ThemSanPham(NhanVien nhanVien) {
         initComponents();
         this.setLayout(new MigLayout("","10[]10","10[]10"));
+        this.nhanVien = nhanVien;
         initFrom();
         initTable();
         initDao();
@@ -122,8 +144,8 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         pnlSanPham.setBackground(Color.WHITE);
         pnlSanPham.setLayout(new MigLayout("", "[center][center] 10 [center][center]", "[]10[center]10[center]"));
         
-        spMoi = new JCheckBox("Sản phẩm mới");
-        pnlSanPham.add(spMoi,"align left,h 36!,wrap");
+        cbSpMoi = new JCheckBox("Sản phẩm mới");
+        pnlSanPham.add(cbSpMoi,"align left,h 36!,wrap");
         
         JLabel lblLoaiSP = new JLabel("Loại sản phẩm :");
         lblLoaiSP.setFont(new Font(fontName, fontPlain, font14));
@@ -146,7 +168,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         pnlSanPham.add(pnlSPMoi,"w 80%,h 36!,wrap");
         
         
-        spMoi.addItemListener(new ItemListener() {
+        cbSpMoi.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED){
@@ -198,7 +220,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         
         btnLuu = new Button("Lưu");
         btnLuu.setFont(new Font(fontName, fontPlain, font14));
-        btnLuu.setBackground(colorBtn);
+        btnLuu.setBackground(new Color(255,0,0));
         
         JPanel pnlbtn = new JPanel();
         pnlbtn.setOpaque(false);
@@ -270,14 +292,22 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         this.add(pnlTable,"w 100%,h 100%");
     }
     
-    public void initDao(){
-        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
-
+    public void loadNCC(){
         List<NhaCungCap> listNCC = nhaCungCapVaNhapHang_DAO.getNhaCungCap();
         for (int i = 0; i < listNCC.size(); i++) {
             NhaCungCap ncc = listNCC.get(i);
             cbNhaCungCap.addItem(new ObjectComboBox(ncc.getTenNCC(),ncc.getMaNCC()));  
         }
+    }
+    
+    public void initDao(){
+        loHang = new LoHang();
+        isNewSP = new HashMap<MatHang,Boolean>();
+        df = new DecimalFormat("#,##0.00");
+        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+        isNew = new ArrayList<Boolean>();
+        
+        loadNCC();
         
         List<LoaiDichVu> listDV = nhaCungCapVaNhapHang_DAO.getLoaiDichVu();
         for (int i = 0; i < listDV.size(); i++) {
@@ -289,12 +319,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     }
     
     public void initAction(){     
-        btnThemNCC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GD_ThemNhaCungCap(null).setVisible(true);
-            }
-        });
+        btnThemNCC.addActionListener(new createActionListenner());
         
         cbNhaCungCap.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
@@ -310,63 +335,290 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
                 if(cbLoaiSP.getSelectedIndex() != 0){
                     ObjectComboBox dv = (ObjectComboBox)cbLoaiSP.getSelectedItem();
                     pnlSPMoi.setComboboxItem(dv.getMa());
+                }else{
+                    pnlSPMoi.setComboboxItem("");
                 }
             }
         });
         
+        btnThem.addActionListener(new createActionListenner());
         btnLuu.addActionListener(new createActionListenner());
         btnXemThongTin.addActionListener(new createActionListenner());
+                
+        btnXoa.addActionListener(new createActionListenner());
+        
+        txtSoLuong.setFocusTraversalKeysEnabled(false);
+        txtSoLuong.addKeyListener(new createKetlistener());
+
+        txtGiaNhap.setFocusTraversalKeysEnabled(false);
+        txtGiaNhap.addKeyListener(new createKetlistener());
+        
+        txtGiaban.setFocusTraversalKeysEnabled(false);
+        txtGiaban.addKeyListener(new createKetlistener());
     };
+    
+    public void resetData(){
+        DefaultTableModel df = (DefaultTableModel)table.getModel();
+        df.setRowCount(0);
+        loHang = new LoHang();
+        isNewSP = new HashMap<MatHang,Boolean>();
+    }
+    
+    public void xoaRong(){
+        txtGiaNhap.setText("");
+        txtGiaban.setText("");
+        txtSoLuong.setText("");
+        cbLoaiSP.setSelectedIndex(0);
+        pnlSPMoi.setComboboxItem("");
+    }
+    
+    private double convertMoneyToDouble(String money){
+        String[] text = money.trim().split("\\,")[0].split("\\.");
+        String tienTra = "";
+        for(int i=0;i< text.length;i++){
+            tienTra+=text[i];
+        }
+        return Double.parseDouble(tienTra);
+    }
+    
+    private boolean valiDataSL(){
+        int soLuong;
+        try{
+                    soLuong = Integer.parseInt(txtSoLuong.getText().trim());
+                }catch (Exception e){
+                    showMsg("Số lượng phải là số");
+                    txtSoLuong.requestFocus();
+                    txtSoLuong.selectAll();
+                    return false;
+                }
+                
+                if(soLuong <= 0){
+                    showMsg("Số lượng phải lớn hơn 1");
+                    txtSoLuong.requestFocus();
+                    txtSoLuong.selectAll();
+                    return false;
+                }
+        return true;
+    }
+    
+    private boolean valiDataGiaNhap(){
+        
+        String giaNhap = txtGiaNhap.getText().trim();
+        double tien = 0;
+        try{
+            tien = Double.parseDouble(giaNhap);
+        }catch (Exception e){
+            showMsg("Giá nhập phải là số");
+                    txtGiaNhap.requestFocus();
+                    txtGiaNhap.selectAll();
+                    return false;
+        }
+        
+        if(tien <= 0 ){
+            showMsg("Giá nhập phải lớn hơn 0");
+                    txtGiaNhap.requestFocus();
+                    txtGiaNhap.selectAll();
+                    return false;
+        }
+        txtGiaNhap.setText(df.format(tien));
+        return true;
+    }
+    
+    private boolean valiDataGiaban(){
+        String giaban = txtGiaban.getText().trim();
+        double giaNhap = convertMoneyToDouble(txtGiaNhap.getText().trim());
+        double tien = 0;
+        try{
+            tien = Double.parseDouble(giaban);
+        }catch (Exception e){
+            showMsg("Giá nhập phải là số");
+                    txtGiaban.requestFocus();
+                    txtGiaban.selectAll();
+                    return false;
+        }
+        
+        if(tien <= giaNhap ){
+            showMsg("Giá bán phải lớn hơn giá nhập");
+                    txtGiaban.requestFocus();
+                    txtGiaban.selectAll();
+                    return false;
+        }
+        txtGiaban.setText(df.format(tien));
+        return true;
+    }
+    
+    private boolean valiSP(){
+        int loaiSp = cbLoaiSP.getSelectedIndex();
+		if (loaiSp == 0) {
+                    showMsg("Chọn loại sản phẩm !");  
+                    return false;
+		}
+        int SP = pnlSPMoi.getSelectedIndex();
+        if(cbSpMoi.isSelected()){
+                    if(pnlSPMoi.getTenSanPhamMoi().equals("")){
+                        showMsg("Nhập tên sản phẩm mới !");  
+                        pnlSPMoi.requestFocus();
+                        return false;
+                    }
+                }else{
+                    if (SP == 0) {
+                    showMsg("Chọn sản phẩm !");  
+                    return false;
+                    }
+                }
+        return valiDataNull();
+    }
+    
+    private boolean valiData() {
+                int ncc = cbNhaCungCap.getSelectedIndex();
+                String sl = txtSoLuong.getText().trim();
+                String giaNhap = txtGiaNhap.getText().trim();
+                String giaBan = txtGiaban.getText().trim();
+                
+                if(table.getRowCount() == 0){
+                    showMsg("Không có sản phẩm nào được thêm !");  
+                    return false;
+                }
+                
+                if (ncc == 0) {
+                    showMsg("Chọn nhà cung vấp !");  
+                    return false;
+		}
+                
+                if(!(sl.equals("") ||giaNhap.equals("") ||giaBan.equals(""))){
+                    showMsg("Còn dữ liệu chưa được thêm. Hãy thêm dữ liệu trước khi lưu!");  
+                    return false;
+                }
+                
+		return true;
+	}
+    
+    private boolean valiDataNull(){
+        String sl = txtSoLuong.getText().trim();
+        String giaNhap = txtGiaNhap.getText().trim();
+        String giaBan = txtGiaban.getText().trim();
+        
+        if(sl.equals("")){
+            showMsg("Nhập số lượng");  
+            txtSoLuong.requestFocus();
+            return false;
+        }else if(giaNhap.equals("")){
+            showMsg("Nhập giá nhập !");  
+            txtGiaNhap.requestFocus();
+            return false;
+        } else if(giaBan.equals("")){
+            showMsg("Nhập giá bán !");  
+            txtGiaban.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void showMsg(String msg) {
+	JOptionPane.showMessageDialog(null, msg);
+    }
     
     public class createActionListenner implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             Object o = e.getSource();
-            if(o.equals(btnLuu)){
-//                insert lo hang
-                String maLoHang = "LH0005";
-                ngayNhap = new Date();
-                double tongTien = 500;
-                String maNhanVien = "NV0007"; 
-                ObjectComboBox maNCC = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
-//                insert mat hang
-                String giaNhap = txtGiaNhap.getText();
-                String soLuong = txtSoLuong.getText();
-                String giaBan = txtGiaban.getText();
+            if(o.equals(btnLuu) && valiData()){
+//insert lo hang
+                String maLoHang = nhaCungCapVaNhapHang_DAO.getLastLoHang();
+                ObjectComboBox cb = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
+                NhaCungCap ncc = nhaCungCapVaNhapHang_DAO.getNhaCungCapById(cb.getMa());
+                
+                loHang.setMaLoHang(maLoHang);
+                loHang.setNguoiNhap(nhanVien);
+                loHang.setNhaCungCap(ncc);
 
-                if(spMoi.isSelected()){
-                    ObjectComboBox loaiSP = (ObjectComboBox)cbLoaiSP.getSelectedItem();
-                    String maLoaiDichVu = loaiSP.getMa();
-                    String tenMatHang = pnlSPMoi.getTenSanPhamMoi();
-                    String maMatHang = "MH0050";
-                    
-                    System.out.println(
-                    "insert Lo hang: "+ maLoHang+ " " + ngayNhap +" "+tongTien +" "+ maNhanVien+" " +maNCC.getMa()+"\n"+
-                    "insert"+ maMatHang+" " + giaBan+" " +soLuong+" " +tenMatHang+" " + maLoaiDichVu+" "
-                    );
-                }else{
-                    String maMatHang = pnlSPMoi.getMaSanPhamCu();
-                    
-                    System.out.println(
-                    "insert Lo hang: "+ maLoHang+ " " + ngayNhap +" "+tongTien +" "+ maNhanVien+" " +maNCC.getMa()+"\n"+
-                    "update Mat Hang "+maMatHang+"set slTonKho = "+"slTonKho"+soLuong+" dongia =" + giaBan
-                    );
-                }
+                nhaCungCapVaNhapHang_DAO.insertLohang(loHang);
+
+////insert and update sp
+                isNewSP.forEach((sp,isInsert) ->{
+                    if(isInsert){
+                        nhaCungCapVaNhapHang_DAO.insertMatHang(sp);
+                    }else{
+                        nhaCungCapVaNhapHang_DAO.updateMatHang(sp);
+                    }
+                });
+//insert ct nhap
+                loHang.getDsChiTietNhapHang().forEach(ct -> {
+                    nhaCungCapVaNhapHang_DAO.insertCTNhapHang(ct,loHang.getMaLoHang());
+                });
+           
+                resetData();
+                showMsg("Lưu thành công");
             }else if(o.equals(btnXemThongTin)){
                 if(cbNhaCungCap.getSelectedIndex() !=0){
                     ObjectComboBox maNCC = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
                     NhaCungCap ncc = nhaCungCapVaNhapHang_DAO.getNhaCungCapById(maNCC.getMa());
                     new GD_ThemNhaCungCap(ncc).setVisible(true);
                 }
+            }else if(o.equals(btnThem) && valiSP()){
+                int soLuong = Integer.parseInt(txtSoLuong.getText().trim());
+                double giaNhap = convertMoneyToDouble(txtGiaNhap.getText().trim());
+                double giaBan = convertMoneyToDouble(txtGiaban.getText().trim());
+                ObjectComboBox cb = (ObjectComboBox)cbLoaiSP.getSelectedItem();
+                LoaiDichVu loaiDichVu = nhaCungCapVaNhapHang_DAO.getLoaiDichVuByMa(cb.getMa());
+                String tenMatHang ="";
+                MatHang matHang;
+                
+                if(cbSpMoi.isSelected()){
+                    String maMatHang = nhaCungCapVaNhapHang_DAO.getLastMatHang();
+                    tenMatHang  = pnlSPMoi.getTenSanPhamMoi();
+                    matHang = new MatHang(maMatHang, pnlSPMoi.getTenSanPhamMoi(), loaiDichVu, soLuong, giaBan);
+                    isNewSP.put(matHang,true);
+                }else{
+                    tenMatHang = pnlSPMoi.getTenSanPhamCu();
+                    String maMatHang = pnlSPMoi.getMaSanPhamCu();
+                    matHang = new MatHang(maMatHang,tenMatHang, loaiDichVu, soLuong, giaBan);
+                    isNewSP.put(matHang,false);
+                }
+                
+                loHang.themCT_NhapHang(matHang, soLuong, giaNhap);
+                
+                table.addRow(new Object[]{ new ObjectComboBox(matHang.getTenMatHang(),matHang.getMaMatHang()),
+                        cb.toString(),soLuong,
+                        df.format(giaNhap), df.format(giaBan),df.format(giaNhap*soLuong)});
+                xoaRong();
+            }else if(o.equals(btnXoa)){
+                xoaRong();
+            }else if(o.equals(btnThemNCC)){
+                new GD_ThemNhaCungCap(null).setVisible(true);
+                loadNCC();
             }
+        }
+    }
+    
+    public class createKetlistener implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            Object obj = e.getSource();
+            if(obj.equals(txtSoLuong) && (e.getKeyChar() == KeyEvent.VK_TAB || e.getKeyChar() == KeyEvent.VK_ENTER)){
+                if(valiDataSL()){
+                    txtGiaNhap.requestFocus();
+                }
+            }else if(obj.equals(txtGiaNhap) && (e.getKeyChar() == KeyEvent.VK_TAB || e.getKeyChar() == KeyEvent.VK_ENTER)){
+                if(valiDataGiaNhap()){
+                    txtGiaban.requestFocus(); 
+                }
+            }else if(obj.equals(txtGiaban) && (e.getKeyChar() == KeyEvent.VK_TAB || e.getKeyChar() == KeyEvent.VK_ENTER)){
+                valiDataGiaban();
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
         }
         
     }
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

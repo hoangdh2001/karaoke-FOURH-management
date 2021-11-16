@@ -5,6 +5,7 @@
  */
 package gui;
 
+import com.toedter.calendar.JDateChooser;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
@@ -13,10 +14,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
+
+    private JDateChooser dscBatDau;
+    private JDateChooser dscKetThuc;
 
     public GD_ThongKeDoanhThu() {
         initComponents();
@@ -30,26 +35,28 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         int fontSize = 14;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setPreferredSize(new Dimension(1119, 780));
+        //pnlTop.setPreferredSize(new Dimension(1119, 80));
+        this.add(pnlTop,"w 100%, h 80%");
         pnlTop.setLayout(new MigLayout());
         
-       // JPanel pnlThongKeTheo = new JPanel();
+        pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
         pnlThongKeTheo.setOpaque(false);
-        pnlThongKeTheo.setLayout(new MigLayout("", "10[center]10[center] 20 [center]10[center] 250 [center]10[center]10", "push [center] push"));
+        pnlThongKeTheo.setLayout(new MigLayout("", "10[center]10[center]20 [center]10[center] 20 [center]10[center]10", "70[center] push"));
         pnlTop.add(pnlThongKeTheo, "w 100%, h 15%, wrap");
         
-         //Loại thống kê
-        JLabel lblLoaiTK = new JLabel("Loại thống kê:");
-        lblLoaiTK.setFont(new Font(fontName, fontStyle, fontSize));
-        pnlThongKeTheo.add(lblLoaiTK,"align right");
+        // Chọn thời gian băt đầu
+        dscBatDau = new JDateChooser();
+        dscBatDau.setOpaque(false);
+        dscBatDau.setDateFormatString("yyyy-MM-dd");
+        dscBatDau.setFont(new Font(fontName, fontStyle, fontSize));
+        pnlThongKeTheo.add(dscBatDau, "w 80%, h 36!");
         
-        
-        MyComboBox<String> cmbLoaiTK = new MyComboBox<>(new String[] {"Doanh thu", "Hàng hóa"});
-        cmbLoaiTK.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbLoaiTK.setBorderLine(true);
-        cmbLoaiTK.setBorderRadius(10);
-        pnlThongKeTheo.add(cmbLoaiTK, " w 60%, h 36!");
-       
+
+        // Chọn thời gian kết thúc
+        dscKetThuc = new JDateChooser();
+        dscKetThuc.setOpaque(false);
+        dscKetThuc.setFont(new Font(fontName, fontStyle, fontSize));
+        pnlThongKeTheo.add(dscKetThuc, "w 80%, h 36!");
         
         //Thống kê theo
         JLabel lblTKTheo = new JLabel("Thống kê theo:");
@@ -61,51 +68,27 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         cmbTKTheo.setFont(new Font(fontName, fontStyle, fontSize));
         cmbTKTheo.setBorderLine(true);
         cmbTKTheo.setBorderRadius(10);
-        pnlThongKeTheo.add(cmbTKTheo, "w 60%, h 36!");
-        
+        pnlThongKeTheo.add(cmbTKTheo, "w 80%, h 36!");
         
         //Khác
         JLabel lblKhac = new JLabel("Khác:");
         lblKhac.setFont(new Font(fontName, fontStyle, fontSize));
         pnlThongKeTheo.add(lblKhac,"align right");
         
-        
         MyComboBox<String> cmbKhac = new MyComboBox<>(new String[] {"--Tất cả--", "Dịch vụ tiêu thụ nhiều nhất", "Dịch vụ tiêu thụ ít nhất"});
         cmbKhac.setFont(new Font(fontName, fontStyle, fontSize));
         cmbKhac.setBorderLine(true);
         cmbKhac.setBorderRadius(10);
-        pnlThongKeTheo.add(cmbKhac, ",w 60%, h 36!");
+        pnlThongKeTheo.add(cmbKhac, ",w 80%, h 36!");
        
         pnlBangThongKe.setOpaque(false);
         pnlBangThongKe.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 1), "Bảng thống kê", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), new Color(4, 72, 210)));
-        pnlTop.add(pnlBangThongKe, "w 100%, h 75%, wrap");
+        pnlTop.add(pnlBangThongKe, "w 100%, h 75%, wrap");//
        
-            tblThongKe.addRow(new Object[]{"", "HD0001", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0002", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" });
-            tblThongKe.addRow(new Object[]{"",  "HD0004", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0005", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0006", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0007", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0008", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0009", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0010", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0011", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0012", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0013", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0014", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0015", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0016", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0017", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0018", "30-09-2019", "Tên Khách Hàng","Bùi Quang Hữu", "560,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0019", "09-06-2018", "Tên Khách Hàng","Nguyễn Hưng", "570,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0020", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0021", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0022", "13-06-2018", "Nguyễn Thị Lan","Nguyễn Thị Hảo", "500,000" });
-            tblThongKe.addRow(new Object[]{"", "HD0023", "27-03-2020", "Hoàng Văn Nam","Đỗ Huy Hoàng", "400,000" });
           
         pnlTinhTong.setOpaque(false);
         pnlTinhTong.setLayout(new MigLayout());
-        pnlTop.add(pnlTinhTong, "align right,w 25%, h 7%");
+        pnlTop.add(pnlTinhTong, "align right,w 25%, h 10%");
         
         //Tính tổng
         JLabel lblTong = new JLabel("Tổng:");
@@ -118,7 +101,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         txtTong.setBorderRadius(5);
         pnlTinhTong.add(txtTong, "w 80%, h 36!");
         
-        pnlBottom.setPreferredSize(new Dimension(1119, 90));
+        this.add(pnlBottom,"w 100%, h 20%");
         pnlBottom.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 1), "Xuất danh sách", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), new Color(4, 72, 210)));
         pnlBottom.setLayout(new MigLayout("", "20[center] 50 [center] 20 [center]10", " [center] "));
         
@@ -142,12 +125,23 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         btnXuat.setBorderRadius(5);
         pnlBottom.add(btnXuat, "w 200!, h 36!");
         
-        
         setOpaque(false);
-        setPreferredSize(new Dimension(1119, 900));
-
+        setPreferredSize(new Dimension(getWidth(), 950));
     }
 
+    private JPanel createPanelTitle() {
+        JPanel pnlTitle = new JPanel();
+        pnlTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
+        pnlTitle.setOpaque(false);
+        pnlTitle.setLayout(new MigLayout("fill", "", ""));
+        JLabel lblTitle = new JLabel();
+        lblTitle.setText("QUẢN LÝ KHÁCH HÀNG");
+        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
+        lblTitle.setForeground(new Color(68, 68, 68));
+        pnlTitle.add(lblTitle);
+        return  pnlTitle;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -163,13 +157,12 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         scrThongKe = new javax.swing.JScrollPane();
         tblThongKe = new gui.swing.table2.MyTable();
         pnlTinhTong = new gui.swing.panel.PanelShadow();
-        lblTitle = new javax.swing.JLabel();
         pnlBottom = new gui.swing.panel.PanelShadow();
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
         pnlTop.setShadowSize(3);
-        pnlTop.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlTop.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         pnlThongKeTheo.setBackground(new java.awt.Color(255, 255, 255));
         pnlThongKeTheo.setShadowColor(new java.awt.Color(255, 255, 255));
@@ -227,7 +220,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         );
         pnlBangThongKeLayout.setVerticalGroup(
             pnlBangThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrThongKe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+            .addComponent(scrThongKe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
         );
 
         pnlTinhTong.setBackground(new java.awt.Color(255, 255, 255));
@@ -263,15 +256,10 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                 .addGap(0, 0, 0))
         );
 
-        lblTitle.setBackground(new java.awt.Color(255, 255, 255));
-        lblTitle.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        lblTitle.setForeground(new java.awt.Color(4, 72, 210));
-        lblTitle.setText("THỐNG KÊ THEO DANH SÁCH");
-
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
         pnlBottom.setShadowOpacity(0.3F);
         pnlBottom.setShadowSize(3);
-        pnlBottom.setShadowType(gui.dropshadow.ShadowType.TOP);
+        pnlBottom.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlBottomLayout = new javax.swing.GroupLayout(pnlBottom);
         pnlBottom.setLayout(pnlBottomLayout);
@@ -290,18 +278,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitle)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(lblTitle)
-                .addGap(11, 11, 11)
-                .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -310,7 +291,6 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblTitle;
     private gui.swing.panel.PanelShadow pnlBangThongKe;
     private gui.swing.panel.PanelShadow pnlBottom;
     private gui.swing.panel.PanelShadow pnlThongKeTheo;

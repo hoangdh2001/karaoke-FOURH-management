@@ -7,9 +7,8 @@ import dao.NhanVien_DAO;
 import entity.CaLam;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
-
-import gui.dropshadow.ShadowType;
 import gui.event.EventAddNhanVien;
+import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.textfield.MyComboBox;
@@ -29,14 +28,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
-import gui.event.EventSelectedRow;
+import javax.swing.DefaultComboBoxModel;
+import gui.swing.event.EventSelectedRow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 public class GD_NhanVien extends JPanel {

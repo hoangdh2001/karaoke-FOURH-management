@@ -20,7 +20,8 @@ public class ProgressBarCustom extends JProgressBar {
     private Color colorString = new Color(200, 200, 200);
 
     public ProgressBarCustom() {
-        setPreferredSize(new Dimension(100, 5));
+        setStringPainted(true);
+        setPreferredSize(new Dimension(100, 15));
         setBackground(new Color(255, 255, 255));
         setForeground(new Color(69, 124, 235));
         setUI(new BasicProgressBarUI() {

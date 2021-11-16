@@ -3,7 +3,9 @@ package gui.component;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
-import gui.event.EventMenuSelected;
+import gui.GD_Chinh;
+import gui.GD_TiepNhanDatPhong;
+import gui.swing.event.EventMenuSelected;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import java.awt.BorderLayout;
@@ -274,6 +276,12 @@ public class Room extends PanelShadow {
         btnThue.setForeground(Color.WHITE);
         btnThue.setBackground(new Color(0, 31, 63));
         btnThue.setBorderRadius(5);
+        btnThue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                new GD_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
+            }
+        });
         pnlPhongTrong.add(btnThue);
         return pnlPhongTrong;
     }

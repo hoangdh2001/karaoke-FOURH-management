@@ -108,4 +108,10 @@ public class MatHang {
         df = new DecimalFormat("#,##0.00");
         return new Object[]{ new ObjectComboBox(tenMatHang,maMatHang), sLTonKho, df.format(donGia),false};
     }
+    
+    public Object[] convertToRowTableInGDXemDichVu(){
+        DecimalFormat df;
+        df = new DecimalFormat("#,##0.00");
+        return new Object[]{tenMatHang,loaiDichVu.getTenLoaiDichVu(), sLTonKho, df.format(donGia)};
+    }
 }

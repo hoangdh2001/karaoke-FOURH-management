@@ -2,9 +2,9 @@ package gui.component;
 
 import dao.Phong_DAO;
 import entity.Phong;
-import gui.event.EventShowInfoOver;
-import gui.event.EventShowPopupMenu;
-import gui.event.EventTabSelected;
+import gui.swing.event.EventShowInfoOver;
+import gui.swing.event.EventShowPopupMenu;
+import gui.swing.event.EventTabSelected;
 import gui.swing.layout.WrapLayout;
 import gui.swing.panel.PanelShadow;
 import gui.swing.panel.TabButton;
@@ -30,20 +30,23 @@ public class PanelMap extends PanelShadow {
     private TabButton tabPane;
     private JPanel roomMap;
     private List<JPanel> panels = new ArrayList<>();
-    private Phong_DAO phong_DAO;
     private JScrollPane sp;
+    private int indexShowing;
     private EventShowInfoOver event;
-    
+
+    public int getIndexShowing() {
+        return indexShowing;
+    }
+
     public void addEvent(EventShowInfoOver event) {
         this.event = event;
     }
-    
+
     public void addEventSp(MouseWheelListener event) {
         sp.addMouseWheelListener(event);
     }
-    
+
     public PanelMap() {
-        phong_DAO = new Phong_DAO();
         buildMap();
     }
 
@@ -76,6 +79,7 @@ public class PanelMap extends PanelShadow {
         tabPane.setEvent(new EventTabSelected() {
             @Override
             public boolean selected(int index, boolean selectedTab) {
+                indexShowing = index;
                 showTabPane(panels.get(index));
                 sp.getVerticalScrollBar().setValue(0);
                 tabPane.check();
@@ -83,7 +87,7 @@ public class PanelMap extends PanelShadow {
             }
         });
         tabPane.setBackground(Color.WHITE);
-        
+
         return tabPane;
     }
 
@@ -100,7 +104,6 @@ public class PanelMap extends PanelShadow {
         roomMap.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
         tabPane.addTabButtonItem("Tất cả");
         panels.add(roomMap);
-        initRoom();
         return roomMap;
     }
 
@@ -109,7 +112,7 @@ public class PanelMap extends PanelShadow {
         room.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
                     event.showInfoOver(room, e);
                 }
             }
@@ -117,20 +120,34 @@ public class PanelMap extends PanelShadow {
         panel.add(room);
     }
 
-    public void initRoom() {
-        int i = 0;
-        List<Phong> dsPhong = phong_DAO.getDsPhong();
-        for (int j = 0; j < dsPhong.size(); j++) {
-            Phong phong = dsPhong.get(j);
-            if(i != phong.getTang()) {
-                JPanel tabFloor = createTabFloor(phong.getTang());
-                panels.add(tabFloor);
-            }
-            addRoom(panels.get(phong.getTang()), new Room(phong));
-            addRoom(roomMap, new Room(phong));
-            i = phong.getTang();
+    public void initSearchRoom(List<Phong> dsPhong) {
+        if (dsPhong != null) {
+            JPanel pnl = panels.get(indexShowing);
+            pnl.removeAll();
+            pnl.repaint();
+            pnl.revalidate();
+            dsPhong.forEach(phong -> {
+                addRoom(panels.get(indexShowing), new Room(phong));
+            });
         }
     }
+
+    public void initRoom(List<Phong> dsPhong) {
+        if (dsPhong != null) {
+            int i = 0;
+            for (int j = 0; j < dsPhong.size(); j++) {
+                Phong phong = dsPhong.get(j);
+                if (i != phong.getTang()) {
+                    JPanel tabFloor = createTabFloor(phong.getTang());
+                    panels.add(tabFloor);
+                }
+                addRoom(panels.get(phong.getTang()), new Room(phong));
+                addRoom(roomMap, new Room(phong));
+                i = phong.getTang();
+            }
+        }
+    }
+
     private JPanel createTabFloor(int tang) {
         JPanel tabFloor = new JPanel();
         tabFloor.setOpaque(false);

@@ -12,9 +12,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import gui.event.EventMenu;
-import gui.event.EventMenuSelected;
-import gui.model.ModelMenu;
+import gui.swing.event.EventMenu;
+import gui.swing.event.EventMenuSelected;
+import gui.swing.model.ModelMenu;
 import net.miginfocom.swing.MigLayout;
 
 public class MenuItem extends JPanel {

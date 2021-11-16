@@ -20,10 +20,15 @@ import util.HibernateUtil;
 public class NhanVien_DAO implements NhanVienService {
 
     private SessionFactory sessionFactory;
-
+    
     public NhanVien_DAO() {
         HibernateUtil hibernateUtil = HibernateUtil.getInstance();
         this.sessionFactory = hibernateUtil.getSessionFactory();
+    }
+    
+    @Override
+    public boolean checkConnect() {
+        return sessionFactory.openSession().isConnected();
     }
 
     @Override
@@ -45,18 +50,52 @@ public class NhanVien_DAO implements NhanVienService {
     }
 
     @Override
-    public NhanVien getNhanVien(String maNhanVien) {
+    public boolean updateNhanVien(NhanVien nhanVien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.update(nhanVien);
+            tr.commit();
+            return  true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteNhanVien(String id) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.delete(session.find(NhanVien.class, id));
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+    
+    @Override
+    public NhanVien getNhanVien(String id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
 
         try {
             transaction.begin();
-            NhanVien nhanVien = session.find(NhanVien.class, maNhanVien);
+            NhanVien nhanVien = session.find(NhanVien.class, id);
             transaction.commit();
 
             return nhanVien;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e);
             transaction.rollback();
         }
         return null;
@@ -99,6 +138,25 @@ public class NhanVien_DAO implements NhanVienService {
             transaction.rollback();
         }
 
+    public NhanVien getNhanVienByLogin(String sdt, byte[] matKhau) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from NhanVien "
+                + "where sdt = '"+ sdt +"' "
+                + "and matKhau = :x";
+        
+        try {
+            tr.begin();
+            NhanVien nhanVien = session
+                    .createNativeQuery(sql, NhanVien.class)
+                    .setParameter("x", matKhau)
+                    .getSingleResult();
+            tr.commit();
+            return nhanVien;
+        } catch (Exception e) {
+            tr.rollback();
+        }
         return null;
     }
 
@@ -146,6 +204,25 @@ public class NhanVien_DAO implements NhanVienService {
             transaction.rollback();
         }
 
+    public NhanVien getNhanVienBySdtOrEmail(String sdtOrEmail) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from NhanVien "
+                + "where sdt = :x "
+                + "or email = :x";
+        
+        try {
+            tr.begin();
+            NhanVien nhanVien = session
+                    .createNativeQuery(sql, NhanVien.class)
+                    .setParameter("x", sdtOrEmail)
+                    .getSingleResult();
+            tr.commit();
+            return nhanVien;
+        } catch (Exception e) {
+            tr.rollback();
+        }
         return null;
     }
 

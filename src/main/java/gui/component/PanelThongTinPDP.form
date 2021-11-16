@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="pnlThongTin" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="pnlThongTin" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="pnlThongTin">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="cc" red="cc" type="rgb"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="1" attributes="0">
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblPhieu" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lblHinh" min="-2" pref="176" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblDienThoai" max="32767" attributes="0"/>
+                                      <Component id="lblDiaChi" alignment="0" pref="607" max="32767" attributes="0"/>
+                                      <Component id="lblTenCT" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="lblGiaPhong" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="lblCCCD" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="lblPhong" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="lblKhachHang" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="lblNgayTao" alignment="1" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="lblTTNgayTaoPhieu" alignment="1" max="32767" attributes="0"/>
+                                              <Group type="102" attributes="0">
+                                                  <Component id="lblTTTenKhachHang" min="-2" pref="220" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="lblSDTKH" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="lblTTSDTKH" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="lblTTGiaPhong" max="32767" attributes="0"/>
+                                                      <Component id="lblTTTenPhong" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="lblTang" max="32767" attributes="0"/>
+                                                      <Component id="lblLoaiPhong" pref="114" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="lblTTTang" max="32767" attributes="0"/>
+                                                      <Component id="lblTTLoaiPhong" pref="249" max="32767" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Component id="lblTTCCCD" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblNgayDat" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblTTNgayDat" min="-2" pref="214" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblTrangThaiPhieu" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblTTTrangThai" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblTienCoc" min="-2" pref="165" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblTTTienCoc" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="lblMaPhieu" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTTMaPhieu" min="-2" pref="147" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                          <Component id="lblTenCT" min="-2" pref="35" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="lblDiaChi" min="-2" pref="25" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="lblDienThoai" min="-2" pref="23" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblHinh" min="-2" pref="167" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="lblPhieu" min="-2" pref="40" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblMaPhieu" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTTMaPhieu" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblTTNgayTaoPhieu" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblNgayTao" min="-2" pref="36" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblKhachHang" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTTTenKhachHang" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblSDTKH" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTTSDTKH" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblCCCD" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                      <Component id="lblTTCCCD" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblPhong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTTTenPhong" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="lblTang" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="lblTTTang" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblGiaPhong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblLoaiPhong" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="lblTTLoaiPhong" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="lblTTGiaPhong" alignment="1" min="-2" pref="40" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblTienCoc" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTTTienCoc" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblNgayDat" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTTNgayDat" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTrangThaiPhieu" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="lblTTTrangThai" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="110" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="lblMaPhieu">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="2"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="M&#xe3; phi&#x1ebf;u &#x111;&#x1eb7;t: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblKhachHang">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="T&#xea;n kh&#xe1;ch h&#xe0;ng: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblPhong">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Ph&#xf2;ng: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblNgayDat">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value="Ng&#xe0;y nh&#x1ead;n ph&#xf2;ng: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblNgayTao">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Th&#x1edd;i gian t&#x1ea1;o phi&#x1ebf;u: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTrangThaiPhieu">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="text" type="java.lang.String" value="Tr&#x1ea1;ng th&#xe1;i phi&#x1ebf;u: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTienCoc">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Ti&#x1ec1;n c&#x1ecd;c:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTMaPhieu">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="PD1111111"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTTenKhachHang">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Nguy&#x1ec5;n Th&#x1ecb; H&#x1ea3;o"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTTenPhong">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Ph&#xf2;ng 007"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTNgayTaoPhieu">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="01-02-2020 17:30"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTNgayDat">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="01-02-2020 18:00"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTTrangThai">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#x110;&#xe3; ti&#x1ebf;p nh&#x1ead;n"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTTienCoc">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="150,000"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblHinh">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="D:\PT_N1\QL_KARAOKE_FOUH\src\main\resources\icon\audio.jpg"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="   "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTenCT">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="24" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="C&#xd4;NG TY KARAOKE FOUR- H"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblDiaChi">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="S&#x1ed1; 12 Nguy&#x1ec5;n V&#x103;n B&#x1ea3;o, Ph&#x1b0;&#x1edd;ng 4, Qu&#x1ead;n G&#xf2; V&#x1ea5;p, TP.H&#x1ed3; Ch&#xed; Minh"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblDienThoai">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#x110;i&#x1ec7;n tho&#x1ea1;i: 0824601014"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblPhieu">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="36" style="1"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="PHI&#x1ebe;U &#x110;&#x1eb6;T PH&#xd2;NG"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblSDTKH">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTSDTKH">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="0824601014"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblLoaiPhong">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value="Lo&#x1ea1;i ph&#xf2;ng: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTLoaiPhong">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Ph&#xf2;ng Vip"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblCCCD">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="C&#x103;n c&#x1b0;&#x1edb;c c&#xf4;ng d&#xe2;n: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTCCCD">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="261517679"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblGiaPhong">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Gi&#xe1; ph&#xf2;ng: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTGiaPhong">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="300,000"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTang">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="T&#x1ea7;ng: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTTTang">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="18" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="1"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

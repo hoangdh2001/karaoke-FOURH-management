@@ -5,7 +5,7 @@
  */
 package gui.swing.panel;
 
-import gui.event.EventTabSelected;
+import gui.swing.event.EventTabSelected;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;

@@ -12,7 +12,7 @@
     </Property>
     <Property name="shadowOpacity" type="float" value="0.2"/>
     <Property name="shadowSize" type="int" value="2"/>
-    <Property name="shadowType" type="gui.dropshadow.ShadowType" editor="org.netbeans.modules.form.editors.EnumEditor">
+    <Property name="shadowType" type="gui.swing.graphics.ShadowType" editor="org.netbeans.modules.form.editors.EnumEditor">
       <Value id="TOP_LEFT"/>
     </Property>
   </Properties>
