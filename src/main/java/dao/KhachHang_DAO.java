@@ -93,7 +93,8 @@ public class KhachHang_DAO implements KhachHangService {
             Transaction tr = session.getTransaction();
             try {
                     tr.begin();
-                    String sql = "select * from [dbo].[KhachHang] where [dbo].[ufn_removeMark]([tenKhachHang]) like N'%"+tuKhoa+"%' or [sdt] like '%"+tuKhoa+"'";
+                    String sql = "select * from [dbo].[KhachHang] where [tenKhachHang] like N'%"+tuKhoa+"%' or [sdt] like '%"+tuKhoa+"'";
+                    //[dbo].[ufn_removeMark]([tenKhachHang])
                     List<KhachHang> dsKhachHang = session
                                 .createNativeQuery(sql, KhachHang.class)
                                 .getResultList();

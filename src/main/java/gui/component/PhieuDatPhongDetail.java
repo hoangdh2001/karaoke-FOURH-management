@@ -9,6 +9,16 @@ package gui.component;
 import entity.PhieuDatPhong;
 import gui.swing.event.EventTabSelected;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -32,30 +42,30 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
     }
 
     private void createTabButton() {
-        tabButton.setEvent(new EventTabSelected() {
-            @Override
-            public boolean selected(int index, boolean selectedTab) {
-                if(index == 0) {
-                    showTab(pnlThongTinPDP);
-                }
-                else if(index == 1) {
-                    showTab(new PanelSuaPDP());
-                }
-                tabButton.check();
-                return true;
-            }
-        });
-        tabButton.addTabButtonItem("Thông tin");
-        tabButton.addTabButtonItem("Sửa");
+//        tabButton.setEvent(new EventTabSelected() {
+//            @Override
+//            public boolean selected(int index, boolean selectedTab) {
+//                if(index == 0) {
+//                    showTab(pnlThongTinPDP);
+//                }
+//                else if(index == 1) {
+//                    showTab(new PanelSuaPDP());
+//                }
+//                tabButton.check();
+//                return true;
+//            }
+//        });
+//        tabButton.addTabButtonItem("Thông tin");
+//        tabButton.addTabButtonItem("Sửa");
         pnlBottom.add(pnlThongTinPDP);
     }
     
-    private void showTab(Component com) {
-        pnlBottom.removeAll();
-        pnlBottom.add(com);
-        pnlBottom.repaint();
-        pnlBottom.revalidate();
-    }
+//    private void showTab(Component com) {
+//        pnlBottom.removeAll();
+//        pnlBottom.add(com);
+//        pnlBottom.repaint();
+//        pnlBottom.revalidate();
+//    }
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -68,40 +78,82 @@ public class PhieuDatPhongDetail extends javax.swing.JPanel {
 
         pnlBottom = new javax.swing.JPanel();
         pnlTop = new javax.swing.JPanel();
-        tabButton = new gui.swing.panel.TabButton();
+        btnIn = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
-        pnlBottom.setLayout(new java.awt.BorderLayout());
         add(pnlBottom, java.awt.BorderLayout.CENTER);
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
-        pnlTop.setPreferredSize(new java.awt.Dimension(717, 60));
+        pnlTop.setPreferredSize(new java.awt.Dimension(717, 40));
 
-        tabButton.setBackground(new java.awt.Color(204, 255, 255));
+        btnIn.setBackground(new java.awt.Color(255, 255, 255));
+        btnIn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnIn.setText("IN");
+        btnIn.setIcon(new ImageIcon("./src/main/resources/icon/print_24.png"));
+        btnIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabButton, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopLayout.createSequentialGroup()
+                .addContainerGap(573, Short.MAX_VALUE)
+                .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopLayout.createSequentialGroup()
-                .addGap(0, 60, Short.MAX_VALUE)
-                .addComponent(tabButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(pnlTopLayout.createSequentialGroup()
+                .addComponent(btnIn, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         add(pnlTop, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInActionPerformed
+        printRecord(pnlBottom);
+    }//GEN-LAST:event_btnInActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIn;
     private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlTop;
-    private gui.swing.panel.TabButton tabButton;
     // End of variables declaration//GEN-END:variables
+    private void printRecord(JPanel panel){
+            //Create printerJob Here
+            PrinterJob printerJob = PrinterJob.getPrinterJob();
 
+            printerJob.setJobName("Print Record");
+            printerJob.setPrintable(new Printable() {
+                @Override
+                public int print(Graphics arg0, PageFormat arg1, int arg2) throws PrinterException {
+                    if(arg2>0){
+                        return Printable.NO_SUCH_PAGE;
+                    }
+
+                    Graphics2D graphics2D = (Graphics2D) arg0;
+                    graphics2D.translate(arg1.getImageableX(), arg1.getImageableY());
+                    graphics2D.scale(0.76,1.1);
+                    panel.print(graphics2D);
+                    return Printable.PAGE_EXISTS;
+                }
+            });
+
+            boolean returningResult = printerJob.printDialog();
+            if(returningResult){
+                try{
+                    printerJob.print();
+                }catch(PrinterException p){
+                    JOptionPane.showMessageDialog(this, "Print Error: "+p.getMessage());
+                }
+            }
+    }
 }

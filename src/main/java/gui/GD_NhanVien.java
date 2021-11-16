@@ -1,31 +1,42 @@
 package gui;
 
+import dao.CaLam_DAO;
+import dao.DiaChiMau_DAO;
 import dao.LoaiNhanVien_DAO;
 import dao.NhanVien_DAO;
+import entity.CaLam;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
-import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import java.text.DecimalFormat;
 import java.util.List;
+
+import net.miginfocom.swing.MigLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 import gui.swing.event.EventSelectedRow;
+import gui.swing.event.EventAddNhanVien;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GD_NhanVien extends JPanel {
 
@@ -44,26 +55,43 @@ public class GD_NhanVien extends JPanel {
     private MyComboBox<Object> cmbLoaiNVTK;
     private MyComboBox<Object> cmbCaLamTK;
     private Button btnTimKiem;
-    private NhanVien_DAO nhanVien_DAO;
+    private final NhanVien_DAO nhanVien_DAO;
     private LoaiNhanVien_DAO loaiNhanVien_DAO;
+    private CaLam_DAO caLam_DAO;
+    private DiaChiMau_DAO diaChiMau_DAO;
 
     private List<NhanVien> listNhanVien;
+    private List<LoaiNhanVien> loaiNhanViens;
+    private List<CaLam> caLams;
 
     private EventSelectedRow eventSelectedRow;
+    private EventAddNhanVien eventAddNhanVien;
+
+    private DefaultComboBoxModel<LoaiNhanVien> cmbModelLNV;
+    private DefaultComboBoxModel<CaLam> cmbModelCaLam;
 
     public GD_NhanVien() {
         initComponents();
-        setPreferredSize(new Dimension(getWidth(), 1000));
+        this.setPreferredSize(new Dimension(getWidth(), 1000));
         buildGD();
 
         nhanVien_DAO = new NhanVien_DAO();
         TableHandler();
+        loaiNhanVien_DAO = new LoaiNhanVien_DAO();
+        caLam_DAO = new CaLam_DAO();
+        FormHandler();
+
+        SearchHandler();
+        AddHandler();
     }
 
-    public void addEvent(EventSelectedRow event) {
+    public void addEventSelectedRow(EventSelectedRow event) {
         this.eventSelectedRow = event;
     }
 
+    public void addEventAddNhanVien(EventAddNhanVien event) {
+        this.eventAddNhanVien = event;
+    }
 
     private void buildGD() {
         pnlTop.setLayout(new MigLayout("", "[][]", "[]"));
@@ -96,7 +124,7 @@ public class GD_NhanVien extends JPanel {
         pnlTitle.setLayout(new MigLayout("fill", "", ""));
         JLabel lblTitle = new JLabel();
         lblTitle.setText("Tìm kiếm");
-        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
+        lblTitle.setFont(new Font("sansserif", Font.BOLD, 18));
         lblTitle.setForeground(new Color(68, 68, 68));
         pnlTitle.add(lblTitle);
         return pnlTitle;
@@ -126,6 +154,9 @@ public class GD_NhanVien extends JPanel {
         cmbCot.setBorderLine(true);
         cmbCot.setBorderRadius(5);
         cmbCot.addItem("Chọn cột cần tìm");
+        cmbCot.addItem("Mã nhân viên");
+        cmbCot.addItem("Tên nhân viên");
+        cmbCot.addItem("Căn cước công dân");
         pnlTimKiemNV.add(cmbCot, "w 10%, h 40!");
 
         //Giới tính cần tìm
@@ -148,6 +179,7 @@ public class GD_NhanVien extends JPanel {
 
         pnlTimKiemNV.add(lblLoaiNVTK);
 
+//        cmbModelLNV = new DefaultComboBoxModel<>();
         cmbLoaiNVTK = new MyComboBox<>();
         cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
         cmbLoaiNVTK.setBorderLine(true);
@@ -160,6 +192,7 @@ public class GD_NhanVien extends JPanel {
         lblCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemNV.add(lblCaLamTK, "align right");
 
+//        cmbModelCaLam = new DefaultComboBoxModel<>();
         cmbCaLamTK = new MyComboBox<>();
         cmbCaLamTK.setFont(new Font(fontName, fontPlain, font14));
         cmbCaLamTK.setBorderLine(true);
@@ -168,8 +201,8 @@ public class GD_NhanVien extends JPanel {
         pnlTimKiemNV.add(cmbCaLamTK, "w 10%,h 40!");
 
         //Button tìm kiếm
-        btnTimKiem = new Button("Tìm kiếm");
-        btnTimKiem.setFont(new Font(fontName, fontPlain, font14));
+        btnTimKiem = new Button("Thêm");
+        btnTimKiem.setFont(new Font(fontName, Font.BOLD, font16));
         btnTimKiem.setBackground(colorBtn);
         btnTimKiem.setBorderline(true);
         btnTimKiem.setBorderRadius(5);
@@ -183,33 +216,37 @@ public class GD_NhanVien extends JPanel {
      */
     private void TableHandler() {
         tblNhanVien.fixTable(scrTable);
-        tblNhanVien.setFont(new Font(fontName, fontPlain, font14));
+        tblNhanVien.setFont(new Font(fontName, fontPlain, font16));
+//        tblNhanVien.getTableHeader().setFont(new Font(fontName, Font.BOLD, 18));
+        setSizeColumnTable();
+
+        String html2 = "<html><head><style> body{margin: 0 ; padding: 0; background-color: #303841;} h3{color: white; padding: 0 16px;} </style></head>"
+                + "<body><h3>Click chuột trái 2 lần để xem chi tiết</h3></body></html>";
+        tblNhanVien.setToolTipText(html2);
 
         //Thêm cột có icon xóa, sửa
-        EventAction event = new EventAction() {
-            @Override
-            public void delete(Object obj) {
-                NhanVien nhanVien = (NhanVien) obj;
-                JOptionPane.showMessageDialog(null, "Delete" + nhanVien.getMaNhanVien());
-            }
-
-            @Override
-            public void update(ModelAction action) {
-                NhanVien nhanVien = (NhanVien) action.getObj();
-                action.setObj(nhanVien);
-            }
-
-        };
-
+//        EventAction event = new EventAction() {
+//            @Override
+//            public void delete(Object obj) {
+//                NhanVien nhanVien = (NhanVien) obj;
+//                JOptionPane.showMessageDialog(null, "Delete" + nhanVien.getMaNhanVien());
+//            }
+//
+//            @Override
+//            public void update(ModelAction action) {
+//                NhanVien nhanVien = (NhanVien) action.getObj();
+//                action.setObj(nhanVien);
+//            }
+//
+//        };
         //Load dữ liệu từ DB lên bảng 
         listNhanVien = nhanVien_DAO.getNhanViens();
         for (NhanVien i : listNhanVien) {
             tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
-                     i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
-                     i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable(event));
+                    i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
+                    i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
         }
 
-        
         tblNhanVien.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -217,13 +254,152 @@ public class GD_NhanVien extends JPanel {
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
 
                     String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString();
-                    
                     eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
                 }
             }
         });
     }
-    
+
+    /**
+     * load dữ liệu lên các combobox của form tìm kiếm
+     */
+    private void FormHandler() {
+        loaiNhanViens = loaiNhanVien_DAO.getLoaiNhanViens();
+        for (LoaiNhanVien lnv : loaiNhanViens) {
+            cmbLoaiNVTK.addItem(lnv.getTenLoaiNV());
+        }
+
+        caLams = caLam_DAO.getCaLams();
+        for (CaLam cl : caLams) {
+            cmbCaLamTK.addItem(cl.getGioBatDau() + "-" + cl.getGioKetThuc());
+        }
+
+    }
+
+    private void SearchHandler() {
+        DefaultTableModel defaultTableModel = (DefaultTableModel) tblNhanVien.getModel();
+        txtTimKiem.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                defaultTableModel.setRowCount(0);
+                SearchNhanVien();
+            }
+        });
+
+        cmbGioiTinhTK.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                defaultTableModel.setRowCount(0);
+                SearchNhanVien();
+            }
+        });
+
+        cmbCaLamTK.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                defaultTableModel.setRowCount(0);
+                SearchNhanVien();
+            }
+        });
+
+        cmbLoaiNVTK.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                defaultTableModel.setRowCount(0);
+                SearchNhanVien();
+            }
+        });
+
+    }
+
+    private void SearchNhanVien() {
+
+        String searchOption = cmbCot.getSelectedItem().toString();
+        if (searchOption.equals("Chọn cột")) {
+            searchOption = "Tên nhân viên";
+        }
+
+        int gioiTinh = 2; // mặc định là lấy tất cả giới tính
+        if (!cmbGioiTinhTK.getSelectedItem().equals("Tất cả")) {
+            gioiTinh = cmbGioiTinhTK.getSelectedItem() == "Nam" ? 0 : 1;
+        } else {
+            gioiTinh = 2;
+        }
+
+        String maCaLam = "";
+        if (!cmbCaLamTK.getSelectedItem().equals("Tất cả")) {
+            for (CaLam cl : caLams) {
+                String caLam = cl.getGioBatDau() + "-" + cl.getGioKetThuc();
+                if (caLam.equals(cmbCaLamTK.getSelectedItem())) {
+                    maCaLam = cl.getMaCa();
+                }
+            }
+        }
+
+        String maLoaiNV = "";
+        System.out.println(cmbLoaiNVTK.getSelectedItem());
+        if (!cmbLoaiNVTK.getSelectedItem().equals("Tất cả")) {
+            for (LoaiNhanVien lnv : loaiNhanViens) {
+                if (lnv.getTenLoaiNV().equals(cmbLoaiNVTK.getSelectedItem())) {
+                    maLoaiNV = lnv.getMaLoaiNV();
+                }
+            }
+
+        }
+
+        List<NhanVien> nhanViens = nhanVien_DAO.searchNhanVien(txtTimKiem.getText().trim(), searchOption, gioiTinh, maLoaiNV, maCaLam);
+        for (NhanVien i : nhanViens) {
+            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
+                    i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
+                    i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
+        }
+    }
+
+    private void AddHandler() {
+        btnTimKiem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                System.out.println("Thêm Nhân viên");
+                eventAddNhanVien.AddNhanVien();
+                
+//                diaChiMau_DAO = new DiaChiMau_DAO();
+//                diaChiMau_DAO.getAllTinhThanh().forEach(i -> {
+//                    System.out.println(i);
+//                });
+            }
+        });
+    }
+
+    private void setSizeColumnTable() {
+        //chọn
+        tblNhanVien.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tblNhanVien.getColumnModel().getColumn(0).setMaxWidth(50);
+        tblNhanVien.getColumnModel().getColumn(0).setMinWidth(50);
+        //mã nhân viên
+        tblNhanVien.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tblNhanVien.getColumnModel().getColumn(1).setMaxWidth(150);
+        tblNhanVien.getColumnModel().getColumn(1).setMinWidth(150);
+        //tên nhân viên
+        tblNhanVien.getColumnModel().getColumn(2).setPreferredWidth(250);
+        tblNhanVien.getColumnModel().getColumn(2).setMaxWidth(250);
+        tblNhanVien.getColumnModel().getColumn(2).setMinWidth(220);
+        //giới tính
+        tblNhanVien.getColumnModel().getColumn(3).setPreferredWidth(120);
+        tblNhanVien.getColumnModel().getColumn(3).setMaxWidth(120);
+        tblNhanVien.getColumnModel().getColumn(3).setMinWidth(120);
+        //ngày sinh
+        tblNhanVien.getColumnModel().getColumn(4).setPreferredWidth(10);
+        //số điện thoại
+        tblNhanVien.getColumnModel().getColumn(5).setPreferredWidth(10);
+        //căn cước CD
+        tblNhanVien.getColumnModel().getColumn(6).setPreferredWidth(20);
+
+        //ca làm
+        tblNhanVien.getColumnModel().getColumn(7).setPreferredWidth(20);
+        //loại nhân viên
+        tblNhanVien.getColumnModel().getColumn(8).setPreferredWidth(20);
+
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -275,11 +451,11 @@ public class GD_NhanVien extends JPanel {
 
             },
             new String [] {
-                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Ca làm", "Loại nhân viên", "Title 9"
+                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "Căn cước công dân", "Ca làm", "Loại nhân viên"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, true, false, true
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

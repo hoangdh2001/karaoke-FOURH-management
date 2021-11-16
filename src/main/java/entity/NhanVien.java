@@ -1,12 +1,8 @@
 package entity;
 
-import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -14,8 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.swing.JCheckBox;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -45,7 +40,7 @@ public class NhanVien {
     private String email;
     @Embedded
     private DiaChi diaChi;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private byte[] matKhau;
 //    @OneToMany
 //    @Transient
@@ -264,11 +259,10 @@ public class NhanVien {
                 + "]";
     }
 
-    public Object[] convertToRowTable(EventAction event) {
-        String diaChiString = diaChi.getSoNha() + ", " + diaChi.getTenDuong() + ", " + diaChi.getXaPhuong() + ", " + diaChi.getQuanHuyen() + ", " + diaChi.getTinhThanh();
+    public Object[] convertToRowTable() {
         String caLamString = caLam.getGioBatDau() + "-" + caLam.getGioKetThuc();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         
-        return new Object[]{"", maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai,caLamString, loaiNhanVien.getTenLoaiNV(), new ModelAction(this, event)};
+        return new Object[]{JCheckBox.class, maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai, canCuocCD,caLamString, loaiNhanVien.getTenLoaiNV()};
     }
 }
