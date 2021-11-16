@@ -248,6 +248,7 @@ public class NhanVien_DAO implements NhanVienService {
         }
         session.close();
         return null;
+    }
     /**
      * Kiểm tra trùng số điện thoại
      *
