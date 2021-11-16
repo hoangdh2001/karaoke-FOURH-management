@@ -130,7 +130,7 @@ public class HoaDonDetail extends javax.swing.JPanel {
             if(returningResult){
                 try{
                     printerJob.print();
-                    printerJob.setJobName(hoaDon.getMaHoaDon());
+                    
                 }catch(PrinterException p){
                     JOptionPane.showMessageDialog(this, "Print Error: "+p.getMessage());
                 }
