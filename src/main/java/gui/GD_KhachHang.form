@@ -93,7 +93,7 @@
                     <Column editable="false" title="M&#xe3; kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
                     <Column editable="false" title="T&#xea;n kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
                     <Column editable="false" title="C&#x103;n c&#x1b0;&#x1edb;c c&#xf4;ng d&#xe2;n" type="java.lang.Object"/>
-                    <Column editable="true" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
+                    <Column editable="false" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
                     <Column editable="true" title="" type="java.lang.Object"/>
                   </Table>
                 </Property>

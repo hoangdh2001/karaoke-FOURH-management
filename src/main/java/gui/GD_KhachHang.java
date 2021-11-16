@@ -133,7 +133,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -194,15 +194,16 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         eventAction = new EventAction() {
             @Override
             public void delete(Object obj) {
-                int row = tblKhachHang.getSelectedRow();
-                KhachHang khachHang = (KhachHang) obj;
-                if(JOptionPane.showConfirmDialog(GD_KhachHang.this, "Bạn có chắc chắn muốn xóa khách hàng " +khachHang.getMaKhachHang(), "Delete", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-                    String s = khachHang_Dao.xoaKhachHang(khachHang.getMaKhachHang())==true? "Xóa thành công":"Thất bại";
-                    JOptionPane.showMessageDialog(GD_KhachHang.this,s);
-                    dsKhachHang = khachHang_Dao.getDSKhachHang();
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsKhachHang);
-                }
+                JOptionPane.showMessageDialog(GD_KhachHang.this, "Bạn không thể xóa khách hàng");
+//                int row = tblKhachHang.getSelectedRow();
+//                KhachHang khachHang = (KhachHang) obj;
+//                if(JOptionPane.showConfirmDialog(GD_KhachHang.this, "Bạn có chắc chắn muốn xóa khách hàng " +khachHang.getMaKhachHang(), "Delete", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+//                    String s = khachHang_Dao.xoaKhachHang(khachHang.getMaKhachHang())==true? "Xóa thành công":"Thất bại";
+//                    JOptionPane.showMessageDialog(GD_KhachHang.this,s);
+//                    dsKhachHang = khachHang_Dao.getDSKhachHang();
+//                    xoaDuLieu();
+//                    taiLaiDuLieu(dsKhachHang);
+//                }
             }
 
             @Override
@@ -210,7 +211,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                 int row = tblKhachHang.getSelectedRow();
                 KhachHang kh = (KhachHang) action.getObj();
                 kh.setSoDienThoai(tblKhachHang.getValueAt(row, 4).toString());
-                
+               
                 String s=  khachHang_Dao.capNhatKhachHang(kh)==true?"Cập nhật thành công":"Thất bại";
                 JOptionPane.showMessageDialog(null, s);
                 dsKhachHang = khachHang_Dao.getDSKhachHang();

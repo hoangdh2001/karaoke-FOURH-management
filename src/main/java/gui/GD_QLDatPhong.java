@@ -300,12 +300,12 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         }
     }
 
-    public void loadTrangThai(){
-        List<String> dsTrangThai = phieuDatPhong_Dao.getDSTrangThaiPhieu();
-        dsTrangThai.forEach((p)->{
-            cmbTrangThaiTK.addItem(p);
-        });
-    }
+//    public void loadTrangThai(){
+//        List<String> dsTrangThai = phieuDatPhong_Dao.getDSTrangThaiPhieu();
+//        dsTrangThai.forEach((p)->{
+//            cmbTrangThaiTK.addItem(p);
+//        });
+//    }
     
     /**
      * This method is called from within the constructor to initialize the form.

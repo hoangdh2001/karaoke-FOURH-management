@@ -124,7 +124,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         pnlThoiGianHD.setLayout(new MigLayout("", "10[][center] 50[] [center]10", "60[][center]10[center]"));
         pnlForm.add(pnlThoiGianHD, "w 60%, h 200!");
 
-        JLabel lblChonThoiGian = new JLabel("Chọn thời gian");
+        JLabel lblChonThoiGian = new JLabel("Tìm kiếm theo thời gian");
         lblChonThoiGian.setFont(new Font(fontName, fontPlain, font16));
         lblChonThoiGian.setForeground(colorLabel);
         pnlThoiGianHD.add(lblChonThoiGian, "span, w 100%, h 30!, wrap");
@@ -194,7 +194,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         pnlTimKiemHD.setLayout(new MigLayout("", "[]10[center]10", "60[][center]18[center]"));
         pnlForm.add(pnlTimKiemHD, "w 40%, h 200!");
 
-        JLabel lblTimKiem = new JLabel("Tìm kiếm");
+        JLabel lblTimKiem = new JLabel("Tìm kiếm cụ thể");
         lblTimKiem.setFont(new Font(fontName, fontPlain, font16));
         lblTimKiem.setForeground(colorLabel);
         pnlTimKiemHD.add(lblTimKiem, "span, w 100%, h 30!, wrap");
