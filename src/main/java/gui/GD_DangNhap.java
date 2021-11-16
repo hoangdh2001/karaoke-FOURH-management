@@ -70,10 +70,12 @@ public class GD_DangNhap extends javax.swing.JFrame {
             @Override
             public void login(String sdt, byte[] matKhau) {
                 if (sdt.equals("") || matKhau.equals("")) {
+                    pnlForm.setTextWhenBack();
                     pnlForm.showMessage(Message.MessageType.ERROR, "Nhập tên tài khoản");
                     return;
                 }
                 if (matKhau.length <= 0) {
+                    pnlForm.setTextWhenBack();
                     pnlForm.showMessage(Message.MessageType.ERROR, "Nhập mật khẩu");
                     return;
                 }
@@ -88,6 +90,7 @@ public class GD_DangNhap extends javax.swing.JFrame {
                             showDLProgress();
                         } else {
                             pnlLoading.setVisible(false);
+                            pnlForm.setTextWhenBack();
                             pnlForm.showMessage(Message.MessageType.ERROR, "Tên tài khoản hoặc mật khẩu bạn đã nhập không chính xác");
                         }
                     } catch (InterruptedException ex) {

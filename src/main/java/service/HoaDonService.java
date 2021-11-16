@@ -33,4 +33,5 @@ public interface HoaDonService {
     public List<Integer> getDSThangTheoNgayLap();
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();
+    public String getMaxID();
 }

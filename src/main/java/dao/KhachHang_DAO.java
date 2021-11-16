@@ -32,7 +32,6 @@ public class KhachHang_DAO implements KhachHangService {
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -152,7 +151,8 @@ public class KhachHang_DAO implements KhachHangService {
         Transaction tr = session.getTransaction();
 
         String sql = "select Top 6 * from [dbo].[KhachHang] "
-                + "where [dbo].[ufn_removeMark]([tenKhachHang]) like N'%"+ tuKhoa +"%' "
+                + "where tenKhachHang like N'%"+ tuKhoa +"%̀̀̀̀̀̀̀' "
+                + "or [dbo].[ufn_removeMark]([tenKhachHang]) like N'%"+ tuKhoa +"%' "
                 + "or [CCCD] like '%"+ tuKhoa +"%' "
                 + "or [sdt] like '%"+ tuKhoa +"%' "
                 + "order by tenKhachHang";
@@ -170,4 +170,44 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
+    @Override
+    public String getMaxID() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select max(maKhachHang) from KhachHang";
+        
+        try {
+            tr.begin();
+            String id = String.valueOf(session
+                    .createNativeQuery(sql)
+                    .getSingleResult());
+            tr.commit();
+            return id;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean checkKhachHang(String txt) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from KhachHang where soDienThoai = :x or CCCD = :y";
+        
+        try {
+            tr.begin();
+            session.createNativeQuery(sql)
+                    .setParameter("x", txt)
+                    .setParameter("y", txt)
+                    .getSingleResult();
+            tr.commit();
+            return false;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return true;
+    }
 }

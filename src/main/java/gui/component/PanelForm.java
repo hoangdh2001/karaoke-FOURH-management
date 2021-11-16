@@ -37,7 +37,7 @@ public class PanelForm extends PanelTransparent {
      */
     private void buildPanelLogin() {
         layout = new MigLayout("fill, insets 0");
-        image = new PanelCover(new ImageIcon(getClass().getResource("/icon/background2.jpg")));
+        image = new PanelCover(new ImageIcon(getClass().getResource("/icon/imageCover.jpg")));
         login = new PanelLogin();
         setLayout(layout);
         TimingTarget target = new TimingTargetAdapter() {
@@ -127,9 +127,6 @@ public class PanelForm extends PanelTransparent {
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void begin() {
-                if(messageType == Message.MessageType.ERROR) {
-                    login.setTextWhenBack();
-                }
                 if (!ms.isShow()) {
                     PanelForm.this.add(ms, "pos 0.5al -30", 0); // Chèn thêm message vào panel login
                     ms.setVisible(true);
@@ -154,6 +151,7 @@ public class PanelForm extends PanelTransparent {
             @Override
             public void end() {
                 if (ms.isShow()) {
+
                     PanelForm.this.remove(ms);
                     PanelForm.this.repaint();
                     PanelForm.this.revalidate();

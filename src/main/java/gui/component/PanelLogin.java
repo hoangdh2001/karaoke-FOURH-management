@@ -20,7 +20,7 @@ import java.awt.Component;
 import javax.swing.JPanel;
 
 public class PanelLogin extends javax.swing.JLayeredPane {
-
+    
     private ActionListener evt;
     private EventLogin event;
     private MyTextField txtUser;
@@ -30,7 +30,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
     private MyPasswordField txtRePass;
     private JPanel pnlChangePass;
     private JPanel pnlSearchUser;
-
+    
     public PanelLogin() {
         initComponents();
         buildLogin();
@@ -68,22 +68,38 @@ public class PanelLogin extends javax.swing.JLayeredPane {
      */
     private void buildLogin() {
         login.setLayout(new MigLayout("wrap", "push[center]push", "push[]40[]10[]10[]25[]push"));
-
+        
         JLabel label = new JLabel("Đăng nhập");
         label.setFont(new Font("sansserif", Font.BOLD, 24));
         label.setForeground(new Color(7, 164, 121));
         login.add(label);
-
+        
         txtUser = new MyTextField();
         txtUser.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/user.png")));
         txtUser.setHint("Tên đăng nhập");
+        txtUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sdt = txtUser.getText();
+                byte[] pass = String.valueOf(txtPass.getPassword()).getBytes();
+                PanelLogin.this.event.login(sdt, pass);
+            }
+        });
         login.add(txtUser, "w 60%");
-
+        
         txtPass = new MyPasswordField();
         txtPass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
         txtPass.setHint("Mật khẩu");
+        txtPass.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sdt = txtUser.getText();
+                byte[] pass = String.valueOf(txtPass.getPassword()).getBytes();
+                PanelLogin.this.event.login(sdt, pass);
+            }
+        });
         login.add(txtPass, "w 60%");
-
+        
         LinkBtn forgotBtn = new LinkBtn("Quên mật khẩu?");
         forgotBtn.setFont(new Font("sansserif", Font.ITALIC, 12));
         forgotBtn.setForeground(Color.GRAY);
@@ -94,7 +110,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
             }
         });
         login.add(forgotBtn, "w 20%, right");
-
+        
         Button loginBtn = new Button("Đăng nhập", true);
         loginBtn.setBackground(new Color(7, 164, 121));
         loginBtn.setForeground(Color.WHITE);
@@ -114,7 +130,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
      */
     private void buildForgotPass() {
         forgotPass.setLayout(new MigLayout("wrap", "push[center]push", "push[]5[]push"));
-
+        
         JLabel label = new JLabel("Quên mật khẩu");
         label.setFont(new Font("sansserif", Font.BOLD, 24));
         label.setForeground(new Color(7, 164, 121));
@@ -160,7 +176,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
             }
         });
         pnlSearchUser.add(searchBtn, "w 20%, h 40!");
-
+        
         pnlChangePass = new JPanel();
         pnlChangePass.setVisible(false);
         pnlChangePass.setLayout(new MigLayout("wrap", "push[center]push", "push[]5[]5[]20[]push"));
@@ -170,12 +186,12 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         WrapLabel lblQuestion2 = new WrapLabel("Nhập mật khẩu mới vào để đổi mật khẩu.");
         lblQuestion2.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlChangePass.add(lblQuestion2, "w 270!, h 40!");
-
+        
         txtForgotPass = new MyPasswordField();
         txtForgotPass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
         txtForgotPass.setHint("Mật khẩu");
         pnlChangePass.add(txtForgotPass, "w 60%");
-
+        
         txtRePass = new MyPasswordField();
         txtRePass.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/pass.png")));
         txtRePass.setHint("Nhập lại mật khẩu");
@@ -192,7 +208,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
             }
         });
         pnlChangePass.add(btnCancel, "w 20%, h 40!, split 2, right");
-
+        
         Button forgotPassBtn = new Button("Đổi mật khẩu", true);
         forgotPassBtn.setBackground(new Color(7, 164, 121));
         forgotPassBtn.setForeground(Color.WHITE);
@@ -205,13 +221,13 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         });
         pnlChangePass.add(forgotPassBtn, "w 20%, h 40!");
     }
-
+    
     public void setTextWhenBack() {
         txtUser.requestFocus();
         txtUser.selectAll();
         txtPass.setText("");
     }
-    
+
 //    private void forgetPass() {
 //        
 //        txtSdt.addKeyListener(new KeyAdapter() {
@@ -259,19 +275,19 @@ public class PanelLogin extends javax.swing.JLayeredPane {
             txtRePass.setText("");
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        
         login = new javax.swing.JPanel();
         forgotPass = new javax.swing.JPanel();
-
+        
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new java.awt.CardLayout());
-
+        
         login.setBackground(new java.awt.Color(255, 255, 255));
-
+        
         javax.swing.GroupLayout loginLayout = new javax.swing.GroupLayout(login);
         login.setLayout(loginLayout);
         loginLayout.setHorizontalGroup(
@@ -282,11 +298,11 @@ public class PanelLogin extends javax.swing.JLayeredPane {
                 loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 300, Short.MAX_VALUE)
         );
-
+        
         add(login, "card2");
-
+        
         forgotPass.setBackground(new java.awt.Color(255, 255, 255));
-
+        
         javax.swing.GroupLayout forgotPassLayout = new javax.swing.GroupLayout(forgotPass);
         forgotPass.setLayout(forgotPassLayout);
         forgotPassLayout.setHorizontalGroup(
@@ -297,7 +313,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
                 forgotPassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 300, Short.MAX_VALUE)
         );
-
+        
         add(forgotPass, "card3");
     }// </editor-fold>//GEN-END:initComponents
 

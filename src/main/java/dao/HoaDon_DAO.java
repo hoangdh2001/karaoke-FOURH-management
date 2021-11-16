@@ -410,7 +410,26 @@ public class HoaDon_DAO implements HoaDonService{
         session.close();
         return null;
     }
-    
+
+    @Override
+    public String getMaxID() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select max(maHoaDon) from HoaDon";
+        
+        try {
+            tr.begin();
+            String id = String.valueOf(session
+                    .createNativeQuery(sql)
+                    .getSingleResult());
+            tr.commit();
+            return id;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
     
 }
 
