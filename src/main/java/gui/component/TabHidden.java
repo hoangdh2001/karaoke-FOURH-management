@@ -45,7 +45,7 @@ public class TabHidden extends PanelShadow {
         setShadowSize(2);
         setShadowType(gui.swing.graphics.ShadowType.TOP_LEFT);
 
-        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_multiply_30px_1.png"))); // NOI18N
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_multiply_30px.png"))); // NOI18N
         btnClose.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnClose.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
@@ -55,13 +55,13 @@ public class TabHidden extends PanelShadow {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 487, Short.MAX_VALUE))
+                .addGap(0, 457, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(434, Short.MAX_VALUE))
+                .addContainerGap(404, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

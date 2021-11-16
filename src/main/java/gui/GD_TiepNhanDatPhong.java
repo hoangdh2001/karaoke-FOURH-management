@@ -15,7 +15,6 @@ import entity.Phong;
 import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
-import gui.swing.table.SpinnerEditor;
 import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
@@ -37,6 +36,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 import entity.PhieuDatPhong;
+import gui.swing.table2.SpinnerEditor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -97,10 +97,9 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private NhanVien nhanVien;
 
     public GD_TiepNhanDatPhong(Phong phong,NhanVien nhanVien) {
-        super();
         setTitle("Giao phòng");
         setModal(true);
-        setResizable(false);
+//        setResizable(false);
         initComponents();
         initForm();
         this.phong = phong;
@@ -163,11 +162,11 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 932, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 533, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -509,7 +508,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                     tablePhieuDatPhong.addRow(phieu.convertToRowTableInGDTiepNhanDatPhong()));
 
             List<MatHang> dsMatHang = nhaCungCapVaNhaphang_DAO.getDanhSachMatHang();
-            dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
+//            dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
         }
     }
     

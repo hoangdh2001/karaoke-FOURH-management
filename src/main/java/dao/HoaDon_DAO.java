@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.HoaDon;
@@ -14,10 +9,6 @@ import org.hibernate.Transaction;
 import service.HoaDonService;
 import util.HibernateUtil;
 
-/**
- *
- * @author Hao
- */
 public class HoaDon_DAO implements HoaDonService{
     List<HoaDon> dsPhieu = Collections.emptyList();
     private SessionFactory sessionFactory;
@@ -26,11 +17,27 @@ public class HoaDon_DAO implements HoaDonService{
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
+//  Này để làm gì
+//    public HoaDon_DAO(SessionFactory sessionFactory) {
+//        this.sessionFactory = sessionFactory;
+//    }
 
-    public HoaDon_DAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    @Override
+    public boolean addHoaDon(HoaDon hoaDon) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.save(hoaDon);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return false;
     }
-
+    
     @Override
     public List<HoaDon> getDsHoaDon() {
         Session session = sessionFactory.openSession();
@@ -403,4 +410,26 @@ public class HoaDon_DAO implements HoaDonService{
         session.close();
         return null;
     }
+
+    @Override
+    public String getMaxID() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select max(maHoaDon) from HoaDon";
+        
+        try {
+            tr.begin();
+            String id = String.valueOf(session
+                    .createNativeQuery(sql)
+                    .getSingleResult());
+            tr.commit();
+            return id;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
+    
 }
+

@@ -42,7 +42,7 @@ public class PanelForm extends PanelTransparent {
         dfs.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(dfs);
         layout = new MigLayout("fill, insets 0");
-        image = new PanelCover(new ImageIcon(getClass().getResource("/icon/background2.jpg")));
+        image = new PanelCover(new ImageIcon(getClass().getResource("/icon/imageCover.jpg")));
         login = new PanelLogin();
         setLayout(layout);
         TimingTarget target = new TimingTargetAdapter() {
@@ -156,6 +156,7 @@ public class PanelForm extends PanelTransparent {
             @Override
             public void end() {
                 if (ms.isShow()) {
+
                     PanelForm.this.remove(ms);
                     PanelForm.this.repaint();
                     PanelForm.this.revalidate();

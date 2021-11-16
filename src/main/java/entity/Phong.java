@@ -1,7 +1,7 @@
 package entity;
 
 import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
+import gui.swing.model.ModelAction;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import javax.persistence.Column;

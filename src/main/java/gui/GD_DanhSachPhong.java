@@ -3,34 +3,20 @@ package gui;
 import dao.Phong_DAO;
 import entity.LoaiPhong;
 import entity.Phong;
-import entity.TrangThaiPhong;
-import gui.swing.button.Button;
-import gui.swing.table.TableCustom;
 
 import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
+import gui.swing.model.ModelAction;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
@@ -94,12 +80,13 @@ public class GD_DanhSachPhong extends JPanel {
         eventAction = new EventAction() {
             @Override
             public void delete(Object obj) {
-                Phong phong = (Phong) obj;
+                String maPhong = String.valueOf(((DefaultTableModel) table.getModel()).getValueAt(table.getSelectedRow(), 1));
+                Phong phong = phong_DAO.getPhong(maPhong);
                 if (JOptionPane.showConfirmDialog(GD_DanhSachPhong.this, "Bạn có muốn xóa mã " + phong.getMaPhong(), "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     String s = phong_DAO.deletePhong(phong.getMaPhong()) == true ? "Xóa thành công mã " + phong.getMaPhong() : "Xóa thất bại mã " + phong.getMaPhong();
                     JOptionPane.showMessageDialog(GD_DanhSachPhong.this, s);
                     DefaultTableModel df = (DefaultTableModel) table.getModel();
-                    df.getDataVector().removeAllElements();
+                    df.setRowCount(0);
                     table.clearSelection();
                     loadData();
                 }
@@ -153,7 +140,6 @@ public class GD_DanhSachPhong extends JPanel {
 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
-
         sp = new javax.swing.JScrollPane();
         table = new gui.swing.table2.MyTable();
         jLabel1 = new javax.swing.JLabel();

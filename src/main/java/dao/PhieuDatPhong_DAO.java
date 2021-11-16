@@ -31,10 +31,10 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-
-    public PhieuDatPhong_DAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    // Này để làm gì v
+//    public PhieuDatPhong_DAO(SessionFactory sessionFactory) {
+//        this.sessionFactory = sessionFactory;
+//    }
 
     @Override
     public List<PhieuDatPhong> getDsPhieuDatPhong() {
@@ -49,7 +49,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
             tr.commit();
             return dsPhieuDatPhong;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
