@@ -246,7 +246,7 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "select * from MatHang";
+        String sql = "select * from MatHang order by maLoaiDichVu ";
         try {
             tr.begin();
                 List<MatHang> dsMatHang = session.createNativeQuery(sql,MatHang.class).getResultList();
@@ -953,5 +953,111 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
             tr.rollback();
         }
         return false;
+    }
+
+    @Override
+    public List<MatHang> findMatHang(String textFind, int type) {
+        String sql = "select * from MatHang order by maLoaiDichVu";
+        
+        switch (type) {
+            case 0:
+                break;
+            case 1:
+                sql = "select * from MatHang where tenMatHang like N'%"+textFind+"%' order by maLoaiDichVu";
+                break;
+            case 2:
+                sql = "select * from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu where ldv.tenLoaiDichVu like N'%"+textFind+"%' order by ldv.maLoaiDichVu";;
+                break;
+            default:
+                sql = "select * from MatHang order by maLoaiDichVu";
+	}
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                List<MatHang> dsMatHang = session.createNativeQuery(sql,MatHang.class).getResultList();
+            tr.commit();
+            return dsMatHang;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    
+    }
+
+    @Override
+    public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma) {
+        String sql;
+        if(ma != null){
+            sql = "select * from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"' and p.maLoaiPhong = '"+ma+"'";
+        }else{
+            sql = "select * from HoaDon WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'";
+        }
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                List<HoaDon> dsHoaDon = null;
+                try {
+                    dsHoaDon = session.createNativeQuery(sql,HoaDon.class).getResultList();
+                } catch (Exception e) {
+                    return null;
+                }
+            tr.commit();
+            return dsHoaDon;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    }
+    
+//    select *  from HoaDon where DATEPART(DAY, ngayLapHoaDon) = 9
+
+    @Override
+    public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year) {
+        
+        String sql ="";
+        
+        if(loaiPhong !=null){
+            if(thang == true){
+                sql = "select *  from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong  where DATEPART(MONTH, ngayLapHoaDon)= "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year+" and p.maLoaiPhong = '"+loaiPhong+"'";
+            }else{
+                sql = "select *  from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong  where DATEPART(YEAR, ngayLapHoaDon)= "+thangOrNam+" and p.maLoaiPhong = '"+loaiPhong+"'";
+                
+            }
+        }else{
+            if(thang == true){
+                sql= "select *  from HoaDon where DATEPART(MONTH, ngayLapHoaDon) = "+thangOrNam;
+            }else{
+                sql= "select *  from HoaDon where DATEPART(YEAR, ngayLapHoaDon) = "+thangOrNam;
+            }
+        }
+        
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                List<HoaDon> dsHoaDon = null;
+                try {
+                    dsHoaDon = session.createNativeQuery(sql,HoaDon.class).getResultList();
+                } catch (Exception e) {
+                    return null;
+                }
+            tr.commit();
+            return dsHoaDon;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
     }
 }   
