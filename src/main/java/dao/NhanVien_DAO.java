@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.NhanVien;
@@ -251,13 +246,8 @@ public class NhanVien_DAO implements NhanVienService {
             NhanVien nhanVien = session.createNativeQuery(query, NhanVien.class).getSingleResult();
 
             transaction.commit();
-            if (nhanVien == null) {
-                return false;
-            } else {
-                return true;
-            }
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
         return false;
@@ -265,6 +255,7 @@ public class NhanVien_DAO implements NhanVienService {
 
     /**
      * Kiểm tra trùng căn cước công dân
+     *
      * @param cccd
      * @return true: trùng, false: chưa có
      */
@@ -278,13 +269,10 @@ public class NhanVien_DAO implements NhanVienService {
             String query = "SELECT * FROM NhanVien WHERE cccd = '" + cccd + "'";
             NhanVien nhanVien = session.createNativeQuery(query, NhanVien.class).getSingleResult();
             transaction.commit();
-            
-            if (nhanVien == null) {
-                return false;
-            }else{
-                return  true;
-            }
+
+           return true;
         } catch (Exception e) {
+            transaction.rollback();
         }
 
         return false;

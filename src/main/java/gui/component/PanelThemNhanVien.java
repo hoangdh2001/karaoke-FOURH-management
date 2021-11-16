@@ -8,6 +8,7 @@ import entity.CaLam;
 import entity.DiaChi;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
+import gui.swing.event.EventAddDataEntity;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -32,6 +36,8 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
     private List<CaLam> caLams;
     private List<LoaiNhanVien> loaiNhanViens;
 
+    private SimpleDateFormat fm1 = new SimpleDateFormat("yyyy-MM-dd");
+
     public PanelThemNhanVien() {
         initComponents();
         buildDisplay();
@@ -40,19 +46,19 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         loaiNhanVien_DAO = new LoaiNhanVien_DAO();
         diaChiMau_DAO = new DiaChiMau_DAO();
         nhanVien_DAO = new NhanVien_DAO();
-        ComboBoxHandler();
+        comboBoxHandler();
 
-        BtnLamMoiHandler();
-        BtnThemHandler();
-        ClearForm();
+        btnLamMoiHandler();
+        btnThemHandler();
+        clearForm();
     }
 
     private void buildDisplay() {
-        SetPropertiesForm();
+        setPropertiesForm();
 
     }
 
-    private void SetPropertiesForm() {
+    private void setPropertiesForm() {
         int txtRadius = 10;
         int cmbRadius = 10;
         int btnRadius = 10;
@@ -119,7 +125,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         btnThem.setBackground(colorBtn);
     }
 
-    private void ComboBoxHandler() {
+    private void comboBoxHandler() {
         caLams = caLam_DAO.getCaLams();
         for (CaLam i : caLams) {
             cmbCaLam.addItem(i.getGioBatDau() + "-" + i.getGioKetThuc());
@@ -158,71 +164,114 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
             }
         });
 
+        cmbLoaiNV.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String lnv = cmbLoaiNV.getSelectedItem().toString();
+
+                if (lnv.equals("Kĩ thuật") || lnv.equals("Phục vụ") || lnv.equals("Bảo vệ")) {
+                    txtMatKhau.setVisible(false);
+                    lblMatKhau.setVisible(false);
+                } else {
+                    txtMatKhau.setVisible(true);
+                    lblMatKhau.setVisible(true);
+                }
+            }
+        });
+
     }
 
-    private void BtnLamMoiHandler() {
+    private void btnLamMoiHandler() {
         btnLamMoi.addActionListener((e) -> {
-            ClearForm();
+            clearForm();
         });
     }
 
-    private void BtnThemHandler() {
+    private void btnThemHandler() {
         btnThem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ma = txtMaNV.getText();
-                String ten = txtTenNV.getText().trim();
 
-                LoaiNhanVien lnv = new LoaiNhanVien();
-                for (LoaiNhanVien i : loaiNhanViens) {
-                    if (i.getTenLoaiNV().equals(cmbLoaiNV.getSelectedItem().toString())) {
-                        lnv = i;
-                        break;
+                if (validForm() == true) {
+                    String ma = txtMaNV.getText();
+                    String ten = txtTenNV.getText().trim();
+
+                    LoaiNhanVien lnv = new LoaiNhanVien();
+                    for (LoaiNhanVien i : loaiNhanViens) {
+                        if (i.getTenLoaiNV().equals(cmbLoaiNV.getSelectedItem().toString())) {
+                            lnv = i;
+                            break;
+                        }
                     }
-                }
 
-                CaLam cl = new CaLam();
-                for (CaLam i : caLams) {
-                    String temp = i.getGioBatDau() + "-" + i.getGioKetThuc();
-                    if (temp.equals(cmbCaLam.getSelectedItem().toString())) {
-                        cl = i;
-                        break;
+                    CaLam cl = new CaLam();
+                    for (CaLam i : caLams) {
+                        String temp = i.getGioBatDau() + "-" + i.getGioKetThuc();
+                        if (temp.equals(cmbCaLam.getSelectedItem().toString())) {
+                            cl = i;
+                            break;
+                        }
                     }
-                }
 
-                String cccd = txtCCCD.getText().trim();
-                boolean gioiTinh = "Nam".equals(cmbGioiTinh.getSelectedItem()) ? false : true;
+                    String cccd = txtCCCD.getText().trim();
+                    boolean gioiTinh = "Nam".equals(cmbGioiTinh.getSelectedItem()) ? false : true;
 
-                SimpleDateFormat fm1 = new SimpleDateFormat("yyyy-MM-dd");
-                String[] d = fm1.format(jDateChooser1.getDate()).split("-");
-                Date ngaySinh = new Date(Integer.parseInt(d[0]), Integer.parseInt(d[1]), Integer.parseInt(d[2]));
+                    ArrayList<Integer> d = getNgaySinh();
+                    Date ngaySinh = new Date(d.get(0) - 1900, d.get(1) - 1, d.get(2));
 
-                String sdt = txtSDT.getText().trim();
-                String email = txtEmail.getText().trim();
-                DiaChi diaChi = new DiaChi(txtSoNha.getText(), txtTenDuong.getText(), cmbXaPhuong.getSelectedItem().toString(), cmbQuanHuyen.getSelectedItem().toString(), cmbTinhTP.getSelectedItem().toString());
-                byte[] matKhau = txtMatKhau.getText().getBytes();
+                    String sdt = txtSDT.getText().trim();
+                    String email = txtEmail.getText().trim();
+                    DiaChi diaChi = new DiaChi(txtSoNha.getText(), txtTenDuong.getText(), cmbXaPhuong.getSelectedItem().toString(), cmbQuanHuyen.getSelectedItem().toString(), cmbTinhTP.getSelectedItem().toString());
+                    byte[] matKhau = txtMatKhau.getText().getBytes();
 
-                if (nhanVien_DAO.checkSDT(sdt) == true) {
-                    JOptionPane.showMessageDialog(null, "Trùng số điện thoại.");
-                    txtSDT.requestFocus();
-                    txtSDT.selectAll();
-                }else if (nhanVien_DAO.checkCCCD(cccd)) {
-                    JOptionPane.showMessageDialog(null, "Trùng căn cước công dân.");
-                    txtCCCD.requestFocus();
-                    txtCCCD.selectAll();
-                }
-                else {
-                    NhanVien nhanVien = new NhanVien(ma, ten, lnv, cl, cccd, gioiTinh, ngaySinh, sdt, email, diaChi, matKhau);
-                    System.out.println("Nhan vieen dc them \n " + nhanVien);
-                    boolean result = nhanVien_DAO.addNhanVien(nhanVien);
-                    if (result) {
-                        System.out.println("Them thanh cong");
-                        ClearForm();
+                    //Kiểm tra trước khi thêm
+                    if (nhanVien_DAO.checkSDT(sdt) == true) {
+                        JOptionPane.showMessageDialog(null, "Trùng số điện thoại.");
+                        txtSDT.requestFocus();
+                        txtSDT.selectAll();
+                    } else if (nhanVien_DAO.checkCCCD(cccd)) {
+                        JOptionPane.showMessageDialog(null, "Trùng căn cước công dân.");
+                        txtCCCD.requestFocus();
+                        txtCCCD.selectAll();
+                    } else {
+                        String x = cmbLoaiNV.getSelectedItem().toString();
+
+                        if (x.equals("Kĩ thuật") || x.equals("Phục vụ") || x.equals("Bảo vệ")) {
+                            matKhau = null;
+                        }
+                        //Thêm nhân viên
+                        NhanVien nhanVien = new NhanVien(ma, ten, lnv, cl, cccd, gioiTinh, ngaySinh, sdt, email, diaChi, matKhau);
+                        System.out.println("Nhan vieen dc them \n " + nhanVien);
+                        boolean result = nhanVien_DAO.addNhanVien(nhanVien);
+                        if (result) {
+                            JOptionPane.showMessageDialog(null, "Thêm thành công");
+                            clearForm();
+                        }
                     }
+                } else {
+                    return;
                 }
 
             }
         });
+    }
+
+    /**
+     * Trả về mảng ngày tháng năm sinh kiểu int.
+     *
+     * @return date date[0] năm date[1] tháng date[2] ngày
+     */
+    private ArrayList<Integer> getNgaySinh() {
+        ArrayList<Integer> date = new ArrayList<>();
+        String[] d = fm1.format(jDateChooser1.getDate()).split("-");
+        for (String string : d) {
+            System.out.println(string);
+        }
+        date.add(Integer.parseInt(d[0])); //năm 
+        date.add(Integer.parseInt(d[1])); // tháng
+        date.add(Integer.parseInt(d[2])); //ngày
+        System.out.println("ham" + date.get(0) + "/" + date.get(1) + "/" + date.get(2));
+        return date;
     }
 
     /**
@@ -232,7 +281,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
      * @return idNew mã được tăng lên 1 Ví dụ: idCurrent= "NV0001" ->
      * idNew="NV0002"
      */
-    private String GenerateId(String idCurrent) {
+    private String generateId(String idCurrent) {
         String[] idSplit = idCurrent.split(""); // tách các chữ số trong id ra thành từng phần tử của mảng
 
         int i = 2; //vị trí chia mã nhân viên ra làm 2 phần, ví dụ NV0038 -> phần đầu: NV00 ; phần đuôi:38
@@ -258,9 +307,160 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         return head_id + tail_id;
     }
 
-    private void ClearForm() {
+    private boolean validForm() {
+        //Kiểm tra họ tên
+        String hoTen = txtTenNV.getText().trim();
+        if (!(hoTen.length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Chưa nhập họ tên.");
+            txtTenNV.requestFocus();
+            return false;
+        } else {
+            if (!hoTen.matches("^([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*\\s)+([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*)$")) {
+                JOptionPane.showMessageDialog(null, "Chưa nhập đầy đủ họ tên. Họ tên bắt đầu bằng chữ in hoa.");
+                txtTenNV.selectAll();
+                txtTenNV.requestFocus();
+                return false;
+            }
+        }
+
+        if (jDateChooser1.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "Chưa chọn ngày sinh.");
+            return false;
+        }
+
+        //Kiểm tra ngày tháng năm sinh >= 18 tuổi
+        ArrayList<Integer> d = getNgaySinh();
+        int namSinh = d.get(0);
+        int thangSinh = d.get(1);
+        int ngaySinh = d.get(2);
+        System.out.println("ngay sinh" + "/" + ngaySinh + "/" + thangSinh + "/" + namSinh);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+
+        if ((now.getYear() - namSinh) <= 18) {
+
+            if ((now.getYear() - namSinh) < 18) {
+                JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+                return false;
+            } else {//Nếu năm == 18
+
+                if (now.getMonthValue() <= thangSinh) {
+
+                    if (now.getMonthValue() < thangSinh) {
+                        JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+                        return false;
+                    } else if (now.getMonthValue() == thangSinh) {//Nếu tháng bằng nhau
+
+                        if (now.getDayOfMonth() < ngaySinh) {
+                            JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        String sdt = txtSDT.getText().trim();
+        if (!(sdt.length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Chưa nhập số điện thoại.");
+            txtSDT.requestFocus();
+            return false;
+        } else {
+            if (!(sdt.matches("^0[0-9]{9}$"))) {
+                JOptionPane.showMessageDialog(null,
+                        "Nhập sai định dạng.\nSố điện thoại bao gồm 10 chữ số bắt đầu là số 0.");
+                txtSDT.selectAll();
+                txtSDT.requestFocus();
+                return false;
+            }
+        }
+
+        String email = txtEmail.getText().trim();
+        if (email.length() > 0) {
+
+            if (!(email.matches("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$"))) {
+                JOptionPane.showMessageDialog(null, "Nhập sai định dạng email.");
+                txtEmail.selectAll();
+                txtEmail.requestFocus();
+                return false;
+            }
+        }
+
+        String cccd = txtCCCD.getText().trim();
+        if (!(cccd.length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Chưa nhập số căn cước công dân.");
+            txtCCCD.requestFocus();
+            return false;
+        } else {
+            if (!(cccd.matches("^0[0-9]{11}$"))) {
+                JOptionPane.showMessageDialog(null,
+                        "Nhập sai định dạng.\nSố căn cước gồm 12 chữ số.");
+                txtCCCD.selectAll();
+                txtCCCD.requestFocus();
+                return false;
+            }
+        }
+
+        if (cmbCaLam.getSelectedItem().equals("Chọn")) {
+            JOptionPane.showMessageDialog(null, "Chưa chọn ca làm.");
+            return false;
+        }
+        if (cmbLoaiNV.getSelectedItem().equals("Chọn")) {
+            JOptionPane.showMessageDialog(null, "Chưa chọn loại nhân viên.");
+            return false;
+        }
+        if (cmbTinhTP.getSelectedItem().equals("Chọn")) {
+            JOptionPane.showMessageDialog(null, "Chưa chọn tỉnh/Thành phố.");
+            return false;
+        }
+        if (cmbQuanHuyen.getSelectedItem().equals("Chọn")) {
+            JOptionPane.showMessageDialog(null, "Chưa chọn quận/huyện.");
+            return false;
+        }
+        if (cmbXaPhuong.getSelectedItem().equals("Chọn")) {
+            JOptionPane.showMessageDialog(null, "Chưa chọn phường/xã.");
+            return false;
+        }
+
+        String soNha = txtSoNha.getText().trim();
+        if (!(soNha.length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Chưa nhập số nhà.");
+            txtSoNha.requestFocus();
+            return false;
+        }
+
+        String tenDuong = txtTenDuong.getText().trim();
+        if (!(tenDuong.length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Chưa nhập tên đường.");
+            txtTenDuong.requestFocus();
+            return false;
+        }
+
+        String matKhau = txtMatKhau.getText().trim();
+
+        if (!(matKhau.length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Chưa nhập mật khẩu.");
+            txtMatKhau.requestFocus();
+            return false;
+        } else {
+            if (!(matKhau.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=]).{6,20}$"))) {
+                JOptionPane.showMessageDialog(null,
+                        "Mật khẩu từ 6 đến 20 kí tự, bao gồm:\n Có ít nhất 1 kí tự chữ thường"
+                        + "\n Có ít nhất 1 kí tự chữ in hoa\n Có ít nhất 1 kí tự số"
+                        + "\n Có ít nhất 1 kí tự đặc biệt !@#$%^&*()_+-=");
+                txtMatKhau.selectAll();
+                txtMatKhau.requestFocus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void clearForm() {
         NhanVien nhanVien = nhanVien_DAO.getLastNhanVien();
-        String newID = GenerateId(nhanVien.getMaNhanVien());
+        String newID = generateId(nhanVien.getMaNhanVien());
         txtMaNV.setText(newID);
 
         txtTenNV.setText("");
@@ -276,7 +476,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         cmbXaPhuong.setSelectedIndex(0);
         cmbQuanHuyen.setSelectedIndex(0);
         cmbTinhTP.setSelectedIndex(0);
-        txtMatKhau.setText("123456");
+        txtMatKhau.setText("Mk#123");
     }
 
     @SuppressWarnings("unchecked")

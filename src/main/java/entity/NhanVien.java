@@ -1,12 +1,8 @@
 package entity;
 
-import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -14,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import javax.swing.JCheckBox;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
@@ -46,7 +40,7 @@ public class NhanVien {
     private String email;
     @Embedded
     private DiaChi diaChi;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private byte[] matKhau;
 //    @OneToMany
 //    @Transient

@@ -16,7 +16,6 @@ import gui.swing.textfield.MyTextField;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.label.WrapLabel;
 import java.awt.CardLayout;
-import java.awt.Component;
 import javax.swing.JPanel;
 
 public class PanelLogin extends javax.swing.JLayeredPane {
@@ -77,6 +76,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         txtUser = new MyTextField();
         txtUser.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/user.png")));
         txtUser.setHint("Tên đăng nhập");
+        txtUser.setText("0943015200");
         login.add(txtUser, "w 60%");
 
         txtPass = new MyPasswordField();
