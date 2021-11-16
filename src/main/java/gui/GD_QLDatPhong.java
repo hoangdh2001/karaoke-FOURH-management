@@ -366,6 +366,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 return canEdit [columnIndex];
             }
         });
+        tblPhieuDatPhong.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         sp.setViewportView(tblPhieuDatPhong);
         if (tblPhieuDatPhong.getColumnModel().getColumnCount() > 0) {
             tblPhieuDatPhong.getColumnModel().getColumn(5).setMinWidth(100);

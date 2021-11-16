@@ -280,11 +280,11 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
                 return returnValue;
             }
         };
-        
         tblHoaDon.setModel(model);
         RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         tblHoaDon.setRowSorter(sorter);
         tblHoaDon.fixTable(scrHoaDon);
+        tblHoaDon.setFont(new Font("sansserif", Font.PLAIN, 14));
     }
     
     public void xoaDuLieu(){
@@ -293,7 +293,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
     }
     
     public void taiLaiDuLieu(List<HoaDon> dsHoaDon){
-
         DecimalFormat dcf = new DecimalFormat("#,###");
         SimpleDateFormat fm1 = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
@@ -301,7 +300,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         for(HoaDon hoaDon: dsTam){
             tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), fm1.format(hoaDon.getNgayLapHoaDon()), fm2.format(hoaDon.getThoiGianBatDau()), dcf.format(hoaDon.getTongTienMatHang()), dcf.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()), dcf.format(hoaDon.getTongHoaDon()), hoaDon.getNhanVien().getTenNhanVien()});
         }
-
     }
     
     public List<HoaDon> xuLyLoai(List<HoaDon> dsHoaDon){
@@ -322,7 +320,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         SimpleDateFormat fm1 = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
         dsHoaDon = hoaDon_Dao.getDsHoaDon();
-     List<HoaDon> dsTam=   xuLyLoai(dsHoaDon);
+        List<HoaDon> dsTam = xuLyLoai(dsHoaDon);
         for(HoaDon hoaDon: dsTam){
             tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), fm1.format(hoaDon.getNgayLapHoaDon()), fm2.format(hoaDon.getThoiGianBatDau()), dcf.format(hoaDon.getTongTienMatHang()), dcf.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()), dcf.format(hoaDon.getTongHoaDon()), hoaDon.getNhanVien().getTenNhanVien()});
         }
@@ -348,6 +346,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
             }
             @Override
             public void keyPressed(KeyEvent arg0) {
+                
                 if(cmbCot.getSelectedIndex()==0){
                     JOptionPane.showMessageDialog(GD_HoaDon.this, "Hãy chọn cột mà bạn muốn tìm kiếm.");
                     txtTimKiem.setText("");

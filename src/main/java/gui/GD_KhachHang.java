@@ -141,6 +141,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             }
         });
         tblKhachHang.setAlignmentX(0.0F);
+        tblKhachHang.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         scrKhachHang.setViewportView(tblKhachHang);
         if (tblKhachHang.getColumnModel().getColumnCount() > 0) {
             tblKhachHang.getColumnModel().getColumn(0).setResizable(false);
