@@ -20,7 +20,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+      <Color blue="f2" green="f8" red="f8" type="rgb"/>
     </Property>
   </Properties>
   <AuxValues>
@@ -69,7 +69,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                   <Component id="lblTenNhanVien" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="554" max="32767" attributes="0"/>
+                  <EmptySpace pref="565" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -88,9 +88,12 @@
         <Component class="javax.swing.JLabel" name="lblTenNhanVien">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="18" style="1"/>
+              <Font name="SansSerif" size="24" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&#x110;&#x1ed7; Huy Ho&#xe0;ng"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="5a" green="47" red="44" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Some text"/>
           </Properties>
         </Component>
         <Container class="gui.swing.panel.TabButton" name="tab">

@@ -16,7 +16,6 @@ import gui.swing.textfield.MyTextField;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.label.WrapLabel;
 import java.awt.CardLayout;
-import java.awt.Component;
 import javax.swing.JPanel;
 
 public class PanelLogin extends javax.swing.JLayeredPane {

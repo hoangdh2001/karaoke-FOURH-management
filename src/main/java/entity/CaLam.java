@@ -96,6 +96,6 @@ public class CaLam {
 
     @Override
     public String toString() {
-        return "CaLam [maCa=" + maCa + ", gioBatDau=" + gioBatDau + ", gioKetThuc=" + gioKetThuc + "]";
+        return gioBatDau + "-" + gioKetThuc;
     }
 }

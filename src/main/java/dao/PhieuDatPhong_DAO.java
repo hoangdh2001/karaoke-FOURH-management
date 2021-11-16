@@ -196,7 +196,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         try {
             tr.begin();
             String sql = "select * from KhachHang k join PhieuDatPhong pd ON k.maKhachHang = pd.maKhachHang join Phong p ON pd.maPhong = p.maPhong\n"
-                    + "where ([dbo].[ufn_removeMark](k.tenKhachHang) like N'%" + tuKhoa + "%' and pd.trangThai = '" + trangThai + "' and (YEAR(pd.ngayDat)= " + nam + " and MONTH(pd.ngayDat)= " + thang + " and DAY(pd.ngayDat)= " + ngay + ")) \n"
+                    + "where (k.tenKhachHang like N'%" + tuKhoa + "%' and pd.trangThai = '" + trangThai + "' and (YEAR(pd.ngayDat)= " + nam + " and MONTH(pd.ngayDat)= " + thang + " and DAY(pd.ngayDat)= " + ngay + ")) \n"
                     + "	or (p.tenPhong like N'%" + tuKhoa + "%' and pd.trangThai = '" + trangThai + "' and (YEAR(pd.ngayDat)= " + nam + " and MONTH(pd.ngayDat)= " + thang + " and DAY(pd.ngayDat)= " + ngay + "))";
             dsPhieu = session
                     .createNativeQuery(sql, PhieuDatPhong.class)

@@ -51,7 +51,7 @@ public interface NhaCungCapVaNhapHangDaoService {
     public boolean updatePhieuDatPhong(String maPhieu);
     public boolean updateSLMatHang(String maMH,int sl,String type);
     public boolean updatePhong(String maPhong,TrangThaiPhong trangThai);
-    public boolean insertHoaDon(HoaDon hoasDon,double tienCoc);
+    public boolean insertHoaDon(HoaDon hoaDon);
     public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon);
     public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon);
     public HoaDon getHoaDon(Phong phong);
@@ -85,4 +85,12 @@ public interface NhaCungCapVaNhapHangDaoService {
     public boolean insertCTNhapHang(ChiTietNhapHang ctNhaphang,String maLoHang);
     public String getLastNhaCungCap();
     public boolean insertNhaCungCap(NhaCungCap ncc);
+    
+    public List<MatHang> findMatHang(String textFind,int type);
+    
+    public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma);
+    
+    public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year);
+    
+    public PhieuDatPhong getPhieuCuaPhong(String maKhachhang);
 }

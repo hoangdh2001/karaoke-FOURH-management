@@ -21,10 +21,12 @@ import gui.component.Header;
 import gui.component.HoaDonDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
+import gui.component.PanelThemNhanVien;
 import gui.component.PhieuDatPhongDetail;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
+import gui.swing.event.EventAddNhanVien;
 import gui.swing.image.WindowIcon;
 import gui.swing.event.EventMenuSelected;
 import gui.swing.event.EventShowPopupMenu;
@@ -200,46 +202,45 @@ public class GD_Chinh extends JFrame {
 //            System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
                 switch (menuIndex) {
                     case 0:
-                    if(subMenuIndex == 0) {
-                        GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
-                        soDoPhongHat.addEvent(new EventShowInfoOver() {
-                            @Override
-                            public void showInfoOver(Component com, MouseEvent e) {
-                //                MenuItem item = (MenuItem) com;
-                                RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
-                                int x = 0;
-                                int y = 0;
-                                if((e.getXOnScreen() + 400) >= 1920) {
-                                    x = e.getXOnScreen() - e.getX() - 400;
-                                    y = e.getYOnScreen() - e.getY() - 10;
-                                } else {
-                                    x = e.getXOnScreen() + 200 - e.getX();
-                                    y = e.getYOnScreen() - e.getY() - 10;
+                        if (subMenuIndex == 0) {
+                            GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
+                            soDoPhongHat.addEvent(new EventShowInfoOver() {
+                                @Override
+                                public void showInfoOver(Component com, MouseEvent e) {
+                                    //                MenuItem item = (MenuItem) com;
+                                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                                    int x = 0;
+                                    int y = 0;
+                                    if ((e.getXOnScreen() + 400) >= 1920) {
+                                        x = e.getXOnScreen() - e.getX() - 400;
+                                        y = e.getYOnScreen() - e.getY() - 10;
+                                    } else {
+                                        x = e.getXOnScreen() + 200 - e.getX();
+                                        y = e.getYOnScreen() - e.getY() - 10;
+                                    }
+                                    infoOver.setLocation(x, y);
+                                    infoOver.setVisible(true);
+                                    sp.addMouseWheelListener(new MouseWheelListener() {
+                                        @Override
+                                        public void mouseWheelMoved(MouseWheelEvent arg0) {
+                                            infoOver.closeMenu();
+                                        }
+                                    });
+                                    soDoPhongHat.addEventSp(new MouseWheelListener() {
+                                        @Override
+                                        public void mouseWheelMoved(MouseWheelEvent arg0) {
+                                            infoOver.closeMenu();
+                                        }
+                                    });
                                 }
-                                infoOver.setLocation(x, y);
-                                infoOver.setVisible(true);
-                                sp.addMouseWheelListener(new MouseWheelListener() {
-                                    @Override
-                                    public void mouseWheelMoved(MouseWheelEvent arg0) {
-                                        infoOver.closeMenu();
-                                    }
-                                });
-                                soDoPhongHat.addEventSp(new MouseWheelListener() {
-                                    @Override
-                                    public void mouseWheelMoved(MouseWheelEvent arg0) {
-                                        infoOver.closeMenu();
-                                    }
-                                });
-                            }
 
-                        });
-                        content.showForm(soDoPhongHat);
-                        
-                    }
-                    else if(subMenuIndex == 1) {
-                        content.showForm(new GD_DanhSachPhong());
-                    }
-                    break;
+                            });
+                            content.showForm(soDoPhongHat);
+
+                        } else if (subMenuIndex == 1) {
+                            content.showForm(new GD_DanhSachPhong());
+                        }
+                        break;
                     case 1:
                         GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
                         content.showForm(qlDatPhong);
@@ -288,14 +289,12 @@ public class GD_Chinh extends JFrame {
                         GD_NhanVien gD_NhanVien = new GD_NhanVien();
 
                         content.showForm(gD_NhanVien);
-
-                        gD_NhanVien.addEvent(new EventSelectedRow() {
+                        gD_NhanVien.addEventSelectedRow(new EventSelectedRow() {
                             @Override
                             public void selectedRow(Object object) {
-                                
-                                
+
                                 NhanVien nhanVien = (NhanVien) object;
-                                
+
                                 if (!animator2.isRunning()) {
                                     if (!tabShow) {
                                         tab.setVisible(true);
@@ -303,14 +302,26 @@ public class GD_Chinh extends JFrame {
                                         // Truyền object nhân viên vào NhanVienDetail - vào tab ẩn bên phải của nhân viên
                                         NhanVienDetail nhanVienDetail = new NhanVienDetail(nhanVien);
                                         tab.showDetail(nhanVienDetail);
-//chính -> GD_nhanVien -> nhân viên detail-> tab thông tin nhân viên
                                         animator2.start();
                                     }
                                 }
 
                             }
                         });
+                        gD_NhanVien.addEventAddNhanVien(new EventAddNhanVien() {
+                            @Override
+                            public void AddNhanVien() {
+                                if (!animator2.isRunning()) {
+                                    if (!tabShow) {
+                                        tab.setVisible(true);
 
+                                        PanelThemNhanVien pnlThemNhanVien = new PanelThemNhanVien();
+                                        tab.showDetail(pnlThemNhanVien);
+                                        animator2.start();
+                                    }
+                                }
+                            }
+                        });
                         break;
                     case 5:
                         if (subMenuIndex == 0) {
@@ -348,8 +359,8 @@ public class GD_Chinh extends JFrame {
      */
     private JScrollPane createContent() {
         sp = new JScrollPane();
-	content = new Content();
-	content.setBackground(new Color(245, 245, 245));
+        content = new Content();
+        content.setBackground(new Color(245, 245, 245));
         GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
         soDoPhongHat.addEvent(new EventShowInfoOver() {
             @Override
@@ -358,7 +369,7 @@ public class GD_Chinh extends JFrame {
                 RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
                 int x = 0;
                 int y = 0;
-                if((e.getXOnScreen() + 400) >= 1920) {
+                if ((e.getXOnScreen() + 400) >= 1920) {
                     x = e.getXOnScreen() - e.getX() - 400;
                     y = e.getYOnScreen() - e.getY() - 10;
                 } else {
@@ -382,8 +393,8 @@ public class GD_Chinh extends JFrame {
             }
 
         });
-        
-	content.showForm(soDoPhongHat);
+
+        content.showForm(soDoPhongHat);
         sp.getViewport().setBackground(Color.WHITE);
         sp.setVerticalScrollBar(new ScrollBarCustom());
         JPanel p = new JPanel();
@@ -400,7 +411,7 @@ public class GD_Chinh extends JFrame {
      * tạo ngăn ts
      */
     private TabLayout createTabPane() {
-        
+
         tab = new TabLayout();
         background.setLayer(tab, JLayeredPane.POPUP_LAYER);
         TimingTarget target = new TimingTargetAdapter() {

@@ -36,23 +36,8 @@ public class KhachHang_DAO implements KhachHangService {
         }
         return false;
     }
-
-    @Override
-    public boolean capNhatKhachHang(KhachHang khachHang) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            session.update(khachHang);
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            tr.rollback();
-            e.printStackTrace();
-        }
-        return false;
-    }
-
+        
+    
     public KhachHang getKhachHang(String maKhachHang) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
@@ -209,5 +194,26 @@ public class KhachHang_DAO implements KhachHangService {
             tr.rollback();
         }
         return true;
+    }
+
+    @Override
+    public boolean capNhatKhachHang(String maKhachHang, String soDienThoaiMoi) {
+        Session session = sessionFactory.openSession();
+            Transaction tr = session.getTransaction();
+            try {
+                    tr.begin();
+                    String sql = "  update KhachHang\n" +
+                                        "  set sdt = '"+soDienThoaiMoi+"'\n" +
+                                        "  where maKhachHang = '"+maKhachHang+"'";
+                    session.createQuery(sql)
+                    .executeUpdate();
+                    tr.commit();
+                    return true;
+            } catch (Exception e) {
+                System.err.println(e);
+                    tr.rollback();
+            }
+            session.close();
+            return false;
     }
 }

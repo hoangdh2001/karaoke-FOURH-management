@@ -66,7 +66,7 @@ public class RoomDetail extends javax.swing.JDialog {
             public void timingEvent(float fraction) {
                 double fractionSize = 210 + ((getHeight() - 210) * fraction);
                 double fractionPoint;
-                fractionPoint = 210 * fraction;
+                fractionPoint = Double.valueOf(df.format(210 * fraction));
                 if(fraction >= 0.5f) {
                     pnlBottom.setVisible(true);
                 }
