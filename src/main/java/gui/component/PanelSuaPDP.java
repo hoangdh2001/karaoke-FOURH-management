@@ -57,62 +57,61 @@ public class PanelSuaPDP extends javax.swing.JPanel {
         lblNgayDat = new javax.swing.JLabel();
         lblTrangThai = new javax.swing.JLabel();
         lblTienCoc = new javax.swing.JLabel();
-        txtMaPhieu = new javax.swing.JTextField();
-        txtNgayLap = new javax.swing.JTextField();
-        txtTenKhachHang = new javax.swing.JTextField();
-        txtPhong = new javax.swing.JTextField();
-        txtNgayDat = new javax.swing.JTextField();
-        txtTrangThai = new javax.swing.JTextField();
-        txtTienCoc = new javax.swing.JTextField();
-        btnXacNhan = new javax.swing.JButton();
+        txtMaPhieu = new gui.swing.textfield.MyTextField();
+        txtNgayLap = new gui.swing.textfield.MyTextField();
+        txtTenKhachHang = new gui.swing.textfield.MyTextField();
+        txtPhong = new gui.swing.textfield.MyTextField();
+        txtNgayDat = new gui.swing.textfield.MyTextField();
+        txtTrangThai = new gui.swing.textfield.MyTextField();
+        txtTienCoc = new gui.swing.textfield.MyTextField();
+        btnXacNhan = new gui.swing.button.Button();
 
         pnlSuaPhieuDP.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblMaPhieu.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        lblMaPhieu.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblMaPhieu.setText("Mã phiếu đặt: ");
 
-        lblNgayLap.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        lblNgayLap.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblNgayLap.setText("Ngày lập phiếu: ");
 
-        lblKhachHang.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        lblKhachHang.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblKhachHang.setText("Tên khách hàng: ");
 
-        lblPhong.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        lblPhong.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblPhong.setText("Phòng: ");
 
-        lblNgayDat.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        lblNgayDat.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblNgayDat.setText("Ngày đặt: ");
 
-        lblTrangThai.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        lblTrangThai.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblTrangThai.setText("Trạng thái:");
 
-        lblTienCoc.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        lblTienCoc.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblTienCoc.setText("Tiền cọc: ");
 
-        txtMaPhieu.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtMaPhieu.setText("jTextField1");
+        txtMaPhieu.setText("myTextField1");
+        txtMaPhieu.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
 
-        txtNgayLap.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtNgayLap.setText("jTextField1");
+        txtNgayLap.setText("myTextField1");
+        txtNgayLap.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
 
-        txtTenKhachHang.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtTenKhachHang.setText("jTextField2");
+        txtTenKhachHang.setText("myTextField1");
+        txtTenKhachHang.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
 
-        txtPhong.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtPhong.setText("jTextField3");
+        txtPhong.setText("myTextField1");
+        txtPhong.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
 
-        txtNgayDat.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtNgayDat.setText("jTextField4");
+        txtNgayDat.setText("myTextField1");
+        txtNgayDat.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
 
-        txtTrangThai.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtTrangThai.setText("jTextField5");
+        txtTrangThai.setText("myTextField1");
+        txtTrangThai.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
 
-        txtTienCoc.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        txtTienCoc.setText("jTextField6");
+        txtTienCoc.setText("myTextField1");
+        txtTienCoc.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
 
-        btnXacNhan.setBackground(new java.awt.Color(4, 72, 210));
-        btnXacNhan.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnXacNhan.setText("Xác Nhận");
+        btnXacNhan.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout pnlSuaPhieuDPLayout = new javax.swing.GroupLayout(pnlSuaPhieuDP);
         pnlSuaPhieuDP.setLayout(pnlSuaPhieuDPLayout);
@@ -122,28 +121,27 @@ public class PanelSuaPDP extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlSuaPhieuDPLayout.createSequentialGroup()
-                        .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblTrangThai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblNgayDat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblPhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblMaPhieu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblNgayLap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlSuaPhieuDPLayout.createSequentialGroup()
+                        .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lblTrangThai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblNgayDat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblPhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblMaPhieu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblNgayLap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblTienCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMaPhieu, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                            .addComponent(txtNgayLap)
-                            .addComponent(txtTenKhachHang)
-                            .addComponent(txtPhong)
-                            .addComponent(txtNgayDat)
-                            .addComponent(txtTrangThai)))
-                    .addGroup(pnlSuaPhieuDPLayout.createSequentialGroup()
-                        .addComponent(lblTienCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTienCoc))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSuaPhieuDPLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtTienCoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtMaPhieu, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                            .addComponent(txtNgayLap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtPhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtNgayDat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTrangThai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         pnlSuaPhieuDPLayout.setVerticalGroup(
@@ -152,34 +150,34 @@ public class PanelSuaPDP extends javax.swing.JPanel {
                 .addGap(56, 56, 56)
                 .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMaPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMaPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(txtMaPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(txtNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(txtTenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(txtPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNgayDat, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNgayDat, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(txtNgayDat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(txtTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(pnlSuaPhieuDPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTienCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTienCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(txtTienCoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -196,7 +194,7 @@ public class PanelSuaPDP extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnXacNhan;
+    private gui.swing.button.Button btnXacNhan;
     private javax.swing.JLabel lblKhachHang;
     private javax.swing.JLabel lblMaPhieu;
     private javax.swing.JLabel lblNgayDat;
@@ -205,12 +203,12 @@ public class PanelSuaPDP extends javax.swing.JPanel {
     private javax.swing.JLabel lblTienCoc;
     private javax.swing.JLabel lblTrangThai;
     private javax.swing.JPanel pnlSuaPhieuDP;
-    private javax.swing.JTextField txtMaPhieu;
-    private javax.swing.JTextField txtNgayDat;
-    private javax.swing.JTextField txtNgayLap;
-    private javax.swing.JTextField txtPhong;
-    private javax.swing.JTextField txtTenKhachHang;
-    private javax.swing.JTextField txtTienCoc;
-    private javax.swing.JTextField txtTrangThai;
+    private gui.swing.textfield.MyTextField txtMaPhieu;
+    private gui.swing.textfield.MyTextField txtNgayDat;
+    private gui.swing.textfield.MyTextField txtNgayLap;
+    private gui.swing.textfield.MyTextField txtPhong;
+    private gui.swing.textfield.MyTextField txtTenKhachHang;
+    private gui.swing.textfield.MyTextField txtTienCoc;
+    private gui.swing.textfield.MyTextField txtTrangThai;
     // End of variables declaration//GEN-END:variables
 }

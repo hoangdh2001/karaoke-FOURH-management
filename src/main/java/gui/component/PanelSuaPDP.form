@@ -39,33 +39,32 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lblTrangThai" max="32767" attributes="0"/>
-                              <Component id="lblNgayDat" max="32767" attributes="0"/>
-                              <Component id="lblPhong" max="32767" attributes="0"/>
-                              <Component id="lblKhachHang" max="32767" attributes="0"/>
-                              <Component id="lblMaPhieu" alignment="1" max="32767" attributes="0"/>
-                              <Component id="lblNgayLap" alignment="1" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnXacNhan" min="-2" pref="135" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="lblTrangThai" max="32767" attributes="0"/>
+                                  <Component id="lblNgayDat" max="32767" attributes="0"/>
+                                  <Component id="lblPhong" max="32767" attributes="0"/>
+                                  <Component id="lblKhachHang" max="32767" attributes="0"/>
+                                  <Component id="lblMaPhieu" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="lblNgayLap" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="lblTienCoc" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtMaPhieu" pref="395" max="32767" attributes="0"/>
-                              <Component id="txtNgayLap" max="32767" attributes="0"/>
+                              <Component id="txtTienCoc" max="32767" attributes="0"/>
+                              <Component id="txtMaPhieu" alignment="0" pref="381" max="32767" attributes="0"/>
+                              <Component id="txtNgayLap" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtTenKhachHang" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtPhong" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtNgayDat" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtTrangThai" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="lblTienCoc" min="-2" pref="118" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="txtTienCoc" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="btnXacNhan" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -78,41 +77,41 @@
                   <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblMaPhieu" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtMaPhieu" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtMaPhieu" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblNgayLap" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtNgayLap" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtNgayLap" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblKhachHang" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtTenKhachHang" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtTenKhachHang" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblPhong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtPhong" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtPhong" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblNgayDat" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtNgayDat" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtNgayDat" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblTrangThai" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtTrangThai" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtTrangThai" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblTienCoc" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="txtTienCoc" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtTienCoc" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                  <Component id="btnXacNhan" min="-2" pref="39" max="-2" attributes="0"/>
-                  <EmptySpace pref="32" max="32767" attributes="0"/>
+                  <EmptySpace pref="13" max="32767" attributes="0"/>
+                  <Component id="btnXacNhan" min="-2" pref="50" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -121,7 +120,7 @@
         <Component class="javax.swing.JLabel" name="lblMaPhieu">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="1"/>
+              <Font name="SansSerif" size="16" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="M&#xe3; phi&#x1ebf;u &#x111;&#x1eb7;t: "/>
           </Properties>
@@ -129,7 +128,7 @@
         <Component class="javax.swing.JLabel" name="lblNgayLap">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="1"/>
+              <Font name="SansSerif" size="16" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Ng&#xe0;y l&#x1ead;p phi&#x1ebf;u: "/>
           </Properties>
@@ -137,7 +136,7 @@
         <Component class="javax.swing.JLabel" name="lblKhachHang">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="1"/>
+              <Font name="SansSerif" size="16" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="T&#xea;n kh&#xe1;ch h&#xe0;ng: "/>
           </Properties>
@@ -145,7 +144,7 @@
         <Component class="javax.swing.JLabel" name="lblPhong">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="1"/>
+              <Font name="SansSerif" size="16" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Ph&#xf2;ng: "/>
           </Properties>
@@ -153,7 +152,7 @@
         <Component class="javax.swing.JLabel" name="lblNgayDat">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="1"/>
+              <Font name="SansSerif" size="16" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Ng&#xe0;y &#x111;&#x1eb7;t: "/>
           </Properties>
@@ -161,7 +160,7 @@
         <Component class="javax.swing.JLabel" name="lblTrangThai">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="1"/>
+              <Font name="SansSerif" size="16" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Tr&#x1ea1;ng th&#xe1;i:"/>
           </Properties>
@@ -169,76 +168,73 @@
         <Component class="javax.swing.JLabel" name="lblTienCoc">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="1"/>
+              <Font name="SansSerif" size="16" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Ti&#x1ec1;n c&#x1ecd;c: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtMaPhieu">
+        <Component class="gui.swing.textfield.MyTextField" name="txtMaPhieu">
           <Properties>
+            <Property name="text" type="java.lang.String" value="myTextField1"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="0"/>
+              <Font name="sansserif" size="16" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtNgayLap">
+        <Component class="gui.swing.textfield.MyTextField" name="txtNgayLap">
           <Properties>
+            <Property name="text" type="java.lang.String" value="myTextField1"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="0"/>
+              <Font name="sansserif" size="16" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtTenKhachHang">
+        <Component class="gui.swing.textfield.MyTextField" name="txtTenKhachHang">
           <Properties>
+            <Property name="text" type="java.lang.String" value="myTextField1"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="0"/>
+              <Font name="sansserif" size="16" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="jTextField2"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtPhong">
+        <Component class="gui.swing.textfield.MyTextField" name="txtPhong">
           <Properties>
+            <Property name="text" type="java.lang.String" value="myTextField1"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="0"/>
+              <Font name="sansserif" size="16" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="jTextField3"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtNgayDat">
+        <Component class="gui.swing.textfield.MyTextField" name="txtNgayDat">
           <Properties>
+            <Property name="text" type="java.lang.String" value="myTextField1"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="0"/>
+              <Font name="sansserif" size="16" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="jTextField4"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtTrangThai">
+        <Component class="gui.swing.textfield.MyTextField" name="txtTrangThai">
           <Properties>
+            <Property name="text" type="java.lang.String" value="myTextField1"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="0"/>
+              <Font name="sansserif" size="16" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="jTextField5"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtTienCoc">
+        <Component class="gui.swing.textfield.MyTextField" name="txtTienCoc">
           <Properties>
+            <Property name="text" type="java.lang.String" value="myTextField1"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="0"/>
+              <Font name="sansserif" size="16" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="jTextField6"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="btnXacNhan">
+        <Component class="gui.swing.button.Button" name="btnXacNhan">
           <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="48" red="4" type="rgb"/>
-            </Property>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="SansSerif" size="14" style="1"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="X&#xe1;c Nh&#x1ead;n"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="16" style="0"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>
