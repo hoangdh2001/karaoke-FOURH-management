@@ -1,6 +1,9 @@
 package gui.component;
 
+import dao.KhachHang_DAO;
+import dao.Phong_DAO;
 import entity.Phong;
+import gui.swing.event.EventRoom;
 import gui.swing.event.EventTabSelected;
 import gui.swing.layout.WrapLayout;
 import gui.swing.panel.PanelShadow;
@@ -21,6 +24,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import gui.swing.event.EventShowInfoOver;
 import java.awt.event.ActionListener;
+import service.KhachHangService;
+import service.PhongService;
 
 public class PanelMap extends PanelShadow {
 
@@ -32,9 +37,14 @@ public class PanelMap extends PanelShadow {
     private int indexShowing;
     private EventShowInfoOver event;
     private ActionListener action;
+    private EventRoom eventRoom;
 
     public int getIndexShowing() {
         return indexShowing;
+    }
+
+    public void setIndexShowing(int indexShowing) {
+        this.indexShowing = indexShowing;
     }
 
     public void addEvent(EventShowInfoOver event) {
@@ -43,6 +53,18 @@ public class PanelMap extends PanelShadow {
 
     public void addEventSp(MouseWheelListener event) {
         sp.addMouseWheelListener(event);
+    }
+
+    public void addEventRoom(EventRoom event) {
+        this.eventRoom = event;
+    }
+
+    public void addEventTabSelected(EventTabSelected event) {
+        tabPane.setEvent(event);
+    }
+
+    public void checkTab() {
+        tabPane.check();
     }
 
     public PanelMap() {
@@ -75,24 +97,13 @@ public class PanelMap extends PanelShadow {
 
     private JPanel createTabPane() {
         tabPane = new TabButton();
-        tabPane.setEvent(new EventTabSelected() {
-            @Override
-            public boolean selected(int index, boolean selectedTab) {
-                indexShowing = index;
-                showTabPane(panels.get(index));
-                sp.getVerticalScrollBar().setValue(0);
-                tabPane.check();
-                return true;
-            }
-        });
         tabPane.setBackground(Color.WHITE);
-
         return tabPane;
     }
 
-    private void showTabPane(Component component) {
+    public void showTabPane(int index) {
         pane.removeAll();
-        pane.add(component);
+        pane.add(panels.get(index));
         pane.repaint();
         pane.revalidate();
     }
@@ -101,7 +112,7 @@ public class PanelMap extends PanelShadow {
         roomMap = new JPanel();
         roomMap.setOpaque(false);
         roomMap.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
-        tabPane.addTabButtonItem("Tất cả");
+        
         panels.add(roomMap);
         return roomMap;
     }
@@ -116,6 +127,7 @@ public class PanelMap extends PanelShadow {
                 }
             }
         });
+        room.addEvent(eventRoom);
         panel.add(room);
     }
 
@@ -131,27 +143,24 @@ public class PanelMap extends PanelShadow {
         }
     }
 
-    public void initRoom(List<Phong> dsPhong) {
-        if (dsPhong != null) {
-            int i = 0;
-            for (int j = 0; j < dsPhong.size(); j++) {
-                Phong phong = dsPhong.get(j);
-                if (i != phong.getTang()) {
-                    JPanel tabFloor = createTabFloor(phong.getTang());
-                    panels.add(tabFloor);
-                }
-                addRoom(panels.get(phong.getTang()), new Room(phong));
-                addRoom(roomMap, new Room(phong));
-                i = phong.getTang();
-            }
+    public void loadMap(List<Phong> dsPhong, int tang) {
+        panels.get(tang).removeAll();
+        for (Phong phong : dsPhong) {
+            addRoom(panels.get(tang), new Room(phong));
+            panels.get(tang).repaint();
+            panels.get(tang).revalidate();
         }
     }
 
-    private JPanel createTabFloor(int tang) {
-        JPanel tabFloor = new JPanel();
-        tabFloor.setOpaque(false);
-        tabFloor.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
-        tabPane.addTabButtonItem("Tầng " + tang);
-        return tabFloor;
+    public void createTabFloor(int tang) {
+        tabPane.removeAll();
+        tabPane.addTabButtonItem("Tất cả");
+        for (int i = 0; i < tang; i++) {
+            JPanel tabFloor = new JPanel();
+            tabFloor.setOpaque(false);
+            tabFloor.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
+            tabPane.addTabButtonItem("Tầng " + tabPane.getComponentCount());
+            panels.add(tabFloor);
+        }
     }
 }

@@ -11,6 +11,7 @@ import gui.GD_TiepNhanDatPhong;
 import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
+import gui.swing.event.EventRoom;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,10 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.LookAndFeel;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
@@ -55,7 +53,7 @@ public class Room extends PanelShadow {
     private JMenuItem mniDatPhong;
     private JMenuItem mniDonPhong;
     private JMenuItem mniSuaPhong;
-    private int index;
+    private EventRoom event;
     
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -78,16 +76,12 @@ public class Room extends PanelShadow {
         buildRoom();
     }
 
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-    
     public Room() {
         buildRoom();
+    }
+    
+    public void addEvent(EventRoom event) {
+        this.event = event;
     }
     
     private void buildRoom() {
@@ -96,6 +90,12 @@ public class Room extends PanelShadow {
         JPopupMenu pop = new JPopupMenu();
         pop.setPreferredSize(new Dimension(150, 250));
         mniKhachVaoHat = new JMenuItem("Khách vào hát");
+        mniKhachVaoHat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnThueEvent(phong);
+            }
+        });
         mniThanhToan = new JMenuItem("Thanh toán");
         mniDoiPhong = new JMenuItem("Đổi phòng");
         mniThemDichVu = new JMenuItem("Thêm dịch vụ");
@@ -193,7 +193,7 @@ public class Room extends PanelShadow {
         lblBatDau.setFont(new Font(fontName, fontStyle, 14));
 //        lblBatDau.setText(sdf.format(hoaDon.getThoiGianBatDau()));
         pnlDangHat.add(lblBatDau);
-        lblGioHat = new JLabel("15 phút");
+        lblGioHat = new JLabel();
         lblGioHat.setForeground(Color.WHITE);
         lblGioHat.setFont(new Font(fontName, fontStyle, 14));
         pnlDangHat.add(lblGioHat);
@@ -278,14 +278,7 @@ public class Room extends PanelShadow {
         btnThue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                try {
-                    LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
-                    UIManager.setLookAndFeel(previousLF);
-                } catch (UnsupportedLookAndFeelException e) {
-                    e.printStackTrace();
-                }
+                event.addBtnThueEvent(phong);
             }
         });
         pnlPhongTrong.add(btnThue);
