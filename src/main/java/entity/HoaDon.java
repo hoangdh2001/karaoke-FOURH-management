@@ -46,6 +46,7 @@ public class HoaDon {
     private double tongTienMatHang;
     @Column(columnDefinition = "money")
     private double tongHoaDon;
+
     /**
      * @param maHoaDon
      * @param phong
@@ -58,12 +59,12 @@ public class HoaDon {
         this.thoiGianBatDau = new Date();
         this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
-        this.gioHat = "00:00";
-        this.donGiaPhong = 0;
-        this.tongTienMatHang = 0;
-        this.tongHoaDon = 0;
+        this.gioHat = getGioHat();
+        this.donGiaPhong = getDonGiaPhong();
+        this.tongTienMatHang = getTongTienMatHang();
+        this.tongHoaDon = getTongHoaDon();
     }
-    
+
     public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien) {
         this.maHoaDon = maHoaDon;
         this.khachHang = khachHang;
@@ -72,10 +73,10 @@ public class HoaDon {
         this.thoiGianBatDau = new Date();
         this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
-        this.gioHat = "00:00";
-        this.donGiaPhong = 0;
-        this.tongTienMatHang = 0;
-        this.tongHoaDon = 0;
+        this.gioHat = getGioHat();
+        this.donGiaPhong = getDonGiaPhong();
+        this.tongTienMatHang = getTongTienMatHang();
+        this.tongHoaDon = getTongHoaDon();
     }
 
     /**
@@ -85,10 +86,10 @@ public class HoaDon {
         this.thoiGianBatDau = new Date();
         this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
-        this.gioHat = "00:00";
-        this.donGiaPhong = 0;
-        this.tongTienMatHang = 0;
-        this.tongHoaDon = 0;
+        this.gioHat = getGioHat();
+        this.donGiaPhong = getDonGiaPhong();
+        this.tongTienMatHang = getTongTienMatHang();
+        this.tongHoaDon = getTongHoaDon();
     }
 
     /**
@@ -220,10 +221,11 @@ public class HoaDon {
      */
     public String getGioHat() {
         if (thoiGianKetThuc != null) {
-            long diff = thoiGianKetThuc.getTime() - thoiGianBatDau.getTime();
-            long diffMinutes = diff / (60 * 1000);
-            long diffHours = diff / (60 * 60 * 1000);
-            gioHat = diffHours + ":" + diffMinutes;
+            long diff = (thoiGianKetThuc.getTime() - thoiGianBatDau.getTime()) / 1000;
+            int diffHours = (int) (diff / 3600);
+            diff = diff % 3600;
+            int mins = (int) (diff / 60);
+            gioHat = diffHours + ":" + mins;
             return gioHat;
         }
         gioHat = "00:00";
@@ -236,7 +238,7 @@ public class HoaDon {
     public double getDonGiaPhong() {
         if (phong != null) {
             String[] time = getGioHat().split(":");
-            donGiaPhong = (Double.parseDouble(time[1]) / 60) * phong.getLoaiPhong().getGiaPhong();
+            donGiaPhong = (Double.parseDouble(time[0]) * phong.getLoaiPhong().getGiaPhong()) + (Double.parseDouble(time[1]) / 60 * phong.getLoaiPhong().getGiaPhong());
             return donGiaPhong;
         }
         return 0;
@@ -245,6 +247,7 @@ public class HoaDon {
     public double getDonGiaPhongCu() {
         return donGiaPhong;
     }
+
     /**
      * @return the tongTienMatHang
      */
@@ -273,11 +276,11 @@ public class HoaDon {
                 + ", tongHoaDon=" + tongHoaDon + '}';
     }
 
-    public Object[] convertToRowTableInGDThongKeDoanhThu(){
+    public Object[] convertToRowTableInGDThongKeDoanhThu() {
         DecimalFormat df;
         df = new DecimalFormat("#,##0.00");
         SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String ngayLap = gio.format(ngayLapHoaDon);
-        return new Object[]{maHoaDon,ngayLap, khachHang.getTenKhachHang(),nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
+        return new Object[]{maHoaDon, ngayLap, khachHang.getTenKhachHang(), nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
     }
 }

@@ -1,6 +1,5 @@
 package gui;
 
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import dao.LoaiPhong_DAO;
 import dao.Phong_DAO;
@@ -12,6 +11,7 @@ import gui.component.PanelMap;
 import gui.component.PanelStatus;
 import gui.component.Slide1;
 import gui.component.Slide2;
+import gui.dialog.DL_DichVu;
 import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
@@ -36,7 +36,6 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventTabSelected;
-import javax.swing.JDialog;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -272,6 +271,20 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                     System.err.println(e);
                 }
                 return null;
+            }
+
+            @Override
+            public void addBtnThemDichVuEvent(HoaDon hoaDon) {
+               try {
+                    LookAndFeel previousLF = UIManager.getLookAndFeel();
+                    UIManager.setLookAndFeel(new FlatLightLaf());
+                    DL_DichVu dialog = new DL_DichVu(hoaDon, GD_Chinh.NHAN_VIEN);
+                    dialog.setVisible(true);
+                    loadMap(panelMap.getIndexShowing());
+                    UIManager.setLookAndFeel(previousLF);
+                } catch (UnsupportedLookAndFeelException e) {
+                    System.err.println(e);
+                }
             }
         });
         loadMap(0);

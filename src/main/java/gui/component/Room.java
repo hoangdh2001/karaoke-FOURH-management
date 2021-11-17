@@ -12,9 +12,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -40,6 +40,7 @@ public class Room extends PanelShadow {
     private JMenuItem mniDonPhong;
     private JMenuItem mniSuaPhong;
     private EventRoom event;
+    private Thread thread;
     
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -194,15 +195,24 @@ public class Room extends PanelShadow {
         lblGioHat.setFont(new Font(fontName, fontStyle, 14));
         
         pnlDangHat.add(lblGioHat);
-        new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                thoiGian =  Date.valueOf(LocalDate.now()).getTime() - hoaDon.getThoiGianBatDau().getTime();
-                long diffMinutes = thoiGian / (60 * 1000);
-                long diffHours = thoiGian / (60 * 60 * 1000);
-                lblGioHat.setText(diffHours + ":" + diffMinutes);
+                while (true) {
+                    thoiGian = (new Date().getTime() - hoaDon.getThoiGianBatDau().getTime()) / 1000;
+                    int diffHours = (int) (thoiGian / 3600);
+                    thoiGian = thoiGian % 3600;
+                    int mins = (int) (thoiGian / 60);
+                    lblGioHat.setText(String.format("%02d:%02d", diffHours, mins));
+                    sleep();
+                    repaint();
+                    sleep();
+                }
             }
-        }).start();
+        });
+        thread.start();
+        
+        
         Button btnThanhToan = new Button("Thanh toán", true);
         btnThanhToan.setForeground(Color.WHITE);
         btnThanhToan.setBackground(new Color(0, 31, 63));
@@ -213,8 +223,22 @@ public class Room extends PanelShadow {
         btnThemDichVu.setForeground(Color.WHITE);
         btnThemDichVu.setBackground(new Color(0, 31, 63));
         btnThemDichVu.setBorderRadius(5);
+        btnThemDichVu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnThemDichVuEvent(hoaDon);
+            }
+        });
         pnlDangHat.add(btnThemDichVu);
         return pnlDangHat;
+    }
+    
+    private void sleep() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
     }
 
     private JPanel buildPhongTrong() {
