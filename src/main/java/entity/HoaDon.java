@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
 import javax.transaction.Transactional;
 
 @Entity
@@ -33,11 +32,8 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "maNhanVien", nullable = false)
     private NhanVien nhanVien;
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date ngayLapHoaDon;
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date thoiGianBatDau;
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date thoiGianKetThuc;
     @Enumerated(EnumType.STRING)
     private TrangThaiHoaDon trangThai;

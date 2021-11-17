@@ -75,6 +75,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
         
         txtUser = new MyTextField();
         txtUser.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/user.png")));
+        txtUser.setText("0943015200");
         txtUser.setHint("Tên đăng nhập");
         txtUser.addActionListener(new ActionListener() {
             @Override

@@ -330,6 +330,9 @@ public class GD_Chinh extends JFrame {
                             content.showForm(new GD_ThongKeHangHoa());
                         }
                         break;
+                    case 6:
+                        content.showForm(new GD_QLHangHoa());
+                        break;
                     default:
                         break;
                 }

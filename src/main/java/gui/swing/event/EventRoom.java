@@ -1,7 +1,8 @@
 package gui.swing.event;
 
+import entity.HoaDon;
 import entity.Phong;
 
 public interface EventRoom {
-    public void addBtnThueEvent(Phong phong);
+    public HoaDon addBtnThueEvent(Phong phong);
 }

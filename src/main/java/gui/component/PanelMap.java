@@ -1,8 +1,12 @@
 package gui.component;
 
+import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
 import dao.Phong_DAO;
+import entity.HoaDon;
 import entity.Phong;
+import entity.TrangThaiHoaDon;
+import entity.TrangThaiPhong;
 import gui.swing.event.EventRoom;
 import gui.swing.event.EventTabSelected;
 import gui.swing.layout.WrapLayout;
@@ -112,13 +116,14 @@ public class PanelMap extends PanelShadow {
         roomMap = new JPanel();
         roomMap.setOpaque(false);
         roomMap.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
-        
+
         panels.add(roomMap);
         return roomMap;
     }
 
     public void addRoom(JPanel panel, Room room) {
         room.setPreferredSize(new Dimension(200, 250));
+
         room.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -146,7 +151,13 @@ public class PanelMap extends PanelShadow {
     public void loadMap(List<Phong> dsPhong, int tang) {
         panels.get(tang).removeAll();
         for (Phong phong : dsPhong) {
-            addRoom(panels.get(tang), new Room(phong));
+            if(phong.getTrangThai() == TrangThaiPhong.DANG_HAT) {
+                HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong(), TrangThaiHoaDon.DANG_XU_LY);
+                System.out.println(hoaDon);
+                addRoom(panels.get(tang), new Room(phong, hoaDon));
+            } else {
+                addRoom(panels.get(tang), new Room(phong));
+            }
             panels.get(tang).repaint();
             panels.get(tang).revalidate();
         }

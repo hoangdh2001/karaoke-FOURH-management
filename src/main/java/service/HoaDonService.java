@@ -6,6 +6,8 @@
 package service;
 
 import entity.HoaDon;
+import entity.TrangThaiHoaDon;
+import entity.TrangThaiPhong;
 import java.util.Date;
 import java.util.List;
 
@@ -34,4 +36,5 @@ public interface HoaDonService {
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();
     public String getMaxID();
+    public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai );
 }

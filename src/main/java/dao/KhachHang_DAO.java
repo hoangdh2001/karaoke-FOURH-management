@@ -163,9 +163,9 @@ public class KhachHang_DAO implements KhachHangService {
 
         try {
             tr.begin();
-            String id = String.valueOf(session
+            String id = (String) session
                     .createNativeQuery(sql)
-                    .getSingleResult());
+                    .getSingleResult();
             tr.commit();
             return id;
         } catch (Exception e) {

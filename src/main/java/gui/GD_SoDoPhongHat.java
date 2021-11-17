@@ -1,8 +1,10 @@
 package gui;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import dao.LoaiPhong_DAO;
 import dao.Phong_DAO;
+import entity.HoaDon;
 import entity.LoaiPhong;
 import entity.Phong;
 import entity.TrangThaiPhong;
@@ -257,17 +259,19 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         panelMap.createTabFloor(phong_DAO.getTang());
         panelMap.addEventRoom(new EventRoom() {
             @Override
-            public void addBtnThueEvent(Phong phong) {
+            public HoaDon addBtnThueEvent(Phong phong) {
                 try {
                     LookAndFeel previousLF = UIManager.getLookAndFeel();
                     UIManager.setLookAndFeel(new FlatLightLaf());
-                    JDialog dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
+                    DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
                     dlDialog.setVisible(true);
                     loadMap(panelMap.getIndexShowing());
                     UIManager.setLookAndFeel(previousLF);
+                    return dlDialog.getHoaDon();
                 } catch (UnsupportedLookAndFeelException e) {
                     System.err.println(e);
                 }
+                return null;
             }
         });
         loadMap(0);

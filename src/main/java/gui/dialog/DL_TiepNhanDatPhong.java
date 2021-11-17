@@ -48,13 +48,11 @@ import service.HoaDonService;
 import service.KhachHangService;
 import service.MatHangService;
 import service.PhieuDatPhongService;
-import service.PhongService;
 
 public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
     private final MatHangService matHangService;
     private final HoaDonService hoaDonService;
-    private final PhongService phongService;
     private PhieuDatPhongService phieuDatPhongService;
     private final KhachHangService khachHangService;
     private final ChiTietHoaDonService chiTietHoaDonService;
@@ -65,13 +63,22 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+    public HoaDon getHoaDon() {
+        return hoaDon;
+    }
+
     public DL_TiepNhanDatPhong(Phong phong, NhanVien nv) {
         this.hoaDonService = new HoaDon_DAO();
         this.matHangService = new MatHang_DAO();
         this.khachHangService = new KhachHang_DAO();
-        this.phongService = new Phong_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
-        String maHoaDon = AutoID.generateId(hoaDonService.getMaxID(), "HD");
+        String maxID = hoaDonService.getMaxID();
+        String maHoaDon;
+        if (maxID == null) {
+            maHoaDon = "HD0000001";
+        } else {
+            maHoaDon = AutoID.generateId(maxID, "HD");
+        }
         this.hoaDon = new HoaDon(maHoaDon, phong, nv);
         WindowIcon.addWindowIcon(this);
         initComponents();
@@ -240,7 +247,13 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 menu.setPopupSize(menu.getWidth(), (search.getItemSize() * 30) + 2);
             } else {
                 menu.setVisible(false);
-                String maKhachHang = AutoID.generateId(khachHangService.getMaxID(), "KH");
+                String maxID = khachHangService.getMaxID();
+                String maKhachHang;
+                if (maxID == null) {
+                    maKhachHang = "KH0000001";
+                } else {
+                    maKhachHang = AutoID.generateId(khachHangService.getMaxID(), "KH");
+                }
                 String tenKhachHang = txtTenKhachHang.getText().trim();
                 String soDienThoai = txtSdt.getText().trim();
                 String cccd = txtCCCD.getText().trim();
@@ -568,7 +581,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlDatTruocLayout.setHorizontalGroup(
             pnlDatTruocLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDatTruocLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(51, Short.MAX_VALUE)
                 .addComponent(lblDaCoc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDaCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -714,9 +727,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(lblChietKhau))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTTHDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMaHoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                    .addComponent(txtGiamGia)
-                    .addComponent(txtChietKhau))
+                    .addComponent(txtMaHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtGiamGia, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtChietKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         pnlTTHDLayout.setVerticalGroup(
@@ -804,14 +817,14 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                         .addComponent(txtTongTienMatHang, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addComponent(jScrollPane2)
-            .addGroup(pnlCenterLayout.createSequentialGroup()
-                .addComponent(pnlTTKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(9, 9, 9)
-                .addComponent(pnlTTHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
-                .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlDatTruoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlTGThuePhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlTTKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(9, 9, 9)
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlTTHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlDatTruoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -901,7 +914,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1026, 637));
+        setSize(new java.awt.Dimension(1048, 637));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -915,7 +928,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             setSize(new java.awt.Dimension(getPreferredSize()));
             setLocationRelativeTo(null);
         } else {
-            setSize(new java.awt.Dimension(1026, 637));
+            setSize(new java.awt.Dimension(1048, 637));
             setLocationRelativeTo(null);
         }
     }//GEN-LAST:event_btnExpandItemStateChanged
@@ -1029,7 +1042,6 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
             chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
         });
-        phongService.updatePhong(hoaDon.getPhong());
         dispose();
     }//GEN-LAST:event_btnGiaoPhongActionPerformed
 
