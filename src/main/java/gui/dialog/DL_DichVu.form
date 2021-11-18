@@ -10,7 +10,7 @@
     <Property name="title" type="java.lang.String" value="TI&#x1ebf;p nh&#x1ead;n thu&#xea; ph&#xf2;ng"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="formSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,125,0,0,3,-9"/>
+    <SyntheticProperty name="formSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,123,0,0,4,39"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="0"/>
     <SyntheticProperty name="generateSize" type="boolean" value="true"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
@@ -35,7 +35,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="pnlMain" pref="598" max="32767" attributes="0"/>
+          <Component id="pnlMain" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -80,7 +80,7 @@
                           <Component id="lblNhanVien" min="-2" max="-2" attributes="0"/>
                           <Component id="lblRole" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="612" max="32767" attributes="0"/>
+                      <EmptySpace pref="661" max="32767" attributes="0"/>
                       <Component id="btnHuy" min="-2" pref="87" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnGiaoPhong" min="-2" max="-2" attributes="0"/>
@@ -347,8 +347,7 @@
                                   <Component id="lblLoaiPhong" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtLoaiPhong" min="-2" pref="142" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                  <Component id="btnExpand" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -368,7 +367,7 @@
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="pnlTTHD" max="32767" attributes="0"/>
-                              <Component id="pnlDatTruoc" min="-2" max="-2" attributes="0"/>
+                              <Component id="pnlDatTruoc" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -382,7 +381,6 @@
                               <Component id="txtTenPhong" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblLoaiPhong" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtLoaiPhong" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnExpand" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane2" min="-2" pref="169" max="-2" attributes="0"/>
@@ -475,7 +473,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="9" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -487,17 +485,17 @@
                                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="thoiGianBatDau" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="thoiGianKetThuc" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace pref="16" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtTienPhongDuKien" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblTienPhongDuKien" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtTienPhongDuKien" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -559,7 +557,7 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="51" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="lblDaCoc" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtDaCoc" min="-2" pref="162" max="-2" attributes="0"/>
@@ -597,14 +595,6 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JToggleButton" name="btnExpand">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Phi&#x1ebf;u &#x111;&#x1eb7;t ph&#xf2;ng"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="btnExpandItemStateChanged"/>
-                  </Events>
-                </Component>
                 <Container class="javax.swing.JPanel" name="pnlTTKH">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -866,27 +856,27 @@
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="40" resizable="false">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="180" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="false">
                               <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="false">
                               <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="false">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="false">
                               <Title/>
                               <Editor/>
                               <Renderer/>

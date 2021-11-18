@@ -25,6 +25,12 @@ public class TableCellMinus extends DefaultCellEditor {
                 stopCellEditing();
             }
         });
+        cell.getBtnMinus().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                stopCellEditing();
+            }
+        });
         cell.setBackground(new Color(212, 212, 212));
         return cell;
     }

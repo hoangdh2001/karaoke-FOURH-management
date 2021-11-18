@@ -178,10 +178,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             txtMaHoaDon.setText(hoaDon.getMaHoaDon());
             txtTenPhong.setText(hoaDon.getPhong().getTenPhong());
             txtLoaiPhong.setText(hoaDon.getPhong().getLoaiPhong().getTenLoaiPhong());
-            
+
             txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
         }
-        if(hoaDon.getNhanVien() != null) {
+        if (hoaDon.getNhanVien() != null) {
             lblNhanVien.setText("Nhân viên: " + hoaDon.getNhanVien().getTenNhanVien());
             lblRole.setText(hoaDon.getNhanVien().getLoaiNhanVien().getTenLoaiNV());
         }
@@ -213,23 +213,62 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void loadDataTableCTHoaDon() {
         ((DefaultTableModel) tableCTHoaDon.getModel()).setRowCount(0);
         List<ChiTietHoaDon> dsChiTietHoaDon = hoaDon.getDsChiTietHoaDon();
-        EventMinus event = () -> {
-            try {
-                int row = tableCTHoaDon.getSelectedRow();
-                ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
-                MatHang matHang = chiTietHoaDon.getMatHang();
-                matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
-                hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
-                loadDataTableCTHoaDon();
-                ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
-                txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
-                txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
-            } catch (Exception ex) {
-                Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+//        EventMinus event = () -> {
+//            try {
+//                int row = tableCTHoaDon.getSelectedRow();
+//                ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
+//                MatHang matHang = chiTietHoaDon.getMatHang();
+//                matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
+//                hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
+//                loadDataTableCTHoaDon();
+//                ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+//                txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
+//                txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
+//            } catch (Exception ex) {
+//                Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        };
+        EventMinus eventMinus = new EventMinus() {
+            @Override
+            public void cancel() {
+                try {
+                    int row = tableCTHoaDon.getSelectedRow();
+                    ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
+                    MatHang matHang = chiTietHoaDon.getMatHang();
+                    matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
+                    hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
+                    loadDataTableCTHoaDon();
+                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                    txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
+                    txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
+                } catch (Exception ex) {
+                    Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            @Override
+            public void minus() {
+                try {
+                    int row = tableCTHoaDon.getSelectedRow();
+                    ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
+                    MatHang matHang = chiTietHoaDon.getMatHang();
+                    matHang.setsLTonKho(matHang.getsLTonKho() + 1);
+                    if(chiTietHoaDon.getSoLuong() <= 1) {
+                        hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
+                    } else {
+                        hoaDon.themCT_HoaDon(matHang, -1, 0);
+                    }
+                    loadDataTableCTHoaDon();
+                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                    txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
+                    txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
+                } catch (Exception ex) {
+                    Logger.getLogger(DL_DichVu.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
         dsChiTietHoaDon.forEach(chiTietHoaDon -> {
-            ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon(event));
+            ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon(eventMinus));
         });
     }
 
@@ -325,7 +364,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             dsMatHang.forEach(matHang -> {
                 if (!tenLoaiDichVu.equals("Tất cả")) {
                     System.out.println("ComboBox");
-                    if(matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)) {
+                    if (matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)) {
                         ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
                     }
                 } else if (matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) {
@@ -833,14 +872,14 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         jScrollPane2.setViewportView(tableCTHoaDon);
         if (tableCTHoaDon.getColumnModel().getColumnCount() > 0) {
             tableCTHoaDon.getColumnModel().getColumn(0).setResizable(false);
-            tableCTHoaDon.getColumnModel().getColumn(0).setPreferredWidth(60);
-            tableCTHoaDon.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tableCTHoaDon.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tableCTHoaDon.getColumnModel().getColumn(1).setPreferredWidth(180);
             tableCTHoaDon.getColumnModel().getColumn(2).setResizable(false);
             tableCTHoaDon.getColumnModel().getColumn(2).setPreferredWidth(60);
             tableCTHoaDon.getColumnModel().getColumn(3).setResizable(false);
-            tableCTHoaDon.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tableCTHoaDon.getColumnModel().getColumn(3).setPreferredWidth(80);
             tableCTHoaDon.getColumnModel().getColumn(4).setResizable(false);
-            tableCTHoaDon.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tableCTHoaDon.getColumnModel().getColumn(4).setPreferredWidth(80);
             tableCTHoaDon.getColumnModel().getColumn(5).setResizable(false);
         }
 

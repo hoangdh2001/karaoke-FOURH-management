@@ -173,11 +173,11 @@ public class DL_DichVu extends javax.swing.JDialog {
             txtLoaiPhong.setText(hoaDon.getPhong().getLoaiPhong().getTenLoaiPhong());
             txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
         }
-        if(hoaDon.getNhanVien() != null) {
+        if (hoaDon.getNhanVien() != null) {
             lblNhanVien.setText("Nhân viên: " + hoaDon.getNhanVien().getTenNhanVien());
             lblRole.setText(hoaDon.getNhanVien().getLoaiNhanVien().getTenLoaiNV());
         }
-        if(hoaDon.getKhachHang() != null) {
+        if (hoaDon.getKhachHang() != null) {
             txtTenKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
             txtCCCD.setText(hoaDon.getKhachHang().getCanCuocCD());
             txtSdt.setText(hoaDon.getKhachHang().getSoDienThoai());
@@ -210,23 +210,50 @@ public class DL_DichVu extends javax.swing.JDialog {
     private void loadDataTableCTHoaDon() {
         ((DefaultTableModel) tableCTHoaDon.getModel()).setRowCount(0);
         List<ChiTietHoaDon> dsChiTietHoaDon = hoaDon.getDsChiTietHoaDon();
-        EventMinus event = () -> {
-            try {
-                int row = tableCTHoaDon.getSelectedRow();
-                ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
-                MatHang matHang = chiTietHoaDon.getMatHang();
-                matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
-                hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
-                loadDataTableCTHoaDon();
-                ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
-                txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
-                txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
-            } catch (Exception ex) {
-                Logger.getLogger(DL_DichVu.class.getName()).log(Level.SEVERE, null, ex);
+//        EventMinus event = () -> {
+//
+//        };
+        EventMinus eventMinus = new EventMinus() {
+            @Override
+            public void cancel() {
+                try {
+                    int row = tableCTHoaDon.getSelectedRow();
+                    ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
+                    MatHang matHang = chiTietHoaDon.getMatHang();
+                    matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
+                    hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
+                    loadDataTableCTHoaDon();
+                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                    txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
+                    txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
+                } catch (Exception ex) {
+                    Logger.getLogger(DL_DichVu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            @Override
+            public void minus() {
+                try {
+                    int row = tableCTHoaDon.getSelectedRow();
+                    ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
+                    MatHang matHang = chiTietHoaDon.getMatHang();
+                    matHang.setsLTonKho(matHang.getsLTonKho() + 1);
+                    if(chiTietHoaDon.getSoLuong() <= 1) {
+                        hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
+                    } else {
+                        hoaDon.themCT_HoaDon(matHang, -1, 0);
+                    }
+                    loadDataTableCTHoaDon();
+                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                    txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
+                    txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
+                } catch (Exception ex) {
+                    Logger.getLogger(DL_DichVu.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
         dsChiTietHoaDon.forEach(chiTietHoaDon -> {
-            ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon(event));
+            ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon(eventMinus));
         });
     }
 
@@ -322,7 +349,7 @@ public class DL_DichVu extends javax.swing.JDialog {
             dsMatHang.forEach(matHang -> {
                 if (!tenLoaiDichVu.equals("Tất cả")) {
                     System.out.println("ComboBox");
-                    if(matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)) {
+                    if (matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)) {
                         ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
                     }
                 } else if (matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) {
@@ -371,7 +398,6 @@ public class DL_DichVu extends javax.swing.JDialog {
         pnlDatTruoc = new javax.swing.JPanel();
         lblDaCoc = new javax.swing.JLabel();
         txtDaCoc = new gui.swing.textfield.MyTextFieldPerUnit();
-        btnExpand = new javax.swing.JToggleButton();
         pnlTTKH = new javax.swing.JPanel();
         lblTenKhachHang = new javax.swing.JLabel();
         txtTenKhachHang = new javax.swing.JTextField();
@@ -432,7 +458,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                 .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNhanVien)
                     .addComponent(lblRole))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 612, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 661, Short.MAX_VALUE)
                 .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnGiaoPhong)
@@ -591,7 +617,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                         .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(thoiGianBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(thoiGianKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         pnlTGThuePhongLayout.setVerticalGroup(
             pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -600,15 +626,15 @@ public class DL_DichVu extends javax.swing.JDialog {
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(thoiGianBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(thoiGianKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTienPhongDuKien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTienPhongDuKien))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblTienPhongDuKien)
+                    .addComponent(txtTienPhongDuKien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
         );
 
         pnlDatTruoc.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true), "Đặt trước", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
@@ -625,7 +651,7 @@ public class DL_DichVu extends javax.swing.JDialog {
         pnlDatTruocLayout.setHorizontalGroup(
             pnlDatTruocLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDatTruocLayout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblDaCoc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDaCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -640,13 +666,6 @@ public class DL_DichVu extends javax.swing.JDialog {
                     .addComponent(txtDaCoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        btnExpand.setText("Phiếu đặt phòng");
-        btnExpand.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                btnExpandItemStateChanged(evt);
-            }
-        });
 
         pnlTTKH.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true), "Thông tin khách hàng", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         pnlTTKH.setOpaque(false);
@@ -824,14 +843,14 @@ public class DL_DichVu extends javax.swing.JDialog {
         jScrollPane2.setViewportView(tableCTHoaDon);
         if (tableCTHoaDon.getColumnModel().getColumnCount() > 0) {
             tableCTHoaDon.getColumnModel().getColumn(0).setResizable(false);
-            tableCTHoaDon.getColumnModel().getColumn(0).setPreferredWidth(60);
-            tableCTHoaDon.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tableCTHoaDon.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tableCTHoaDon.getColumnModel().getColumn(1).setPreferredWidth(180);
             tableCTHoaDon.getColumnModel().getColumn(2).setResizable(false);
             tableCTHoaDon.getColumnModel().getColumn(2).setPreferredWidth(60);
             tableCTHoaDon.getColumnModel().getColumn(3).setResizable(false);
-            tableCTHoaDon.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tableCTHoaDon.getColumnModel().getColumn(3).setPreferredWidth(80);
             tableCTHoaDon.getColumnModel().getColumn(4).setResizable(false);
-            tableCTHoaDon.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tableCTHoaDon.getColumnModel().getColumn(4).setPreferredWidth(80);
             tableCTHoaDon.getColumnModel().getColumn(5).setResizable(false);
         }
 
@@ -852,8 +871,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                         .addComponent(lblLoaiPhong)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtLoaiPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(btnExpand))
+                        .addGap(153, 153, 153))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
@@ -868,7 +886,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                 .addGap(9, 9, 9)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlTTHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlDatTruoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(pnlDatTruoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -878,8 +896,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                     .addComponent(lblTenPhong)
                     .addComponent(txtTenPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLoaiPhong)
-                    .addComponent(txtLoaiPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnExpand))
+                    .addComponent(txtLoaiPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -909,27 +926,17 @@ public class DL_DichVu extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1015, 637));
+        setSize(new java.awt.Dimension(1063, 635));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
+        start = false;
         dispose();
     }//GEN-LAST:event_btnHuyActionPerformed
-
-    private void btnExpandItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_btnExpandItemStateChanged
-        int state = evt.getStateChange();
-        if (state == ItemEvent.SELECTED) {
-            setSize(new java.awt.Dimension(getPreferredSize()));
-            setLocationRelativeTo(null);
-        } else {
-            setSize(new java.awt.Dimension(1048, 637));
-            setLocationRelativeTo(null);
-        }
-    }//GEN-LAST:event_btnExpandItemStateChanged
 
     private void tableCTHoaDonKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableCTHoaDonKeyReleased
         int row = tableCTHoaDon.getSelectedRow();
@@ -1051,7 +1058,6 @@ public class DL_DichVu extends javax.swing.JDialog {
     }//GEN-LAST:event_cbLoaiDichVuActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btnExpand;
     private javax.swing.JButton btnGiaoPhong;
     private javax.swing.JButton btnHuy;
     private javax.swing.JComboBox<String> cbLoaiDichVu;
