@@ -8,6 +8,7 @@ import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import dao.ChiTietHoaDon_DAO;
 import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
+import dao.LoaiDichVu_DAO;
 import dao.MatHang_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
@@ -38,6 +39,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
@@ -45,6 +47,7 @@ import javax.swing.table.DefaultTableModel;
 import service.ChiTietHoaDonService;
 import service.HoaDonService;
 import service.KhachHangService;
+import service.LoaiDichVuService;
 import service.MatHangService;
 import service.PhieuDatPhongService;
 
@@ -55,12 +58,16 @@ public class DL_DichVu extends javax.swing.JDialog {
     private PhieuDatPhongService phieuDatPhongService;
     private final KhachHangService khachHangService;
     private final ChiTietHoaDonService chiTietHoaDonService;
+    private final LoaiDichVuService loaiDichVuService;
     private final HoaDon hoaDon;
     private final DecimalFormat df = new DecimalFormat("#,##0");
     private PanelSearch search;
     private JPopupMenu menu;
-
+    private Thread thread;
+    private boolean start = true;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private List<MatHang> dsMatHang;
+    private EventAdd event;
 
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -71,12 +78,13 @@ public class DL_DichVu extends javax.swing.JDialog {
         this.matHangService = new MatHang_DAO();
         this.khachHangService = new KhachHang_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
+        this.loaiDichVuService = new LoaiDichVu_DAO();
         this.hoaDon = hoaDon;
         WindowIcon.addWindowIcon(this);
         initComponents();
         setModal(true);
         setResizable(false);
-        setTitle("Thanh toán");
+        setTitle("Tiếp nhận đặt phòng");
         buildDisplay();
     }
 
@@ -87,6 +95,7 @@ public class DL_DichVu extends javax.swing.JDialog {
         createDateChooseThoiGianBatDau();
         createDateChooseThoiGianKetThuc();
         loadDataForm();
+
     }
 
     private void createTableMatHang() {
@@ -108,11 +117,12 @@ public class DL_DichVu extends javax.swing.JDialog {
         thoiGianBatDau.getTimePicker().setEnabled(false);
         thoiGianBatDau.getTimePicker().getSettings().setFormatForDisplayTime("HH:mm");
         thoiGianBatDau.getDatePicker().setEnabled(false);
-        new Thread(() -> {
-            while (true) {
+        thread = new Thread(() -> {
+            while (start) {
                 thoiGianBatDau.getTimePicker().setTime(LocalTime.now());
             }
-        }).start();
+        });
+        thread.start();
         thoiGianBatDau.getDatePicker().getSettings().setLocale(new Locale("vi"));
         thoiGianBatDau.getDatePicker().getSettings().setFormatForDatesCommonEra("yyyy/MM/dd");
         thoiGianBatDau.getDatePicker().getSettings().setColor(DatePickerSettings.DateArea.TextFieldBackgroundDisabled, Color.WHITE);
@@ -156,20 +166,28 @@ public class DL_DichVu extends javax.swing.JDialog {
     }
 
     private void loadDataForm() {
-        if (hoaDon.getPhong() != null | hoaDon.getNhanVien() != null) {
+        if (hoaDon.getPhong() != null) {
+            ((DefaultComboBoxModel) cbLoaiDichVu.getModel()).addAll(loaiDichVuService.getDsTenLoaiDichVu());
             txtMaHoaDon.setText(hoaDon.getMaHoaDon());
             txtTenPhong.setText(hoaDon.getPhong().getTenPhong());
             txtLoaiPhong.setText(hoaDon.getPhong().getLoaiPhong().getTenLoaiPhong());
+            txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
+        }
+        if(hoaDon.getNhanVien() != null) {
             lblNhanVien.setText("Nhân viên: " + hoaDon.getNhanVien().getTenNhanVien());
             lblRole.setText(hoaDon.getNhanVien().getLoaiNhanVien().getTenLoaiNV());
-            txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
+        }
+        if(hoaDon.getKhachHang() != null) {
+            txtTenKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
+            txtCCCD.setText(hoaDon.getKhachHang().getCanCuocCD());
+            txtSdt.setText(hoaDon.getKhachHang().getSoDienThoai());
         }
     }
 
     private void loadDataTableMatHang() {
-        List<MatHang> dsMatHang = matHangService.getDsMatHang();
+        dsMatHang = matHangService.getDsMatHang();
         if (dsMatHang != null) {
-            EventAdd event = (Object obj) -> {
+            event = (Object obj) -> {
                 MatHang matHang = (MatHang) obj;
                 try {
                     matHang.setsLTonKho(matHang.getsLTonKho() - 1);
@@ -290,12 +308,41 @@ public class DL_DichVu extends javax.swing.JDialog {
         }
     }
 
+    private void searchMatHang() {
+        ((DefaultTableModel) tableMatHang.getModel()).setRowCount(0);
+        String tenMatHang = txtSearch.getText().trim();
+        String tenLoaiDichVu = String.valueOf(cbLoaiDichVu.getSelectedItem());
+        if (!tenLoaiDichVu.equals("Tất cả") && tenMatHang.length() > 0) {
+            System.out.println("Cả hai");
+            dsMatHang.stream().filter(matHang -> ((matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) && (matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)))).forEachOrdered(matHang -> {
+                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+            });
+        } else if (!tenLoaiDichVu.equals("Tất cả") || tenMatHang.length() > 0) {
+            System.out.println("Một trong hai");
+            dsMatHang.forEach(matHang -> {
+                if (!tenLoaiDichVu.equals("Tất cả")) {
+                    System.out.println("ComboBox");
+                    if(matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)) {
+                        ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+                    }
+                } else if (matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) {
+                    System.out.println("text");
+                    ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+                }
+            });
+        } else {
+            System.out.println("Không có");
+            dsMatHang.forEach(matHang -> {
+                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+            });
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         dateTimePicker1 = new com.github.lgooddatepicker.components.DateTimePicker();
-        bg = new javax.swing.JPanel();
         pnlMain = new javax.swing.JPanel();
         pnlBottomBar = new javax.swing.JPanel();
         btnGiaoPhong = new javax.swing.JButton();
@@ -319,8 +366,8 @@ public class DL_DichVu extends javax.swing.JDialog {
         jLabel11 = new javax.swing.JLabel();
         thoiGianBatDau = new com.github.lgooddatepicker.components.DateTimePicker();
         thoiGianKetThuc = new com.github.lgooddatepicker.components.DateTimePicker();
-        lblTienPhongDuKien = new javax.swing.JLabel();
         txtTienPhongDuKien = new gui.swing.textfield.MyTextFieldPerUnit();
+        lblTienPhongDuKien = new javax.swing.JLabel();
         pnlDatTruoc = new javax.swing.JPanel();
         lblDaCoc = new javax.swing.JLabel();
         txtDaCoc = new gui.swing.textfield.MyTextFieldPerUnit();
@@ -343,12 +390,9 @@ public class DL_DichVu extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableCTHoaDon = new gui.swing.table2.MyTableFlatlaf();
         txtTongTienMatHang = new gui.swing.textfield.MyTextFieldPerUnit();
-        pnlExpand = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("TIếp nhận thuê phòng");
-
-        bg.setLayout(new java.awt.BorderLayout());
 
         pnlMain.setBackground(new java.awt.Color(255, 255, 255));
         pnlMain.setLayout(new java.awt.BorderLayout());
@@ -421,8 +465,18 @@ public class DL_DichVu extends javax.swing.JDialog {
         txtSearch.setBorderLine(true);
         txtSearch.setHint("Tìm kiếm...");
         txtSearch.setPrefixIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/search_25px.png"))); // NOI18N
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
-        cbLoaiDichVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Đồ ăn", "Đồ uống" }));
+        cbLoaiDichVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả" }));
+        cbLoaiDichVu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbLoaiDichVuActionPerformed(evt);
+            }
+        });
 
         lblLoaiDichVu.setText("Loại dịch vụ");
         lblLoaiDichVu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -484,7 +538,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                     .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLoaiDichVu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(pnlMatHang);
@@ -512,11 +566,11 @@ public class DL_DichVu extends javax.swing.JDialog {
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_advance_20px_3.png"))); // NOI18N
 
-        lblTienPhongDuKien.setText("Tiền phòng dự kiến");
-        lblTienPhongDuKien.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
         txtTienPhongDuKien.setEnabled(false);
         txtTienPhongDuKien.setUnit("VND");
+
+        lblTienPhongDuKien.setText("Tiền phòng dự kiến");
+        lblTienPhongDuKien.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout pnlTGThuePhongLayout = new javax.swing.GroupLayout(pnlTGThuePhong);
         pnlTGThuePhong.setLayout(pnlTGThuePhongLayout);
@@ -524,7 +578,11 @@ public class DL_DichVu extends javax.swing.JDialog {
             pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTGThuePhongLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
+                        .addComponent(lblTienPhongDuKien)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTienPhongDuKien, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
                         .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -532,11 +590,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(thoiGianBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(thoiGianKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlTGThuePhongLayout.createSequentialGroup()
-                        .addComponent(lblTienPhongDuKien)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTienPhongDuKien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(thoiGianKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlTGThuePhongLayout.setVerticalGroup(
@@ -552,9 +606,9 @@ public class DL_DichVu extends javax.swing.JDialog {
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTienPhongDuKien)
-                    .addComponent(txtTienPhongDuKien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(txtTienPhongDuKien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTienPhongDuKien))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlDatTruoc.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true), "Đặt trước", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
@@ -574,7 +628,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                 .addContainerGap(51, Short.MAX_VALUE)
                 .addComponent(lblDaCoc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDaCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtDaCoc, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         pnlDatTruocLayout.setVerticalGroup(
@@ -600,7 +654,7 @@ public class DL_DichVu extends javax.swing.JDialog {
         lblTenKhachHang.setText("Tên khách hàng");
         lblTenKhachHang.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        txtTenKhachHang.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtTenKhachHang.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txtTenKhachHang.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtTenKhachHangFocusGained(evt);
@@ -804,8 +858,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTongTienMatHang, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)))
+                        .addComponent(txtTongTienMatHang, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addComponent(jScrollPane2)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
@@ -833,7 +886,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtTongTienMatHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
+                .addGap(12, 12, 12)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlTTKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlTTHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -848,36 +901,18 @@ public class DL_DichVu extends javax.swing.JDialog {
 
         pnlMain.add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
-        bg.add(pnlMain, java.awt.BorderLayout.CENTER);
-
-        pnlExpand.setBackground(new java.awt.Color(255, 255, 255));
-        pnlExpand.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)), "Phiếu đặt phòng", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
-
-        javax.swing.GroupLayout pnlExpandLayout = new javax.swing.GroupLayout(pnlExpand);
-        pnlExpand.setLayout(pnlExpandLayout);
-        pnlExpandLayout.setHorizontalGroup(
-            pnlExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 299, Short.MAX_VALUE)
-        );
-        pnlExpandLayout.setVerticalGroup(
-            pnlExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
-        );
-
-        bg.add(pnlExpand, java.awt.BorderLayout.LINE_END);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1058, 637));
+        setSize(new java.awt.Dimension(1015, 637));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -891,7 +926,7 @@ public class DL_DichVu extends javax.swing.JDialog {
             setSize(new java.awt.Dimension(getPreferredSize()));
             setLocationRelativeTo(null);
         } else {
-            setSize(new java.awt.Dimension(1058, 637));
+            setSize(new java.awt.Dimension(1048, 637));
             setLocationRelativeTo(null);
         }
     }//GEN-LAST:event_btnExpandItemStateChanged
@@ -960,7 +995,6 @@ public class DL_DichVu extends javax.swing.JDialog {
             menu.show(txtTenKhachHang, 0, txtTenKhachHang.getHeight());
             search.clearSelected();
             searchKhachHang(txtTenKhachHang);
-
         }
     }//GEN-LAST:event_txtTenKhachHangFocusGained
 
@@ -999,17 +1033,24 @@ public class DL_DichVu extends javax.swing.JDialog {
     }//GEN-LAST:event_txtSdtKeyPressed
 
     private void btnGiaoPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiaoPhongActionPerformed
-        hoaDon.getPhong().setTrangThai(TrangThaiPhong.DANG_HAT);
-        khachHangService.themKhachHang(hoaDon.getKhachHang());
+        khachHangService.capNhatKhachHang(hoaDon.getKhachHang());
         hoaDonService.addHoaDon(hoaDon);
         hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
             chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
         });
+        start = false;
         dispose();
     }//GEN-LAST:event_btnGiaoPhongActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        searchMatHang();
+    }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void cbLoaiDichVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLoaiDichVuActionPerformed
+        searchMatHang();
+    }//GEN-LAST:event_cbLoaiDichVuActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel bg;
     private javax.swing.JToggleButton btnExpand;
     private javax.swing.JButton btnGiaoPhong;
     private javax.swing.JButton btnHuy;
@@ -1037,7 +1078,6 @@ public class DL_DichVu extends javax.swing.JDialog {
     private javax.swing.JPanel pnlBottomBar;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlDatTruoc;
-    private javax.swing.JPanel pnlExpand;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnlMatHang;
     private javax.swing.JPanel pnlTGThuePhong;
@@ -1060,4 +1100,5 @@ public class DL_DichVu extends javax.swing.JDialog {
     private gui.swing.textfield.MyTextFieldPerUnit txtTienPhongDuKien;
     private gui.swing.textfield.MyTextFieldPerUnit txtTongTienMatHang;
     // End of variables declaration//GEN-END:variables
+
 }

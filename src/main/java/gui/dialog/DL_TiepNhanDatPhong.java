@@ -8,8 +8,8 @@ import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import dao.ChiTietHoaDon_DAO;
 import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
+import dao.LoaiDichVu_DAO;
 import dao.MatHang_DAO;
-import dao.Phong_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
@@ -39,6 +39,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
@@ -46,6 +47,7 @@ import javax.swing.table.DefaultTableModel;
 import service.ChiTietHoaDonService;
 import service.HoaDonService;
 import service.KhachHangService;
+import service.LoaiDichVuService;
 import service.MatHangService;
 import service.PhieuDatPhongService;
 
@@ -56,12 +58,16 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private PhieuDatPhongService phieuDatPhongService;
     private final KhachHangService khachHangService;
     private final ChiTietHoaDonService chiTietHoaDonService;
+    private final LoaiDichVuService loaiDichVuService;
     private final HoaDon hoaDon;
     private final DecimalFormat df = new DecimalFormat("#,##0");
     private PanelSearch search;
     private JPopupMenu menu;
-
+    private Thread thread;
+    private boolean start = true;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private List<MatHang> dsMatHang;
+    private EventAdd event;
 
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -72,6 +78,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         this.matHangService = new MatHang_DAO();
         this.khachHangService = new KhachHang_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
+        this.loaiDichVuService = new LoaiDichVu_DAO();
         String maxID = hoaDonService.getMaxID();
         String maHoaDon;
         if (maxID == null) {
@@ -95,6 +102,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         createDateChooseThoiGianBatDau();
         createDateChooseThoiGianKetThuc();
         loadDataForm();
+
     }
 
     private void createTableMatHang() {
@@ -116,11 +124,12 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         thoiGianBatDau.getTimePicker().setEnabled(false);
         thoiGianBatDau.getTimePicker().getSettings().setFormatForDisplayTime("HH:mm");
         thoiGianBatDau.getDatePicker().setEnabled(false);
-        new Thread(() -> {
-            while (true) {
+        thread = new Thread(() -> {
+            while (start) {
                 thoiGianBatDau.getTimePicker().setTime(LocalTime.now());
             }
-        }).start();
+        });
+        thread.start();
         thoiGianBatDau.getDatePicker().getSettings().setLocale(new Locale("vi"));
         thoiGianBatDau.getDatePicker().getSettings().setFormatForDatesCommonEra("yyyy/MM/dd");
         thoiGianBatDau.getDatePicker().getSettings().setColor(DatePickerSettings.DateArea.TextFieldBackgroundDisabled, Color.WHITE);
@@ -164,20 +173,24 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     }
 
     private void loadDataForm() {
-        if (hoaDon.getPhong() != null | hoaDon.getNhanVien() != null) {
+        if (hoaDon.getPhong() != null) {
+            ((DefaultComboBoxModel) cbLoaiDichVu.getModel()).addAll(loaiDichVuService.getDsTenLoaiDichVu());
             txtMaHoaDon.setText(hoaDon.getMaHoaDon());
             txtTenPhong.setText(hoaDon.getPhong().getTenPhong());
             txtLoaiPhong.setText(hoaDon.getPhong().getLoaiPhong().getTenLoaiPhong());
+            
+            txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
+        }
+        if(hoaDon.getNhanVien() != null) {
             lblNhanVien.setText("Nhân viên: " + hoaDon.getNhanVien().getTenNhanVien());
             lblRole.setText(hoaDon.getNhanVien().getLoaiNhanVien().getTenLoaiNV());
-            txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
         }
     }
 
     private void loadDataTableMatHang() {
-        List<MatHang> dsMatHang = matHangService.getDsMatHang();
+        dsMatHang = matHangService.getDsMatHang();
         if (dsMatHang != null) {
-            EventAdd event = (Object obj) -> {
+            event = (Object obj) -> {
                 MatHang matHang = (MatHang) obj;
                 try {
                     matHang.setsLTonKho(matHang.getsLTonKho() - 1);
@@ -295,6 +308,36 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             } catch (ParseException ex) {
                 Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    private void searchMatHang() {
+        ((DefaultTableModel) tableMatHang.getModel()).setRowCount(0);
+        String tenMatHang = txtSearch.getText().trim();
+        String tenLoaiDichVu = String.valueOf(cbLoaiDichVu.getSelectedItem());
+        if (!tenLoaiDichVu.equals("Tất cả") && tenMatHang.length() > 0) {
+            System.out.println("Cả hai");
+            dsMatHang.stream().filter(matHang -> ((matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) && (matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)))).forEachOrdered(matHang -> {
+                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+            });
+        } else if (!tenLoaiDichVu.equals("Tất cả") || tenMatHang.length() > 0) {
+            System.out.println("Một trong hai");
+            dsMatHang.forEach(matHang -> {
+                if (!tenLoaiDichVu.equals("Tất cả")) {
+                    System.out.println("ComboBox");
+                    if(matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)) {
+                        ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+                    }
+                } else if (matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) {
+                    System.out.println("text");
+                    ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+                }
+            });
+        } else {
+            System.out.println("Không có");
+            dsMatHang.forEach(matHang -> {
+                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+            });
         }
     }
 
@@ -431,8 +474,18 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         txtSearch.setBorderLine(true);
         txtSearch.setHint("Tìm kiếm...");
         txtSearch.setPrefixIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/search_25px.png"))); // NOI18N
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
-        cbLoaiDichVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Đồ ăn", "Đồ uống" }));
+        cbLoaiDichVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả" }));
+        cbLoaiDichVu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbLoaiDichVuActionPerformed(evt);
+            }
+        });
 
         lblLoaiDichVu.setText("Loại dịch vụ");
         lblLoaiDichVu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -494,7 +547,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLoaiDichVu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(pnlMatHang);
@@ -610,7 +663,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         lblTenKhachHang.setText("Tên khách hàng");
         lblTenKhachHang.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        txtTenKhachHang.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtTenKhachHang.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txtTenKhachHang.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtTenKhachHangFocusGained(evt);
@@ -897,7 +950,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlExpandLayout.setVerticalGroup(
             pnlExpandLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlExpandLayout.createSequentialGroup()
-                .addComponent(spPhieuDatPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+                .addComponent(spPhieuDatPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -911,7 +964,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(1048, 637));
@@ -997,7 +1050,6 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             menu.show(txtTenKhachHang, 0, txtTenKhachHang.getHeight());
             search.clearSelected();
             searchKhachHang(txtTenKhachHang);
-
         }
     }//GEN-LAST:event_txtTenKhachHangFocusGained
 
@@ -1042,8 +1094,17 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
             chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
         });
+        start = false;
         dispose();
     }//GEN-LAST:event_btnGiaoPhongActionPerformed
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        searchMatHang();
+    }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void cbLoaiDichVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLoaiDichVuActionPerformed
+        searchMatHang();
+    }//GEN-LAST:event_cbLoaiDichVuActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
@@ -1099,4 +1160,5 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private gui.swing.textfield.MyTextFieldPerUnit txtTienPhongDuKien;
     private gui.swing.textfield.MyTextFieldPerUnit txtTongTienMatHang;
     // End of variables declaration//GEN-END:variables
+
 }

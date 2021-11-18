@@ -74,6 +74,7 @@ public class GD_Chinh extends JFrame {
         GD_Chinh.NHAN_VIEN = nhanVien;
         GD_Chinh.FRAME = frame;
         buidGD_Chinh();
+        
     }
 
     /**

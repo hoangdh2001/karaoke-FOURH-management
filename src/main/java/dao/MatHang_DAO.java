@@ -97,5 +97,24 @@ public class MatHang_DAO implements MatHangService {
         }
         return null;
     }
-
+    
+    @Override
+    public List<MatHang> layDsMatHangTheoTen(String tenMatHang) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from MatHang where tenMatHang = :x";
+        
+        try {
+            tr.begin();
+            List<MatHang> rs = session
+                    .createNativeQuery(sql, MatHang.class)
+                    .getResultList();
+            tr.commit();
+            return rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
 }

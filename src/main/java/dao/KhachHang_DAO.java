@@ -37,6 +37,22 @@ public class KhachHang_DAO implements KhachHangService {
         return false;
     }
 
+    @Override
+    public boolean capNhatKhachHang(KhachHang khachHang) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.update(khachHang);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return false;
+    }
+    
     public KhachHang getKhachHang(String maKhachHang) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
