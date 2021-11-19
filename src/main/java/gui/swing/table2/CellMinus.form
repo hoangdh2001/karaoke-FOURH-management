@@ -20,14 +20,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnMinus" min="-2" pref="36" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnCancel" min="-2" pref="41" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <Component id="btnCancel" min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace pref="19" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="btnCancel" pref="22" max="32767" attributes="0"/>
+          <Component id="btnCancel" max="32767" attributes="0"/>
           <Component id="btnMinus" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>

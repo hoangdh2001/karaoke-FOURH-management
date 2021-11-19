@@ -153,7 +153,6 @@ public class PanelMap extends PanelShadow {
         for (Phong phong : dsPhong) {
             if(phong.getTrangThai() == TrangThaiPhong.DANG_HAT) {
                 HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong(), TrangThaiHoaDon.DANG_XU_LY);
-                System.out.println(hoaDon);
                 addRoom(panels.get(tang), new Room(phong, hoaDon));
             } else {
                 addRoom(panels.get(tang), new Room(phong));

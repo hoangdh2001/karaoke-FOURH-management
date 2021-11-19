@@ -186,7 +186,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             lblRole.setText(hoaDon.getNhanVien().getLoaiNhanVien().getTenLoaiNV());
         }
     }
-
+    
     private void loadDataTableMatHang() {
         dsMatHang = matHangService.getDsMatHang();
         if (dsMatHang != null) {
@@ -209,25 +209,17 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             });
         }
     }
+    
+    private void loadDataTableMatHangCa() {
+        ((DefaultTableModel) tableMatHang.getModel()).setRowCount(0);
+        dsMatHang.forEach(matHang -> {
+            ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+        });
+    }
 
     private void loadDataTableCTHoaDon() {
         ((DefaultTableModel) tableCTHoaDon.getModel()).setRowCount(0);
         List<ChiTietHoaDon> dsChiTietHoaDon = hoaDon.getDsChiTietHoaDon();
-//        EventMinus event = () -> {
-//            try {
-//                int row = tableCTHoaDon.getSelectedRow();
-//                ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
-//                MatHang matHang = chiTietHoaDon.getMatHang();
-//                matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
-//                hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
-//                loadDataTableCTHoaDon();
-//                ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
-//                txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
-//                txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
-//            } catch (Exception ex) {
-//                Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        };
         EventMinus eventMinus = new EventMinus() {
             @Override
             public void cancel() {
@@ -238,14 +230,14 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
                     hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
                     loadDataTableCTHoaDon();
-                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                    loadDataTableMatHangCa();
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
                     txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
                 } catch (Exception ex) {
                     Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
             @Override
             public void minus() {
                 try {
@@ -253,13 +245,13 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     ChiTietHoaDon chiTietHoaDon = hoaDon.getDsChiTietHoaDon().get(row);
                     MatHang matHang = chiTietHoaDon.getMatHang();
                     matHang.setsLTonKho(matHang.getsLTonKho() + 1);
-                    if(chiTietHoaDon.getSoLuong() <= 1) {
+                    if (chiTietHoaDon.getSoLuong() <= 1) {
                         hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
                     } else {
                         hoaDon.themCT_HoaDon(matHang, -1, 0);
                     }
                     loadDataTableCTHoaDon();
-                    ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
+                    loadDataTableMatHangCa();
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
                     txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
                 } catch (Exception ex) {
@@ -439,6 +431,8 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("TIếp nhận thuê phòng");
+        setModal(true);
+        setResizable(false);
 
         bg.setLayout(new java.awt.BorderLayout());
 
@@ -480,7 +474,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNhanVien)
                     .addComponent(lblRole))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 612, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 609, Short.MAX_VALUE)
                 .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnGiaoPhong)
@@ -534,7 +528,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Tên mặt hàng", "Tồn kho", "Giá bán", ""
+                "Tên mặt hàng", "Tồn kho", "Giá bán", "Thêm"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -565,7 +559,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlMatHang.setLayout(pnlMatHangLayout);
         pnlMatHangLayout.setHorizontalGroup(
             pnlMatHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
             .addGroup(pnlMatHangLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMatHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -612,7 +606,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         jLabel10.setText("Từ");
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_advance_20px_3.png"))); // NOI18N
+        jLabel11.setText("Hẹn trả");
 
         txtTienPhongDuKien.setEnabled(false);
         txtTienPhongDuKien.setUnit("VND");
@@ -625,7 +619,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlTGThuePhongLayout.setHorizontalGroup(
             pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTGThuePhongLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
                         .addComponent(lblTienPhongDuKien)
@@ -633,13 +627,13 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                         .addComponent(txtTienPhongDuKien, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
                         .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(thoiGianBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(thoiGianKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         pnlTGThuePhongLayout.setVerticalGroup(
             pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -649,7 +643,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(jLabel10)
                     .addComponent(thoiGianBatDau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(thoiGianKetThuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -850,7 +844,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Tên mặt hàng", "Số lượng", "Đơn giá", "Thành tiền", ""
+                "ID", "Tên mặt hàng", "Số lượng", "Đơn giá", "Thành tiền", "Trả lại"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -916,7 +910,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 .addGap(9, 9, 9)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlTTHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlDatTruoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addComponent(pnlDatTruoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(1, 1, 1))))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1006,7 +1002,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1048, 637));
+        setSize(new java.awt.Dimension(1048, 638));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1032,16 +1028,15 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             MatHang matHang = hoaDon.getDsChiTietHoaDon().get(row).getMatHang();
             try {
                 matHang.setsLTonKho(matHangService.getMatHang(matHang.getMaMatHang()).getsLTonKho() - sl);
-                hoaDon.getDsChiTietHoaDon().get(tableCTHoaDon.getSelectedRow()).setSoLuong(0);
-                hoaDon.themCT_HoaDon(matHang, sl, 0);
-                loadDataTableCTHoaDon();
-                for (int i = 0; i < tableMatHang.getRowCount(); i++) {
-                    ModelAdd data = (ModelAdd) ((DefaultTableModel) tableMatHang.getModel()).getValueAt(i, 3);
-                    MatHang mh = (MatHang) data.getObj();
-                    if (mh.equals(matHang)) {
-                        ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), i, 1);
-                    }
+                hoaDon.getDsChiTietHoaDon().get(row).setSoLuong(0);
+                if(sl <= 1) {
+                    hoaDon.getDsChiTietHoaDon().remove(row);
                 }
+                else {
+                    hoaDon.themCT_HoaDon(matHang, sl, 0);
+                }
+                loadDataTableCTHoaDon();
+                loadDataTableMatHangCa();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Mặt hàng không đủ số lượng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 loadDataTableCTHoaDon();

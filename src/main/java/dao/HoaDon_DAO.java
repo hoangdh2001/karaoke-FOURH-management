@@ -39,7 +39,7 @@ public class HoaDon_DAO implements HoaDonService{
         }
         return false;
     }
-    
+
     @Override
     public List<HoaDon> getDsHoaDon() {
         Session session = sessionFactory.openSession();
@@ -59,7 +59,8 @@ public class HoaDon_DAO implements HoaDonService{
         session.close();
         return null;
     }
-
+    
+    
     @Override
     public HoaDon getHoaDon(String maHoaDon) {
         Session session = sessionFactory.openSession();

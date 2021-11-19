@@ -174,7 +174,6 @@ public class Room extends PanelShadow {
         lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
         pnlDangHat.add(lblTrangThai);
-        System.out.println(hoaDon);
         JLabel lblKhachHang = new JLabel("Khách hàng");
         lblKhachHang.setForeground(Color.WHITE);
         lblKhachHang.setFont(new Font(fontName, fontStyle, 14));

@@ -7,8 +7,6 @@ package service;
 
 import entity.HoaDon;
 import entity.TrangThaiHoaDon;
-import entity.TrangThaiPhong;
-import java.util.Date;
 import java.util.List;
 
 /**
