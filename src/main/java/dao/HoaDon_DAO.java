@@ -31,7 +31,7 @@ public class HoaDon_DAO implements HoaDonService{
         
         try {
             tr.begin();
-            session.save(hoaDon);
+            session.saveOrUpdate(hoaDon);
             tr.commit();
             return true;
         } catch (Exception e) {

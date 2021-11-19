@@ -90,8 +90,20 @@ public class Room extends PanelShadow {
             }
         });
         mniThanhToan = new JMenuItem("Thanh toán");
+        mniThanhToan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnThanhToanEvent(hoaDon);
+            }
+        });
         mniDoiPhong = new JMenuItem("Đổi phòng");
-        mniThemDichVu = new JMenuItem("Thêm dịch vụ");
+        mniThemDichVu = new JMenuItem("Cập nhật dịch vụ");
+        mniThemDichVu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnThemDichVuEvent(hoaDon);
+            }
+        });
         mniDatPhong = new JMenuItem("Đặt phòng");
         mniDonPhong = new JMenuItem("Dọn phòng");
         mniSuaPhong = new JMenuItem("Sửa phòng");
@@ -216,6 +228,12 @@ public class Room extends PanelShadow {
         btnThanhToan.setForeground(Color.WHITE);
         btnThanhToan.setBackground(new Color(0, 31, 63));
         btnThanhToan.setBorderRadius(5);
+        btnThanhToan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnThanhToanEvent(hoaDon);
+            }
+        });
         pnlDangHat.add(btnThanhToan, "split 2");
 
         Button btnThemDichVu = new Button("DV", true);

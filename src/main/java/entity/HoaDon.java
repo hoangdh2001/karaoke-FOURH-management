@@ -35,6 +35,7 @@ public class HoaDon {
     private Date ngayLapHoaDon;
     private Date thoiGianBatDau;
     private Date thoiGianKetThuc;
+    private float chietKhau;
     @Enumerated(EnumType.STRING)
     private TrangThaiHoaDon trangThai;
     @OneToMany(mappedBy = "hoaDon", fetch = FetchType.EAGER)
@@ -97,8 +98,8 @@ public class HoaDon {
      * @param soLuong
      * @param chietKhau
      */
-    public void themCT_HoaDon(MatHang matHang, int soLuong, float chietKhau) {
-        ChiTietHoaDon newChiTietHoaDon = new ChiTietHoaDon(this, matHang, soLuong, chietKhau);
+    public void themCT_HoaDon(MatHang matHang, int soLuong) {
+        ChiTietHoaDon newChiTietHoaDon = new ChiTietHoaDon(this, matHang, soLuong);
         if (dsChiTietHoaDon.contains(newChiTietHoaDon)) {
             ChiTietHoaDon chiTietHoaDon = dsChiTietHoaDon.get(dsChiTietHoaDon.indexOf(newChiTietHoaDon));
             chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + newChiTietHoaDon.getSoLuong());
@@ -190,7 +191,33 @@ public class HoaDon {
     public void setThoiGianKetThuc(Date thoiGianKetThuc) {
         this.thoiGianKetThuc = thoiGianKetThuc;
     }
-
+    /**
+     * @return chietKhau
+     */
+    public float getChietKhau() {
+        return chietKhau;
+    }
+    
+    /**
+     * @param chietKhau 
+     */
+    public void setChietKhau(float chietKhau) {
+        this.chietKhau = chietKhau;
+    }
+    /**
+     * @return trangThai
+     */
+    public TrangThaiHoaDon getTrangThai() {
+        return trangThai;
+    }
+    
+    /**
+     * @param trangThai 
+     */
+    public void setTrangThai(TrangThaiHoaDon trangThai) {
+        this.trangThai = trangThai;
+    }
+    
     /**
      * @return the dsChiTietHoaDon
      */
@@ -225,7 +252,7 @@ public class HoaDon {
             int diffHours = (int) (diff / 3600);
             diff = diff % 3600;
             int mins = (int) (diff / 60);
-            gioHat = diffHours + ":" + mins;
+            gioHat = String.format("%02d:%02d", diffHours, mins);
             return gioHat;
         }
         gioHat = "00:00";

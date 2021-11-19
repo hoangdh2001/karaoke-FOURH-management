@@ -27,7 +27,7 @@ import service.ChiTietHoaDonService;
 import service.LoaiDichVuService;
 import service.MatHangService;
 
-public class DL_DichVu extends javax.swing.JDialog {
+public class DL_CapNhatDichVu extends javax.swing.JDialog {
 
     private final MatHangService matHangService;
     private final ChiTietHoaDonService chiTietHoaDonService;
@@ -41,7 +41,7 @@ public class DL_DichVu extends javax.swing.JDialog {
         return hoaDon;
     }
 
-    public DL_DichVu(HoaDon hoaDon, NhanVien nv) {
+    public DL_CapNhatDichVu(HoaDon hoaDon, NhanVien nv) {
         this.matHangService = new MatHang_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
         this.loaiDichVuService = new LoaiDichVu_DAO();
@@ -82,7 +82,7 @@ public class DL_DichVu extends javax.swing.JDialog {
             txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
         }
         if (hoaDon.getNhanVien() != null) {
-            lblNhanVien.setText("Nhân viên: " + hoaDon.getNhanVien().getTenNhanVien());
+            lblNhanVien.setText(hoaDon.getNhanVien().getTenNhanVien());
             lblRole.setText(hoaDon.getNhanVien().getLoaiNhanVien().getTenLoaiNV());
         }
         
@@ -95,7 +95,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                 MatHang matHang = (MatHang) obj;
                 try {
                     matHang.setsLTonKho(matHang.getsLTonKho() - 1);
-                    hoaDon.themCT_HoaDon(matHang, 1, 0);
+                    hoaDon.themCT_HoaDon(matHang, 1);
                     loadDataTableCTHoaDon();
                     ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
@@ -147,7 +147,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                     if (chiTietHoaDon.getSoLuong() <= 1) {
                         hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
                     } else {
-                        hoaDon.themCT_HoaDon(matHang, -1, 0);
+                        hoaDon.themCT_HoaDon(matHang, -1);
                     }
                     loadDataTableCTHoaDon();
                     for (int i = 0; i < tableMatHang.getRowCount(); i++) {
@@ -160,7 +160,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                     }
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
                 } catch (Exception ex) {
-                    Logger.getLogger(DL_DichVu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(DL_CapNhatDichVu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         };
@@ -203,7 +203,7 @@ public class DL_DichVu extends javax.swing.JDialog {
         dateTimePicker1 = new com.github.lgooddatepicker.components.DateTimePicker();
         pnlMain = new javax.swing.JPanel();
         pnlBottomBar = new javax.swing.JPanel();
-        btnGiaoPhong = new javax.swing.JButton();
+        btnLuu = new javax.swing.JButton();
         btnHuy = new javax.swing.JButton();
         lblNhanVien = new javax.swing.JLabel();
         lblRole = new javax.swing.JLabel();
@@ -235,11 +235,11 @@ public class DL_DichVu extends javax.swing.JDialog {
         pnlBottomBar.setBackground(new java.awt.Color(255, 255, 255));
         pnlBottomBar.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)));
 
-        btnGiaoPhong.setText("Lưu");
-        btnGiaoPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnGiaoPhong.addActionListener(new java.awt.event.ActionListener() {
+        btnLuu.setText("Lưu");
+        btnLuu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnLuu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGiaoPhongActionPerformed(evt);
+                btnLuuActionPerformed(evt);
             }
         });
 
@@ -251,12 +251,11 @@ public class DL_DichVu extends javax.swing.JDialog {
             }
         });
 
-        lblNhanVien.setText("Nhân viên: Đỗ Huy Hoàng");
+        lblNhanVien.setText("Đỗ Huy Hoàng");
         lblNhanVien.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         lblRole.setText("Quản lý");
-        lblRole.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lblRole.setForeground(new java.awt.Color(153, 153, 153));
+        lblRole.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout pnlBottomBarLayout = new javax.swing.GroupLayout(pnlBottomBar);
         pnlBottomBar.setLayout(pnlBottomBarLayout);
@@ -265,12 +264,12 @@ public class DL_DichVu extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBottomBarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNhanVien)
-                    .addComponent(lblRole))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 650, Short.MAX_VALUE)
+                    .addComponent(lblRole)
+                    .addComponent(lblNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 560, Short.MAX_VALUE)
                 .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnGiaoPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
         pnlBottomBarLayout.setVerticalGroup(
@@ -278,7 +277,7 @@ public class DL_DichVu extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBottomBarLayout.createSequentialGroup()
                 .addContainerGap(21, Short.MAX_VALUE)
                 .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGiaoPhong)
+                    .addComponent(btnLuu)
                     .addComponent(btnHuy))
                 .addGap(12, 12, 12))
             .addGroup(pnlBottomBarLayout.createSequentialGroup()
@@ -514,7 +513,7 @@ public class DL_DichVu extends javax.swing.JDialog {
                 if (sl <= 1) {
                     hoaDon.getDsChiTietHoaDon().remove(row);
                 } else {
-                    hoaDon.themCT_HoaDon(matHang, sl, 0);
+                    hoaDon.themCT_HoaDon(matHang, sl);
                 }
                 loadDataTableCTHoaDon();
                 for (int i = 0; i < tableMatHang.getRowCount(); i++) {
@@ -534,18 +533,18 @@ public class DL_DichVu extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_tableCTHoaDonKeyReleased
 
-    private void btnGiaoPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiaoPhongActionPerformed
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
         List<ChiTietHoaDon> dsChiTietHoaDonTruocCapNhat = chiTietHoaDonService.getDsChiTietHoaDonByMaHoaDon(hoaDon.getMaHoaDon());;
         dsChiTietHoaDonTruocCapNhat.forEach(chiTietHoaDon -> {
             if (!hoaDon.getDsChiTietHoaDon().contains(chiTietHoaDon)) {
                 chiTietHoaDonService.deleteChiTietHoaDon(chiTietHoaDon);
             }
         });
-        for (ChiTietHoaDon chiTietHoaDon : hoaDon.getDsChiTietHoaDon()) {
+        hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
             chiTietHoaDonService.updateChiTietHoaDon(chiTietHoaDon);
-        }
+        });
         dispose();
-    }//GEN-LAST:event_btnGiaoPhongActionPerformed
+    }//GEN-LAST:event_btnLuuActionPerformed
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         searchMatHang();
@@ -556,8 +555,8 @@ public class DL_DichVu extends javax.swing.JDialog {
     }//GEN-LAST:event_cbLoaiDichVuActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGiaoPhong;
     private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnLuu;
     private javax.swing.JComboBox<String> cbLoaiDichVu;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker1;
     private javax.swing.JLabel jLabel1;

@@ -11,7 +11,8 @@ import gui.component.PanelMap;
 import gui.component.PanelStatus;
 import gui.component.Slide1;
 import gui.component.Slide2;
-import gui.dialog.DL_DichVu;
+import gui.dialog.DL_CapNhatDichVu;
+import gui.dialog.DL_ThanhToan;
 import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
@@ -278,7 +279,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                try {
                     LookAndFeel previousLF = UIManager.getLookAndFeel();
                     UIManager.setLookAndFeel(new FlatLightLaf());
-                    DL_DichVu dialog = new DL_DichVu(hoaDon, GD_Chinh.NHAN_VIEN);
+                    DL_CapNhatDichVu dialog = new DL_CapNhatDichVu(hoaDon, GD_Chinh.NHAN_VIEN);
                     dialog.setVisible(true);
                     loadMap(panelMap.getIndexShowing());
                     UIManager.setLookAndFeel(previousLF);
@@ -286,6 +287,22 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                     System.err.println(e);
                 }
             }
+
+            @Override
+            public void addBtnThanhToanEvent(HoaDon hoaDon) {
+                try {
+                    LookAndFeel previousLF = UIManager.getLookAndFeel();
+                    UIManager.setLookAndFeel(new FlatLightLaf());
+                    DL_ThanhToan dialog = new DL_ThanhToan(hoaDon, GD_Chinh.NHAN_VIEN);
+                    dialog.setVisible(true);
+                    loadMap(panelMap.getIndexShowing());
+                    UIManager.setLookAndFeel(previousLF);
+                } catch (UnsupportedLookAndFeelException e) {
+                    System.err.println(e);
+                }
+            }
+            
+            
         });
         loadMap(0);
 

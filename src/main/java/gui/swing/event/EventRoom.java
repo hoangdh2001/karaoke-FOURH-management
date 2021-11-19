@@ -6,4 +6,5 @@ import entity.Phong;
 public interface EventRoom {
     public HoaDon addBtnThueEvent(Phong phong);
     public void addBtnThemDichVuEvent(HoaDon hoaDon);
+    public void addBtnThanhToanEvent(HoaDon hoaDon);
 }
