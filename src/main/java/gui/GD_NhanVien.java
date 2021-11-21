@@ -240,7 +240,6 @@ public class GD_NhanVien extends JPanel {
 //
 //        };
         loadDataNhanVien();
-
         tblNhanVien.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -256,6 +255,17 @@ public class GD_NhanVien extends JPanel {
     
     public void loadDataNhanVien(){
         //Load dữ liệu từ DB lên bảng 
+        listNhanVien = nhanVien_DAO.getNhanViens();
+        for (NhanVien i : listNhanVien) {
+            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
+                    i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
+                    i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
+        }
+    }
+
+    public void loadDataNhanVien() {
+        System.out.println("load");
+        ((DefaultTableModel) tblNhanVien.getModel()).setRowCount(0);
         listNhanVien = nhanVien_DAO.getNhanViens();
         for (NhanVien i : listNhanVien) {
             tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
@@ -365,7 +375,7 @@ public class GD_NhanVien extends JPanel {
             public void actionPerformed(ActionEvent e) {
 //                System.out.println("Thêm Nhân viên");
                 eventAddNhanVien.AddNhanVien();
-                
+
 //                diaChiMau_DAO = new DiaChiMau_DAO();
 //                diaChiMau_DAO.getAllTinhThanh().forEach(i -> {
 //                    System.out.println(i);

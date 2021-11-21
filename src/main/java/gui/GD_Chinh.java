@@ -27,6 +27,7 @@ import gui.component.Room;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
+import gui.swing.event.EventAdd;
 import gui.swing.event.EventAddNhanVien;
 import gui.swing.image.WindowIcon;
 import gui.swing.event.EventMenuSelected;
@@ -48,6 +49,7 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.Frame;
 import gui.swing.event.EventSelectedRow;
 import gui.swing.event.EventShowInfoOver;
+import javax.swing.JOptionPane;
 
 public class GD_Chinh extends JFrame {
     
@@ -318,6 +320,20 @@ public class GD_Chinh extends JFrame {
                                         tab.setVisible(true);
 
                                         PanelThemNhanVien pnlThemNhanVien = new PanelThemNhanVien();
+                                        pnlThemNhanVien.addThemEvent(new EventAdd() {
+                                            @Override
+                                            public void add(Object obj) {
+                                                if(obj instanceof Boolean) {
+                                                    boolean rs = (Boolean) obj;
+                                                    if(rs) {
+                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thành công!");
+                                                        gD_NhanVien.loadDataNhanVien();
+                                                    } else {
+                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thất bại!");
+                                                    }
+                                                }
+                                            }
+                                        });
                                         tab.showDetail(pnlThemNhanVien);
                                         animator2.start();
                                     }
