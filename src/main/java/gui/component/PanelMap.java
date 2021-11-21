@@ -24,9 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import gui.swing.event.EventShowInfoOver;
-import gui.swing.textfield.MyTextField;
-import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
 
 public class PanelMap extends PanelShadow {
 
@@ -37,7 +34,6 @@ public class PanelMap extends PanelShadow {
     private JScrollPane sp;
     private int indexShowing;
     private EventShowInfoOver event;
-    private ActionListener action;
     private EventRoom eventRoom;
 
     public int getIndexShowing() {
@@ -68,6 +64,14 @@ public class PanelMap extends PanelShadow {
         tabPane.check();
     }
 
+    public TabButton getTabPane() {
+        return tabPane;
+    }
+
+    public void setTabPane(TabButton tabPane) {
+        this.tabPane = tabPane;
+    }
+    
     public PanelMap() {
         buildMap();
     }
@@ -98,12 +102,6 @@ public class PanelMap extends PanelShadow {
 
     private JPanel createTabPane() {
         tabPane = new TabButton();
-        MyTextField txtSearch = new MyTextField();
-        txtSearch.setBorderLine(true);
-        txtSearch.setBorderRadius(10);
-        txtSearch.setBackgroundColor(Color.red);
-//        txtSearch.setPrefixIcon(new ImageIcon(getClass().getResource("search_25px.png")));
-        tabPane.add(txtSearch, "w 20%");
         tabPane.setBackground(Color.WHITE);
         return tabPane;
     }

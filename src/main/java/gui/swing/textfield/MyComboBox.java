@@ -70,8 +70,6 @@ public class MyComboBox<E> extends JComboBox {
     private void buildMyComboBox() {
         setBackground(new Color(0, 0, 0, 0));
         setForeground(Color.decode("#7A8C8D"));
-        setFont(new java.awt.Font("sansserif", 0, 13));
-
         for (Component component : this.getComponents()) {
             if (component instanceof AbstractButton) {
                 if (component.isVisible()) {

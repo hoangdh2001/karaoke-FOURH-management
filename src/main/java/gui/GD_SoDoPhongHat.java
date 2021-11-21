@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventTabSelected;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
@@ -49,6 +50,9 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private LoaiPhong_DAO loaiPhong_DAO;
     private DefaultComboBoxModel<LoaiPhong> cbLoaiPhongModel;
     private DefaultComboBoxModel<TrangThaiPhong> cbTrangThaiModel;
+    private MyTextField txtSearch;
+    private MyTextField txtTenPhong;
+    private MyComboBox<String> cbLoaiPhong;
 
     public void addEvent(EventShowInfoOver event) {
         panelMap.addEvent(event);
@@ -88,87 +92,53 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private JPanel createPanelForm() {
         JPanel pnlForm = new JPanel();
         pnlForm.setOpaque(false);
-        pnlForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "10[center]20[center]20[]5"));
-
-        JLabel lbSdt = new JLabel("Số điện thoại");
-        lbSdt.setFont(new Font("sansserif", Font.PLAIN, 14));
-        pnlForm.add(lbSdt);
-
-        MyTextField txtSdt = new MyTextField();
-        txtSdt.setFont(new Font("sansserif", Font.PLAIN, 14));
-        txtSdt.setBorderLine(true);
-        txtSdt.setBorderRadius(5);
-//        txtSdt.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyReleased(KeyEvent e) {
-//                String sdt = txtSdt.getText().trim();
-//                panelMap.initSearchRoom(phong_DAO.getPhongBySDT(sdt, panelMap.getIndexShowing()));
-//                if (sdt.length() == 0) {
-//                    panelMap.initSearchRoom(phong_DAO.getDsPhong());
-//                }
-//            }
-//        });
-        pnlForm.add(txtSdt, "w 25%");
+        pnlForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[center]push", "40[center]10[center]30"));
 
         JLabel lbTenPhong = new JLabel("Tên phòng:");
         lbTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlForm.add(lbTenPhong);
 
-        MyTextField txtTenPhong = new MyTextField();
+        txtTenPhong = new MyTextField();
         txtTenPhong.setBorderLine(true);
         txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
-        txtTenPhong.setBorderRadius(5);
-        pnlForm.add(txtTenPhong, "w 25%, wrap");
+        txtTenPhong.setBorderRadius(10);
+        pnlForm.add(txtTenPhong, "w 25%, h 35!");
 
         JLabel lbLoaiPhong = new JLabel("Loại phòng:");
         lbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlForm.add(lbLoaiPhong);
 
         cbLoaiPhongModel = new DefaultComboBoxModel<>();
-        MyComboBox<String> cbLoaiPhong = new MyComboBox<>(cbLoaiPhongModel);
+        cbLoaiPhong = new MyComboBox<>(cbLoaiPhongModel);
         cbLoaiPhong.addItem("--Tất cả--");
         cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         cbLoaiPhong.setBorderLine(true);
         cbLoaiPhong.setBorderRadius(10);
-        pnlForm.add(cbLoaiPhong, "w 25%, h 30!");
+        pnlForm.add(cbLoaiPhong, "w 25%, h 35!");
 
-        JLabel lbTrangThai = new JLabel("Trạng thái");
-        lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 14));
-        pnlForm.add(lbTrangThai);
-
-        cbTrangThaiModel = new DefaultComboBoxModel<>();
-        MyComboBox<String> cbTrangThai = new MyComboBox<>(cbTrangThaiModel);
-        cbTrangThai.addItem("--Tất cả--");
-        cbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 14));
-        cbTrangThai.setBorderLine(true);
-        cbTrangThai.setBorderRadius(10);
-        pnlForm.add(cbTrangThai, "w 25%, h 30!, wrap");
-
+//        JLabel lbTrangThai = new JLabel("Trạng thái");
+//        lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 14));
+//        pnlForm.add(lbTrangThai);
+//        cbTrangThaiModel = new DefaultComboBoxModel<>();
+//        MyComboBox<String> cbTrangThai = new MyComboBox<>(cbTrangThaiModel);
+//        cbTrangThai.addItem("--Tất cả--");
+//        cbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 14));
+//        cbTrangThai.setBorderLine(true);
+//        cbTrangThai.setBorderRadius(10);
+//        pnlForm.add(cbTrangThai, "w 25%, h 30!, wrap");
         Button timKiemBtn = new Button("Tìm kiếm");
         timKiemBtn.setFont(new Font("sansserif", Font.PLAIN, 14));
         timKiemBtn.setBorderline(true);
         timKiemBtn.setBorderRadius(5);
         timKiemBtn.setBackground(new Color(184, 238, 241));
-//        timKiemBtn.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent arg0) {
-//                String tenPhong = txtTenPhong.getText().trim();
-//                LoaiPhong loaiPhong = null;
-//                if (!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--")) {
-//                    loaiPhong = (LoaiPhong) cbLoaiPhongModel.getSelectedItem();
-//                }
-//
-//                TrangThaiPhong trangThaiPhong = null;
-//                if (!cbTrangThaiModel.getSelectedItem().toString().equals("--Tất cả--")) {
-//                    trangThaiPhong = (TrangThaiPhong) cbTrangThaiModel.getSelectedItem();
-//                }
-//
-//                panelMap.initSearchRoom(phong_DAO.getPhongByAttributes(panelMap.getIndexShowing(), tenPhong,
-//                        loaiPhong,
-//                        trangThaiPhong));
-//            }
-//        });
-        pnlForm.add(timKiemBtn, "cell 3 2, align right, w 80!, h 36!");
+        timKiemBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                loadMap(panelMap.getIndexShowing());
+            }
+            
+        });
+        pnlForm.add(timKiemBtn, "cell 3 1, align right, w 80!, h 30!");
 
         loadDataForm();
 
@@ -182,10 +152,10 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             cbLoaiPhongModel.addElement(lp);
         }
 
-        TrangThaiPhong[] trangThaiPhongs = TrangThaiPhong.values();
-        for (TrangThaiPhong trangThaiPhong : trangThaiPhongs) {
-            cbTrangThaiModel.addElement(trangThaiPhong);
-        }
+//        TrangThaiPhong[] trangThaiPhongs = TrangThaiPhong.values();
+//        for (TrangThaiPhong trangThaiPhong : trangThaiPhongs) {
+//            cbTrangThaiModel.addElement(trangThaiPhong);
+//        }
     }
 
     private Slideshow createSlideshow() {
@@ -335,13 +305,35 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
         });
         loadMap(0);
-
+        txtSearch = new MyTextField();
+        txtSearch.setBorderLine(true);
+        txtSearch.setBorderRadius(30);
+        txtSearch.setHint("Tìm kiếm...");
+        txtSearch.setBackgroundColor(Color.WHITE);
+        txtSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                txtTenPhong.setText("");
+                cbLoaiPhong.setSelectedIndex(0);
+                String search = txtSearch.getText().trim();
+                List<Phong> dsPhong = phong_DAO.getDsPhongBySDTOrTen(search, panelMap.getIndexShowing());
+                panelMap.loadMap(dsPhong, panelMap.getIndexShowing());
+                txtSearch.setText("");
+            }
+        });
+        txtSearch.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/search_25px.png")));
+        panelMap.getTabPane().add(txtSearch, "pos 0.98al 0.4al n n, w 25%, h 35!");
         panelMap.setPreferredSize(new Dimension(getWidth(), getHeight() + 800));
         return panelMap;
     }
 
     private void loadMap(int index) {
-        List<Phong> dsPhong = phong_DAO.getDsPhongByTang(index);
+        String tenPhong = txtTenPhong.getText().trim();
+        LoaiPhong loaiPhong = null;
+        if (!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--")) {
+            loaiPhong = (LoaiPhong) cbLoaiPhongModel.getSelectedItem();
+        }
+        List<Phong> dsPhong = phong_DAO.getDsPhongByTang(index, tenPhong, loaiPhong);
         System.out.println(dsPhong);
         panelMap.loadMap(dsPhong, index);
     }
