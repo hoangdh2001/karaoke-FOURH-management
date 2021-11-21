@@ -13,8 +13,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.Date;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -106,7 +106,19 @@ public class Room extends PanelShadow {
         });
         mniDatPhong = new JMenuItem("Đặt phòng");
         mniDonPhong = new JMenuItem("Dọn phòng");
+        mniDonPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDonPhongEvent(phong);
+            }
+        });
         mniSuaPhong = new JMenuItem("Sửa phòng");
+        mniSuaPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnSuaPhongEvent(phong);
+            }
+        });
         pop.add(mniKhachVaoHat);
         pop.addSeparator();
         pop.add(mniThanhToan);
@@ -354,6 +366,12 @@ public class Room extends PanelShadow {
         btnSuaXong.setForeground(Color.WHITE);
         btnSuaXong.setBackground(new Color(0, 31, 63));
         btnSuaXong.setBorderRadius(5);
+        btnSuaXong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnSuaXongEvent(phong);
+            }
+        });
         pnlPhongSua.add(btnSuaXong);
 
         return pnlPhongSua;
@@ -401,6 +419,12 @@ public class Room extends PanelShadow {
         btnDonPhong.setForeground(Color.WHITE);
         btnDonPhong.setBackground(new Color(0, 31, 63));
         btnDonPhong.setBorderRadius(5);
+        btnDonPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDonPhongEvent(phong);
+            }
+        });
         pnlPhongBan.add(btnDonPhong);
         
         return pnlPhongBan;
@@ -448,6 +472,12 @@ public class Room extends PanelShadow {
         btnDonXong.setForeground(Color.WHITE);
         btnDonXong.setBackground(new Color(0, 31, 63));
         btnDonXong.setBorderRadius(5);
+        btnDonXong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDonXongEvent(phong);
+            }
+        });
         pnlPhongDangDon.add(btnDonXong);
         
         return pnlPhongDangDon;

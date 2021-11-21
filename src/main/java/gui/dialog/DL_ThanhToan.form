@@ -74,7 +74,7 @@
                       <EmptySpace pref="639" max="32767" attributes="0"/>
                       <Component id="btnHuy" min="-2" pref="87" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnGiaoPhong" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnThanhToan" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -91,7 +91,7 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnHuy" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnGiaoPhong" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnThanhToan" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
@@ -99,23 +99,23 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="btnGiaoPhong">
+            <Component class="javax.swing.JButton" name="btnThanhToan">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Thanh toa&#x301;n"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
                 </Property>
+                <Property name="text" type="java.lang.String" value="Thanh toa&#x301;n"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGiaoPhongActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThanhToanActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnHuy">
               <Properties>
-                <Property name="text" type="java.lang.String" value="H&#x1ee7;y"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="0"/>
                 </Property>
+                <Property name="text" type="java.lang.String" value="H&#x1ee7;y"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHuyActionPerformed"/>
@@ -123,18 +123,18 @@
             </Component>
             <Component class="javax.swing.JLabel" name="lblNhanVien">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x110;&#xf4;&#x303; Huy Hoa&#x300;ng"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
+                <Property name="text" type="java.lang.String" value="&#x110;&#xf4;&#x303; Huy Hoa&#x300;ng"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblRole">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Qua&#x309;n ly&#x301;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="12" style="1"/>
                 </Property>
+                <Property name="text" type="java.lang.String" value="Qua&#x309;n ly&#x301;"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -178,18 +178,19 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane1" min="-2" pref="437" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtSearch" min="-2" pref="416" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="lblLoaiDichVu" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cbLoaiDichVu" min="-2" pref="152" max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" alignment="0" min="-2" pref="437" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtSearch" min="-2" pref="416" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="lblLoaiDichVu" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="cbLoaiDichVu" min="-2" pref="152" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -244,10 +245,10 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblLoaiDichVu">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Lo&#x1ea1;i d&#x1ecb;ch v&#x1ee5;"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Lo&#x1ea1;i d&#x1ecb;ch v&#x1ee5;"/>
                   </Properties>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -352,7 +353,7 @@
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="myTextFieldPerUnit5" pref="164" max="32767" attributes="0"/>
+                                              <Component id="txtChietKhau" pref="164" max="32767" attributes="0"/>
                                               <Component id="txtDaCoc" alignment="1" max="32767" attributes="0"/>
                                               <Component id="txtTongTienMatHang" alignment="0" max="32767" attributes="0"/>
                                           </Group>
@@ -368,7 +369,7 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="txtTienKhachHang" min="-2" pref="162" max="-2" attributes="0"/>
                                               <Component id="txtTongHoaDon" min="-2" pref="162" max="-2" attributes="0"/>
-                                              <Component id="myTextFieldPerUnit4" min="-2" pref="162" max="-2" attributes="0"/>
+                                              <Component id="txtThoiLai" min="-2" pref="162" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -428,7 +429,7 @@
                                           </Group>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="myTextFieldPerUnit5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtChietKhau" alignment="3" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
@@ -443,7 +444,7 @@
                                           </Group>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="myTextFieldPerUnit4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtThoiLai" alignment="3" min="-2" max="-2" attributes="0"/>
                                               <Component id="lblThoiLai" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -530,11 +531,13 @@
                                   <Component id="thoiGianTraPhong" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtGiaPhong" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtGioHat" alignment="1" pref="23" max="32767" attributes="0"/>
-                                  <Component id="lblGioHat" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblGiaPhong" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtGioHat" alignment="1" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="txtGiaPhong" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblGioHat" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblGiaPhong" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -549,26 +552,26 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="lblThoiGianNhanPhong">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Th&#x1a1;&#x300;i gian nh&#xe2;&#x323;n pho&#x300;ng"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="12" style="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="Th&#x1a1;&#x300;i gian nh&#xe2;&#x323;n pho&#x300;ng"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblThoiGianTraPhong">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Th&#x1a1;&#x300;i gian tra&#x309; pho&#x300;ng"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="12" style="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="Th&#x1a1;&#x300;i gian tra&#x309; pho&#x300;ng"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblTienPhongDuKien">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Ti&#xea;&#x300;n pho&#x300;ng"/>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="12" style="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="Ti&#xea;&#x300;n pho&#x300;ng"/>
                       </Properties>
                     </Component>
                     <Component class="gui.swing.textfield.MyTextFieldPerUnit" name="txtTienPhong">
@@ -630,10 +633,10 @@
                 </Container>
                 <Component class="javax.swing.JLabel" name="lblTienDv">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Ti&#xea;&#x300;n di&#x323;ch vu&#x323;"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Ti&#xea;&#x300;n di&#x323;ch vu&#x323;"/>
                   </Properties>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane2">
@@ -710,10 +713,10 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblTenPhong">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="T&#xea;n ph&#xf2;ng"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="T&#xea;n ph&#xf2;ng"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtTenPhong">
@@ -727,10 +730,10 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblLoaiPhong">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Lo&#x1ea1;i ph&#xf2;ng"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Lo&#x1ea1;i ph&#xf2;ng"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtLoaiPhong">
@@ -758,18 +761,18 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblDaCoc">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="&#x110;&#xe3; c&#x1ecd;c"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="&#x110;&#xe3; c&#x1ecd;c"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblMaHoaDon">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="M&#xe3; h&#xf3;a &#x111;&#x1a1;n"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="M&#xe3; h&#xf3;a &#x111;&#x1a1;n"/>
                   </Properties>
                 </Component>
                 <Component class="gui.swing.textfield.MyTextFieldPerUnit" name="txtTienKhachHang">
@@ -807,7 +810,7 @@
                     <Property name="text" type="java.lang.String" value="Th&#xf4;&#x301;i la&#x323;i"/>
                   </Properties>
                 </Component>
-                <Component class="gui.swing.textfield.MyTextFieldPerUnit" name="myTextFieldPerUnit4">
+                <Component class="gui.swing.textfield.MyTextFieldPerUnit" name="txtThoiLai">
                   <Properties>
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="unit" type="java.lang.String" value="VND"/>
@@ -914,7 +917,7 @@
                     <Property name="text" type="java.lang.String" value="Chi&#xea;&#x301;t kh&#xe2;&#x301;u"/>
                   </Properties>
                 </Component>
-                <Component class="gui.swing.textfield.MyTextFieldPerUnit" name="myTextFieldPerUnit5">
+                <Component class="gui.swing.textfield.MyTextFieldPerUnit" name="txtChietKhau">
                   <Properties>
                     <Property name="unit" type="java.lang.String" value="%"/>
                   </Properties>

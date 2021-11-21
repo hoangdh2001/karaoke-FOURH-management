@@ -38,7 +38,7 @@ public class HoaDon {
     private float chietKhau;
     @Enumerated(EnumType.STRING)
     private TrangThaiHoaDon trangThai;
-    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hoaDon")
     private List<ChiTietHoaDon> dsChiTietHoaDon;
     private String gioHat;
     @Column(columnDefinition = "money")
@@ -47,6 +47,10 @@ public class HoaDon {
     private double tongTienMatHang;
     @Column(columnDefinition = "money")
     private double tongHoaDon;
+    @Column(columnDefinition = "money")
+    private double tienKhachDua;
+    @Column(columnDefinition = "money")
+    private double tienThua;
 
     /**
      * @param maHoaDon
@@ -64,6 +68,7 @@ public class HoaDon {
         this.donGiaPhong = getDonGiaPhong();
         this.tongTienMatHang = getTongTienMatHang();
         this.tongHoaDon = getTongHoaDon();
+        this.tienThua = getTienThua();
     }
 
     public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien) {
@@ -78,6 +83,7 @@ public class HoaDon {
         this.donGiaPhong = getDonGiaPhong();
         this.tongTienMatHang = getTongTienMatHang();
         this.tongHoaDon = getTongHoaDon();
+        this.tienThua = getTienThua();
     }
 
     /**
@@ -91,6 +97,7 @@ public class HoaDon {
         this.donGiaPhong = getDonGiaPhong();
         this.tongTienMatHang = getTongTienMatHang();
         this.tongHoaDon = getTongHoaDon();
+        this.tienThua = getTienThua();
     }
 
     /**
@@ -291,9 +298,29 @@ public class HoaDon {
      * @return the tongHoaDon
      */
     public double getTongHoaDon() {
-        return getTongTienMatHang() + getDonGiaPhong();
+        return (getTongTienMatHang() + getDonGiaPhong()) * (1 - chietKhau);
     }
-
+    
+    /**
+     * @return tienKhachDua
+     */
+    public double getTienKhachDua() {
+        return tienKhachDua;
+    }
+    
+    /**
+     * @param tienKhachDua 
+     */
+    public void setTienKhachDua(double tienKhachDua) {
+        this.tienKhachDua = tienKhachDua;
+    }
+    /**
+     * @return thoiLai
+     */
+    public double getTienThua() {
+        return tienKhachDua - tongHoaDon;
+    }
+    
     @Override
     public String toString() {
         return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong="

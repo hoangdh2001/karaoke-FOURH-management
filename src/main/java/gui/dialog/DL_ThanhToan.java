@@ -9,9 +9,12 @@ import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.MatHang;
 import entity.NhanVien;
+import entity.TrangThaiHoaDon;
+import entity.TrangThaiPhong;
 import gui.swing.event.EventAdd;
 import gui.swing.event.EventMinus;
 import gui.swing.image.WindowIcon;
+import gui.swing.model.ModelAdd;
 import gui.swing.table2.SpinnerEditor;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
@@ -21,7 +24,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.table.DefaultTableModel;
 import service.ChiTietHoaDonService;
 import service.HoaDonService;
@@ -87,6 +92,8 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             txtGioHat.setText(hoaDon.getGioHat());
             txtGiaPhong.setText(df.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()));
             thoiGianNhanPhong.setValue(hoaDon.getThoiGianBatDau());
+            txtTienKhachHang.setText(df.format(hoaDon.getTienKhachDua()));
+            txtThoiLai.setText(df.format(hoaDon.getTienThua()));
         }
         if (hoaDon.getNhanVien() != null) {
             lblNhanVien.setText(hoaDon.getNhanVien().getTenNhanVien());
@@ -105,7 +112,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                     loadDataTableCTHoaDon();
                     ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), tableMatHang.getSelectedRow(), 1);
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
-                    txtDaCoc.setText(df.format(hoaDon.getDonGiaPhong()));
+                    txtTongHoaDon.setText(df.format(hoaDon.getTongHoaDon()));
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Mặt hàng này đã hết!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 }
@@ -115,13 +122,6 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                 ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
             });
         }
-    }
-
-    private void loadDataTableMatHangCa() {
-        ((DefaultTableModel) tableMatHang.getModel()).setRowCount(0);
-        dsMatHang.forEach(matHang -> {
-            ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
-        });
     }
 
     private void loadDataTableCTHoaDon() {
@@ -137,11 +137,18 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                     matHang.setsLTonKho(matHang.getsLTonKho() + chiTietHoaDon.getSoLuong());
                     hoaDon.getDsChiTietHoaDon().remove(chiTietHoaDon);
                     loadDataTableCTHoaDon();
-                    loadDataTableMatHangCa();
+                    for (int i = 0; i < tableMatHang.getRowCount(); i++) {
+                        ModelAdd data = (ModelAdd) ((DefaultTableModel) tableMatHang.getModel()).getValueAt(i, 3);
+                        MatHang mh = (MatHang) data.getObj();
+                        if (mh.equals(matHang)) {
+                            mh.setsLTonKho(matHang.getsLTonKho());
+                            ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), i, 1);
+                        }
+                    }
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
-                    txtDaCoc.setText(df.format(hoaDon.getDonGiaPhong()));
+                    txtTongHoaDon.setText(df.format(hoaDon.getTongHoaDon()));
                 } catch (Exception ex) {
-                    Logger.getLogger(DL_ThanhToan.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -158,9 +165,16 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                         hoaDon.themCT_HoaDon(matHang, -1);
                     }
                     loadDataTableCTHoaDon();
-                    loadDataTableMatHangCa();
+                    for (int i = 0; i < tableMatHang.getRowCount(); i++) {
+                        ModelAdd data = (ModelAdd) ((DefaultTableModel) tableMatHang.getModel()).getValueAt(i, 3);
+                        MatHang mh = (MatHang) data.getObj();
+                        if (mh.equals(matHang)) {
+                            mh.setsLTonKho(matHang.getsLTonKho());
+                            ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), i, 1);
+                        }
+                    }
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
-                    txtDaCoc.setText(df.format(hoaDon.getDonGiaPhong()));
+                    txtTongHoaDon.setText(df.format(hoaDon.getTongHoaDon()));
                 } catch (Exception ex) {
                     Logger.getLogger(DL_CapNhatDichVu.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -207,7 +221,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
 
         pnlMain = new javax.swing.JPanel();
         pnlBottomBar = new javax.swing.JPanel();
-        btnGiaoPhong = new javax.swing.JButton();
+        btnThanhToan = new javax.swing.JButton();
         btnHuy = new javax.swing.JButton();
         lblNhanVien = new javax.swing.JLabel();
         lblRole = new javax.swing.JLabel();
@@ -247,7 +261,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         txtTongHoaDon = new gui.swing.textfield.MyTextFieldPerUnit();
         lblTongHoaDon = new javax.swing.JLabel();
         lblThoiLai = new javax.swing.JLabel();
-        myTextFieldPerUnit4 = new gui.swing.textfield.MyTextFieldPerUnit();
+        txtThoiLai = new gui.swing.textfield.MyTextFieldPerUnit();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
@@ -255,7 +269,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         jSpinner1 = new javax.swing.JSpinner();
         jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        myTextFieldPerUnit5 = new gui.swing.textfield.MyTextFieldPerUnit();
+        txtChietKhau = new gui.swing.textfield.MyTextFieldPerUnit();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("TIếp nhận thuê phòng");
@@ -268,27 +282,27 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         pnlBottomBar.setBackground(new java.awt.Color(255, 255, 255));
         pnlBottomBar.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)));
 
-        btnGiaoPhong.setText("Thanh toán");
-        btnGiaoPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnGiaoPhong.addActionListener(new java.awt.event.ActionListener() {
+        btnThanhToan.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnThanhToan.setText("Thanh toán");
+        btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGiaoPhongActionPerformed(evt);
+                btnThanhToanActionPerformed(evt);
             }
         });
 
-        btnHuy.setText("Hủy");
         btnHuy.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnHuy.setText("Hủy");
         btnHuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHuyActionPerformed(evt);
             }
         });
 
-        lblNhanVien.setText("Đỗ Huy Hoàng");
         lblNhanVien.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblNhanVien.setText("Đỗ Huy Hoàng");
 
-        lblRole.setText("Quản lý");
         lblRole.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblRole.setText("Quản lý");
 
         javax.swing.GroupLayout pnlBottomBarLayout = new javax.swing.GroupLayout(pnlBottomBar);
         pnlBottomBar.setLayout(pnlBottomBarLayout);
@@ -302,7 +316,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 639, Short.MAX_VALUE)
                 .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnGiaoPhong)
+                .addComponent(btnThanhToan)
                 .addGap(22, 22, 22))
         );
         pnlBottomBarLayout.setVerticalGroup(
@@ -316,7 +330,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnHuy)
-                    .addComponent(btnGiaoPhong))
+                    .addComponent(btnThanhToan))
                 .addGap(20, 20, 20))
         );
 
@@ -344,8 +358,8 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             }
         });
 
-        lblLoaiDichVu.setText("Loại dịch vụ");
         lblLoaiDichVu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblLoaiDichVu.setText("Loại dịch vụ");
 
         tableMatHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -384,16 +398,16 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         pnlMatHangLayout.setHorizontalGroup(
             pnlMatHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMatHangLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(pnlMatHangLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(pnlMatHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlMatHangLayout.createSequentialGroup()
-                        .addComponent(lblLoaiDichVu)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addGroup(pnlMatHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlMatHangLayout.createSequentialGroup()
+                                .addComponent(lblLoaiDichVu)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbLoaiDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlMatHangLayout.setVerticalGroup(
@@ -416,14 +430,14 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         pnlTGThuePhong.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)), "Thời gian thuê phòng", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         pnlTGThuePhong.setOpaque(false);
 
-        lblThoiGianNhanPhong.setText("Thời gian nhận phòng");
         lblThoiGianNhanPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblThoiGianNhanPhong.setText("Thời gian nhận phòng");
 
-        lblThoiGianTraPhong.setText("Thời gian trả phòng");
         lblThoiGianTraPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblThoiGianTraPhong.setText("Thời gian trả phòng");
 
-        lblTienPhongDuKien.setText("Tiền phòng");
         lblTienPhongDuKien.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblTienPhongDuKien.setText("Tiền phòng");
 
         txtTienPhong.setEnabled(false);
         txtTienPhong.setUnit("VND");
@@ -491,11 +505,12 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                     .addComponent(lblThoiGianTraPhong)
                     .addComponent(thoiGianTraPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtGiaPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtGioHat, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(lblGioHat)
-                    .addComponent(lblGiaPhong))
+                .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtGioHat, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtGiaPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblGioHat)
+                        .addComponent(lblGiaPhong)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTienPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -503,8 +518,8 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                 .addGap(4, 4, 4))
         );
 
-        lblTienDv.setText("Tiền dịch vụ");
         lblTienDv.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblTienDv.setText("Tiền dịch vụ");
 
         tableCTHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -547,15 +562,15 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         txtTongTienMatHang.setEnabled(false);
         txtTongTienMatHang.setUnit("VND");
 
-        lblTenPhong.setText("Tên phòng");
         lblTenPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblTenPhong.setText("Tên phòng");
 
         txtTenPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtTenPhong.setText("Phòng 001");
         txtTenPhong.setEnabled(false);
 
-        lblLoaiPhong.setText("Loại phòng");
         lblLoaiPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblLoaiPhong.setText("Loại phòng");
 
         txtLoaiPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         txtLoaiPhong.setText("Phòng thường");
@@ -567,11 +582,11 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         txtDaCoc.setEnabled(false);
         txtDaCoc.setUnit("VND");
 
-        lblDaCoc.setText("Đã cọc");
         lblDaCoc.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblDaCoc.setText("Đã cọc");
 
-        lblMaHoaDon.setText("Mã hóa đơn");
         lblMaHoaDon.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblMaHoaDon.setText("Mã hóa đơn");
 
         txtTienKhachHang.setUnit("VND");
 
@@ -587,8 +602,8 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         lblThoiLai.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblThoiLai.setText("Thối lại");
 
-        myTextFieldPerUnit4.setEnabled(false);
-        myTextFieldPerUnit4.setUnit("VND");
+        txtThoiLai.setEnabled(false);
+        txtThoiLai.setUnit("VND");
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -638,7 +653,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel7.setText("Chiết khấu");
 
-        myTextFieldPerUnit5.setUnit("%");
+        txtChietKhau.setUnit("%");
 
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
@@ -666,7 +681,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                                     .addComponent(jLabel7))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(myTextFieldPerUnit5, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                                    .addComponent(txtChietKhau, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                                     .addComponent(txtDaCoc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtTongTienMatHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(pnlCenterLayout.createSequentialGroup()
@@ -679,7 +694,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtTienKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtTongHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(myTextFieldPerUnit4, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtThoiLai, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(lblTenPhong)
@@ -727,7 +742,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                                     .addComponent(lblDaCoc))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(myTextFieldPerUnit5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtChietKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel7))
                                 .addGap(10, 10, 10)
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -739,7 +754,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                                     .addComponent(lblTienKhachHang))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(myTextFieldPerUnit4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtThoiLai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblThoiLai))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
@@ -776,7 +791,14 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                     hoaDon.themCT_HoaDon(matHang, sl);
                 }
                 loadDataTableCTHoaDon();
-                loadDataTableMatHangCa();
+                for (int i = 0; i < tableMatHang.getRowCount(); i++) {
+                    ModelAdd data = (ModelAdd) ((DefaultTableModel) tableMatHang.getModel()).getValueAt(i, 3);
+                    MatHang mh = (MatHang) data.getObj();
+                    if (mh.equals(matHang)) {
+                        mh.setsLTonKho(matHang.getsLTonKho());
+                        ((DefaultTableModel) tableMatHang.getModel()).setValueAt(matHang.getsLTonKho(), i, 1);
+                    }
+                }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Mặt hàng không đủ số lượng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 loadDataTableCTHoaDon();
@@ -786,10 +808,12 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_tableCTHoaDonKeyReleased
 
-    private void btnGiaoPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiaoPhongActionPerformed
+    private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn trả phòng?\nLƯU Ý: Vui lòng kiểm tra và nhắc khách không để quên đồ", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            hoaDonService.addHoaDon(hoaDon);
-            List<ChiTietHoaDon> dsChiTietHoaDonTruocCapNhat = chiTietHoaDonService.getDsChiTietHoaDonByMaHoaDon(hoaDon.getMaHoaDon());;
+            hoaDon.setTrangThai(TrangThaiHoaDon.HOAN_THANH);
+            hoaDon.getPhong().setTrangThai(TrangThaiPhong.BAN);
+            List<ChiTietHoaDon> dsChiTietHoaDonTruocCapNhat = chiTietHoaDonService.getDsChiTietHoaDonByMaHoaDon(hoaDon.getMaHoaDon());
+            System.out.println(dsChiTietHoaDonTruocCapNhat);
             dsChiTietHoaDonTruocCapNhat.forEach(chiTietHoaDon -> {
                 if (!hoaDon.getDsChiTietHoaDon().contains(chiTietHoaDon)) {
                     chiTietHoaDonService.deleteChiTietHoaDon(chiTietHoaDon);
@@ -798,9 +822,10 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
                 chiTietHoaDonService.updateChiTietHoaDon(chiTietHoaDon);
             });
+            hoaDonService.finishHoaDon(hoaDon);
             dispose();
         }
-    }//GEN-LAST:event_btnGiaoPhongActionPerformed
+    }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         searchMatHang();
@@ -811,8 +836,8 @@ public class DL_ThanhToan extends javax.swing.JDialog {
     }//GEN-LAST:event_cbLoaiDichVuActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGiaoPhong;
     private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnThanhToan;
     private javax.swing.JComboBox<String> cbLoaiDichVu;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
@@ -840,8 +865,6 @@ public class DL_ThanhToan extends javax.swing.JDialog {
     private javax.swing.JLabel lblTienKhachHang;
     private javax.swing.JLabel lblTienPhongDuKien;
     private javax.swing.JLabel lblTongHoaDon;
-    private gui.swing.textfield.MyTextFieldPerUnit myTextFieldPerUnit4;
-    private gui.swing.textfield.MyTextFieldPerUnit myTextFieldPerUnit5;
     private javax.swing.JPanel pnlBottomBar;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlMain;
@@ -851,6 +874,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
     private gui.swing.table2.MyTableFlatlaf tableMatHang;
     private javax.swing.JSpinner thoiGianNhanPhong;
     private javax.swing.JSpinner thoiGianTraPhong;
+    private gui.swing.textfield.MyTextFieldPerUnit txtChietKhau;
     private gui.swing.textfield.MyTextFieldPerUnit txtDaCoc;
     private gui.swing.textfield.MyTextFieldPerUnit txtGiaPhong;
     private javax.swing.JTextField txtGioHat;
@@ -858,6 +882,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
     private javax.swing.JTextField txtMaHoaDon;
     private gui.swing.textfield.MyTextField txtSearch;
     private javax.swing.JTextField txtTenPhong;
+    private gui.swing.textfield.MyTextFieldPerUnit txtThoiLai;
     private gui.swing.textfield.MyTextFieldPerUnit txtTienKhachHang;
     private gui.swing.textfield.MyTextFieldPerUnit txtTienPhong;
     private gui.swing.textfield.MyTextFieldPerUnit txtTongHoaDon;

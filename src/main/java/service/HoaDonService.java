@@ -15,6 +15,7 @@ import java.util.List;
  */
 public interface HoaDonService {
     public boolean addHoaDon(HoaDon hoaDon);
+    public boolean finishHoaDon(HoaDon hoaDon);
     public List<HoaDon> getDsHoaDon();
     public HoaDon getHoaDon(String maHoaDon);
     public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang);

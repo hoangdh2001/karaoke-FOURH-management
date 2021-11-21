@@ -37,7 +37,7 @@ public class TabButton extends JPanel {
     }
     
     private void buildTabButton() {
-        setLayout(new MigLayout("insets 0", "0[]0", "0[fill,100%]0"));
+        setLayout(new MigLayout("debug, insets 0", "0[]0", "0[fill,100%]0"));
     }
     
     public void addTabButtonItem(String name) {

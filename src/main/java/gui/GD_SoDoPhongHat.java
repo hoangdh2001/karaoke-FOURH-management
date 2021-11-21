@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventTabSelected;
+import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -97,16 +98,16 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         txtSdt.setFont(new Font("sansserif", Font.PLAIN, 14));
         txtSdt.setBorderLine(true);
         txtSdt.setBorderRadius(5);
-        txtSdt.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                String sdt = txtSdt.getText().trim();
-                panelMap.initSearchRoom(phong_DAO.getPhongBySDT(sdt, panelMap.getIndexShowing()));
-                if (sdt.length() == 0) {
-                    panelMap.initSearchRoom(phong_DAO.getDsPhong());
-                }
-            }
-        });
+//        txtSdt.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyReleased(KeyEvent e) {
+//                String sdt = txtSdt.getText().trim();
+//                panelMap.initSearchRoom(phong_DAO.getPhongBySDT(sdt, panelMap.getIndexShowing()));
+//                if (sdt.length() == 0) {
+//                    panelMap.initSearchRoom(phong_DAO.getDsPhong());
+//                }
+//            }
+//        });
         pnlForm.add(txtSdt, "w 25%");
 
         JLabel lbTenPhong = new JLabel("Tên phòng:");
@@ -148,25 +149,25 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         timKiemBtn.setBorderline(true);
         timKiemBtn.setBorderRadius(5);
         timKiemBtn.setBackground(new Color(184, 238, 241));
-        timKiemBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                String tenPhong = txtTenPhong.getText().trim();
-                LoaiPhong loaiPhong = null;
-                if (!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--")) {
-                    loaiPhong = (LoaiPhong) cbLoaiPhongModel.getSelectedItem();
-                }
-
-                TrangThaiPhong trangThaiPhong = null;
-                if (!cbTrangThaiModel.getSelectedItem().toString().equals("--Tất cả--")) {
-                    trangThaiPhong = (TrangThaiPhong) cbTrangThaiModel.getSelectedItem();
-                }
-
-                panelMap.initSearchRoom(phong_DAO.getPhongByAttributes(panelMap.getIndexShowing(), tenPhong,
-                        loaiPhong,
-                        trangThaiPhong));
-            }
-        });
+//        timKiemBtn.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent arg0) {
+//                String tenPhong = txtTenPhong.getText().trim();
+//                LoaiPhong loaiPhong = null;
+//                if (!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--")) {
+//                    loaiPhong = (LoaiPhong) cbLoaiPhongModel.getSelectedItem();
+//                }
+//
+//                TrangThaiPhong trangThaiPhong = null;
+//                if (!cbTrangThaiModel.getSelectedItem().toString().equals("--Tất cả--")) {
+//                    trangThaiPhong = (TrangThaiPhong) cbTrangThaiModel.getSelectedItem();
+//                }
+//
+//                panelMap.initSearchRoom(phong_DAO.getPhongByAttributes(panelMap.getIndexShowing(), tenPhong,
+//                        loaiPhong,
+//                        trangThaiPhong));
+//            }
+//        });
         pnlForm.add(timKiemBtn, "cell 3 2, align right, w 80!, h 36!");
 
         loadDataForm();
@@ -276,7 +277,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
             @Override
             public void addBtnThemDichVuEvent(HoaDon hoaDon) {
-               try {
+                try {
                     LookAndFeel previousLF = UIManager.getLookAndFeel();
                     UIManager.setLookAndFeel(new FlatLightLaf());
                     DL_CapNhatDichVu dialog = new DL_CapNhatDichVu(hoaDon, GD_Chinh.NHAN_VIEN);
@@ -301,8 +302,37 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                     System.err.println(e);
                 }
             }
-            
-            
+
+            @Override
+            public void addBtnDonXongEvent(Phong phong) {
+                if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn đã dọn xong?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    phong.setTrangThai(TrangThaiPhong.TRONG);
+                    phong_DAO.updatePhong(phong);
+                    loadMap(panelMap.getIndexShowing());
+                }
+            }
+
+            @Override
+            public void addBtnSuaPhongEvent(Phong phong) {
+                phong.setTrangThai(TrangThaiPhong.DANG_SUA);
+                phong_DAO.updatePhong(phong);
+                loadMap(panelMap.getIndexShowing());
+            }
+
+            @Override
+            public void addBtnDonPhongEvent(Phong phong) {
+                phong.setTrangThai(TrangThaiPhong.DANG_DON);
+                phong_DAO.updatePhong(phong);
+                loadMap(panelMap.getIndexShowing());
+            }
+
+            @Override
+            public void addBtnSuaXongEvent(Phong phong) {
+                phong.setTrangThai(TrangThaiPhong.TRONG);
+                phong_DAO.updatePhong(phong);
+                loadMap(panelMap.getIndexShowing());
+            }
+
         });
         loadMap(0);
 
@@ -312,6 +342,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
     private void loadMap(int index) {
         List<Phong> dsPhong = phong_DAO.getDsPhongByTang(index);
+        System.out.println(dsPhong);
         panelMap.loadMap(dsPhong, index);
     }
 

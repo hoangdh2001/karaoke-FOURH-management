@@ -31,7 +31,7 @@ public class HoaDon_DAO implements HoaDonService{
         
         try {
             tr.begin();
-            session.saveOrUpdate(hoaDon);
+            session.save(hoaDon);
             tr.commit();
             return true;
         } catch (Exception e) {
@@ -40,6 +40,25 @@ public class HoaDon_DAO implements HoaDonService{
         return false;
     }
 
+    @Override
+    public boolean finishHoaDon(HoaDon hoaDon) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.update(hoaDon);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        } finally {
+            session.close();
+        }
+        return false;
+    }
+    
     @Override
     public List<HoaDon> getDsHoaDon() {
         Session session = sessionFactory.openSession();
@@ -436,7 +455,7 @@ public class HoaDon_DAO implements HoaDonService{
 
     @Override
     public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
         String sql = "select * from HoaDon where maPhong = '"+ id +"' and trangThai = '"+ trangThai +"'";

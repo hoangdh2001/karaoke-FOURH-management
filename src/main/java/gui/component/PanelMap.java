@@ -1,8 +1,6 @@
 package gui.component;
 
 import dao.HoaDon_DAO;
-import dao.KhachHang_DAO;
-import dao.Phong_DAO;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiHoaDon;
@@ -15,7 +13,6 @@ import gui.swing.panel.TabButton;
 import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,9 +24,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import gui.swing.event.EventShowInfoOver;
+import gui.swing.textfield.MyTextField;
 import java.awt.event.ActionListener;
-import service.KhachHangService;
-import service.PhongService;
+import javax.swing.ImageIcon;
 
 public class PanelMap extends PanelShadow {
 
@@ -101,6 +98,12 @@ public class PanelMap extends PanelShadow {
 
     private JPanel createTabPane() {
         tabPane = new TabButton();
+        MyTextField txtSearch = new MyTextField();
+        txtSearch.setBorderLine(true);
+        txtSearch.setBorderRadius(10);
+        txtSearch.setBackgroundColor(Color.red);
+//        txtSearch.setPrefixIcon(new ImageIcon(getClass().getResource("search_25px.png")));
+        tabPane.add(txtSearch, "w 20%");
         tabPane.setBackground(Color.WHITE);
         return tabPane;
     }
@@ -150,6 +153,7 @@ public class PanelMap extends PanelShadow {
 
     public void loadMap(List<Phong> dsPhong, int tang) {
         panels.get(tang).removeAll();
+        System.out.println(dsPhong);
         for (Phong phong : dsPhong) {
             if(phong.getTrangThai() == TrangThaiPhong.DANG_HAT) {
                 HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong(), TrangThaiHoaDon.DANG_XU_LY);

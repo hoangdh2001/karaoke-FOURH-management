@@ -211,7 +211,10 @@ public class Phong_DAO implements PhongService {
             tr.commit();
             return rs;
         } catch (Exception e) {
+            e.printStackTrace();
             tr.rollback();
+        } finally {
+            session.close();
         }
         return null;
     }

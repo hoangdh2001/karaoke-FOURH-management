@@ -331,7 +331,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 Date date;
                 date = sdf.parse(event.getNewDateTimePermissive().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
                 hoaDon.setThoiGianBatDau(date);
-                txtTongTienMatHang.setText(df.format(hoaDon.getDonGiaPhong()));
+                txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
             } catch (ParseException ex) {
                 Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1122,7 +1122,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void btnGiaoPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiaoPhongActionPerformed
         hoaDon.getPhong().setTrangThai(TrangThaiPhong.DANG_HAT);
         khachHangService.themKhachHang(hoaDon.getKhachHang());
-        hoaDonService.addHoaDon(hoaDon);
+        System.out.println(hoaDonService.addHoaDon(hoaDon));
         hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
             chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
         });
