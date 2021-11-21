@@ -34,6 +34,7 @@ public class Phong {
     @JoinColumn(name = "maLoaiPhong", nullable = false)
     private LoaiPhong loaiPhong;
     private int tang;
+    @JoinColumn(columnDefinition = "image")
     private byte[] anhPhong;
 
     /**
