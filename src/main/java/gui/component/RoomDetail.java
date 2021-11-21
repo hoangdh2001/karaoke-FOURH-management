@@ -1,15 +1,10 @@
 package gui.component;
 
 import entity.Phong;
-import gui.component.PanelInfoOverBottom;
-import gui.component.PanelInfoOverTop;
 import gui.swing.panel.PanelShadow;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
@@ -27,7 +22,7 @@ public class RoomDetail extends javax.swing.JDialog {
     private final MigLayout layout2;
     private Phong phong;
     private final DecimalFormat df = new DecimalFormat("##0.###");
-    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+    private final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
 
     public boolean isShow() {
         return show;
@@ -53,12 +48,12 @@ public class RoomDetail extends javax.swing.JDialog {
         panelShadow.setBorder(new EmptyBorder(15, 15, 15, 15));
         panelShadow.setLayout(layout2 = new MigLayout("fillx, debug, insets 0", "[fill]", "[fill]"));
 
-        PanelInfoOverTop pnlTop = new PanelInfoOverTop();
+        PanelInfoOverTop pnlTop = new PanelInfoOverTop(phong.getAnhPhong());
         pnlTop.setBorder(new MatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
         pnlTop.setBackground(Color.WHITE);
         panelShadow.add(pnlTop, "h 180!");
 
-        pnlBottom = new PanelInfoOverBottom();
+        pnlBottom = new PanelInfoOverBottom(phong);
         pnlBottom.setBackground(Color.WHITE);
         pnlBottom.setVisible(false);
         panelShadow.add(pnlBottom, "pos 0al 0 n n, h 30%");
@@ -72,7 +67,7 @@ public class RoomDetail extends javax.swing.JDialog {
             public void timingEvent(float fraction) {
                 double fractionSize = 210 + ((getHeight() - 210) * fraction);
                 double fractionPoint;
-                fractionPoint = Double.valueOf(df.format(210 * fraction));
+                fractionPoint = Double.valueOf(df.format(190 * fraction));
                 if (fraction >= 0.5f) {
                     pnlBottom.setVisible(true);
                 }

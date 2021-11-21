@@ -1,85 +1,63 @@
 package gui.component;
 
-public class PanelInfoOverBottom extends javax.swing.JPanel {
+import entity.Phong;
+import gui.swing.table2.CellStatus;
+import java.awt.Font;
+import javax.swing.JLabel;
+import net.miginfocom.swing.MigLayout;
 
-    public PanelInfoOverBottom() {
+public class PanelInfoOverBottom extends javax.swing.JPanel {
+    private MigLayout layout;
+    private Phong phong;
+    private final Font font = new Font("Sansserif", Font.PLAIN, 14);
+    
+    public PanelInfoOverBottom(Phong phong) {
+        this.phong = phong;
         initComponents();
+        bulidPanelInfoOverBottom();
+    }
+    
+    private void bulidPanelInfoOverBottom() {
+        layout = new MigLayout("debug, wrap", "", "15[]15");
+        setLayout(layout);
+        JLabel lblTT = new JLabel("Thông tin phòng hát");
+        lblTT.setFont(new Font("sasserif", Font.BOLD, 16));
+        add(lblTT);
+        JLabel lblTenPhong = new JLabel("Tên " + phong.getTenPhong());
+        lblTenPhong.setFont(font);
+        add(lblTenPhong);
+        
+        JLabel lblTrangThai = new JLabel("Trạng thái ");
+        lblTrangThai.setFont(font);
+        add(lblTrangThai, "split 2");
+        CellStatus status = new CellStatus(phong.getTrangThai());
+        status.setOpaque(false);
+        add(status);
+        
+        JLabel lblTang = new JLabel("Tầng " + phong.getTang());
+        lblTang.setFont(font);
+        add(lblTang);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-
         setOpaque(false);
-
-        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel1.setText("Trạng thái");
-
-        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel2.setText("Trạng thái");
-
-        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel3.setText("Trạng thái");
-
-        jLabel4.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel4.setText("Trạng thái");
-
-        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel5.setText("Trạng thái");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(53, 53, 53)
-                                .addComponent(jLabel5)))))
-                .addContainerGap(37, Short.MAX_VALUE))
+            .addGap(0, 391, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel5))
-                .addGap(42, 42, 42)
-                .addComponent(jLabel2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(jLabel3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel4)))
-                .addContainerGap(46, Short.MAX_VALUE))
+            .addGap(0, 281, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }
