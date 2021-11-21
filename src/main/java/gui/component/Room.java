@@ -7,6 +7,7 @@ import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
 import gui.GD_Chinh;
+import gui.GD_LapHoaDon;
 import gui.GD_TiepNhanDatPhong;
 import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.panel.PanelShadow;
@@ -56,6 +57,7 @@ public class Room extends PanelShadow {
     private JMenuItem mniDonPhong;
     private JMenuItem mniSuaPhong;
     private int index;
+    private Button btnThanhToan;
     
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -205,11 +207,17 @@ public class Room extends PanelShadow {
             }
         });
 
-        Button btnThanhToan = new Button("Thanh toán", true);
+        btnThanhToan = new Button("Thanh toán", true);
         btnThanhToan.setForeground(Color.WHITE);
         btnThanhToan.setBackground(new Color(0, 31, 63));
         btnThanhToan.setBorderRadius(5);
         pnlDangHat.add(btnThanhToan, "split 2");
+        btnThanhToan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GD_LapHoaDon(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
+            }
+        });
 
         Button btnThemDichVu = new Button("DV", true);
         btnThemDichVu.setForeground(Color.WHITE);
@@ -278,14 +286,14 @@ public class Room extends PanelShadow {
         btnThue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                try {
-                    LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
-                    UIManager.setLookAndFeel(previousLF);
-                } catch (UnsupportedLookAndFeelException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    LookAndFeel previousLF = UIManager.getLookAndFeel();
+//                    UIManager.setLookAndFeel(new FlatLightLaf());
+                    new GD_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
+//                    UIManager.setLookAndFeel(previousLF);
+//                } catch (UnsupportedLookAndFeelException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
         pnlPhongTrong.add(btnThue);
