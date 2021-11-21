@@ -9,4 +9,5 @@ public interface MatHangService {
     public boolean deleteMatHang(String id);
     public MatHang getMatHang(String id);
     public List<MatHang> getDsMatHang();
+    public List<MatHang> layDsMatHangTheoTen(String tenMatHang);
 }

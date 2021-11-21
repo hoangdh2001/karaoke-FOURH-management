@@ -6,7 +6,7 @@
 package service;
 
 import entity.HoaDon;
-import java.util.Date;
+import entity.TrangThaiHoaDon;
 import java.util.List;
 
 /**
@@ -15,6 +15,7 @@ import java.util.List;
  */
 public interface HoaDonService {
     public boolean addHoaDon(HoaDon hoaDon);
+    public boolean finishHoaDon(HoaDon hoaDon);
     public List<HoaDon> getDsHoaDon();
     public HoaDon getHoaDon(String maHoaDon);
     public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang);
@@ -34,4 +35,5 @@ public interface HoaDonService {
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();
     public String getMaxID();
+    public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai );
 }

@@ -52,7 +52,7 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
         lblTTTienMatHang.setText(dcf.format(hoaDon.getTongTienMatHang()));
         List<ChiTietHoaDon> dsChiTiet = hoaDon.getDsChiTietHoaDon();
         for(ChiTietHoaDon ct: dsChiTiet){
-            tblChiTiet.addRow(new Object[]{ct.getMatHang().getMaMatHang(), ct.getMatHang().getTenMatHang(), dcf1.format(ct.getMatHang().getDonGia()), ct.getSoLuong(), ct.getChietKhau(),dcf1.format(ct.getThanhTien())});
+            tblChiTiet.addRow(new Object[]{ct.getMatHang().getMaMatHang(), ct.getMatHang().getTenMatHang(), dcf1.format(ct.getMatHang().getDonGia()), ct.getSoLuong(),dcf1.format(ct.getThanhTien())});
         }
     }
 

@@ -753,7 +753,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                         int soluong = Integer.parseInt(tableDichVuDaChon.getValueAt(i, 1).toString());
                         if (soluong > 0) {
                             MatHang matHang = nhaCungCapVaNhaphang_DAO.getMatHang(cb.getMa());
-                            ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(hoaDon, matHang, soluong, 0.0f);
+                            ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(hoaDon,matHang, soluong);
                             nhaCungCapVaNhaphang_DAO.insertCTHoaDon(ctHoaDon);
                             nhaCungCapVaNhaphang_DAO.updateSLMatHang(cb.getMa(), soluong, "decrease");
                         }

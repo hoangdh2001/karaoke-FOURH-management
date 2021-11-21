@@ -9,10 +9,15 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import objectcombobox.ObjectComboBox;
 
 @Entity
 @IdClass(ChiTietHoaDon_PK.class)
+@NamedQueries({
+    @NamedQuery(name = "getDsChiTietHoaDonByMaHoaDon", query = "select ct from ChiTietHoaDon ct where maHoaDon = :maHoaDon")
+})
 public class ChiTietHoaDon {
 
     @Id
@@ -25,7 +30,6 @@ public class ChiTietHoaDon {
     private MatHang matHang;
     @Column(nullable = false)
     private int soLuong;
-    private float chietKhau;
     @Column(columnDefinition = "money")
     private double thanhTien;
     
@@ -35,11 +39,10 @@ public class ChiTietHoaDon {
      * @param soLuong
      * @param chietKhau 
      */
-    public ChiTietHoaDon(HoaDon hoaDon, MatHang matHang, int soLuong, float chietKhau) {
+    public ChiTietHoaDon(HoaDon hoaDon, MatHang matHang, int soLuong) {
         this.hoaDon = hoaDon;
         this.matHang = matHang;
         this.soLuong = soLuong;
-        this.chietKhau = chietKhau;
         this.thanhTien = getThanhTien();
     }
 
@@ -92,29 +95,15 @@ public class ChiTietHoaDon {
     }
 
     /**
-     * @return the chietKhau
-     */
-    public float getChietKhau() {
-        return chietKhau;
-    }
-
-    /**
-     * @param chietKhau the chietKhau to set
-     */
-    public void setChietKhau(float chietKhau) {
-        this.chietKhau = chietKhau;
-    }
-
-    /**
      * @return the thanhTien
      */
     public double getThanhTien() {
-        return soLuong * matHang.getDonGia() * (1 - chietKhau);
+        return soLuong * matHang.getDonGia();
     }
 
     @Override
     public String toString() {
-        return "ChiTietHoaDon [matHang=" + matHang + ", soLuong=" + soLuong + ", chietKhau=" + chietKhau
+        return "ChiTietHoaDon [matHang=" + matHang + ", soLuong=" + soLuong
                 + ", thanhTien=" + thanhTien + "]";
     }
 

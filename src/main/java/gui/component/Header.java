@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Header extends PanelShadow {
     private final SimpleDateFormat dfDate = new SimpleDateFormat("dd-MM-yyyy");
-    private final SimpleDateFormat dfTime = new SimpleDateFormat("hh:MM:ss");
+    private final SimpleDateFormat dfTime = new SimpleDateFormat("hh:mm:ss");
     private Thread thread;
     private boolean start = true;
     

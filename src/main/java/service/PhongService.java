@@ -13,6 +13,7 @@ public interface PhongService {
     public List<Phong> getDsPhong();
     public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai);
     public List<Phong> getPhongByAttributes(int tang, String tenPhong, LoaiPhong loaiPhong, TrangThaiPhong trangThai);
-    public List<Phong> getPhongBySDT(String sdt, int tang);
-    
+    public List<Phong> getDsPhongBySDTOrTen(String sdt, int tang);
+    public int getTang();
+    public List<Phong> getDsPhongByTang(int tang, String tenPhong, LoaiPhong loaiPhong);
 }
