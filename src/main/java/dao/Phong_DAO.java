@@ -162,8 +162,8 @@ public class Phong_DAO implements PhongService {
         String sql = "select p.* from Phong p inner join HoaDon hd "
                 + "on p.maPhong = hd.maPhong inner join KhachHang kh "
                 + "on kh.maKhachHang = hd.maKhachHang "
-                + "where sdt like '%"+ sdtOrTen +"%' "
-                + "or tenKhachHang like N'%"+ sdtOrTen +"%' "
+                + "where (sdt like '%"+ sdtOrTen +"%' "
+                + "or tenKhachHang like N'%"+ sdtOrTen +"%') "
                 + "and tang like '%"+ (tang == 0 ? "":tang) +"%' "
                 + "and p.trangThai = '"+ TrangThaiPhong.DANG_HAT+"'";
         

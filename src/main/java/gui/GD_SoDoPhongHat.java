@@ -92,21 +92,14 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private JPanel createPanelForm() {
         JPanel pnlForm = new JPanel();
         pnlForm.setOpaque(false);
-        pnlForm.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[center]push", "40[center]10[center]30"));
-
-        JLabel lbTenPhong = new JLabel("Tên phòng:");
-        lbTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
-        pnlForm.add(lbTenPhong);
+        pnlForm.setLayout(new MigLayout("fill", "push[center]20[center]push", "40[center]15[center]25"));
 
         txtTenPhong = new MyTextField();
         txtTenPhong.setBorderLine(true);
         txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         txtTenPhong.setBorderRadius(10);
+        txtTenPhong.setHint("Nhập tên phòng...");
         pnlForm.add(txtTenPhong, "w 25%, h 35!");
-
-        JLabel lbLoaiPhong = new JLabel("Loại phòng:");
-        lbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
-        pnlForm.add(lbLoaiPhong);
 
         cbLoaiPhongModel = new DefaultComboBoxModel<>();
         cbLoaiPhong = new MyComboBox<>(cbLoaiPhongModel);
@@ -114,22 +107,27 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         cbLoaiPhong.setBorderLine(true);
         cbLoaiPhong.setBorderRadius(10);
-        pnlForm.add(cbLoaiPhong, "w 25%, h 35!");
+        pnlForm.add(cbLoaiPhong, "w 25%, h 35!, wrap");
 
-//        JLabel lbTrangThai = new JLabel("Trạng thái");
-//        lbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 14));
-//        pnlForm.add(lbTrangThai);
-//        cbTrangThaiModel = new DefaultComboBoxModel<>();
-//        MyComboBox<String> cbTrangThai = new MyComboBox<>(cbTrangThaiModel);
-//        cbTrangThai.addItem("--Tất cả--");
-//        cbTrangThai.setFont(new Font("sansserif", Font.PLAIN, 14));
-//        cbTrangThai.setBorderLine(true);
-//        cbTrangThai.setBorderRadius(10);
-//        pnlForm.add(cbTrangThai, "w 25%, h 30!, wrap");
+        Button btnRefesh = new Button("Làm mới");
+        btnRefesh.setFont(new Font("sansserif", Font.PLAIN, 14));
+        btnRefesh.setBorderline(true);
+        btnRefesh.setBorderRadius(10);
+        btnRefesh.setBackground(new Color(184, 238, 241));
+        btnRefesh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                txtTenPhong.setText("");
+                cbLoaiPhong.setSelectedIndex(0);
+                loadMap(panelMap.getIndexShowing());
+            }
+        });
+        pnlForm.add(btnRefesh, "w 80!, h 30!, split 2, skip 1, right");
+        
         Button timKiemBtn = new Button("Tìm kiếm");
         timKiemBtn.setFont(new Font("sansserif", Font.PLAIN, 14));
         timKiemBtn.setBorderline(true);
-        timKiemBtn.setBorderRadius(5);
+        timKiemBtn.setBorderRadius(10);
         timKiemBtn.setBackground(new Color(184, 238, 241));
         timKiemBtn.addActionListener(new ActionListener() {
             @Override
@@ -138,7 +136,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             }
             
         });
-        pnlForm.add(timKiemBtn, "cell 3 1, align right, w 80!, h 30!");
+        pnlForm.add(timKiemBtn, "w 80!, h 30!, right");
 
         loadDataForm();
 
