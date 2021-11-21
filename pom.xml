@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>9.4.0.jre8</version>
+            <version>9.4.0.jre11</version>
         </dependency>
         <dependency>
             <groupId>poi</groupId>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.4</version>
         </dependency>
         
     </dependencies>

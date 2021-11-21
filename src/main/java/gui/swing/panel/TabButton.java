@@ -6,6 +6,7 @@
 package gui.swing.panel;
 
 import gui.swing.event.EventTabSelected;
+import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -33,11 +34,7 @@ public class TabButton extends JPanel {
     
     public TabButton() {
         setOpaque(false);
-        buildTabButton();
-    }
-    
-    private void buildTabButton() {
-        setLayout(new MigLayout("insets 0", "0[]0", "0[fill,100%]0"));
+        setLayout(new MigLayout("insets 0", "0[]0", "0[]0"));
     }
     
     public void addTabButtonItem(String name) {
@@ -45,8 +42,6 @@ public class TabButton extends JPanel {
         tabButtonItem.setSelectedTab(getComponentCount() == 0 ? (true):(false));
         tabButtonItem.setEvent(event);
         add(tabButtonItem, "w 100!, h 40!");
-        repaint();
-        revalidate();
         tabButtonItems.add(tabButtonItem);
     }
     
@@ -68,10 +63,10 @@ public class TabButton extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
         g2.fillRect(0, 0, getWidth(), getHeight());
-        if(getComponentCount() > 0) {
+        if(getComponentCount()> 0) {
             g2.setColor(new Color(0, 0, 0, 0.1f));
-            g2.fillRect(getComponent(getComponentCount() - 1).getX() + 100, getHeight() - 1, getWidth(), 5);
+            g2.fillRect(getComponent(getComponentCount() - 2).getX() + 100, getHeight() - 1, getWidth(), 5);
         }
-        super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
+        super.paintComponent(g);
     }
 }

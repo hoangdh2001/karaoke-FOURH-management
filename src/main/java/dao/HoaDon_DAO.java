@@ -1,6 +1,8 @@
 package dao;
 
 import entity.HoaDon;
+import entity.TrangThaiHoaDon;
+import entity.TrangThaiPhong;
 import java.util.Collections;
 import java.util.List;
 import org.hibernate.Session;
@@ -37,6 +39,25 @@ public class HoaDon_DAO implements HoaDonService{
         }
         return false;
     }
+
+    @Override
+    public boolean finishHoaDon(HoaDon hoaDon) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.update(hoaDon);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        } finally {
+            session.close();
+        }
+        return false;
+    }
     
     @Override
     public List<HoaDon> getDsHoaDon() {
@@ -57,7 +78,8 @@ public class HoaDon_DAO implements HoaDonService{
         session.close();
         return null;
     }
-
+    
+    
     @Override
     public HoaDon getHoaDon(String maHoaDon) {
         Session session = sessionFactory.openSession();
@@ -420,9 +442,9 @@ public class HoaDon_DAO implements HoaDonService{
         
         try {
             tr.begin();
-            String id = String.valueOf(session
+            String id = (String) session
                     .createNativeQuery(sql)
-                    .getSingleResult());
+                    .getSingleResult();
             tr.commit();
             return id;
         } catch (Exception e) {
@@ -430,6 +452,26 @@ public class HoaDon_DAO implements HoaDonService{
         }
         return null;
     }
-    
+
+    @Override
+    public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from HoaDon where maPhong = '"+ id +"' and trangThai = '"+ trangThai +"'";
+        
+        try {
+            tr.begin();
+            HoaDon hoaDon = session
+                    .createNativeQuery(sql, HoaDon.class)
+                    .getSingleResult();
+            tr.commit();
+            return hoaDon;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
 }
 
+    

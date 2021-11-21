@@ -21,6 +21,7 @@ public class GD_DangNhap extends javax.swing.JFrame {
     private final Animator animator;
     private NhanVien nhanVien;
     private NhanVienService nhanVienService;
+    private Thread thread;
 
     public GD_DangNhap(String title) {
         super(title);
@@ -55,16 +56,19 @@ public class GD_DangNhap extends javax.swing.JFrame {
         pnlLoading.setVisible(true);
         pnlForm.setVisible(false);
 
-        new Thread(() -> {
+        thread = new Thread(() -> {
             nhanVienService = new NhanVien_DAO();
             if (nhanVienService.checkConnect()) {
                 hiddenLoading();
-
+                thread.stop();
             } else {
                 close();
                 System.out.println("Not connect");
+                thread.start();
             }
-        }).start();
+        });
+        
+        thread.start();
 
         pnlForm.addEventLogin(new EventLogin() {
             @Override
@@ -81,29 +85,33 @@ public class GD_DangNhap extends javax.swing.JFrame {
                 }
                 pnlLoading.setAlpha(0.5f);
                 pnlLoading.setVisible(true);
-                new Thread(() -> {
+                thread = new Thread(() -> {
                     try {
                         Thread.sleep(2000);
                         nhanVien = nhanVienService.getNhanVienByLogin(sdt, matKhau);
                         if (nhanVien != null) {
                             pnlLoading.setVisible(false);
                             showDLProgress();
+                            thread.stop();
                         } else {
                             pnlLoading.setVisible(false);
                             pnlForm.setTextWhenBack();
                             pnlForm.showMessage(Message.MessageType.ERROR, "Tên tài khoản hoặc mật khẩu bạn đã nhập không chính xác");
+                            thread.stop();;
                         }
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }).start();
+                });
+                
+                thread.start();
             }
 
             @Override
             public void searchUser(String sdtOrEmail, Component comShow, Component comHidden) {
                 pnlLoading.setAlpha(0.5f);
                 pnlLoading.setVisible(true);
-                new Thread(() -> {
+                thread = new Thread(() -> {
                     try {
                         Thread.sleep(2000);
                         nhanVien = nhanVienService.getNhanVienBySdtOrEmail(sdtOrEmail);
@@ -111,14 +119,17 @@ public class GD_DangNhap extends javax.swing.JFrame {
                             pnlLoading.setVisible(false);
                             comShow.setVisible(true);
                             comHidden.setVisible(false);
+                            thread.stop();
                         } else {
                             pnlLoading.setVisible(false);
                             pnlForm.showMessage(Message.MessageType.ERROR, "Số điện thoại hoặc email không tồn tại!");
+                            thread.stop();
                         }
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }).start();
+                });
+                thread.start();
             }
 
             @Override

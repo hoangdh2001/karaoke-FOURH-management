@@ -1,5 +1,6 @@
 package gui.component;
 
+import entity.Phong;
 import gui.component.PanelInfoOverBottom;
 import gui.component.PanelInfoOverTop;
 import gui.swing.panel.PanelShadow;
@@ -24,6 +25,7 @@ public class RoomDetail extends javax.swing.JDialog {
     private final PanelShadow panelShadow;
     private PanelInfoOverBottom pnlBottom;
     private final MigLayout layout2;
+    private Phong phong;
     private final DecimalFormat df = new DecimalFormat("##0.###");
     private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
 
@@ -35,8 +37,9 @@ public class RoomDetail extends javax.swing.JDialog {
         this.show = show;
     }
 
-    public RoomDetail(java.awt.Frame parent) {
+    public RoomDetail(java.awt.Frame parent, Phong phong) {
         super(parent, false);
+        this.phong = phong;
         dfs.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(dfs);
         initComponents();

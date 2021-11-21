@@ -7,6 +7,7 @@ import entity.KhachHang;
 public interface KhachHangService {
     public boolean themKhachHang(KhachHang khachHang);
     public boolean xoaKhachHang(String maKhachHang);
+    public boolean capNhatKhachHang(KhachHang khachHang);
     public KhachHang getKhachHang(String id);
     public List<KhachHang> getDSKhachHang();
     public boolean capNhatKhachHang(String maKhachHang, String soDienThoaiMoi);

@@ -23,6 +23,7 @@ import gui.component.Menu;
 import gui.component.NhanVienDetail;
 import gui.component.PanelThemNhanVien;
 import gui.component.PhieuDatPhongDetail;
+import gui.component.Room;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
@@ -74,6 +75,7 @@ public class GD_Chinh extends JFrame {
         GD_Chinh.NHAN_VIEN = nhanVien;
         GD_Chinh.FRAME = frame;
         buidGD_Chinh();
+        
     }
 
     /**
@@ -207,8 +209,8 @@ public class GD_Chinh extends JFrame {
                             soDoPhongHat.addEvent(new EventShowInfoOver() {
                                 @Override
                                 public void showInfoOver(Component com, MouseEvent e) {
-                                    //                MenuItem item = (MenuItem) com;
-                                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                                    Room item = (Room) com;
+                                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
                                     int x = 0;
                                     int y = 0;
                                     if ((e.getXOnScreen() + 400) >= 1920) {
@@ -330,6 +332,9 @@ public class GD_Chinh extends JFrame {
                             content.showForm(new GD_ThongKeHangHoa());
                         }
                         break;
+                    case 6:
+                        content.showForm(new GD_QLHangHoa());
+                        break;
                     default:
                         break;
                 }
@@ -365,8 +370,8 @@ public class GD_Chinh extends JFrame {
         soDoPhongHat.addEvent(new EventShowInfoOver() {
             @Override
             public void showInfoOver(Component com, MouseEvent e) {
-//                MenuItem item = (MenuItem) com;
-                RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                Room item = (Room) com;
+                RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
                 int x = 0;
                 int y = 0;
                 if ((e.getXOnScreen() + 400) >= 1920) {
@@ -378,6 +383,7 @@ public class GD_Chinh extends JFrame {
                 }
                 infoOver.setLocation(x, y);
                 infoOver.setVisible(true);
+                
                 sp.addMouseWheelListener(new MouseWheelListener() {
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent arg0) {

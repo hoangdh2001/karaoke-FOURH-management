@@ -133,11 +133,12 @@ public class MatHang {
                 + ", sLTonKho=" + sLTonKho + ", donGia=" + donGia + "]";
     }
 
-//    public Object[] convertToRowTableInGDTiepNhanDatPhong(EventAdd event) {
-//        DecimalFormat df;
-//        df = new DecimalFormat("#,##0 VND");
-//        return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), new ModelAdd(this, event)};
-//    }
+    public Object[] convertToRowTableInGDTiepNhanDatPhong(EventAdd event) {
+        DecimalFormat df;
+        df = new DecimalFormat("#,##0 VND");
+        return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), new ModelAdd(this, event)};
+    }
+    
     public Object[] convertToRowTableInGDTiepNhanDatPhong() {
         DecimalFormat df;
         df = new DecimalFormat("#,##0.00");
