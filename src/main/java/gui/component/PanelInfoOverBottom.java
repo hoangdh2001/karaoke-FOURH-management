@@ -11,7 +11,7 @@ public class PanelInfoOverBottom extends javax.swing.JPanel {
     private MigLayout layout;
     private Phong phong;
     private final Font font = new Font("Sansserif", Font.PLAIN, 14);
-    private final DecimalFormat df = new DecimalFormat("##0.# Đ");
+    private final DecimalFormat df = new DecimalFormat("#,### Đ");
     
     public PanelInfoOverBottom(Phong phong) {
         this.phong = phong;

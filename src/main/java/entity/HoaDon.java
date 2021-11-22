@@ -318,7 +318,7 @@ public class HoaDon {
      * @return thoiLai
      */
     public double getTienThua() {
-        return tienKhachDua - tongHoaDon;
+        return tienThua = getTienKhachDua() - getTongHoaDon();
     }
     
     @Override

@@ -128,7 +128,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         dcsNgayDatTK = new JDateChooser();
         dcsNgayDatTK.setFont(new Font(fontName, fontPlain, font14));
         dcsNgayDatTK.setOpaque(false);
-        pnlTop.add(dcsNgayDatTK, "w 20%, h 30!, wrap");
+        pnlTop.add(dcsNgayDatTK, "w 20%, h 30!");
 
         // Nút Làm mới
         btnLamMoi = new Button("Làm mới");

@@ -122,7 +122,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             }
         });
         pnlForm.add(btnRefesh, "w 80!, h 30!, split 2, skip 1, right");
-        
+
         Button timKiemBtn = new Button("Tìm kiếm");
         timKiemBtn.setFont(new Font("sansserif", Font.PLAIN, 14));
         timKiemBtn.setBorderline(true);
@@ -133,7 +133,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 loadMap(panelMap.getIndexShowing());
             }
-            
+
         });
         pnlForm.add(timKiemBtn, "w 80!, h 30!, right");
 
@@ -228,46 +228,24 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         panelMap.addEventRoom(new EventRoom() {
             @Override
             public HoaDon addBtnThueEvent(Phong phong) {
-                try {
-                    LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
-                    dlDialog.setVisible(true);
-                    loadMap(panelMap.getIndexShowing());
-                    UIManager.setLookAndFeel(previousLF);
-                    return dlDialog.getHoaDon();
-                } catch (UnsupportedLookAndFeelException e) {
-                    System.err.println(e);
-                }
-                return null;
+                DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
+                dlDialog.setVisible(true);
+                loadMap(panelMap.getIndexShowing());
+                return dlDialog.getHoaDon();
             }
 
             @Override
             public void addBtnThemDichVuEvent(HoaDon hoaDon) {
-                try {
-                    LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    DL_CapNhatDichVu dialog = new DL_CapNhatDichVu(hoaDon, GD_Chinh.NHAN_VIEN);
-                    dialog.setVisible(true);
-                    loadMap(panelMap.getIndexShowing());
-                    UIManager.setLookAndFeel(previousLF);
-                } catch (UnsupportedLookAndFeelException e) {
-                    System.err.println(e);
-                }
+                DL_CapNhatDichVu dialog = new DL_CapNhatDichVu(hoaDon, GD_Chinh.NHAN_VIEN);
+                dialog.setVisible(true);
+                loadMap(panelMap.getIndexShowing());
             }
 
             @Override
             public void addBtnThanhToanEvent(HoaDon hoaDon) {
-                try {
-                    LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    DL_ThanhToan dialog = new DL_ThanhToan(hoaDon, GD_Chinh.NHAN_VIEN);
-                    dialog.setVisible(true);
-                    loadMap(panelMap.getIndexShowing());
-                    UIManager.setLookAndFeel(previousLF);
-                } catch (UnsupportedLookAndFeelException e) {
-                    System.err.println(e);
-                }
+                DL_ThanhToan dialog = new DL_ThanhToan(hoaDon, GD_Chinh.NHAN_VIEN);
+                dialog.setVisible(true);
+                loadMap(panelMap.getIndexShowing());
             }
 
             @Override

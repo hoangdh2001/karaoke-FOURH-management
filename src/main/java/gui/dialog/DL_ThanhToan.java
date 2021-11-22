@@ -92,7 +92,6 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             txtGioHat.setText(hoaDon.getGioHat());
             txtGiaPhong.setText(df.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()));
             thoiGianNhanPhong.setValue(hoaDon.getThoiGianBatDau());
-            txtTienKhachHang.setText(df.format(hoaDon.getTienKhachDua()));
             txtThoiLai.setText(df.format(hoaDon.getTienThua()));
         }
         if (hoaDon.getNhanVien() != null) {
@@ -474,7 +473,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
-                        .addGap(0, 2, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(lblThoiGianTraPhong)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(thoiGianTraPhong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -589,6 +588,11 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         lblMaHoaDon.setText("Mã hóa đơn");
 
         txtTienKhachHang.setUnit("VND");
+        txtTienKhachHang.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTienKhachHangKeyReleased(evt);
+            }
+        });
 
         lblTienKhachHang.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblTienKhachHang.setText("Tiền khách đưa");
@@ -654,6 +658,11 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         jLabel7.setText("Chiết khấu");
 
         txtChietKhau.setUnit("%");
+        txtChietKhau.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtChietKhauKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
@@ -812,6 +821,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn trả phòng?\nLƯU Ý: Vui lòng kiểm tra và nhắc khách không để quên đồ", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             hoaDon.setTrangThai(TrangThaiHoaDon.HOAN_THANH);
             hoaDon.getPhong().setTrangThai(TrangThaiPhong.BAN);
+            hoaDon.setNgayLapHoaDon(new Date());
             List<ChiTietHoaDon> dsChiTietHoaDonTruocCapNhat = chiTietHoaDonService.getDsChiTietHoaDonByMaHoaDon(hoaDon.getMaHoaDon());
             System.out.println(dsChiTietHoaDonTruocCapNhat);
             dsChiTietHoaDonTruocCapNhat.forEach(chiTietHoaDon -> {
@@ -834,6 +844,26 @@ public class DL_ThanhToan extends javax.swing.JDialog {
     private void cbLoaiDichVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLoaiDichVuActionPerformed
         searchMatHang();
     }//GEN-LAST:event_cbLoaiDichVuActionPerformed
+
+    private void txtTienKhachHangKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachHangKeyReleased
+        try {
+            hoaDon.setTienKhachDua(Double.parseDouble(txtTienKhachHang.getText().trim()));
+            loadDataForm();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Chỉ nhập số!");
+            txtTienKhachHang.setText("");
+        }
+    }//GEN-LAST:event_txtTienKhachHangKeyReleased
+
+    private void txtChietKhauKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtChietKhauKeyReleased
+        try {
+            hoaDon.setChietKhau(Float.parseFloat(txtChietKhau.getText().trim()) / 100);
+            loadDataForm();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Chỉ nhập số!");
+            txtChietKhau.setText("");
+        }
+    }//GEN-LAST:event_txtChietKhauKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHuy;
