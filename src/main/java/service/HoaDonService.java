@@ -9,6 +9,7 @@ import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.Phong;
 import java.util.Date;
+import entity.TrangThaiHoaDon;
 import java.util.List;
 
 /**
@@ -16,6 +17,8 @@ import java.util.List;
  * @author Hao
  */
 public interface HoaDonService {
+    public boolean addHoaDon(HoaDon hoaDon);
+    public boolean finishHoaDon(HoaDon hoaDon);
     public List<HoaDon> getDsHoaDon();
     public HoaDon getHoaDon(String maHoaDon);
     public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang);
@@ -44,4 +47,6 @@ public interface HoaDonService {
     public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang);
     public String getlastMaHoaDonTang();
     public boolean updateHoaDonDoiPhong(HoaDon hoaDon,double tongTienPhong,String maPhongMoi);
+    public String getMaxID();
+    public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai );
 }

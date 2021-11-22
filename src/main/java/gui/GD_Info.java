@@ -1,24 +1,22 @@
-package gui.dialog;
+package gui;
 
 import entity.NhanVien;
-import gui.GD_Chinh;
+import gui.swing.image.WindowIcon;
 import java.awt.Color;
 import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-public class DL_Progress extends javax.swing.JDialog {
+public class GD_Info extends javax.swing.JFrame {
 
     private boolean show = true;
     private boolean openGD_Chinh = true;
     private final Animator animator;
 
-    public DL_Progress(java.awt.Frame parent, NhanVien nhanVien) {
-        super(parent, false);
+    public GD_Info(NhanVien nhanVien) {
         initComponents();
+        WindowIcon.addWindowIcon(this);
         setBackground(new Color(0, 0, 0, 0));
         setOpacity(0);
         TimingTarget target = new TimingTargetAdapter() {
@@ -76,6 +74,7 @@ public class DL_Progress extends javax.swing.JDialog {
         animator.start();
     }
 
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -89,7 +88,7 @@ public class DL_Progress extends javax.swing.JDialog {
         btnContinue = new gui.swing.button.Button();
         pnlProgress = new gui.swing.panel.PanelTransparent();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
         bg.setBackground(new java.awt.Color(255, 255, 255));
@@ -138,7 +137,7 @@ public class DL_Progress extends javax.swing.JDialog {
                     .addComponent(lblName)
                     .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRole))
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addContainerGap(169, Short.MAX_VALUE))
             .addGroup(pnlProfileLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,7 +158,7 @@ public class DL_Progress extends javax.swing.JDialog {
                 .addGroup(pnlProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         bg.add(pnlProfile, "card2");
@@ -170,11 +169,11 @@ public class DL_Progress extends javax.swing.JDialog {
         pnlProgress.setLayout(pnlProgressLayout);
         pnlProgressLayout.setHorizontalGroup(
             pnlProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 458, Short.MAX_VALUE)
+            .addGap(0, 479, Short.MAX_VALUE)
         );
         pnlProgressLayout.setVerticalGroup(
             pnlProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 317, Short.MAX_VALUE)
+            .addGap(0, 320, Short.MAX_VALUE)
         );
 
         bg.add(pnlProgress, "card3");

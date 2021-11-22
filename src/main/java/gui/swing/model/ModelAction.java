@@ -1,8 +1,9 @@
-package gui.swing.table2;
+package gui.swing.model;
 
 import entity.HoaDon;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
+import gui.swing.table2.EventAction;
 
 public class ModelAction {
     private EventAction event;

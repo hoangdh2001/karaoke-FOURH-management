@@ -16,16 +16,28 @@ public class NhanVien_DAO implements NhanVienService {
 
     private SessionFactory sessionFactory;
 
+    /**
+     * 
+     */
     public NhanVien_DAO() {
         HibernateUtil hibernateUtil = HibernateUtil.getInstance();
         this.sessionFactory = hibernateUtil.getSessionFactory();
     }
 
+    /**
+     *  kiểm tra kết nối đến database
+     * @return 
+     */
     @Override
     public boolean checkConnect() {
         return sessionFactory.openSession().isConnected();
     }
 
+    /**
+     * Thêm 1 nhân viên
+     * @param nhanVien
+     * @return true: thêm thành công, false: thêm thất bại
+     */
     @Override
     public boolean addNhanVien(NhanVien nhanVien) {
         Session session = sessionFactory.getCurrentSession();
@@ -44,6 +56,11 @@ public class NhanVien_DAO implements NhanVienService {
         return false;
     }
 
+    /**
+     * Cập nhật 1 nhân viên
+     * @param nhanVien
+     * @return true: cập nhật thành công, false: cập nhật thất bại
+     */
     @Override
     public boolean updateNhanVien(NhanVien nhanVien) {
         Session session = sessionFactory.getCurrentSession();
@@ -61,6 +78,11 @@ public class NhanVien_DAO implements NhanVienService {
         return false;
     }
 
+    /**
+     * Xóa 1 nhân viên
+     * @param id
+     * @return true: thành công, false: thất bại
+     */
     @Override
     public boolean deleteNhanVien(String id) {
         Session session = sessionFactory.getCurrentSession();
@@ -78,6 +100,11 @@ public class NhanVien_DAO implements NhanVienService {
         return false;
     }
 
+    /**
+     * 
+     * @param id
+     * @return 
+     */
     @Override
     public NhanVien getNhanVien(String id) {
         Session session = sessionFactory.openSession();
@@ -247,6 +274,7 @@ public class NhanVien_DAO implements NhanVienService {
             tr.rollback();
         }
         session.close();
+    
         return null;
     }
     /**

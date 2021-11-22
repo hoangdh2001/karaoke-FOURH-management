@@ -8,6 +8,7 @@ import entity.CaLam;
 import entity.DiaChi;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
+import gui.swing.event.EventAdd;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,9 +16,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -34,6 +32,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
 
     private List<CaLam> caLams;
     private List<LoaiNhanVien> loaiNhanViens;
+    private EventAdd event;
 
     private SimpleDateFormat fm1 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -76,7 +75,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
 
         //jDateChooser1.setBorderLine(true);
         //txtMaNV.setBorderRadius();
-        jDateChooser1.setDateFormatString("dd-MM-yyy");
+        jDateChooser1.setDateFormatString("dd-MM-yyyy");
         txtSDT.setBorderLine(true);
         txtSDT.setBorderRadius(txtRadius);
 
@@ -185,13 +184,17 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
             clearForm();
         });
     }
+    
+    public void addThemEvent(EventAdd event) {
+        this.event = event;
+    }
 
     private void btnThemHandler() {
         btnThem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (validForm() == true) {
+//                if (validForm() == true) {
                     String ma = txtMaNV.getText();
                     String ten = txtTenNV.getText().trim();
 
@@ -215,8 +218,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
                     String cccd = txtCCCD.getText().trim();
                     boolean gioiTinh = "Nam".equals(cmbGioiTinh.getSelectedItem()) ? false : true;
 
-                    ArrayList<Integer> d = getNgaySinh();
-                    Date ngaySinh = new Date(d.get(0) - 1900, d.get(1) - 1, d.get(2));
+                    Date ngaySinh = new Date(jDateChooser1.getDate().getTime());
 
                     String sdt = txtSDT.getText().trim();
                     String email = txtEmail.getText().trim();
@@ -241,15 +243,11 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
                         //Thêm nhân viên
                         NhanVien nhanVien = new NhanVien(ma, ten, lnv, cl, cccd, gioiTinh, ngaySinh, sdt, email, diaChi, matKhau);
                         System.out.println("Nhan vieen dc them \n " + nhanVien);
-                        boolean result = nhanVien_DAO.addNhanVien(nhanVien);
-                        if (result) {
-                            JOptionPane.showMessageDialog(null, "Thêm thành công");
-                            clearForm();
-                        }
+                        event.add(nhanVien_DAO.addNhanVien(nhanVien));
                     }
-                } else {
-                    return;
-                }
+//                } else {
+//                    return;
+//                }
 
             }
         });
@@ -260,18 +258,18 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
      *
      * @return date date[0] năm date[1] tháng date[2] ngày
      */
-    private ArrayList<Integer> getNgaySinh() {
-        ArrayList<Integer> date = new ArrayList<>();
-        String[] d = fm1.format(jDateChooser1.getDate()).split("-");
-        for (String string : d) {
-            System.out.println(string);
-        }
-        date.add(Integer.parseInt(d[0])); //năm 
-        date.add(Integer.parseInt(d[1])); // tháng
-        date.add(Integer.parseInt(d[2])); //ngày
-        System.out.println("ham" + date.get(0) + "/" + date.get(1) + "/" + date.get(2));
-        return date;
-    }
+//    private ArrayList<Integer> getNgaySinh() {
+//        ArrayList<Integer> date = new ArrayList<>();
+//        String[] d = fm1.format(jDateChooser1.getDate()).split("-");
+//        for (String string : d) {
+//            System.out.println(string);
+//        }
+//        date.add(Integer.parseInt(d[0])); //năm 
+//        date.add(Integer.parseInt(d[1])); // tháng
+//        date.add(Integer.parseInt(d[2])); //ngày
+//        System.out.println("ham" + date.get(0) + "/" + date.get(1) + "/" + date.get(2));
+//        return date;
+//    }
 
     /**
      * Thuật toán tạo mã tăng tự động
@@ -314,12 +312,12 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
             txtTenNV.requestFocus();
             return false;
         } else {
-            if (!hoTen.matches("^([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*\\s)+([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*)$")) {
-                JOptionPane.showMessageDialog(null, "Chưa nhập đầy đủ họ tên. Họ tên bắt đầu bằng chữ in hoa.");
-                txtTenNV.selectAll();
-                txtTenNV.requestFocus();
-                return false;
-            }
+//            if (!hoTen.matches("^([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*\\s)+([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*)$")) {
+//                JOptionPane.showMessageDialog(null, "Chưa nhập đầy đủ họ tên. Họ tên bắt đầu bằng chữ in hoa.");
+//                txtTenNV.selectAll();
+//                txtTenNV.requestFocus();
+//                return false;
+//            }
         }
 
         if (jDateChooser1.getDate() == null) {
@@ -328,37 +326,37 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         }
 
         //Kiểm tra ngày tháng năm sinh >= 18 tuổi
-        ArrayList<Integer> d = getNgaySinh();
-        int namSinh = d.get(0);
-        int thangSinh = d.get(1);
-        int ngaySinh = d.get(2);
-        System.out.println("ngay sinh" + "/" + ngaySinh + "/" + thangSinh + "/" + namSinh);
+//        ArrayList<Integer> d = getNgaySinh();
+//        int namSinh = d.get(0);
+//        int thangSinh = d.get(1);
+//        int ngaySinh = d.get(2);
+//        System.out.println("ngay sinh" + "/" + ngaySinh + "/" + thangSinh + "/" + namSinh);
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDateTime now = LocalDateTime.now();
-
-        if ((now.getYear() - namSinh) <= 18) {
-
-            if ((now.getYear() - namSinh) < 18) {
-                JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
-                return false;
-            } else {//Nếu năm == 18
-
-                if (now.getMonthValue() <= thangSinh) {
-
-                    if (now.getMonthValue() < thangSinh) {
-                        JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
-                        return false;
-                    } else if (now.getMonthValue() == thangSinh) {//Nếu tháng bằng nhau
-
-                        if (now.getDayOfMonth() < ngaySinh) {
-                            JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        if ((now.getYear() - namSinh) <= 18) {
+//
+//            if ((now.getYear() - namSinh) < 18) {
+//                JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+//                return false;
+//            } else {//Nếu năm == 18
+//
+//                if (now.getMonthValue() <= thangSinh) {
+//
+//                    if (now.getMonthValue() < thangSinh) {
+//                        JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+//                        return false;
+//                    } else if (now.getMonthValue() == thangSinh) {//Nếu tháng bằng nhau
+//
+//                        if (now.getDayOfMonth() < ngaySinh) {
+//                            JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+//                            return false;
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         String sdt = txtSDT.getText().trim();
         if (!(sdt.length() > 0)) {
@@ -523,63 +521,48 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         jPanel1.setPreferredSize(new java.awt.Dimension(709, 812));
 
         lblMaNV.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblMaNV.setForeground(new java.awt.Color(0, 0, 0));
         lblMaNV.setText("Mã nhân viên");
 
         lblTenNV.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblTenNV.setForeground(new java.awt.Color(0, 0, 0));
         lblTenNV.setText("Tên nhân viên");
 
         lblGioiTinh.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblGioiTinh.setForeground(new java.awt.Color(0, 0, 0));
         lblGioiTinh.setText("Giới tính");
 
         lblNgaySinh.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblNgaySinh.setForeground(new java.awt.Color(0, 0, 0));
         lblNgaySinh.setText("Ngày sinh");
 
         lblSDT.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblSDT.setForeground(new java.awt.Color(0, 0, 0));
         lblSDT.setText("SDT");
 
         lblEmail.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblEmail.setForeground(new java.awt.Color(0, 0, 0));
         lblEmail.setText("Email");
 
         lblCCCD.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblCCCD.setForeground(new java.awt.Color(0, 0, 0));
         lblCCCD.setText("Căn cước CD");
 
         lblCaLam.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblCaLam.setForeground(new java.awt.Color(0, 0, 0));
         lblCaLam.setText("Ca làm");
 
         lblLoaiNV.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblLoaiNV.setForeground(new java.awt.Color(0, 0, 0));
         lblLoaiNV.setText("Loại nhân viên");
 
         lblSoNha.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblSoNha.setForeground(new java.awt.Color(0, 0, 0));
         lblSoNha.setText("Số nhà");
 
         lblTenDuong.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblTenDuong.setForeground(new java.awt.Color(0, 0, 0));
         lblTenDuong.setText("Tên đường");
 
         lblXaPhuong.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblXaPhuong.setForeground(new java.awt.Color(0, 0, 0));
         lblXaPhuong.setText("Xã/Phường");
 
         lblQuanHuyen.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblQuanHuyen.setForeground(new java.awt.Color(0, 0, 0));
         lblQuanHuyen.setText("Quận/Huyện");
 
         lblTinhTP.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblTinhTP.setForeground(new java.awt.Color(0, 0, 0));
         lblTinhTP.setText("Tỉnh/Thành phố");
 
         lblMatKhau.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        lblMatKhau.setForeground(new java.awt.Color(0, 0, 0));
         lblMatKhau.setText("Mật khẩu");
 
         txtMaNV.setText("myTextField1");

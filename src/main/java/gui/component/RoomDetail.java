@@ -1,5 +1,6 @@
 package gui.component;
 
+import entity.Phong;
 import gui.component.PanelInfoOverBottom;
 import gui.component.PanelInfoOverTop;
 import gui.swing.panel.PanelShadow;
@@ -7,6 +8,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -23,7 +25,9 @@ public class RoomDetail extends javax.swing.JDialog {
     private final PanelShadow panelShadow;
     private PanelInfoOverBottom pnlBottom;
     private final MigLayout layout2;
+    private Phong phong;
     private final DecimalFormat df = new DecimalFormat("##0.###");
+    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
 
     public boolean isShow() {
         return show;
@@ -33,45 +37,47 @@ public class RoomDetail extends javax.swing.JDialog {
         this.show = show;
     }
 
-    public RoomDetail(java.awt.Frame parent) {
+    public RoomDetail(java.awt.Frame parent, Phong phong) {
         super(parent, false);
+        this.phong = phong;
+        dfs.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
         initComponents();
         layout = new MigLayout("fillx, insets 0", "[fill]");
         jLayeredPane1.setLayout(layout);
-        
+
         panelShadow = new PanelShadow();
         panelShadow.setShadowSize(10);
         panelShadow.setShadowOpacity(0.2f);
         panelShadow.setBackground(Color.WHITE);
         panelShadow.setBorder(new EmptyBorder(15, 15, 15, 15));
         panelShadow.setLayout(layout2 = new MigLayout("fillx, debug, insets 0", "[fill]", "[fill]"));
-        
+
         PanelInfoOverTop pnlTop = new PanelInfoOverTop();
         pnlTop.setBorder(new MatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0.1f)));
         pnlTop.setBackground(Color.WHITE);
         panelShadow.add(pnlTop, "h 180!");
-        
-        
+
         pnlBottom = new PanelInfoOverBottom();
         pnlBottom.setBackground(Color.WHITE);
         pnlBottom.setVisible(false);
         panelShadow.add(pnlBottom, "pos 0al 0 n n, h 30%");
         jLayeredPane1.add(panelShadow, "h 210!");
-        
+
         setBackground(new Color(0, 0, 0, 0));
         setOpacity(0);
-        
+
         TimingTarget target1 = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
                 double fractionSize = 210 + ((getHeight() - 210) * fraction);
                 double fractionPoint;
                 fractionPoint = Double.valueOf(df.format(210 * fraction));
-                if(fraction >= 0.5f) {
+                if (fraction >= 0.5f) {
                     pnlBottom.setVisible(true);
                 }
-                layout.setComponentConstraints(panelShadow, "h "+ fractionSize +"!");
-                layout2.setComponentConstraints(pnlBottom, "pos 0al "+ fractionPoint +" n n, h 70%");
+                layout.setComponentConstraints(panelShadow, "h " + fractionSize + "!");
+                layout2.setComponentConstraints(pnlBottom, "pos 0al " + fractionPoint + " n n, h 70%");
                 jLayeredPane1.repaint();
                 jLayeredPane1.revalidate();
             }
@@ -81,7 +87,7 @@ public class RoomDetail extends javax.swing.JDialog {
         animator2.setStartDelay(800);
         animator2.setAcceleration(0.5f);
         animator2.setDeceleration(0.5f);
-        
+
         TimingTarget target2 = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -104,11 +110,8 @@ public class RoomDetail extends javax.swing.JDialog {
         animator = new Animator(200, target2);
         animator.setResolution(0);
         animator.setAcceleration(0.5f);
-        
+
     }
-    
-    
-    
 
     @Override
     public void setVisible(boolean bln) {

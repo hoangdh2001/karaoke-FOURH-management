@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,7 +24,7 @@ public class HoaDon {
     @Id
     private String maHoaDon;
     @ManyToOne
-    @JoinColumn(name = "maKhachHang", nullable = false)
+    @JoinColumn(name = "maKhachHang")
     private KhachHang khachHang;
     @ManyToOne
     @JoinColumn(name = "maPhong", nullable = false)
@@ -33,7 +35,10 @@ public class HoaDon {
     private Date ngayLapHoaDon;
     private Date thoiGianBatDau;
     private Date thoiGianKetThuc;
-    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.EAGER)
+    private float chietKhau;
+    @Enumerated(EnumType.STRING)
+    private TrangThaiHoaDon trangThai;
+    @OneToMany(mappedBy = "hoaDon")
     private List<ChiTietHoaDon> dsChiTietHoaDon;
     private String gioHat;
     @Column(columnDefinition = "money")
@@ -42,52 +47,57 @@ public class HoaDon {
     private double tongTienMatHang;
     @Column(columnDefinition = "money")
     private double tongHoaDon;
+    @Column(columnDefinition = "money")
+    private double tienKhachDua;
+    @Column(columnDefinition = "money")
+    private double tienThua;
 
     /**
      * @param maHoaDon
-     * @param khachHang
      * @param phong
      * @param nhanVien
-     * @param ngayLapHoaDon
-     * @param thoiGianBatDau
-     * @param thoiGianKetThuc
      */
-//    public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien,Date ngayLapHoaDon,
-//            Date thoiGianBatDau, Date thoiGianKetThuc) {
-//        this.maHoaDon = maHoaDon;
-//        this.khachHang = khachHang;
-//        this.phong = phong;
-//        this.nhanVien = nhanVien;
-//        this.ngayLapHoaDon = ngayLapHoaDon;
-//        this.thoiGianBatDau = thoiGianBatDau;
-//        this.thoiGianKetThuc = thoiGianKetThuc;
-//        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
-//        this.donGiaPhong = getDonGiaPhong();
-//        this.tongTienMatHang = getTongTienMatHang();
-//        this.tongHoaDon = getTongHoaDon();
-//        
-//    }
+    public HoaDon(String maHoaDon, Phong phong, NhanVien nhanVien) {
+        this.maHoaDon = maHoaDon;
+        this.phong = phong;
+        this.nhanVien = nhanVien;
+        this.thoiGianBatDau = new Date();
+        this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
+        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.gioHat = getGioHat();
+        this.donGiaPhong = getDonGiaPhong();
+        this.tongTienMatHang = getTongTienMatHang();
+        this.tongHoaDon = getTongHoaDon();
+        this.tienThua = getTienThua();
+    }
 
-    /**
-     * @param maHoaDon
-     * @param khachHang
-     * @param phong
-     * @param nhanVien
-     */
     public HoaDon(String maHoaDon, KhachHang khachHang, Phong phong, NhanVien nhanVien) {
         this.maHoaDon = maHoaDon;
         this.khachHang = khachHang;
         this.phong = phong;
         this.nhanVien = nhanVien;
         this.thoiGianBatDau = new Date();
+        this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
         this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
-        this.gioHat = "00:00";
+        this.gioHat = getGioHat();
+        this.donGiaPhong = getDonGiaPhong();
+        this.tongTienMatHang = getTongTienMatHang();
+        this.tongHoaDon = getTongHoaDon();
+        this.tienThua = getTienThua();
     }
 
     /**
      *
      */
     public HoaDon() {
+        this.thoiGianBatDau = new Date();
+        this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
+        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.gioHat = getGioHat();
+        this.donGiaPhong = getDonGiaPhong();
+        this.tongTienMatHang = getTongTienMatHang();
+        this.tongHoaDon = getTongHoaDon();
+        this.tienThua = getTienThua();
     }
 
     /**
@@ -95,9 +105,14 @@ public class HoaDon {
      * @param soLuong
      * @param chietKhau
      */
-    public void themCT_HoaDon(MatHang matHang, int soLuong, float chietKhau) {
-        ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon(this,matHang, soLuong, chietKhau);
-        this.dsChiTietHoaDon.add(chiTietHoaDon);
+    public void themCT_HoaDon(MatHang matHang, int soLuong) {
+        ChiTietHoaDon newChiTietHoaDon = new ChiTietHoaDon(this, matHang, soLuong);
+        if (dsChiTietHoaDon.contains(newChiTietHoaDon)) {
+            ChiTietHoaDon chiTietHoaDon = dsChiTietHoaDon.get(dsChiTietHoaDon.indexOf(newChiTietHoaDon));
+            chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + newChiTietHoaDon.getSoLuong());
+        } else {
+            dsChiTietHoaDon.add(newChiTietHoaDon);
+        }
     }
 
     /**
@@ -183,7 +198,33 @@ public class HoaDon {
     public void setThoiGianKetThuc(Date thoiGianKetThuc) {
         this.thoiGianKetThuc = thoiGianKetThuc;
     }
-
+    /**
+     * @return chietKhau
+     */
+    public float getChietKhau() {
+        return chietKhau;
+    }
+    
+    /**
+     * @param chietKhau 
+     */
+    public void setChietKhau(float chietKhau) {
+        this.chietKhau = chietKhau;
+    }
+    /**
+     * @return trangThai
+     */
+    public TrangThaiHoaDon getTrangThai() {
+        return trangThai;
+    }
+    
+    /**
+     * @param trangThai 
+     */
+    public void setTrangThai(TrangThaiHoaDon trangThai) {
+        this.trangThai = trangThai;
+    }
+    
     /**
      * @return the dsChiTietHoaDon
      */
@@ -213,6 +254,15 @@ public class HoaDon {
      * @return the gioHat
      */
     public String getGioHat() {
+        if (thoiGianKetThuc != null) {
+            long diff = (thoiGianKetThuc.getTime() - thoiGianBatDau.getTime()) / 1000;
+            int diffHours = (int) (diff / 3600);
+            diff = diff % 3600;
+            int mins = (int) (diff / 60);
+            gioHat = String.format("%02d:%02d", diffHours, mins);
+            return gioHat;
+        }
+        gioHat = "00:00";
         return gioHat;
     }
 
@@ -220,13 +270,18 @@ public class HoaDon {
      * @return the donGiaPhong
      */
     public double getDonGiaPhong() {
-        String[] time = gioHat.split(":");
-        return Double.parseDouble(time[0])*donGiaPhong + (Double.parseDouble(time[1])/60)*donGiaPhong;
+        if (phong != null) {
+            String[] time = getGioHat().split(":");
+            donGiaPhong = (Double.parseDouble(time[0]) * phong.getLoaiPhong().getGiaPhong()) + (Double.parseDouble(time[1]) / 60 * phong.getLoaiPhong().getGiaPhong());
+            return donGiaPhong;
+        }
+        return 0;
     }
-    
-    public double getDonGiaPhongCu(){
+
+    public double getDonGiaPhongCu() {
         return donGiaPhong;
     }
+
     /**
      * @return the tongTienMatHang
      */
@@ -235,30 +290,51 @@ public class HoaDon {
         for (ChiTietHoaDon chiTietHoaDon : dsChiTietHoaDon) {
             tongTien += chiTietHoaDon.getThanhTien();
         }
-        return tongTien;
+        tongTienMatHang = tongTien;
+        return tongTienMatHang;
     }
 
     /**
      * @return the tongHoaDon
      */
     public double getTongHoaDon() {
-        return tongTienMatHang + donGiaPhong;
+        return (getTongTienMatHang() + getDonGiaPhong()) * (1 - chietKhau);
     }
-
+    
+    /**
+     * @return tienKhachDua
+     */
+    public double getTienKhachDua() {
+        return tienKhachDua;
+    }
+    
+    /**
+     * @param tienKhachDua 
+     */
+    public void setTienKhachDua(double tienKhachDua) {
+        this.tienKhachDua = tienKhachDua;
+    }
+    /**
+     * @return thoiLai
+     */
+    public double getTienThua() {
+        return tienKhachDua - tongHoaDon;
+    }
+    
     @Override
     public String toString() {
-        return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong=" 
-                + phong + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", thoiGianBatDau=" 
-                + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + ", dsChiTietHoaDon=" + dsChiTietHoaDon 
-                + ", gioHat=" + gioHat + ", donGiaPhong=" + donGiaPhong + ", tongTienMatHang=" + tongTienMatHang 
+        return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong="
+                + phong + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", thoiGianBatDau="
+                + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + ", dsChiTietHoaDon=" + dsChiTietHoaDon
+                + ", gioHat=" + gioHat + ", donGiaPhong=" + donGiaPhong + ", tongTienMatHang=" + tongTienMatHang
                 + ", tongHoaDon=" + tongHoaDon + '}';
     }
 
-    public Object[] convertToRowTableInGDThongKeDoanhThu(){
+    public Object[] convertToRowTableInGDThongKeDoanhThu() {
         DecimalFormat df;
         df = new DecimalFormat("#,##0.00");
         SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String ngayLap = gio.format(ngayLapHoaDon);
-        return new Object[]{maHoaDon,ngayLap, khachHang.getTenKhachHang(),nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
+        return new Object[]{maHoaDon, ngayLap, khachHang.getTenKhachHang(), nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
     }
 }

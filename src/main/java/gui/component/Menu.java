@@ -75,6 +75,7 @@ public class Menu extends JPanel {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/bill_20px.png")), "Quản lý hóa đơn"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Quản lý nhân viên"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/combo_chart_20px.png")), "Báo cáo thống kê", "Thống kê doanh thu", "Thống kê hàng hóa"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/goods_20px.png")), "Quản lý hàng hóa"));
     }
     
     private void addMenu(ModelMenu menu) {

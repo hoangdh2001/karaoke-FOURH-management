@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JLabel;
-import javax.swing.border.EmptyBorder;
 
 public class MyTableHeader extends JLabel {
 

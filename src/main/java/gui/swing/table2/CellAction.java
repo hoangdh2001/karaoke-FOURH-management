@@ -1,5 +1,7 @@
 package gui.swing.table2;
 
+import gui.swing.button.Button;
+import gui.swing.model.ModelAction;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -23,6 +25,14 @@ public class CellAction extends javax.swing.JPanel {
         });
     }
 
+    public Button getBtnDelete() {
+        return btnDelete;
+    }
+
+    public Button getBtnEdit() {
+        return btnEdit;
+    }
+    
     @Override
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);

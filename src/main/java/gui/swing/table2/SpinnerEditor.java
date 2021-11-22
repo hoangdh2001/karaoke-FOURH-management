@@ -1,18 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package gui.swing.table;
+package gui.swing.table2;
 
+import gui.swing.table.*;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.util.EventObject;
 import javax.swing.DefaultCellEditor;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
@@ -21,14 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.CellEditorListener;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableColumn;
 
-/**
- *
- * @author 84975
- */
 public class SpinnerEditor extends DefaultCellEditor {
         JSpinner spinner;
         DefaultEditor editor;
@@ -45,9 +35,11 @@ public class SpinnerEditor extends DefaultCellEditor {
             spinner = new JSpinner(value);
             editor = ((JSpinner.DefaultEditor)spinner.getEditor());
             textField = editor.getTextField();
-            textField.addFocusListener( new FocusListener() {
+            textField.addFocusListener( new FocusAdapter() {
+                @Override
                 public void focusGained( FocusEvent fe ) {
                     SwingUtilities.invokeLater( new Runnable() {
+                        @Override
                         public void run() {
                             if ( valueSet ) {
                                 textField.setCaretPosition(1);
@@ -55,10 +47,9 @@ public class SpinnerEditor extends DefaultCellEditor {
                         }
                     });
                 }
-                public void focusLost( FocusEvent fe ) {
-                }
             });
             textField.addActionListener( new ActionListener() {
+                @Override
                 public void actionPerformed( ActionEvent ae ) {
                     stopCellEditing();
                 }
@@ -67,6 +58,7 @@ public class SpinnerEditor extends DefaultCellEditor {
         
         
         // Prepares the spinner component and returns it.
+        @Override
         public Component getTableCellEditorComponent(
             JTable table, Object value, boolean isSelected, int row, int column
         ) {
@@ -74,6 +66,7 @@ public class SpinnerEditor extends DefaultCellEditor {
                 spinner.setValue(value);
             }
             SwingUtilities.invokeLater( new Runnable() {
+                @Override
                 public void run() {
                     textField.requestFocus();
                 }
@@ -81,15 +74,16 @@ public class SpinnerEditor extends DefaultCellEditor {
             return spinner;
         }
 
+        @Override
         public boolean isCellEditable( EventObject eo ) {
             System.err.println("isCellEditable");
             if ( eo instanceof KeyEvent ) {
                 KeyEvent ke = (KeyEvent)eo;
                 System.err.println("key event: "+ke.getKeyChar());
                 textField.setText(String.valueOf(ke.getKeyChar()));
-                //textField.select(1,1);
-                //textField.setCaretPosition(1);
-                //textField.moveCaretPosition(1);
+                textField.select(1,1);
+                textField.setCaretPosition(1);
+                textField.moveCaretPosition(1);
                 valueSet = true;
             } else {
                 valueSet = false;
@@ -98,10 +92,12 @@ public class SpinnerEditor extends DefaultCellEditor {
         }
 
         // Returns the spinners current value.
+        @Override
         public Object getCellEditorValue() {
             return spinner.getValue();
         }
 
+        @Override
         public boolean stopCellEditing() {
             try {
                 editor.commitEdit();

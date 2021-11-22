@@ -11,6 +11,7 @@ public class NhanVienDetail extends javax.swing.JPanel {
 
     private NhanVien nhanVien;
     private PanelTabThongTinNV pnlTabThongTinNV;
+    private PanelTabSuaThongTinNV pnlTabSuaThongTinNV;
 
     public NhanVienDetail(NhanVien nv) {
         this.nhanVien = nv;
@@ -23,6 +24,7 @@ public class NhanVienDetail extends javax.swing.JPanel {
 
     private void buildDisplay() {
         pnlTabThongTinNV = new PanelTabThongTinNV(nhanVien);
+        pnlTabSuaThongTinNV = new PanelTabSuaThongTinNV(nhanVien);
         createTabButton();
     }
 
@@ -33,8 +35,11 @@ public class NhanVienDetail extends javax.swing.JPanel {
                 if (index == 0) {
 
                     showTab(pnlTabThongTinNV);
+                    lblTenNhanVien.setVisible(true);
                 } else if (index == 1) {
-                    showTab(new PanelTabSuaThongTinNV());
+                    
+                    showTab(pnlTabSuaThongTinNV);
+                    lblTenNhanVien.setVisible(false);
                 }
                 tab.check();
                 return true;

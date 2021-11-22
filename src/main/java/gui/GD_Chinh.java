@@ -1,7 +1,6 @@
 package gui;
 
 import entity.HoaDon;
-import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import java.awt.Color;
@@ -20,17 +19,18 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.component.Content;
 import gui.component.Header;
 import gui.component.HoaDonDetail;
-import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
 import gui.component.PanelThemNhanVien;
 import gui.component.PhieuDatPhongDetail;
+import gui.component.Room;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
+import gui.swing.event.EventAdd;
 import gui.swing.event.EventAddNhanVien;
+import gui.swing.image.WindowIcon;
 import gui.swing.event.EventMenuSelected;
-import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
@@ -48,6 +48,8 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Frame;
 import gui.swing.event.EventSelectedRow;
+import gui.swing.event.EventShowInfoOver;
+import javax.swing.JOptionPane;
 
 public class GD_Chinh extends JFrame {
     
@@ -65,8 +67,8 @@ public class GD_Chinh extends JFrame {
     private Content content; // thành phần content chứa nội dung
     private boolean tabShow;
     private MigLayout layout;
-    private DecimalFormat df = new DecimalFormat("##0.###");
-    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+    private final DecimalFormat df = new DecimalFormat("##0.###");
+    private final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     private TabLayout tab;
     private JScrollPane sp;
     
@@ -75,6 +77,7 @@ public class GD_Chinh extends JFrame {
         GD_Chinh.NHAN_VIEN = nhanVien;
         GD_Chinh.FRAME = frame;
         buidGD_Chinh();
+        
     }
 
     /**
@@ -83,13 +86,13 @@ public class GD_Chinh extends JFrame {
     private void buidGD_Chinh() {
         dfs.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(dfs);
+        WindowIcon.addWindowIcon(this);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
         createBackground();
         setContentPane(background);
         setMinimumSize(new Dimension(1200, 500));
         pack();
         setLocationRelativeTo(null);
-        setState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -208,8 +211,8 @@ public class GD_Chinh extends JFrame {
                             soDoPhongHat.addEvent(new EventShowInfoOver() {
                                 @Override
                                 public void showInfoOver(Component com, MouseEvent e) {
-                                    //                MenuItem item = (MenuItem) com;
-                                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                                    Room item = (Room) com;
+                                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
                                     int x = 0;
                                     int y = 0;
                                     if ((e.getXOnScreen() + 400) >= 1920) {
@@ -317,6 +320,20 @@ public class GD_Chinh extends JFrame {
                                         tab.setVisible(true);
 
                                         PanelThemNhanVien pnlThemNhanVien = new PanelThemNhanVien();
+                                        pnlThemNhanVien.addThemEvent(new EventAdd() {
+                                            @Override
+                                            public void add(Object obj) {
+                                                if(obj instanceof Boolean) {
+                                                    boolean rs = (Boolean) obj;
+                                                    if(rs) {
+                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thành công!");
+                                                        gD_NhanVien.loadDataNhanVien();
+                                                    } else {
+                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thất bại!");
+                                                    }
+                                                }
+                                            }
+                                        });
                                         tab.showDetail(pnlThemNhanVien);
                                         animator2.start();
                                     }
@@ -330,6 +347,9 @@ public class GD_Chinh extends JFrame {
                         } else if (subMenuIndex == 1) {
                             content.showForm(new GD_ThongKeHangHoa());
                         }
+                        break;
+                    case 6:
+                        content.showForm(new GD_QLHangHoa());
                         break;
                     default:
                         break;
@@ -366,8 +386,8 @@ public class GD_Chinh extends JFrame {
         soDoPhongHat.addEvent(new EventShowInfoOver() {
             @Override
             public void showInfoOver(Component com, MouseEvent e) {
-//                MenuItem item = (MenuItem) com;
-                RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                Room item = (Room) com;
+                RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
                 int x = 0;
                 int y = 0;
                 if ((e.getXOnScreen() + 400) >= 1920) {
@@ -379,6 +399,7 @@ public class GD_Chinh extends JFrame {
                 }
                 infoOver.setLocation(x, y);
                 infoOver.setVisible(true);
+                
                 sp.addMouseWheelListener(new MouseWheelListener() {
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent arg0) {

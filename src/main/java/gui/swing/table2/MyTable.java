@@ -1,5 +1,6 @@
 package gui.swing.table2;
 
+import gui.swing.model.ModelAction;
 import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
 import gui.swing.scrollbar.ScrollBarCustom;

@@ -1,8 +1,7 @@
 package entity;
 
 import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
-import java.io.Serializable;
+import gui.swing.model.ModelAction;
 import java.text.DecimalFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,19 +34,24 @@ public class Phong {
     @JoinColumn(name = "maLoaiPhong", nullable = false)
     private LoaiPhong loaiPhong;
     private int tang;
+    @Column(columnDefinition = "image")
+    private byte[] anhPhong;
 
     /**
      * @param maPhong
      * @param tenPhong
      * @param trangThai
      * @param loaiPhong
+     * @param tang
+     * @param anhPhong
      */
-    public Phong(String maPhong, String tenPhong, TrangThaiPhong trangThai, LoaiPhong loaiPhong, int tang) {
+    public Phong(String maPhong, String tenPhong, TrangThaiPhong trangThai, LoaiPhong loaiPhong, int tang, byte[] anhPhong) {
         this.maPhong = maPhong;
         this.tenPhong = tenPhong;
         this.trangThai = trangThai;
         this.loaiPhong = loaiPhong;
         this.tang = tang;
+        this.anhPhong = anhPhong;
     }
 
     /**
@@ -124,6 +128,19 @@ public class Phong {
      */
     public void setTang(int tang) {
         this.tang = tang;
+    }
+    /**
+     * @return the anhPhong
+     */
+    public byte[] getAnhPhong() {
+        return anhPhong;
+    }
+    
+    /**
+     * @param anhPhong 
+     */
+    public void setAnhPhong(byte[] anhPhong) {
+        this.anhPhong = anhPhong;
     }
     
     @Override
