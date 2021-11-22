@@ -5,7 +5,9 @@
  */
 package service;
 
+import entity.ChiTietHoaDon;
 import entity.HoaDon;
+import entity.Phong;
 import java.util.Date;
 import java.util.List;
 
@@ -32,4 +34,14 @@ public interface HoaDonService {
     public List<Integer> getDSThangTheoNgayLap();
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();
+//    Huu
+    public boolean insertHoaDon(HoaDon hoaDon);
+    public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma);
+    public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year);
+    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon);
+    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon);
+    public HoaDon getHoaDon(Phong phong);
+    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang);
+    public String getlastMaHoaDonTang();
+    public boolean updateHoaDonDoiPhong(HoaDon hoaDon,double tongTienPhong,String maPhongMoi);
 }

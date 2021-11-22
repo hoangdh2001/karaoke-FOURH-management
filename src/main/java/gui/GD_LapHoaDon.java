@@ -4,6 +4,7 @@
  */
 package gui;
 
+import dao.HoaDon_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
 import dao.Phong_DAO;
 import entity.ChiTietHoaDon;
@@ -90,7 +91,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     private String GioHat;
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
-    
+    private HoaDon_DAO hoaDonDao;
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
     private int font14 = 14;
@@ -119,6 +120,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        mainPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -175,7 +178,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Phong phong = new Phong_DAO().getPhong("PH0008");
+                Phong phong = new Phong_DAO().getPhong("PH0001");
                 System.out.println(phong);
                 NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
                 GD_LapHoaDon dialog = new GD_LapHoaDon(phong,nhanVien);
@@ -504,8 +507,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
      
      public void initData(Phong phong,NhanVien nv){
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
-        
-        hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
+        hoaDonDao = new HoaDon_DAO();
+        hoaDon = hoaDonDao.getHoaDon(phong);
         
         txtTongTienPhongCu.setText(String.valueOf(hoaDon.getDonGiaPhongCu()));
         List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
@@ -611,7 +614,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     }
     
     public double TongTien(){
-        PhieuDatPhong pdp = nhaCungCapVaNhapHang_DAO.getPhieuCuaPhong(hoaDon.getKhachHang().getMaKhachHang());
+//        PhieuDatPhong pdp = nhaCungCapVaNhapHang_DAO.getPhieuCuaPhong(hoaDon.getKhachHang().getMaKhachHang());
         double tong =0;
         double tongTienDichVu = TongTienDichVu();
 	double tongTienPhong = 0;
@@ -621,9 +624,9 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
             Logger.getLogger(GD_LapHoaDon.class.getName()).log(Level.SEVERE, null, ex);
         }
         tong = tongTienDichVu + tongTienPhong;
-        if(tong > pdp.getTienCoc()){
-            tong -= pdp.getTienCoc();
-        }
+//        if(tong > pdp.getTienCoc()){
+//            tong -= pdp.getTienCoc();
+//        }
         
         txtTongTien.setText(df.format(tong));
 	return tongTienDichVu + tongTienPhong;
@@ -745,7 +748,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
             if(obj.equals(btnThanhToan) && validateData()){
                 try {
                     
-                    nhaCungCapVaNhapHang_DAO.updateHoaDon(hoaDon,GioHat,TongTienPhong(),TongTien(),TongTienDichVu());
+                    hoaDonDao.updateHoaDon(hoaDon,GioHat,TongTienPhong(),TongTien(),TongTienDichVu());
                     
                     List<ChiTietHoaDon> dsCTHoaDon = hoaDon.getDsChiTietHoaDon();
                     for (int i = 0 ; i< tableSelected.getRowCount(); i++){
@@ -758,7 +761,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
                             nhaCungCapVaNhapHang_DAO.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soluongCu - soLuongMoi,"increase");
                         }
                         dsCTHoaDon.get(i).setSoLuong(soLuongMoi);
-                        nhaCungCapVaNhapHang_DAO.updateCTHoaDon(dsCTHoaDon.get(i));
+                        hoaDonDao.updateCTHoaDon(dsCTHoaDon.get(i));
                     }
                     nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
                     dispose();

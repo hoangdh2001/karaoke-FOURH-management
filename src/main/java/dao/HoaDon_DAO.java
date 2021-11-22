@@ -5,7 +5,10 @@
  */
 package dao;
 
+import entity.ChiTietHoaDon;
 import entity.HoaDon;
+import entity.Phong;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 import org.hibernate.Session;
@@ -30,6 +33,7 @@ public class HoaDon_DAO implements HoaDonService{
     public HoaDon_DAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
 
     @Override
     public List<HoaDon> getDsHoaDon() {
@@ -402,5 +406,243 @@ public class HoaDon_DAO implements HoaDonService{
         }
         session.close();
         return null;
+    }
+    
+//    Huu
+    @Override
+    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+                session.save(ctHoaDon);  
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+    @Override
+    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql ="";
+        if(ctHoaDon.getSoLuong() >0){
+            sql = "update ChiTietHoaDon set soLuong = "+ctHoaDon.getSoLuong()+",thanhTien = "+ctHoaDon.getThanhTien()
+                +"where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
+                + "and maMatHang = '" +ctHoaDon.getMatHang().getMaMatHang()+"' ";
+        }else{
+            sql = "delete ChiTietHoaDon"
+                +" where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
+                + "and maMatHang = '"+ctHoaDon.getMatHang().getMaMatHang()+"'";
+        }
+        
+        try {
+            tr.begin();
+                session.createNativeQuery(sql).executeUpdate();  
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public HoaDon getHoaDon(Phong phong) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select top 1 * from HoaDon where maPhong = '"+phong.getMaPhong()+"' order by maHoaDon desc";
+        try {
+            tr.begin();
+                HoaDon hoadon= session.createNativeQuery(sql,HoaDon.class).getSingleResult();
+            tr.commit();
+            return hoadon;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+        String ngayLapHoaDon = gio.format(date);
+        
+        String sql = "update HoaDon "
+                + "set donGiaPhong = "+tongTienPhong+","
+                + "gioHat = '"+gioHat+"',"
+                + "ngayLapHoaDon = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
+                + ",thoiGianKetThuc = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
+                + ",tongHoaDon = "+tongTien
+                + ",tongTienMatHang = "+tongTienMatHang+" where maHoaDon = '"+hoaDon.getMaHoaDon()+"' ";
+        try {
+            tr.begin();
+                session.createNativeQuery(sql).executeUpdate();  
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return false;
+    }
+    
+    @Override
+    public String getlastMaHoaDonTang() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select top 1 maHoaDon from HoaDon order by maHoaDon desc";
+        
+        try {
+            tr.begin();
+                String maHoaDon = "";
+                String maCuoiCung = "HD";
+
+                try {
+                    maHoaDon = (String)session.createNativeQuery(sql).uniqueResult(); 
+                    int so = Integer.parseInt(maHoaDon.split("HD")[1]) + 1;
+                int soChuSo = String.valueOf(so).length();
+
+                for (int i = 0; i< 7-soChuSo; i++){
+                    maCuoiCung += "0";
+                }
+                maCuoiCung += String.valueOf(so);
+                } catch (Exception e) {
+                    maCuoiCung = "HD0000001";
+                }      
+            tr.commit();
+            return maCuoiCung;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
+    
+    @Override
+    public boolean updateHoaDonDoiPhong(HoaDon hoaDon, double tongTienPhong,String maPhongMoi) {
+        
+        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+        String thoiGianBatDau = gio.format(date);
+        
+        String sql = "update HoaDon set maPhong = '"+maPhongMoi+"'"
+                +",gioHat = '00:00',tongHoaDon = 0"
+                + ",donGiaPhong = donGiaPhong + " +tongTienPhong
+                + ",thoiGianBatDau = CAST(N'"+thoiGianBatDau+"' AS datetime)"
+                + ",thoiGianKetThuc = CAST(N'"+thoiGianBatDau+"' AS datetime)"
+                + " where maHoaDon = '"+hoaDon.getMaHoaDon()+"'";
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+                session.createNativeQuery(sql).executeUpdate();
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+    
+    @Override
+    public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma) {
+        String sql;
+        if(ma != null){
+            sql = "select * from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"' and p.maLoaiPhong = '"+ma+"'";
+        }else{
+            sql = "select * from HoaDon WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'";
+        }
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                List<HoaDon> dsHoaDon = null;
+                try {
+                    dsHoaDon = session.createNativeQuery(sql,HoaDon.class).getResultList();
+                } catch (Exception e) {
+                    return null;
+                }
+            tr.commit();
+            return dsHoaDon;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    }
+    
+//    select *  from HoaDon where DATEPART(DAY, ngayLapHoaDon) = 9
+
+    @Override
+    public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year) {
+        
+        String sql ="";
+        
+        if(loaiPhong !=null){
+            if(thang == true){
+                sql = "select *  from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong  where DATEPART(MONTH, ngayLapHoaDon)= "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year+" and p.maLoaiPhong = '"+loaiPhong+"'";
+            }else{
+                sql = "select *  from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong  where DATEPART(YEAR, ngayLapHoaDon)= "+thangOrNam+" and p.maLoaiPhong = '"+loaiPhong+"'";
+                
+            }
+        }else{
+            if(thang == true){
+                sql= "select *  from HoaDon where DATEPART(MONTH, ngayLapHoaDon) = "+thangOrNam;
+            }else{
+                sql= "select *  from HoaDon where DATEPART(YEAR, ngayLapHoaDon) = "+thangOrNam;
+            }
+        }
+        
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                List<HoaDon> dsHoaDon = null;
+                try {
+                    dsHoaDon = session.createNativeQuery(sql,HoaDon.class).getResultList();
+                } catch (Exception e) {
+                    return null;
+                }
+            tr.commit();
+            return dsHoaDon;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    }
+
+    @Override
+    public boolean insertHoaDon(HoaDon hoaDon) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+                session.save(hoaDon);
+            tr.commit();
+            session.clear();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
     }
 }

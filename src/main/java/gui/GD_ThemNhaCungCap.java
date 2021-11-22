@@ -146,9 +146,8 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         btnThemVaSua.setBackground(colorBtn);
         pnlRight.add(btnThemVaSua, "w 100!, h 40!, align right");
         
-        setSize(800, 320);
+        setSize(800, 280);
         setResizable(false);
-        setSize(new Dimension(1200,780));
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
         final Dimension screenSize = toolkit.getScreenSize();
         final int x = (screenSize.width - this.getWidth()) / 2;
@@ -200,6 +199,7 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
     
     private void initModel() {
         if(model != null){
+            this.setTitle("Xem chỉnh sửa thông tin phòng");
             btnThemVaSua.setText("Sửa");
             NhaCungCap ncc = (NhaCungCap) model;
             txtSDT.setText(ncc.getSoDienThoai());
