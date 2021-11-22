@@ -439,7 +439,7 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                               <Component id="thoiGianBatDau" max="32767" attributes="0"/>
-                                              <Component id="thoiGianKetThuc" pref="222" max="32767" attributes="0"/>
+                                              <Component id="thoiGianKetThuc" max="32767" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
@@ -644,7 +644,7 @@
                                       <Component id="txtCCCD" min="-2" pref="165" max="-2" attributes="0"/>
                                       <Component id="txtTenKhachHang" min="-2" pref="165" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -809,7 +809,6 @@
                               <Font name="Tahoma" size="12" style="0"/>
                             </Property>
                             <Property name="text" type="java.lang.String" value="Ph&#xf2;ng 001"/>
-                            <Property name="enabled" type="boolean" value="false"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="lblTenPhong">

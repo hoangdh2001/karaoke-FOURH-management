@@ -140,7 +140,7 @@ public class Phong_DAO implements PhongService {
                 + "where tenPhong like N'%" + tenPhong + "%' "
                 + "and maLoaiPhong like '%" + maLoaiPhong + "%' "
                 + "and trangThai like '%" + (trangThai == null ? "" : trangThai) + "%' "
-                + "and tang like '%"+ (tang == 0 ? "":tang) +"%'";
+                + "and tang like '%" + (tang == 0 ? "" : tang) + "%'";
         try {
             tr.begin();
             List<Phong> dsPhong = session
@@ -162,11 +162,11 @@ public class Phong_DAO implements PhongService {
         String sql = "select p.* from Phong p inner join HoaDon hd "
                 + "on p.maPhong = hd.maPhong inner join KhachHang kh "
                 + "on kh.maKhachHang = hd.maKhachHang "
-                + "where (sdt like '%"+ sdtOrTen +"%' "
-                + "or tenKhachHang like N'%"+ sdtOrTen +"%') "
-                + "and tang like '%"+ (tang == 0 ? "":tang) +"%' "
-                + "and p.trangThai = '"+ TrangThaiPhong.DANG_HAT+"'";
-        
+                + "where (sdt like '%" + sdtOrTen + "%' "
+                + "or tenKhachHang like N'%" + sdtOrTen + "%') "
+                + "and tang like '%" + (tang == 0 ? "" : tang) + "%' "
+                + "and p.trangThai = '" + TrangThaiPhong.DANG_HAT + "'";
+
         try {
             tr.begin();
             List<Phong> rs = session
@@ -184,9 +184,9 @@ public class Phong_DAO implements PhongService {
     public int getTang() {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        
+
         String sql = "select max(tang) from  Phong";
-        
+
         try {
             tr.begin();
             int tang = Integer.valueOf(String.valueOf(session.createNativeQuery(sql).getSingleResult()));
@@ -200,15 +200,15 @@ public class Phong_DAO implements PhongService {
 
     @Override
     public List<Phong> getDsPhongByTang(int tang, String tenPhong, LoaiPhong loaiPhong) {
-        Session  session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        
+
         String maLoaiPhong = loaiPhong == null ? "" : loaiPhong.getMaLoaiPhong();
-        
-        String sql = "select * from Phong where tang like '%"+ (tang == 0 ? "":tang) +"%' "
-                + "and maLoaiPhong like '%"+ maLoaiPhong +"%' "
-                + "and tenPhong like '%"+ tenPhong +"%'";
-        
+
+        String sql = "select * from Phong where tang like '%" + (tang == 0 ? "" : tang) + "%' "
+                + "and maLoaiPhong like '%" + maLoaiPhong + "%' "
+                + "and tenPhong like '%" + tenPhong + "%'";
+
         try {
             tr.begin();
             List<Phong> rs = session
@@ -217,10 +217,29 @@ public class Phong_DAO implements PhongService {
             tr.commit();
             return rs;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         } finally {
             session.close();
+        }
+        return null;
+    }
+
+    @Override
+    public String getMaxId() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+
+        String sql = "select max(maPhong) from Phong";
+
+        try {
+            tr.begin();
+            String id = (String) session
+                    .createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return id;
+        } catch (Exception e) {
+            tr.rollback();
         }
         return null;
     }

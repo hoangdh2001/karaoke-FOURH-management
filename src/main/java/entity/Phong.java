@@ -58,6 +58,7 @@ public class Phong {
      *
      */
     public Phong() {
+        this.trangThai = TrangThaiPhong.TRONG;
     }
 
     /**

@@ -343,25 +343,20 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         String tenMatHang = txtSearch.getText().trim();
         String tenLoaiDichVu = String.valueOf(cbLoaiDichVu.getSelectedItem());
         if (!tenLoaiDichVu.equals("Tất cả") && tenMatHang.length() > 0) {
-            System.out.println("Cả hai");
             dsMatHang.stream().filter(matHang -> ((matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) && (matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)))).forEachOrdered(matHang -> {
                 ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
             });
         } else if (!tenLoaiDichVu.equals("Tất cả") || tenMatHang.length() > 0) {
-            System.out.println("Một trong hai");
             dsMatHang.forEach(matHang -> {
                 if (!tenLoaiDichVu.equals("Tất cả")) {
-                    System.out.println("ComboBox");
                     if (matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)) {
                         ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
                     }
                 } else if (matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) {
-                    System.out.println("text");
                     ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
                 }
             });
         } else {
-            System.out.println("Không có");
             dsMatHang.forEach(matHang -> {
                 ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
             });

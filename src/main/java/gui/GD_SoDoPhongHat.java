@@ -92,7 +92,6 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         JPanel pnlForm = new JPanel();
         pnlForm.setOpaque(false);
         pnlForm.setLayout(new MigLayout("fill", "push[center]20[center]push", "50[center]15[center]35"));
-        UIManager.put("TextComponent.arc", 5);
         txtTenPhong = new MyTextFieldFlatlaf();
 //        txtTenPhong.setBorderLine(true);
         txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));

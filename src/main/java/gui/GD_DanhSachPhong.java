@@ -3,19 +3,26 @@ package gui;
 import dao.Phong_DAO;
 import entity.LoaiPhong;
 import entity.Phong;
+import gui.dialog.DL_TaoPhong;
+import gui.swing.button.ToggleButton;
 
 import gui.swing.table2.EventAction;
 import gui.swing.model.ModelAction;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
@@ -24,6 +31,11 @@ public class GD_DanhSachPhong extends JPanel {
 
     private Phong_DAO phong_DAO;
     private EventAction eventAction;
+    private static DL_TaoPhong dltp;
+
+    public static DL_TaoPhong getDltp() {
+        return dltp;
+    }
 
     public GD_DanhSachPhong() {
         phong_DAO = new Phong_DAO();
@@ -112,9 +124,11 @@ public class GD_DanhSachPhong extends JPanel {
 
     private void loadData() {
         List<Phong> dsPhong = phong_DAO.getDsPhong();
-        dsPhong.forEach((phong) -> {
-            ((DefaultTableModel)table.getModel()).addRow(phong.convertToRowTable(eventAction));
-        });
+        if (dsPhong != null) {
+            dsPhong.forEach((phong) -> {
+                ((DefaultTableModel) table.getModel()).addRow(phong.convertToRowTable(eventAction));
+            });
+        }
     }
 
     private JPanel createPanelTitle() {
@@ -126,6 +140,29 @@ public class GD_DanhSachPhong extends JPanel {
         lblTitle.setText("Danh sách phòng hát");
         lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
         lblTitle.setForeground(new Color(68, 68, 68));
+        ToggleButton open = new ToggleButton();
+        open.setIcon(new ImageIcon(getClass().getResource("/icon/more_15px.png")));
+
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem menuItem = new JMenuItem("Thêm phòng");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                new DL_TaoPhong(GD_Chinh.FRAME, true).setVisible(true);
+                loadData();
+            }
+        });
+        popupMenu.add(menuItem);
+
+        open.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                popupMenu.show(open, 0, open.getHeight());
+                popupMenu.setPopupSize(popupMenu.getWidth(), 30);
+            }
+        });
+
+        pnlTitle.add(open, "pos 1al 0al n n, w 30!, h 30!");
         pnlTitle.add(lblTitle);
         return pnlTitle;
     }
