@@ -2,6 +2,8 @@ package gui.swing.table2;
 
 import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class CellStatus extends javax.swing.JPanel {
 
@@ -16,6 +18,13 @@ public class CellStatus extends javax.swing.JPanel {
             lblStatus.setText(trangThai.getTrangThai());
             lblStatus.setColorStatus(trangThai.getStatusColor());
         }
+    }
+    
+    @Override
+    protected void paintComponent(Graphics grphcs) {
+        super.paintComponent(grphcs);
+        grphcs.setColor(new Color(230, 230, 230));
+        grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
     }
 
     @SuppressWarnings("unchecked")

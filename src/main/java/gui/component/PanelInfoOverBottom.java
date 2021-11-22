@@ -3,6 +3,7 @@ package gui.component;
 import entity.Phong;
 import gui.swing.table2.CellStatus;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
@@ -10,6 +11,7 @@ public class PanelInfoOverBottom extends javax.swing.JPanel {
     private MigLayout layout;
     private Phong phong;
     private final Font font = new Font("Sansserif", Font.PLAIN, 14);
+    private final DecimalFormat df = new DecimalFormat("##0.# Đ");
     
     public PanelInfoOverBottom(Phong phong) {
         this.phong = phong;
@@ -18,25 +20,36 @@ public class PanelInfoOverBottom extends javax.swing.JPanel {
     }
     
     private void bulidPanelInfoOverBottom() {
-        layout = new MigLayout("debug, wrap", "", "15[]15");
+        layout = new MigLayout("debug, wrap", "", "10[]10");
         setLayout(layout);
         JLabel lblTT = new JLabel("Thông tin phòng hát");
         lblTT.setFont(new Font("sasserif", Font.BOLD, 16));
         add(lblTT);
-        JLabel lblTenPhong = new JLabel("Tên " + phong.getTenPhong());
+        
+        JLabel lblTenPhong = new JLabel(phong.getTenPhong());
         lblTenPhong.setFont(font);
-        add(lblTenPhong);
+        add(lblTenPhong, "split 2");
+        
+        JLabel lblTang = new JLabel("  Tầng " + phong.getTang());
+        lblTang.setFont(font);
+        add(lblTang);
         
         JLabel lblTrangThai = new JLabel("Trạng thái ");
         lblTrangThai.setFont(font);
         add(lblTrangThai, "split 2");
         CellStatus status = new CellStatus(phong.getTrangThai());
         status.setOpaque(false);
-        add(status);
+        add(status, "w 100!, h 30!");
         
-        JLabel lblTang = new JLabel("Tầng " + phong.getTang());
-        lblTang.setFont(font);
-        add(lblTang);
+        JLabel lblLoaiPhong = new JLabel(phong.getLoaiPhong().getTenLoaiPhong());
+        lblLoaiPhong.setFont(font);
+        add(lblLoaiPhong);
+        
+        JLabel lblGiaPhong = new JLabel("Giá phòng " + df.format(phong.getLoaiPhong().getGiaPhong()));
+        lblGiaPhong.setFont(font);
+        add(lblGiaPhong);
+        
+        
     }
 
     @SuppressWarnings("unchecked")

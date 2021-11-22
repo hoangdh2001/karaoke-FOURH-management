@@ -67,7 +67,7 @@ public class RoomDetail extends javax.swing.JDialog {
             public void timingEvent(float fraction) {
                 double fractionSize = 210 + ((getHeight() - 210) * fraction);
                 double fractionPoint;
-                fractionPoint = Double.valueOf(df.format(190 * fraction));
+                fractionPoint = Double.valueOf(df.format(170 * fraction));
                 if (fraction >= 0.5f) {
                     pnlBottom.setVisible(true);
                 }
@@ -148,7 +148,7 @@ public class RoomDetail extends javax.swing.JDialog {
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 396, Short.MAX_VALUE)
+            .addGap(0, 363, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -162,7 +162,7 @@ public class RoomDetail extends javax.swing.JDialog {
             .addComponent(jLayeredPane1)
         );
 
-        setBounds(0, 0, 392, 396);
+        setBounds(0, 0, 392, 363);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowLostFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowLostFocus
