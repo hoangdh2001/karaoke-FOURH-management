@@ -318,7 +318,7 @@ public class GD_Chinh extends JFrame {
                                 if (!animator2.isRunning()) {
                                     if (!tabShow) {
                                         tab.setVisible(true);
-
+                                        
                                         PanelThemNhanVien pnlThemNhanVien = new PanelThemNhanVien();
                                         pnlThemNhanVien.addThemEvent(new EventAdd() {
                                             @Override
@@ -326,10 +326,11 @@ public class GD_Chinh extends JFrame {
                                                 if(obj instanceof Boolean) {
                                                     boolean rs = (Boolean) obj;
                                                     if(rs) {
-                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thành công!");
+                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thành công!");
                                                         gD_NhanVien.loadDataNhanVien();
+                                                        
                                                     } else {
-                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thất bại!");
+                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thất bại!");
                                                     }
                                                 }
                                             }

@@ -9,6 +9,7 @@ import entity.DiaChi;
 import entity.LoaiNhanVien;
 import entity.NhanVien;
 import gui.swing.event.EventAdd;
+import gui.swing.model.AutoID;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -35,10 +39,11 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
     private EventAdd event;
 
     private SimpleDateFormat fm1 = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat fm2 = new SimpleDateFormat("dd-MM-yyyy");
 
     public PanelThemNhanVien() {
         initComponents();
-        buildDisplay();
+        setPropertiesForm();
 
         caLam_DAO = new CaLam_DAO();
         loaiNhanVien_DAO = new LoaiNhanVien_DAO();
@@ -51,10 +56,6 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         clearForm();
     }
 
-    private void buildDisplay() {
-        setPropertiesForm();
-
-    }
 
     private void setPropertiesForm() {
         int txtRadius = 10;
@@ -121,8 +122,16 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         btnThem.setBorderline(true);
         btnThem.setBorderRadius(btnRadius);
         btnThem.setBackground(colorBtn);
+
+    }
+    
+    public void addThemEvent(EventAdd event) {
+        this.event = event;
     }
 
+    /**
+     * Đưa dữ liệu lên comboBox
+     */
     private void comboBoxHandler() {
         caLams = caLam_DAO.getCaLams();
         for (CaLam i : caLams) {
@@ -179,22 +188,24 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
 
     }
 
+    /**
+     * Xử lý sự kiện nút làm mới
+     */
     private void btnLamMoiHandler() {
         btnLamMoi.addActionListener((e) -> {
             clearForm();
         });
     }
-    
-    public void addThemEvent(EventAdd event) {
-        this.event = event;
-    }
 
+    /**
+     * Xử lý sự kiện nút thêm
+     */
     private void btnThemHandler() {
         btnThem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-//                if (validForm() == true) {
+                if (validForm() == true) {
                     String ma = txtMaNV.getText();
                     String ten = txtTenNV.getText().trim();
 
@@ -243,11 +254,16 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
                         //Thêm nhân viên
                         NhanVien nhanVien = new NhanVien(ma, ten, lnv, cl, cccd, gioiTinh, ngaySinh, sdt, email, diaChi, matKhau);
                         System.out.println("Nhan vieen dc them \n " + nhanVien);
-                        event.add(nhanVien_DAO.addNhanVien(nhanVien));
+                        boolean result = nhanVien_DAO.addNhanVien(nhanVien);
+                        event.add(result);
+                        
+                        if (result) {
+                            clearForm();
+                        }
                     }
-//                } else {
-//                    return;
-//                }
+                } else {
+                    return;
+                }
 
             }
         });
@@ -258,51 +274,19 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
      *
      * @return date date[0] năm date[1] tháng date[2] ngày
      */
-//    private ArrayList<Integer> getNgaySinh() {
-//        ArrayList<Integer> date = new ArrayList<>();
-//        String[] d = fm1.format(jDateChooser1.getDate()).split("-");
-//        for (String string : d) {
-//            System.out.println(string);
-//        }
-//        date.add(Integer.parseInt(d[0])); //năm 
-//        date.add(Integer.parseInt(d[1])); // tháng
-//        date.add(Integer.parseInt(d[2])); //ngày
-//        System.out.println("ham" + date.get(0) + "/" + date.get(1) + "/" + date.get(2));
-//        return date;
-//    }
-
-    /**
-     * Thuật toán tạo mã tăng tự động
-     *
-     * @param idCurrent mã hiện tại
-     * @return idNew mã được tăng lên 1 Ví dụ: idCurrent= "NV0001" ->
-     * idNew="NV0002"
-     */
-    private String generateId(String idCurrent) {
-        String[] idSplit = idCurrent.split(""); // tách các chữ số trong id ra thành từng phần tử của mảng
-
-        int i = 2; //vị trí chia mã nhân viên ra làm 2 phần, ví dụ NV0038 -> phần đầu: NV00 ; phần đuôi:38
-        while (i != idSplit.length) {
-            if (!idSplit[i].equals("0")) {
-                break;
-            }
-            i++;
+    private ArrayList<Integer> getNgaySinh() {
+        ArrayList<Integer> date = new ArrayList<>();
+        String[] d = fm1.format(jDateChooser1.getDate()).split("-");
+        for (String string : d) {
+            System.out.println(string);
         }
-
-        String head_id = "NV"; // phần đầu của mã nhân viên mới
-        String tail_id = ""; // phần đuôi của mã nhân viên mới
-        for (int j = 2; j < idSplit.length; j++) {
-
-            if (j < i) {
-                head_id += idSplit[j];
-            } else {
-                tail_id += idSplit[j];
-            }
-        }
-
-        tail_id = Integer.toString(Integer.parseInt(tail_id) + 1); // tăng id lên 1
-        return head_id + tail_id;
+        date.add(Integer.parseInt(d[0])); //năm 
+        date.add(Integer.parseInt(d[1])); // tháng
+        date.add(Integer.parseInt(d[2])); //ngày
+        System.out.println("ham" + date.get(0) + "/" + date.get(1) + "/" + date.get(2));
+        return date;
     }
+   
 
     private boolean validForm() {
         //Kiểm tra họ tên
@@ -312,12 +296,12 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
             txtTenNV.requestFocus();
             return false;
         } else {
-//            if (!hoTen.matches("^([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*\\s)+([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*)$")) {
-//                JOptionPane.showMessageDialog(null, "Chưa nhập đầy đủ họ tên. Họ tên bắt đầu bằng chữ in hoa.");
-//                txtTenNV.selectAll();
-//                txtTenNV.requestFocus();
-//                return false;
-//            }
+            if (!hoTen.matches("^([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*\\s)+([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*)$")) {
+                JOptionPane.showMessageDialog(null, "Chưa nhập đầy đủ họ tên. Họ tên bắt đầu bằng chữ in hoa.");
+                txtTenNV.selectAll();
+                txtTenNV.requestFocus();
+                return false;
+            }
         }
 
         if (jDateChooser1.getDate() == null) {
@@ -326,38 +310,37 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         }
 
         //Kiểm tra ngày tháng năm sinh >= 18 tuổi
-//        ArrayList<Integer> d = getNgaySinh();
-//        int namSinh = d.get(0);
-//        int thangSinh = d.get(1);
-//        int ngaySinh = d.get(2);
-//        System.out.println("ngay sinh" + "/" + ngaySinh + "/" + thangSinh + "/" + namSinh);
+        ArrayList<Integer> d = getNgaySinh();
+        int namSinh = d.get(0);
+        int thangSinh = d.get(1);
+        int ngaySinh = d.get(2);
+        System.out.println("ngay sinh" + "/" + ngaySinh + "/" + thangSinh + "/" + namSinh);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
 
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-//        LocalDateTime now = LocalDateTime.now();
-//
-//        if ((now.getYear() - namSinh) <= 18) {
-//
-//            if ((now.getYear() - namSinh) < 18) {
-//                JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
-//                return false;
-//            } else {//Nếu năm == 18
-//
-//                if (now.getMonthValue() <= thangSinh) {
-//
-//                    if (now.getMonthValue() < thangSinh) {
-//                        JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
-//                        return false;
-//                    } else if (now.getMonthValue() == thangSinh) {//Nếu tháng bằng nhau
-//
-//                        if (now.getDayOfMonth() < ngaySinh) {
-//                            JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
-//                            return false;
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if ((now.getYear() - namSinh) <= 18) {
 
+            if ((now.getYear() - namSinh) < 18) {
+                JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+                return false;
+            } else {//Nếu năm == 18
+
+                if (now.getMonthValue() <= thangSinh) {
+
+                    if (now.getMonthValue() < thangSinh) {
+                        JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+                        return false;
+                    } else if (now.getMonthValue() == thangSinh) {//Nếu tháng bằng nhau
+
+                        if (now.getDayOfMonth() < ngaySinh) {
+                            JOptionPane.showMessageDialog(null, "Chưa đủ 18 tuổi.");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        //Kiểm tra số điện thoại hợp lệ
         String sdt = txtSDT.getText().trim();
         if (!(sdt.length() > 0)) {
             JOptionPane.showMessageDialog(null, "Chưa nhập số điện thoại.");
@@ -373,6 +356,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
             }
         }
 
+        //Kiểm tra email hợp lệ
         String email = txtEmail.getText().trim();
         if (email.length() > 0) {
 
@@ -383,7 +367,8 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
                 return false;
             }
         }
-
+        
+        //Kiểm tra số căn cước công dân
         String cccd = txtCCCD.getText().trim();
         if (!(cccd.length() > 0)) {
             JOptionPane.showMessageDialog(null, "Chưa nhập số căn cước công dân.");
@@ -435,7 +420,6 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         }
 
         String matKhau = txtMatKhau.getText().trim();
-
         if (!(matKhau.length() > 0)) {
             JOptionPane.showMessageDialog(null, "Chưa nhập mật khẩu.");
             txtMatKhau.requestFocus();
@@ -457,7 +441,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
 
     private void clearForm() {
         NhanVien nhanVien = nhanVien_DAO.getLastNhanVien();
-        String newID = generateId(nhanVien.getMaNhanVien());
+        String newID = AutoID.generateId(nhanVien.getMaNhanVien(), "NV");
         txtMaNV.setText(newID);
 
         txtTenNV.setText("");

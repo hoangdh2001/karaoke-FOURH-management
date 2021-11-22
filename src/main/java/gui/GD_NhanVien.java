@@ -72,7 +72,7 @@ public class GD_NhanVien extends JPanel {
 
     public GD_NhanVien() {
         initComponents();
-        this.setPreferredSize(new Dimension(getWidth(), 1000));
+        this.setPreferredSize(new Dimension(getWidth(), 940));
         buildGD();
 
         nhanVien_DAO = new NhanVien_DAO();
@@ -123,7 +123,7 @@ public class GD_NhanVien extends JPanel {
         pnlTitle.setOpaque(false);
         pnlTitle.setLayout(new MigLayout("fill", "", ""));
         JLabel lblTitle = new JLabel();
-        lblTitle.setText("Tìm kiếm");
+        lblTitle.setText("QUẢN LÝ NHÂN VIÊN");
         lblTitle.setFont(new Font("sansserif", Font.BOLD, 18));
         lblTitle.setForeground(new Color(68, 68, 68));
         pnlTitle.add(lblTitle);
@@ -253,16 +253,6 @@ public class GD_NhanVien extends JPanel {
         });
     }
     
-    public void loadDataNhanVien(){
-        //Load dữ liệu từ DB lên bảng 
-        listNhanVien = nhanVien_DAO.getNhanViens();
-        for (NhanVien i : listNhanVien) {
-            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
-                    i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
-                    i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
-        }
-    }
-
     public void loadDataNhanVien() {
         System.out.println("load");
         ((DefaultTableModel) tblNhanVien.getModel()).setRowCount(0);
@@ -419,7 +409,6 @@ public class GD_NhanVien extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblTitle = new javax.swing.JLabel();
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlCenter = new gui.swing.panel.PanelShadow();
         lblTitleBang = new javax.swing.JLabel();
@@ -428,13 +417,6 @@ public class GD_NhanVien extends JPanel {
 
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1225, 900));
-
-        lblTitle.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        lblTitle.setForeground(new java.awt.Color(4, 72, 210));
-        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("QUẢN LÝ NHÂN VIÊN");
-        lblTitle.setToolTipText("");
-        lblTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -485,27 +467,20 @@ public class GD_NhanVien extends JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitle)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 1225, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTitleBang;
     private gui.swing.panel.PanelShadow pnlCenter;
     private gui.swing.panel.PanelShadow pnlTop;
