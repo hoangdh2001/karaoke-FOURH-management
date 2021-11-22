@@ -37,7 +37,7 @@ public class PanelInfoOverBottom extends javax.swing.JPanel {
         JLabel lblTrangThai = new JLabel("Trạng thái ");
         lblTrangThai.setFont(font);
         add(lblTrangThai, "split 2");
-        CellStatus status = new CellStatus(phong.getTrangThai());
+        CellStatus status = new CellStatus(phong.getTrangThai(), true);
         status.setOpaque(false);
         add(status, "w 100!, h 30!");
         

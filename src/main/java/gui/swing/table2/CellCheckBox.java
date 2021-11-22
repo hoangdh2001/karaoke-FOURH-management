@@ -6,20 +6,25 @@ import javax.swing.border.EmptyBorder;
 
 public class CellCheckBox extends javax.swing.JPanel {
 
-    public CellCheckBox() {
+    private boolean isSelected;
+
+    public CellCheckBox(boolean isSelected) {
+        this.isSelected = isSelected;
         initComponents();
         setBorder(new EmptyBorder(2, 2, 2, 2));
     }
-    
+
     public void select(boolean isSelect) {
         jCheckBox1.setSelected(isSelect);
     }
-    
+
     @Override
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);
-        grphcs.setColor(new Color(230, 230, 230));
-        grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
+        if (!isSelected) {
+            grphcs.setColor(new Color(230, 230, 230));
+            grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
+        }
     }
 
     @SuppressWarnings("unchecked")

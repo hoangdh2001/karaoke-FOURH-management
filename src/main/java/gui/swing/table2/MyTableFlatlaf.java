@@ -20,7 +20,7 @@ public class MyTableFlatlaf extends JTable {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 if (value instanceof TrangThaiPhong | value instanceof TrangThaiPhieuDat) {
-                    CellStatus cell = new CellStatus(value);
+                    CellStatus cell = new CellStatus(value, isSelected);
                     if (isSelected) {
                         cell.setBackground(getSelectionBackground());
                         cell.setForeground(getSelectionForeground());
@@ -41,7 +41,7 @@ public class MyTableFlatlaf extends JTable {
                     }
                     return button;
                 } else if(value instanceof Class) {
-                    CellCheckBox cell = new CellCheckBox();
+                    CellCheckBox cell = new CellCheckBox(isSelected);
                     cell.select(isSelected);
                     if (isSelected) {
                         cell.setBackground(getSelectionBackground());
@@ -53,7 +53,7 @@ public class MyTableFlatlaf extends JTable {
                     return cell;
                 }else if(value instanceof ModelAction) {
                     ModelAction action = (ModelAction) value;
-                    CellAction cell = new CellAction(action);
+                    CellAction cell = new CellAction(action, isSelected);
                     if (isSelected) {
                         cell.setBackground(getSelectionBackground());
                         cell.setForeground(getSelectionForeground());

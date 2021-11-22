@@ -32,7 +32,7 @@ public class MyTable extends JTable {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selected, boolean bln1, int i, int i1) {
                 if (o instanceof TrangThaiPhong | o instanceof TrangThaiPhieuDat) {
-                    CellStatus cell = new CellStatus(o);
+                    CellStatus cell = new CellStatus(o, selected);
                     if (selected) {
                         cell.setBackground(new Color(239, 244, 255));
                         cell.setForeground(new Color(15, 89, 140));
@@ -42,7 +42,7 @@ public class MyTable extends JTable {
                     }
                     return cell;     //        fix ở đây
                 } else if(o instanceof Boolean) {
-                    CellCheckBox cell = new CellCheckBox();
+                    CellCheckBox cell = new CellCheckBox(selected);
                     cell.select(selected);
                     if (selected) {
                         cell.setBackground(new Color(239, 244, 255));
@@ -51,7 +51,7 @@ public class MyTable extends JTable {
                     }
                     return cell;
                 } else if(o instanceof Class) {
-                    CellCheckBox cell = new CellCheckBox();
+                    CellCheckBox cell = new CellCheckBox(selected);
                     cell.select(selected);
                     if (selected) {
                         cell.setBackground(new Color(239, 244, 255));
@@ -62,7 +62,7 @@ public class MyTable extends JTable {
                 }
                 else if(o instanceof ModelAction) {
                     ModelAction action = (ModelAction) o;
-                    CellAction cell = new CellAction(action);
+                    CellAction cell = new CellAction(action, selected);
                     if (selected) {
                         cell.setBackground(new Color(239, 244, 255));
                     } else {

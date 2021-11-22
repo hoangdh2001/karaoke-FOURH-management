@@ -34,10 +34,10 @@ public class GD_DanhSachPhong extends JPanel {
     }
 
     private void buildGD() {
-        String fontName = "sansserif";
-        int fontStyle = Font.PLAIN;
-        int fontSize = 16;
-        Color colorBtn = new Color(184, 238, 241);
+//        String fontName = "sansserif";
+//        int fontStyle = Font.PLAIN;
+//        int fontSize = 16;
+//        Color colorBtn = new Color(184, 238, 241);
 
         pnlTop.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
 
@@ -46,21 +46,21 @@ public class GD_DanhSachPhong extends JPanel {
          */
         // Mã phòng
         JLabel lblTenPhong = new JLabel("Tên phòng:");
-        lblTenPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        lblTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlTop.add(lblTenPhong);
 
         JTextField txtMaPhong = new JTextField();
-        txtMaPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        txtMaPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
 //        txtMaPhong.setBorderLine(true);
         pnlTop.add(txtMaPhong, "w 20%, h 30!");
 
         //Tên phòng
         JLabel lblLoaiPhong = new JLabel("Loại phòng");
-        lblLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        lblLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlTop.add(lblLoaiPhong);
 
         JComboBox<String> cmbLoaiPhong = new JComboBox<>(new String[]{"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
-        cmbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 12));
+        cmbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
 //        cmbLoaiPhong.setBorderLine(true);
 //        cmbLoaiPhong.setBorderRadius(10);
         pnlTop.add(cmbLoaiPhong, "w 20%, h 30!");
