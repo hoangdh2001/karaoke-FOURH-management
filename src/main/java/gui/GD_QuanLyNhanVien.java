@@ -212,7 +212,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
      */
     private void TableHandler() {
 //        tblNhanVien.fixTable(scrTable);
-        tblNhanVien.getTableHeader().setFont(new Font(fontName, Font.BOLD, 16));
+        tblNhanVien.getTableHeader().setFont(new Font(fontName, Font.BOLD, 14));
     
         String html2 = "<html><head><style> body{margin: 0 ; padding: 0; background-color: #303841;} h3{color: white; padding: 0 16px;} </style></head>"
                 + "<body><h3>Click chuột trái 2 lần để xem chi tiết</h3></body></html>";
@@ -373,7 +373,6 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
     private void initComponents() {
 
         pnlCenter = new gui.swing.panel.PanelShadow();
-        lblTitleBang = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNhanVien = new gui.swing.table2.MyTableFlatlaf();
         pnlTop = new gui.swing.panel.PanelShadow();
@@ -384,14 +383,6 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         pnlCenter.setShadowSize(2);
         pnlCenter.setShadowType(gui.swing.graphics.ShadowType.TOP);
         pnlCenter.setLayout(new java.awt.BorderLayout());
-
-        lblTitleBang.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        lblTitleBang.setForeground(new java.awt.Color(4, 72, 210));
-        lblTitleBang.setText("  Danh sách nhân viên");
-        lblTitleBang.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        lblTitleBang.setPreferredSize(new java.awt.Dimension(130, 45));
-        lblTitleBang.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pnlCenter.add(lblTitleBang, java.awt.BorderLayout.PAGE_START);
 
         tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -412,7 +403,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         tblNhanVien.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tblNhanVien.setRowHeight(40);
         tblNhanVien.setSelectionBackground(new java.awt.Color(239, 244, 255));
-        tblNhanVien.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblNhanVien.setSelectionForeground(new java.awt.Color(51, 51, 51));
         tblNhanVien.setShowGrid(true);
         tblNhanVien.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tblNhanVien);
@@ -467,7 +458,6 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblTitleBang;
     private gui.swing.panel.PanelShadow pnlCenter;
     private gui.swing.panel.PanelShadow pnlTop;
     private gui.swing.table2.MyTableFlatlaf tblNhanVien;

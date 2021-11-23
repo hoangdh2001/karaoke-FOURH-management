@@ -24,9 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
 import javax.swing.table.DefaultTableModel;
 import service.ChiTietHoaDonService;
 import service.HoaDonService;
@@ -819,9 +817,11 @@ public class DL_ThanhToan extends javax.swing.JDialog {
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn trả phòng?\nLƯU Ý: Vui lòng kiểm tra và nhắc khách không để quên đồ", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            loadDataForm();
             hoaDon.setTrangThai(TrangThaiHoaDon.HOAN_THANH);
             hoaDon.getPhong().setTrangThai(TrangThaiPhong.BAN);
             hoaDon.setNgayLapHoaDon(new Date());
+            System.out.println(hoaDon.getTongHoaDon());
             List<ChiTietHoaDon> dsChiTietHoaDonTruocCapNhat = chiTietHoaDonService.getDsChiTietHoaDonByMaHoaDon(hoaDon.getMaHoaDon());
             System.out.println(dsChiTietHoaDonTruocCapNhat);
             dsChiTietHoaDonTruocCapNhat.forEach(chiTietHoaDon -> {

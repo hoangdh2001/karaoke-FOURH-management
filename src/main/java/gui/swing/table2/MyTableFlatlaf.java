@@ -78,6 +78,7 @@ public class MyTableFlatlaf extends JTable {
                     setBorder(noFocusBorder);
                     if (isSelected) {
                         com.setBackground(getSelectionBackground());
+                        System.out.println(getSelectionForeground());
                         com.setForeground(getSelectionForeground());
                     } else {
                         com.setBackground(Color.WHITE);

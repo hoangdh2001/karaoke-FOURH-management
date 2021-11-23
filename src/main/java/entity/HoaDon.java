@@ -14,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.transaction.Transactional;
 
@@ -298,7 +300,7 @@ public class HoaDon {
      * @return the tongHoaDon
      */
     public double getTongHoaDon() {
-        return (getTongTienMatHang() + getDonGiaPhong()) * (1 - chietKhau);
+        return tongHoaDon = (getTongTienMatHang() + getDonGiaPhong()) * (1 - chietKhau);
     }
     
     /**

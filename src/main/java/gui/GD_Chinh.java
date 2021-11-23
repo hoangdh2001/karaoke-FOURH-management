@@ -343,7 +343,7 @@ public class GD_Chinh extends JFrame {
                         break;
                     case 5:
                         if (subMenuIndex == 0) {
-                            content.showForm(new GD_ThongKeDoanhThu());
+                            content.showForm(new GD_ThongKeDoanhThu2());
                         } else if (subMenuIndex == 1) {
                             content.showForm(new GD_ThongKeHangHoa());
                         }
@@ -417,12 +417,12 @@ public class GD_Chinh extends JFrame {
         });
 
         content.showForm(soDoPhongHat);
-        sp.getViewport().setBackground(Color.WHITE);
-        sp.setVerticalScrollBar(new ScrollBarCustom());
-        JPanel p = new JPanel();
-        p.setBackground(Color.WHITE);
-        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        sp.getViewport().setBackground(Color.WHITE);
+//        sp.setVerticalScrollBar(new ScrollBarCustom());
+//        JPanel p = new JPanel();
+//        p.setBackground(Color.WHITE);
+//        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+//        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
         sp.getVerticalScrollBar().setUnitIncrement(50);
         sp.setBorder(null);

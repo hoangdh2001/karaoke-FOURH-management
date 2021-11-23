@@ -145,7 +145,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         tblKhachHang.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tblKhachHang.setRowHeight(40);
         tblKhachHang.setSelectionBackground(new java.awt.Color(239, 244, 255));
-        tblKhachHang.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblKhachHang.setSelectionForeground(new java.awt.Color(51, 51, 51));
         tblKhachHang.setShowGrid(true);
         tblKhachHang.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tblKhachHang);
@@ -211,7 +211,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     
     private void createTable() {
 //        tblKhachHang.fixTable(scrKhachHang);
-        tblKhachHang.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 16));
+        tblKhachHang.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         loadData();
         
     }

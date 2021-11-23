@@ -8,20 +8,13 @@ package gui;
 import com.toedter.calendar.JDateChooser;
 import dao.PhieuDatPhong_DAO;
 import dao.Phong_DAO;
-import entity.KhachHang;
 import entity.PhieuDatPhong;
-import entity.Phong;
 import entity.TrangThaiPhieuDat;
-import gui.dialog.DL_DatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
 import gui.swing.table2.EventAction;
-import gui.swing.model.ModelAction;
-import gui.swing.textfield.MyComboBox;
-import gui.swing.textfield.MyTextField;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +25,6 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +40,6 @@ import gui.swing.event.EventSelectedRow;
 import gui.swing.textfield.MyTextFieldFlatlaf;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
 
 /**
  *
@@ -244,7 +235,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     }
     
     private void createTable() {
-        tblPhieuDatPhong.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 16));
+        tblPhieuDatPhong.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
 //        Object rows[][] = { {"","","","","","",""},{"","","","","","",""}, };
 //        String columns[] = {"Mã phiếu đặt","Ngày lập phiếu","Khách hàng","Phòng", "Ngày đặt","Trạng thái","Tiền cọc"};
 //        TableModel model = new DefaultTableModel(rows, columns){
@@ -320,7 +311,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
-        lblBang = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPhieuDatPhong = new gui.swing.table2.MyTableFlatlaf();
 
@@ -347,11 +337,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlBottom.setShadowSize(3);
         pnlBottom.setLayout(new java.awt.BorderLayout(10, 10));
 
-        lblBang.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
-        lblBang.setForeground(new java.awt.Color(4, 72, 210));
-        lblBang.setText("Phiếu đặt phòng");
-        pnlBottom.add(lblBang, java.awt.BorderLayout.PAGE_START);
-
         tblPhieuDatPhong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -363,7 +348,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         tblPhieuDatPhong.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tblPhieuDatPhong.setRowHeight(40);
         tblPhieuDatPhong.setSelectionBackground(new java.awt.Color(239, 244, 255));
-        tblPhieuDatPhong.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tblPhieuDatPhong.setSelectionForeground(new java.awt.Color(51, 51, 51));
         tblPhieuDatPhong.setShowGrid(true);
         tblPhieuDatPhong.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tblPhieuDatPhong);
@@ -396,7 +381,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblBang;
     private gui.swing.panel.PanelShadow pnlBottom;
     private gui.swing.panel.PanelShadow pnlTop;
     private gui.swing.table2.MyTableFlatlaf tblPhieuDatPhong;

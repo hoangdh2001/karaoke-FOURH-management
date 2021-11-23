@@ -7,7 +7,9 @@ package service;
 
 import entity.HoaDon;
 import entity.TrangThaiHoaDon;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -36,4 +38,5 @@ public interface HoaDonService {
     public List<Integer> getDSQuyTheoNgayLap();
     public String getMaxID();
     public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai );
+    public Map<Integer, Double> getDoanhThuHoaDonTheoThangNam(int nam);
 }

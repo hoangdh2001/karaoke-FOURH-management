@@ -87,7 +87,7 @@ public class GD_DanhSachPhong extends JPanel {
     }
 
     private void createTable() {
-        table.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 16));
+        table.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         LoaiPhong loaiPhong = new LoaiPhong();
         loaiPhong.setTenLoaiPhong("Phòng thường");
         eventAction = new EventAction() {
@@ -175,6 +175,7 @@ public class GD_DanhSachPhong extends JPanel {
         pnlBottom = new gui.swing.panel.PanelShadow();
         sp = new javax.swing.JScrollPane();
         table = new gui.swing.table2.MyTableFlatlaf();
+        jPanel1 = new javax.swing.JPanel();
 
         setOpaque(false);
 
@@ -187,11 +188,11 @@ public class GD_DanhSachPhong extends JPanel {
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1119, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 122, Short.MAX_VALUE)
+            .addGap(0, 91, Short.MAX_VALUE)
         );
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
@@ -220,7 +221,7 @@ public class GD_DanhSachPhong extends JPanel {
         table.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         table.setRowHeight(40);
         table.setSelectionBackground(new java.awt.Color(239, 244, 255));
-        table.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        table.setSelectionForeground(new java.awt.Color(51, 51, 51));
         table.setShowGrid(true);
         table.setShowVerticalLines(false);
         sp.setViewportView(table);
@@ -240,6 +241,21 @@ public class GD_DanhSachPhong extends JPanel {
 
         pnlBottom.add(sp, java.awt.BorderLayout.CENTER);
 
+        jPanel1.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1109, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 38, Short.MAX_VALUE)
+        );
+
+        pnlBottom.add(jPanel1, java.awt.BorderLayout.PAGE_END);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -252,12 +268,13 @@ public class GD_DanhSachPhong extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE))
+                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
     private gui.swing.panel.PanelShadow pnlBottom;
     private gui.swing.panel.PanelShadow pnlTop;
     private javax.swing.JScrollPane sp;

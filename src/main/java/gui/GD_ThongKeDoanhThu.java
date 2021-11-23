@@ -90,13 +90,13 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         int fontSize = 14;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setPreferredSize(new Dimension(getWidth(), getHeight()));
-        pnlTop.setLayout(new MigLayout());
+//        jPanel1.setPreferredSize(new Dimension(getWidth(), getHeight()));
+//        jPanel1.setLayout(new MigLayout());
         
-        pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
+//        jPanel1.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
         pnlThongKeTheo.setOpaque(false);
         pnlThongKeTheo.setLayout(new MigLayout("", "10[center]10[center]20 [center]10[center]20[center] 20 [center]10[center]10", "70[center] 40"));
-        pnlTop.add(pnlThongKeTheo, "w 100%, h 15%, wrap");
+//        jPanel1.add(pnlThongKeTheo, "w 100%, h 15%, wrap");
         
         // Chọn thời gian băt đầu
         dscBatDau = new JDateChooser();
@@ -150,12 +150,12 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
        
         pnlBangThongKe.setOpaque(false);
 //        pnlBangThongKe.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 1), "Bảng thống kê", TitledBorder.LEFT, TitledBorder.TOP, new Font("sansserif", Font.PLAIN, 16), new Color(4, 72, 210)));
-        pnlTop.add(pnlBangThongKe, "w 100%, h 75%, wrap");//
+//        jPanel1.add(pnlBangThongKe, "w 100%, h 75%, wrap");//
        
           
         pnlTinhTong.setOpaque(false);
         pnlTinhTong.setLayout(new MigLayout("","10[center]5[center]10[center]5[center]10[center]5[center]10[center]10",""));
-        pnlTop.add(pnlTinhTong, "w 100%, h 10%");
+//        jPanel1.add(pnlTinhTong, "w 100%, h 10%");
         
         lblChenhLech = new JLabel("Chênh lệch so với tháng trước:");
         lblChenhLech.setFont(new Font(fontName, fontStyle, fontSize));
