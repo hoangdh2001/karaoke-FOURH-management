@@ -8,6 +8,7 @@ import gui.swing.button.ToggleButton;
 
 import gui.swing.table2.EventAction;
 import gui.swing.model.ModelAction;
+import gui.swing.panel.slideshow.EventPagination;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -31,26 +32,16 @@ public class GD_DanhSachPhong extends JPanel {
 
     private Phong_DAO phong_DAO;
     private EventAction eventAction;
-    private static DL_TaoPhong dltp;
-
-    public static DL_TaoPhong getDltp() {
-        return dltp;
-    }
 
     public GD_DanhSachPhong() {
         phong_DAO = new Phong_DAO();
         initComponents();
         buildGD();
         createTable();
-//        table.fixTable(sp);
+        createPanelBottom();
     }
 
     private void buildGD() {
-//        String fontName = "sansserif";
-//        int fontStyle = Font.PLAIN;
-//        int fontSize = 16;
-//        Color colorBtn = new Color(184, 238, 241);
-
         pnlTop.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
 
         /**
@@ -63,7 +54,6 @@ public class GD_DanhSachPhong extends JPanel {
 
         JTextField txtMaPhong = new JTextField();
         txtMaPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
-//        txtMaPhong.setBorderLine(true);
         pnlTop.add(txtMaPhong, "w 20%, h 30!");
 
         //Tên phòng
@@ -73,8 +63,6 @@ public class GD_DanhSachPhong extends JPanel {
 
         JComboBox<String> cmbLoaiPhong = new JComboBox<>(new String[]{"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
         cmbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
-//        cmbLoaiPhong.setBorderLine(true);
-//        cmbLoaiPhong.setBorderRadius(10);
         pnlTop.add(cmbLoaiPhong, "w 20%, h 30!");
 
         /**
@@ -101,7 +89,7 @@ public class GD_DanhSachPhong extends JPanel {
                     DefaultTableModel df = (DefaultTableModel) table.getModel();
                     df.setRowCount(0);
                     table.clearSelection();
-                    loadData();
+                    loadData(pnlPage.getCurrentIndex());
                 }
             }
 
@@ -115,20 +103,23 @@ public class GD_DanhSachPhong extends JPanel {
                     DefaultTableModel df = (DefaultTableModel) table.getModel();
                     df.getDataVector().removeAllElements();
                     table.clearSelection();
-                    loadData();
+                    loadData(pnlPage.getCurrentIndex());
                 }
             }
         };
-        loadData();
+        loadData(pnlPage.getCurrentIndex());
     }
 
-    private void loadData() {
-        List<Phong> dsPhong = phong_DAO.getDsPhong();
+    private void loadData(int numPage) {
+        ((DefaultTableModel) table.getModel()).setRowCount(0);
+        List<Phong> dsPhong = phong_DAO.getDsPhong(numPage);
         if (dsPhong != null) {
             dsPhong.forEach((phong) -> {
                 ((DefaultTableModel) table.getModel()).addRow(phong.convertToRowTable(eventAction));
             });
         }
+        table.repaint();
+        table.revalidate();
     }
 
     private JPanel createPanelTitle() {
@@ -149,7 +140,7 @@ public class GD_DanhSachPhong extends JPanel {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 new DL_TaoPhong(GD_Chinh.FRAME, true).setVisible(true);
-                loadData();
+                loadData(pnlPage.getCurrentIndex());
             }
         });
         popupMenu.add(menuItem);
@@ -166,6 +157,17 @@ public class GD_DanhSachPhong extends JPanel {
         pnlTitle.add(lblTitle);
         return pnlTitle;
     }
+    
+    private void createPanelBottom() {
+        pnlPage.addEventPagination(new EventPagination() {
+            @Override
+            public void onClick(int pageClick) {
+                loadData(pageClick);
+            }
+        });
+        int soLuongPhong = phong_DAO.getSoLuongPhong();
+        pnlPage.init(soLuongPhong % 20 == 0 ? soLuongPhong / 20 : (soLuongPhong / 20) + 1);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -176,6 +178,7 @@ public class GD_DanhSachPhong extends JPanel {
         sp = new javax.swing.JScrollPane();
         table = new gui.swing.table2.MyTableFlatlaf();
         jPanel1 = new javax.swing.JPanel();
+        pnlPage = new gui.component.PanelPage();
 
         setOpaque(false);
 
@@ -243,15 +246,19 @@ public class GD_DanhSachPhong extends JPanel {
 
         jPanel1.setOpaque(false);
 
+        pnlPage.setOpaque(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1109, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 772, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 38, Short.MAX_VALUE)
+            .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
         );
 
         pnlBottom.add(jPanel1, java.awt.BorderLayout.PAGE_END);
@@ -276,6 +283,7 @@ public class GD_DanhSachPhong extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private gui.swing.panel.PanelShadow pnlBottom;
+    private gui.component.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
     private javax.swing.JScrollPane sp;
     private gui.swing.table2.MyTableFlatlaf table;

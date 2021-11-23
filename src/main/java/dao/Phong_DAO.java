@@ -93,14 +93,15 @@ public class Phong_DAO implements PhongService {
     }
 
     @Override
-    public List<Phong> getDsPhong() {
+    public List<Phong> getDsPhong(int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-
+        String sql = "select p.* from Phong p order by maPhong offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<Phong> dsPhong = session
-                    .createNamedQuery("getDsPhong", Phong.class)
+                    .createNativeQuery(sql, Phong.class)
+                    .setParameter("x", numPage * 20)
                     .getResultList();
 
             tr.commit();
@@ -113,6 +114,25 @@ public class Phong_DAO implements PhongService {
         return null;
     }
 
+    @Override
+    public int getSoLuongPhong() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from Phong";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+    
     @Override
     public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai) {
         Session session = sessionFactory.openSession();
