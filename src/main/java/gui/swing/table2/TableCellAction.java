@@ -20,7 +20,7 @@ public class TableCellAction extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable jtable, Object o, boolean bln, int i, int i1) {
         data = (ModelAction) o;
-        CellAction cell = new CellAction(data);
+        CellAction cell = new CellAction(data, true);
         cell.getBtnDelete().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {

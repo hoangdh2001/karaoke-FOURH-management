@@ -110,7 +110,7 @@ public class GD_Chinh extends JFrame {
 
         background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
         background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
-        background.add(createContent()); // content full
+        background.add(createContent(), "w 100%, h 100%"); // content full
         background.add(createTabPane(), "pos 45% 1al n n, w 100%, h 90%");
         TimingTarget target = new TimingTargetAdapter() {
             @Override
@@ -290,7 +290,7 @@ public class GD_Chinh extends JFrame {
                         });
                         break;
                     case 4:
-                        GD_NhanVien gD_NhanVien = new GD_NhanVien();
+                        GD_QuanLyNhanVien gD_NhanVien = new GD_QuanLyNhanVien();
 
                         content.showForm(gD_NhanVien);
                         gD_NhanVien.addEventSelectedRow(new EventSelectedRow() {
@@ -343,7 +343,7 @@ public class GD_Chinh extends JFrame {
                         break;
                     case 5:
                         if (subMenuIndex == 0) {
-                            content.showForm(new GD_ThongKeDoanhThu());
+                            content.showForm(new GD_ThongKeDoanhThu2());
                         } else if (subMenuIndex == 1) {
                             content.showForm(new GD_ThongKeHangHoa());
                         }
@@ -417,12 +417,12 @@ public class GD_Chinh extends JFrame {
         });
 
         content.showForm(soDoPhongHat);
-        sp.getViewport().setBackground(Color.WHITE);
-        sp.setVerticalScrollBar(new ScrollBarCustom());
-        JPanel p = new JPanel();
-        p.setBackground(Color.WHITE);
-        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        sp.getViewport().setBackground(Color.WHITE);
+//        sp.setVerticalScrollBar(new ScrollBarCustom());
+//        JPanel p = new JPanel();
+//        p.setBackground(Color.WHITE);
+//        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+//        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
         sp.getVerticalScrollBar().setUnitIncrement(50);
         sp.setBorder(null);
