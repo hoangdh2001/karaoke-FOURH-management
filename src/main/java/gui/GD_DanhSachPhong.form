@@ -66,7 +66,7 @@
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder bottom="5" left="5" right="5" top="10"/>
+            <EmptyBorder bottom="3" left="3" right="3" top="5"/>
           </Border>
         </Property>
         <Property name="shadowOpacity" type="float" value="0.3"/>
@@ -176,7 +176,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="pnlPage" min="-2" pref="337" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="772" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="776" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -187,7 +187,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="gui.component.PanelPage" name="pnlPage">
+            <Component class="gui.swing.table2.PanelPage" name="pnlPage">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>

@@ -1,4 +1,4 @@
-package gui.component;
+package gui.swing.table2;
 
 import gui.swing.panel.slideshow.EventPagination;
 import java.awt.event.ActionEvent;

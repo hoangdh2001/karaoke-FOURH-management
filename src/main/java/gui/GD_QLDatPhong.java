@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import com.toedter.calendar.JDateChooser;
@@ -41,10 +36,6 @@ import gui.swing.textfield.MyTextFieldFlatlaf;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
-/**
- *
- * @author Hao
- */
 public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener, KeyListener{
     
     private PhieuDatPhong_DAO phieuDatPhong_Dao;
@@ -76,7 +67,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         phieuDatPhong_Dao = new PhieuDatPhong_DAO();
         phong_Dao = new Phong_DAO();
         createPanelForm();
-//        setPreferredSize(new Dimension(getWidth(), 950));
         createTable();
         createPanelHidden();
         add(panelHidden);
@@ -100,15 +90,11 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         txtTimKiem = new MyTextFieldFlatlaf();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
         txtTimKiem.setHint("Nhập tên phòng/ khách hàng");
-//        txtTimKiem.setBorderLine(true);
-//        txtTimKiem.setBorderRadius(5);
         pnlTop.add(txtTimKiem, "w 20%, h 30!");
 
         cmbTrangThaiTK = new JComboBox<>();//cbModel
         cmbTrangThaiTK.setFont(new Font(fontName, fontPlain, font14));
-//        cmbTrangThaiTK.setBorderLine(true);
         cmbTrangThaiTK.addItem("Lọc theo trạng thái");
-//        cmbTrangThaiTK.setBorderRadius(10);
         pnlTop.add(cmbTrangThaiTK, "w 20%, h 30!");
 
         // Tìm kiếm Ngày đặt
@@ -236,17 +222,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     
     private void createTable() {
         tblPhieuDatPhong.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
-//        Object rows[][] = { {"","","","","","",""},{"","","","","","",""}, };
-//        String columns[] = {"Mã phiếu đặt","Ngày lập phiếu","Khách hàng","Phòng", "Ngày đặt","Trạng thái","Tiền cọc"};
-//        TableModel model = new DefaultTableModel(rows, columns){
-//            boolean[] canEdit = new boolean [] {
-//                false, false, false,false,true
-//            }; 
-//            public boolean isCellEditable(int rowIndex, int columnIndex) {
-//                return false;
-//            }
-//        };
-//        tblPhieuDatPhong.fixTable(sp);
         loadData();
     }
     
@@ -313,6 +288,8 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlBottom = new gui.swing.panel.PanelShadow();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPhieuDatPhong = new gui.swing.table2.MyTableFlatlaf();
+        jPanel1 = new javax.swing.JPanel();
+        pnlPage = new gui.swing.table2.PanelPage();
 
         setOpaque(false);
 
@@ -335,7 +312,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlBottom.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
         pnlBottom.setShadowOpacity(0.3F);
         pnlBottom.setShadowSize(3);
-        pnlBottom.setLayout(new java.awt.BorderLayout(10, 10));
+        pnlBottom.setLayout(new java.awt.BorderLayout());
 
         tblPhieuDatPhong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -362,26 +339,43 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
         pnlBottom.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 640, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+        );
+
+        pnlBottom.add(jPanel1, java.awt.BorderLayout.PAGE_END);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 951, Short.MAX_VALUE)
+            .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
+                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private gui.swing.panel.PanelShadow pnlBottom;
+    private gui.swing.table2.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
     private gui.swing.table2.MyTableFlatlaf tblPhieuDatPhong;
     // End of variables declaration//GEN-END:variables

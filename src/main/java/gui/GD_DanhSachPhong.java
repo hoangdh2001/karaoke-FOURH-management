@@ -30,18 +30,23 @@ import net.miginfocom.swing.MigLayout;
 
 public class GD_DanhSachPhong extends JPanel {
 
-    private Phong_DAO phong_DAO;
+    private final Phong_DAO phong_DAO;
     private EventAction eventAction;
 
     public GD_DanhSachPhong() {
         phong_DAO = new Phong_DAO();
         initComponents();
         buildGD();
+
+    }
+
+    private void buildGD() {
+        createPanelTop();
         createTable();
         createPanelBottom();
     }
 
-    private void buildGD() {
+    private void createPanelTop() {
         pnlTop.setLayout(new MigLayout("fill", "push[center]10[center]20[center]10[]push", "60[center]20[center]20[]push"));
 
         /**
@@ -68,10 +73,7 @@ public class GD_DanhSachPhong extends JPanel {
         /**
          * end: group thông tin phòng hát
          */
-        /*Begin: group danh sách Phòng hát*/
- /*End: group danh sách Phòng */
         pnlTop.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
-
     }
 
     private void createTable() {
@@ -157,7 +159,7 @@ public class GD_DanhSachPhong extends JPanel {
         pnlTitle.add(lblTitle);
         return pnlTitle;
     }
-    
+
     private void createPanelBottom() {
         pnlPage.addEventPagination(new EventPagination() {
             @Override
@@ -178,7 +180,7 @@ public class GD_DanhSachPhong extends JPanel {
         sp = new javax.swing.JScrollPane();
         table = new gui.swing.table2.MyTableFlatlaf();
         jPanel1 = new javax.swing.JPanel();
-        pnlPage = new gui.component.PanelPage();
+        pnlPage = new gui.swing.table2.PanelPage();
 
         setOpaque(false);
 
@@ -199,7 +201,7 @@ public class GD_DanhSachPhong extends JPanel {
         );
 
         pnlBottom.setBackground(new java.awt.Color(255, 255, 255));
-        pnlBottom.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        pnlBottom.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 3, 3, 3));
         pnlBottom.setShadowOpacity(0.3F);
         pnlBottom.setShadowSize(2);
         pnlBottom.setShadowType(gui.swing.graphics.ShadowType.TOP);
@@ -254,7 +256,7 @@ public class GD_DanhSachPhong extends JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 772, Short.MAX_VALUE))
+                .addGap(0, 776, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,7 +285,7 @@ public class GD_DanhSachPhong extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private gui.swing.panel.PanelShadow pnlBottom;
-    private gui.component.PanelPage pnlPage;
+    private gui.swing.table2.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
     private javax.swing.JScrollPane sp;
     private gui.swing.table2.MyTableFlatlaf table;
