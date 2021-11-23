@@ -4,6 +4,7 @@
  */
 package gui;
 
+import dao.HoaDon_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
 import dao.Phong_DAO;
 import entity.ChiTietHoaDon;
@@ -92,7 +93,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private Color colorLabel = new Color(47, 72, 210);
 
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhaphang_DAO;
-
+    private HoaDon_DAO hoaDon_Dao;
     private Phong phong;
     private NhanVien nhanVien;
 
@@ -157,6 +158,8 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        mainPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -467,8 +470,9 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlInfoBottom.add(pnlKhachHang, "w 65%,h 100%");
 
     }
-
-    public void initForm() {
+    
+    public void initForm(){
+        hoaDon_Dao = new HoaDon_DAO();
         listDaChon = new ArrayList<ObjectComboBox>();
         listDaChonSoLuong = new ArrayList<ObjectComboBox>();
         nhaCungCapVaNhaphang_DAO = new NhaCungCapVaNhapHang_DAO();
@@ -739,11 +743,11 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                     tienCoc = nhaCungCapVaNhaphang_DAO.getTienCoc(maPhieuDatPhong);
                 }
                 nhaCungCapVaNhaphang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_HAT);
-
-                String maHoaDon = nhaCungCapVaNhaphang_DAO.getlastMaHoaDonTang();
+                
+                String maHoaDon = hoaDon_Dao.getlastMaHoaDonTang();
                 hoaDon = new HoaDon(maHoaDon, kh, phong, nhanVien);
-
-                nhaCungCapVaNhaphang_DAO.insertHoaDon(hoaDon);
+                
+                hoaDon_Dao.insertHoaDon(hoaDon);
 //                MatHang matHang = nhaCungCapVaNhaphang_DAO.getMatHang("MH0001");
 //                ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(hoaDon,matHang, 10, 0.0f);
 //                hoaDon.themCT_HoaDon(matHang, 10, 0.0f);
@@ -754,8 +758,8 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                         if (soluong > 0) {
                             MatHang matHang = nhaCungCapVaNhaphang_DAO.getMatHang(cb.getMa());
                             ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(hoaDon,matHang, soluong);
-                            nhaCungCapVaNhaphang_DAO.insertCTHoaDon(ctHoaDon);
-                            nhaCungCapVaNhaphang_DAO.updateSLMatHang(cb.getMa(), soluong, "decrease");
+                            hoaDon_Dao.insertCTHoaDon(ctHoaDon);
+                            nhaCungCapVaNhaphang_DAO.updateSLMatHang(cb.getMa(),soluong,"decrease");
                         }
                     }
                 }

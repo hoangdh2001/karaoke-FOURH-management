@@ -1,5 +1,6 @@
 package gui;
 
+import dao.HoaDon_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
 import dao.Phong_DAO;
 import entity.HoaDon;
@@ -69,6 +70,8 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
     
+    private HoaDon_DAO hoaDonDao;
+    
     private String gioHat;
     
     private int fontPlain = Font.PLAIN;
@@ -104,6 +107,8 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         MainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        MainPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
@@ -391,7 +396,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
-        hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
+        hoaDon = hoaDonDao.getHoaDon(phong);
         
         setSize(new Dimension(1350,560));
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -422,7 +427,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     }
     
     public void initData(){
-        hoaDon = nhaCungCapVaNhapHang_DAO.getHoaDon(phong);
+        hoaDon = hoaDonDao.getHoaDon(phong);
         
         txtTenPhong.setText(phong.getTenPhong());
         txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
@@ -525,7 +530,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
                         e1.printStackTrace();
                     }
                     ObjectComboBox cb = (ObjectComboBox)table.getValueAt(table.getSelectedRow(), 0);
-                    nhaCungCapVaNhapHang_DAO.updateHoaDonDoiPhong(hoaDon,tienPhongCu, cb.getMa());
+                    hoaDonDao.updateHoaDonDoiPhong(hoaDon,tienPhongCu, cb.getMa());
                     nhaCungCapVaNhapHang_DAO.updatePhong(cb.getMa(),TrangThaiPhong.DANG_HAT);
                     nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
                     

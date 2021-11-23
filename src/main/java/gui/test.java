@@ -19,8 +19,8 @@ public class test extends javax.swing.JFrame {
      */
     public test() {
         initComponents();
-//        NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
-        GD_ThongKeDoanhThu themSP = new GD_ThongKeDoanhThu();
+        NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+        GD_ThemSanPham themSP = new GD_ThemSanPham(nhanVien);
         this.setLayout(new MigLayout());
         this.add(themSP,"w 100%, h 100%");
     }

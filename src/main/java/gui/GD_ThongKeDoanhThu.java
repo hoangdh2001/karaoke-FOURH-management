@@ -73,6 +73,8 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     
     private HoaDon_DAO hoaDon_Dao;
     
+    private HoaDon hoaDon;
+    
     private LoaiPhong_DAO loaiPhong_DAO;
     
     public GD_ThongKeDoanhThu() {
@@ -319,8 +321,8 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                     System.out.println(ma);
                     
                     double tongCu = 0;
-                    List<HoaDon> dsHoaDon = nhaCungCapVaNhapHang_DAO.findHoaDonByThangNam(thangOrNam,ma,theothang,year);
-                    List<HoaDon> dsHoaDonCu = nhaCungCapVaNhapHang_DAO.findHoaDonByThangNam(thangOrNam - 1,ma,theothang,year);
+                    List<HoaDon> dsHoaDon = hoaDon_Dao.findHoaDonByThangNam(thangOrNam,ma,theothang,year);
+                    List<HoaDon> dsHoaDonCu = hoaDon_Dao.findHoaDonByThangNam(thangOrNam - 1,ma,theothang,year);
 //                    for (int i = 0; i < dsHoaDon.size(); i++) {
 //                        tongCu += dsHoaDon.get(i).getTongHoaDon();
 //                        tblThongKe.addRow(dsHoaDon.get(i).convertToRowTableInGDThongKeDoanhThu());
@@ -343,7 +345,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         
         String batDau = gio.format(dscBatDau.getDate());
         String ketThuc = gio.format(dscKetThuc.getDate());
-        List<HoaDon> dsHoaDon = nhaCungCapVaNhapHang_DAO.findHoaDon(batDau, ketThuc,ma);
+        List<HoaDon> dsHoaDon = hoaDon_Dao.findHoaDon(batDau, ketThuc,ma);
         loadData(dsHoaDon);
     }
     
