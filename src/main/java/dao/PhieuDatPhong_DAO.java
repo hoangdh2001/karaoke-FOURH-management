@@ -9,8 +9,8 @@ import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -31,10 +31,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-    // Này để làm gì v
-//    public PhieuDatPhong_DAO(SessionFactory sessionFactory) {
-//        this.sessionFactory = sessionFactory;
-//    }
 
     @Override
     public List<PhieuDatPhong> getDsPhieuDatPhong() {
@@ -76,48 +72,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByName(String tuKhoa) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            String sql = "  select * from [dbo].[PhieuDatPhong] pp join [dbo].[Phong] p on pp.maPhong = p.maPhong join [dbo].[KhachHang] k on k.maKhachHang= pp.maKhachHang\n"
-                    + "  where p.[tenPhong] like N'%" + tuKhoa + "%' or k.tenKhachHang like N'%" + tuKhoa + "%'";
-            dsPhieu = session
-                    .createNativeQuery(sql, PhieuDatPhong.class)
-                    .getResultList();
-            tr.commit();
-            return dsPhieu.isEmpty() ? dsPhieu = new ArrayList<>() : dsPhieu;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        session.close();
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByName_TrangThai(String tuKhoa, TrangThaiPhieuDat trangThai) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            String sql = " select * from [dbo].[PhieuDatPhong] pp join [dbo].[Phong] p on pp.maPhong = p.maPhong join [dbo].[KhachHang] k on k.maKhachHang= pp.maKhachHang\n"
-                    + "  where (p.[tenPhong] like N'%" + tuKhoa + "%' and pp.[trangThai]  = '" + trangThai + "' ) or (k.tenKhachHang like N'%" + tuKhoa + "%' and pp.[trangThai]  = '" + trangThai + "')";
-            dsPhieu = session
-                    .createNativeQuery(sql, PhieuDatPhong.class)
-                    .getResultList();
-            tr.commit();
-            return dsPhieu.isEmpty() ? dsPhieu = new ArrayList<>() : dsPhieu;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
     public boolean capNhatTrangThaiPhieu(String maPhieuDat) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
@@ -135,26 +89,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         session.close();
         return false;
-    }
-
-    @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongNgay(int ngay, int thang, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "  select * from [dbo].[PhieuDatPhong] p where YEAR(p.ngayDat) = " + nam + " and MONTH(p.ngayDat) = " + thang + " and DAY(p.ngayDat) = " + ngay + " ";
-        try {
-            tr.begin();
-            dsPhieu = session
-                    .createNativeQuery(sql, PhieuDatPhong.class)
-                    .getResultList();
-            tr.commit();
-            return dsPhieu.isEmpty() ? dsPhieu = new ArrayList<>() : dsPhieu;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        session.close();
-        return Collections.emptyList();
     }
 
     @Override
@@ -190,77 +124,25 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tuKhoa, TrangThaiPhieuDat trangThai, int nam, int thang, int ngay) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            String sql = "select * from KhachHang k join PhieuDatPhong pd ON k.maKhachHang = pd.maKhachHang join Phong p ON pd.maPhong = p.maPhong\n"
-                    + "where (k.tenKhachHang like N'%" + tuKhoa + "%' and pd.trangThai = '" + trangThai + "' and (YEAR(pd.ngayDat)= " + nam + " and MONTH(pd.ngayDat)= " + thang + " and DAY(pd.ngayDat)= " + ngay + ")) \n"
-                    + "	or (p.tenPhong like N'%" + tuKhoa + "%' and pd.trangThai = '" + trangThai + "' and (YEAR(pd.ngayDat)= " + nam + " and MONTH(pd.ngayDat)= " + thang + " and DAY(pd.ngayDat)= " + ngay + "))";
-            dsPhieu = session
-                    .createNativeQuery(sql, PhieuDatPhong.class)
-                    .getResultList();
-            tr.commit();
-            return dsPhieu.isEmpty() ? dsPhieu = new ArrayList<>() : dsPhieu;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
+    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, TrangThaiPhieuDat trangThai, Date ngayDat) {
+        String sql; 
+        if(trangThai==null && ngayDat ==null){
+            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' ";
+        }else if(trangThai==null){
+            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"')";
+        }else if(ngayDat==null){
+            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%'";
+        }else{
+            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"')";
         }
-        session.close();
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByName_Ngay(String tuKhoa, int nam, int thang, int ngay) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = "select * from KhachHang k join PhieuDatPhong pd ON k.maKhachHang = pd.maKhachHang join Phong p ON pd.maPhong = p.maPhong\n"
-                    + "where ((k.tenKhachHang like N'%" + tuKhoa + "%') and (YEAR(pd.ngayDat)= " + nam + " and MONTH(pd.ngayDat)= " + thang + " and DAY(pd.ngayDat)= " + ngay + ")) \n"
-                    + "	or ((p.tenPhong like N'%" + tuKhoa + "%') and  (YEAR(pd.ngayDat)= " + nam + " and MONTH(pd.ngayDat)= " + thang + " and DAY(pd.ngayDat)= " + ngay + "))";
-            dsPhieu = session
-                    .createNativeQuery(sql, PhieuDatPhong.class)
-                    .getResultList();
-            tr.commit();
-            return dsPhieu.isEmpty() ? dsPhieu = new ArrayList<>() : dsPhieu;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        session.close();
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai_Ngay(TrangThaiPhieuDat trangThai, int nam, int thang, int ngay) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            String sql = "select * from PhieuDatPhong pd join Phong p ON pd.maPhong = p.maPhong\n"
-                    + "where pd.trangThai = '" + trangThai + "' and (YEAR(pd.ngayDat)= " + nam + " and MONTH(pd.ngayDat)= " + thang + " and DAY(pd.ngayDat)= " + ngay + ")";
-            dsPhieu = session
-                    .createNativeQuery(sql, PhieuDatPhong.class)
-                    .getResultList();
-            tr.commit();
-            return dsPhieu.isEmpty() ? dsPhieu = new ArrayList<>() : dsPhieu;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        session.close();
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai(TrangThaiPhieuDat trangThai) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            String sql = "select * from PhieuDatPhong pd where pd.trangThai = '" + trangThai + "' ";
             dsPhieu = session
                     .createNativeQuery(sql, PhieuDatPhong.class)
                     .getResultList();
@@ -291,4 +173,5 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         return null;
     }
+
 }

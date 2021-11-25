@@ -8,9 +8,9 @@
         <property name="connection.driver_class">
             com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
         <property name="connection.url">
-            jdbc:sqlserver://localhost:9090;databaseName=QLKaraoke</property>
+            jdbc:sqlserver://localhost:1433;databaseName=QLKaraoke</property>
         <property name="connection.username">sa</property>
-        <property name="connection.password">sapassword</property>
+        <property name="connection.password">hao291001</property>
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.SQLServer2012Dialect</property>
         <!-- Enable Hibernate's automatic session context management -->
