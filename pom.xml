@@ -32,16 +32,15 @@
             <version>9.4.0.jre11</version>
         </dependency>
         <dependency>
-            <groupId>poi</groupId>
+            <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>5.0.0</version>
         </dependency>
         <dependency>
-            <groupId>poi-ooxml</groupId>
+            <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>5.0.0</version>
-        </dependency>
-        
+        </dependency>   
         <dependency>
             <groupId>com.github.lgooddatepicker</groupId>
             <artifactId>LGoodDatePicker</artifactId>
@@ -53,7 +52,6 @@
             <artifactId>flatlaf</artifactId>
             <version>1.6.4</version>
         </dependency>
-        
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

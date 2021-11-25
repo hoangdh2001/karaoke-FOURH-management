@@ -60,11 +60,9 @@ public class GD_DangNhap extends javax.swing.JFrame {
             nhanVienService = new NhanVien_DAO();
             if (nhanVienService.checkConnect()) {
                 hiddenLoading();
-                thread.stop();
             } else {
                 close();
                 System.out.println("Not connect");
-                thread.start();
             }
         });
         
@@ -92,12 +90,10 @@ public class GD_DangNhap extends javax.swing.JFrame {
                         if (nhanVien != null) {
                             pnlLoading.setVisible(false);
                             showDLProgress();
-                            thread.stop();
                         } else {
                             pnlLoading.setVisible(false);
                             pnlForm.setTextWhenBack();
                             pnlForm.showMessage(Message.MessageType.ERROR, "Tên tài khoản hoặc mật khẩu bạn đã nhập không chính xác");
-                            thread.stop();;
                         }
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);

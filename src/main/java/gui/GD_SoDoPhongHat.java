@@ -18,7 +18,6 @@ import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.event.EventRoom;
 import gui.swing.panel.slideshow.Slideshow;
-import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,8 +25,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -37,7 +34,9 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventTabSelected;
+import gui.swing.textfield.MyTextFieldFlatlaf;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
@@ -48,11 +47,11 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private PanelMap panelMap;
     private Phong_DAO phong_DAO;
     private LoaiPhong_DAO loaiPhong_DAO;
-    private DefaultComboBoxModel<LoaiPhong> cbLoaiPhongModel;
+    private DefaultComboBoxModel<Object> cbLoaiPhongModel;
     private DefaultComboBoxModel<TrangThaiPhong> cbTrangThaiModel;
     private MyTextField txtSearch;
-    private MyTextField txtTenPhong;
-    private MyComboBox<String> cbLoaiPhong;
+    private MyTextFieldFlatlaf txtTenPhong;
+    private JComboBox<Object> cbLoaiPhong;
 
     public void addEvent(EventShowInfoOver event) {
         panelMap.addEvent(event);
@@ -92,22 +91,21 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private JPanel createPanelForm() {
         JPanel pnlForm = new JPanel();
         pnlForm.setOpaque(false);
-        pnlForm.setLayout(new MigLayout("fill", "push[center]20[center]push", "40[center]15[center]25"));
-
-        txtTenPhong = new MyTextField();
-        txtTenPhong.setBorderLine(true);
+        pnlForm.setLayout(new MigLayout("fill", "push[center]20[center]push", "50[center]15[center]35"));
+        txtTenPhong = new MyTextFieldFlatlaf();
+//        txtTenPhong.setBorderLine(true);
         txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
-        txtTenPhong.setBorderRadius(10);
+//        txtTenPhong.setBorderRadius(10);
         txtTenPhong.setHint("Nhập tên phòng...");
-        pnlForm.add(txtTenPhong, "w 25%, h 35!");
+        pnlForm.add(txtTenPhong, "w 25%, h 30!");
 
         cbLoaiPhongModel = new DefaultComboBoxModel<>();
-        cbLoaiPhong = new MyComboBox<>(cbLoaiPhongModel);
+        cbLoaiPhong = new JComboBox<>(cbLoaiPhongModel);
         cbLoaiPhong.addItem("--Tất cả--");
         cbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
-        cbLoaiPhong.setBorderLine(true);
-        cbLoaiPhong.setBorderRadius(10);
-        pnlForm.add(cbLoaiPhong, "w 25%, h 35!, wrap");
+//        cbLoaiPhong.setBorderLine(true);
+//        cbLoaiPhong.setBorderRadius(10);
+        pnlForm.add(cbLoaiPhong, "w 25%, h 30!, wrap");
 
         Button btnRefesh = new Button("Làm mới");
         btnRefesh.setFont(new Font("sansserif", Font.PLAIN, 14));
@@ -123,7 +121,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             }
         });
         pnlForm.add(btnRefesh, "w 80!, h 30!, split 2, skip 1, right");
-        
+
         Button timKiemBtn = new Button("Tìm kiếm");
         timKiemBtn.setFont(new Font("sansserif", Font.PLAIN, 14));
         timKiemBtn.setBorderline(true);
@@ -134,7 +132,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 loadMap(panelMap.getIndexShowing());
             }
-            
+
         });
         pnlForm.add(timKiemBtn, "w 80!, h 30!, right");
 
@@ -144,11 +142,11 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     }
 
     private void loadDataForm() {
-//        cbLoaiPhongModel.addAll(loaiPhong_DAO.getDsLoaiPhong());
-        List<LoaiPhong> loaiPhongs = loaiPhong_DAO.getDsLoaiPhong();
-        for (LoaiPhong lp : loaiPhongs) {
-            cbLoaiPhongModel.addElement(lp);
-        }
+        cbLoaiPhongModel.addAll(loaiPhong_DAO.getDsLoaiPhong());
+//        List<LoaiPhong> loaiPhongs = loaiPhong_DAO.getDsLoaiPhong();
+//        for (LoaiPhong lp : loaiPhongs) {
+//            cbLoaiPhongModel.addElement(lp);
+//        }
 
 //        TrangThaiPhong[] trangThaiPhongs = TrangThaiPhong.values();
 //        for (TrangThaiPhong trangThaiPhong : trangThaiPhongs) {
@@ -229,46 +227,24 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         panelMap.addEventRoom(new EventRoom() {
             @Override
             public HoaDon addBtnThueEvent(Phong phong) {
-                try {
-                    LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
-                    dlDialog.setVisible(true);
-                    loadMap(panelMap.getIndexShowing());
-                    UIManager.setLookAndFeel(previousLF);
-                    return dlDialog.getHoaDon();
-                } catch (UnsupportedLookAndFeelException e) {
-                    System.err.println(e);
-                }
-                return null;
+                DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
+                dlDialog.setVisible(true);
+                loadMap(panelMap.getIndexShowing());
+                return dlDialog.getHoaDon();
             }
 
             @Override
             public void addBtnThemDichVuEvent(HoaDon hoaDon) {
-                try {
-                    LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    DL_CapNhatDichVu dialog = new DL_CapNhatDichVu(hoaDon, GD_Chinh.NHAN_VIEN);
-                    dialog.setVisible(true);
-                    loadMap(panelMap.getIndexShowing());
-                    UIManager.setLookAndFeel(previousLF);
-                } catch (UnsupportedLookAndFeelException e) {
-                    System.err.println(e);
-                }
+                DL_CapNhatDichVu dialog = new DL_CapNhatDichVu(hoaDon, GD_Chinh.NHAN_VIEN);
+                dialog.setVisible(true);
+                loadMap(panelMap.getIndexShowing());
             }
 
             @Override
             public void addBtnThanhToanEvent(HoaDon hoaDon) {
-                try {
-                    LookAndFeel previousLF = UIManager.getLookAndFeel();
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    DL_ThanhToan dialog = new DL_ThanhToan(hoaDon, GD_Chinh.NHAN_VIEN);
-                    dialog.setVisible(true);
-                    loadMap(panelMap.getIndexShowing());
-                    UIManager.setLookAndFeel(previousLF);
-                } catch (UnsupportedLookAndFeelException e) {
-                    System.err.println(e);
-                }
+                DL_ThanhToan dialog = new DL_ThanhToan(hoaDon, GD_Chinh.NHAN_VIEN);
+                dialog.setVisible(true);
+                loadMap(panelMap.getIndexShowing());
             }
 
             @Override

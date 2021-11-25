@@ -6,7 +6,6 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import net.miginfocom.swing.MigLayout;
 
 public class Content extends JPanel {
 
