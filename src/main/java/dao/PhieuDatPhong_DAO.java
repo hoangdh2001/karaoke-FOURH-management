@@ -33,14 +33,16 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> getDsPhieuDatPhong() {
+    public List<PhieuDatPhong> getDsPhieuDatPhong(int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select p.* from PhieuDatPhong p";
+        //select p.* from Phong p order by maPhong offset :x row fetch next 20 rows only
+        String sql = "select p.* from PhieuDatPhong p order by p.maPhieuDat offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<PhieuDatPhong> dsPhieuDatPhong = session
                     .createNativeQuery(sql, PhieuDatPhong.class)
+                    .setParameter("x", numPage * 20)
                     .getResultList();
             tr.commit();
             return dsPhieuDatPhong;
@@ -172,6 +174,25 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
             tr.rollback();
         }
         return null;
+    }
+
+    @Override
+    public int getSoLuongPhieuDatPhong() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from PhieuDatPhong";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
     }
 
 }

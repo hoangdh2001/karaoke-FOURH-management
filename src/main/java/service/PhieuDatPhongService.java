@@ -15,11 +15,12 @@ import java.util.List;
  * @author Hao
  */
 public interface PhieuDatPhongService {
-    public List<PhieuDatPhong> getDsPhieuDatPhong();
+    public List<PhieuDatPhong> getDsPhieuDatPhong(int numPage);
     public List<String> getDSTrangThaiPhieu();
     public PhieuDatPhong getPhieuDatPhong(String maPhieuDat);
     public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, TrangThaiPhieuDat trangThai, Date ngayDat);
     public boolean capNhatTrangThaiPhieu(String maPhieu);
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong);
     public boolean xoaPhieuDatPhong(String maPhieuDat);
+    public int getSoLuongPhieuDatPhong();
 }

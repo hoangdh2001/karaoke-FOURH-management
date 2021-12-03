@@ -98,7 +98,7 @@
                     <Column editable="false" title="Ma&#x303; kha&#x301;ch ha&#x300;ng" type="java.lang.Object"/>
                     <Column editable="false" title="T&#xea;n kha&#x301;ch ha&#x300;ng" type="java.lang.Object"/>
                     <Column editable="false" title="CCCD" type="java.lang.Object"/>
-                    <Column editable="false" title="S&#xf4;&#x301; &#x111;i&#xea;&#x323;n thoa&#x323;i" type="java.lang.Object"/>
+                    <Column editable="true" title="S&#xf4;&#x301; &#x111;i&#xea;&#x323;n thoa&#x323;i" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
