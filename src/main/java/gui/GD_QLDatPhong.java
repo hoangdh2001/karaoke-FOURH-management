@@ -38,13 +38,11 @@ import java.util.Date;
 import javax.swing.JCheckBox;
 
 import javax.swing.JComboBox;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+
 
 public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener, KeyListener{
     
     private PhieuDatPhong_DAO phieuDatPhong_Dao;
-    private Phong_DAO phong_Dao;
     private List<PhieuDatPhong> dsPhieu = new ArrayList<PhieuDatPhong>();
     private MyTextFieldFlatlaf txtTimKiemKhachHang, txtTimKiemPhong;
     private Button btnHuyDatPhieu, btnLamMoi;
@@ -52,7 +50,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     JComboBox<String> cmbTrangThaiTK;
     
     private EventSelectedRow eventSelectedRow;
-    private EventAction event;
     private PanelShadow panelHidden;
     /**
      * Creates new form GD_QLDatPhong
@@ -72,8 +69,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     private void buildGD_QLDatPhong() {
         createPanelForm();
         createTable();
-        
-       // phong_Dao = new Phong_DAO();
         createPanelBottom();
         createPanelHidden();
         add(panelHidden);
@@ -208,17 +203,20 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     }
     
     public void taiLaiDuLieu(List<PhieuDatPhong> dsPhieu){
-         DecimalFormat dcf = new DecimalFormat("#,### VNĐ");
+        ((DefaultTableModel) tblPhieuDatPhong.getModel()).setRowCount(0);
+        DecimalFormat dcf = new DecimalFormat("#,### VNĐ");
         SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         for(PhieuDatPhong phieu : dsPhieu){
             tblPhieuDatPhong.addRow(new Object[]{JCheckBox.class,phieu.getMaPhieuDat(), fm.format(phieu.getNgayTao()),phieu.getKhachHang().getTenKhachHang(), phieu.getPhong().getTenPhong(), fm.format(phieu.getNgayDat()), phieu.getTrangThai(), dcf.format(phieu.getTienCoc())});
         }
+        tblPhieuDatPhong.repaint();
+        tblPhieuDatPhong.revalidate();
     }
     
     private void loadData(int numPage) {
         ((DefaultTableModel) tblPhieuDatPhong.getModel()).setRowCount(0);
         dsPhieu= phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
-        DecimalFormat dcf = new DecimalFormat("#,###NĐ");
+        DecimalFormat dcf = new DecimalFormat("#,### VNĐ");
         SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         for(PhieuDatPhong phieu : dsPhieu){
             tblPhieuDatPhong.addRow(new Object[]{JCheckBox.class,phieu.getMaPhieuDat(), fm.format(phieu.getNgayTao()),phieu.getKhachHang().getTenKhachHang(), phieu.getPhong().getTenPhong(), fm.format(phieu.getNgayDat()), phieu.getTrangThai(), dcf.format(phieu.getTienCoc())});
@@ -244,9 +242,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        srcPhieuDatPhong = new javax.swing.JScrollPane();
         tblPhieuDatPhong = new gui.swing.table2.MyTableFlatlaf();
-        jPanel1 = new javax.swing.JPanel();
+        pnlBottom_Page = new javax.swing.JPanel();
         pnlPage = new gui.swing.table2.PanelPage();
 
         setOpaque(false);
@@ -286,7 +284,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         tblPhieuDatPhong.setSelectionForeground(new java.awt.Color(51, 51, 51));
         tblPhieuDatPhong.setShowGrid(true);
         tblPhieuDatPhong.setShowVerticalLines(false);
-        jScrollPane1.setViewportView(tblPhieuDatPhong);
+        srcPhieuDatPhong.setViewportView(tblPhieuDatPhong);
         if (tblPhieuDatPhong.getColumnModel().getColumnCount() > 0) {
             tblPhieuDatPhong.getColumnModel().getColumn(0).setPreferredWidth(20);
             tblPhieuDatPhong.getColumnModel().getColumn(1).setPreferredWidth(60);
@@ -295,22 +293,22 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             tblPhieuDatPhong.getColumnModel().getColumn(5).setPreferredWidth(100);
         }
 
-        pnlBottom.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        pnlBottom.add(srcPhieuDatPhong, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlBottom_PageLayout = new javax.swing.GroupLayout(pnlBottom_Page);
+        pnlBottom_Page.setLayout(pnlBottom_PageLayout);
+        pnlBottom_PageLayout.setHorizontalGroup(
+            pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlBottom_PageLayout.createSequentialGroup()
                 .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 640, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnlBottom_PageLayout.setVerticalGroup(
+            pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
         );
 
-        pnlBottom.add(jPanel1, java.awt.BorderLayout.PAGE_END);
+        pnlBottom.add(pnlBottom_Page, java.awt.BorderLayout.PAGE_END);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -330,11 +328,11 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private gui.swing.panel.PanelShadow pnlBottom;
+    private javax.swing.JPanel pnlBottom_Page;
     private gui.swing.table2.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
+    private javax.swing.JScrollPane srcPhieuDatPhong;
     private gui.swing.table2.MyTableFlatlaf tblPhieuDatPhong;
     // End of variables declaration//GEN-END:variables
 

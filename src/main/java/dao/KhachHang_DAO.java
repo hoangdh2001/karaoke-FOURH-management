@@ -231,4 +231,23 @@ public class KhachHang_DAO implements KhachHangService {
         session.close();
         return false;
     }
+
+    @Override
+    public int getSoLuongKhachHang() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from KhachHang";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
 }

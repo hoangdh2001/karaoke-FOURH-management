@@ -36,7 +36,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     public List<PhieuDatPhong> getDsPhieuDatPhong(int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        //select p.* from Phong p order by maPhong offset :x row fetch next 20 rows only
         String sql = "select p.* from PhieuDatPhong p order by p.maPhieuDat offset :x row fetch next 20 rows only";
         try {
             tr.begin();
