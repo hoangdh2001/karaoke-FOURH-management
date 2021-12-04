@@ -10,7 +10,9 @@ import entity.HoaDon;
 import entity.Phong;
 import java.util.Date;
 import entity.TrangThaiHoaDon;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -49,4 +51,5 @@ public interface HoaDonService {
     public boolean updateHoaDonDoiPhong(HoaDon hoaDon,double tongTienPhong,String maPhongMoi);
     public String getMaxID();
     public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai );
+    public Map<Integer, Double> getDoanhThuHoaDonTheoThangNam(int nam);
 }

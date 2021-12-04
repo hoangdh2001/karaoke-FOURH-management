@@ -7,6 +7,7 @@ package service;
 
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,13 +18,7 @@ public interface PhieuDatPhongService {
     public List<PhieuDatPhong> getDsPhieuDatPhong();
     public List<String> getDSTrangThaiPhieu();
     public PhieuDatPhong getPhieuDatPhong(String maPhieuDat);
-    public List<PhieuDatPhong> timDSPhieuDatPhongByName(String tuKhoa);
-    public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai(TrangThaiPhieuDat trangThai);
-    public List<PhieuDatPhong> timDSPhieuDatPhongByName_TrangThai(String tuKhoa, TrangThaiPhieuDat trangThai);
-    public List<PhieuDatPhong> timDSPhieuDatPhongNgay(int ngay, int thang, int nam);
-    public List<PhieuDatPhong> timDSPhieuDatPhongByName_Ngay(String tuKhoa, int nam, int thang, int ngay);
-    public List<PhieuDatPhong> timDSPhieuDatPhongByTrangThai_Ngay(TrangThaiPhieuDat trangThai, int nam, int thang, int ngay);
-    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tuKhoa, TrangThaiPhieuDat trangThai, int nam, int thang, int ngay);
+    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, TrangThaiPhieuDat trangThai, Date ngayDat);
     public boolean capNhatTrangThaiPhieu(String maPhieu);
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong);
     public boolean xoaPhieuDatPhong(String maPhieuDat);

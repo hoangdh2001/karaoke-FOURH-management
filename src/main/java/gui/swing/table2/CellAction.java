@@ -9,7 +9,10 @@ import java.awt.event.ActionListener;
 
 public class CellAction extends javax.swing.JPanel {
 
-    public CellAction(ModelAction data) {
+    private boolean isSelected;
+
+    public CellAction(ModelAction data, boolean isSelected) {
+        this.isSelected = isSelected;
         initComponents();
         btnEdit.addActionListener(new ActionListener() {
             @Override
@@ -32,12 +35,14 @@ public class CellAction extends javax.swing.JPanel {
     public Button getBtnEdit() {
         return btnEdit;
     }
-    
+
     @Override
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);
-        grphcs.setColor(new Color(230, 230, 230));
-        grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
+        if (!isSelected) {
+            grphcs.setColor(new Color(230, 230, 230));
+            grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
+        }
     }
 
     @SuppressWarnings("unchecked")
