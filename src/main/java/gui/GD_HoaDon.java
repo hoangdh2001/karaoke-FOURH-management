@@ -35,7 +35,6 @@ import javax.swing.JSeparator;
 import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -623,124 +622,64 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener{
         if(obj.equals(cmbNam)){
             String to = kiemTraNgayKetThuc();
             String from = kiemTraNgayBatDau();
+            String thang = cmbThang.getSelectedItem().toString();
+            String nam = cmbNam.getSelectedItem().toString();
+            String quy = cmbQuy.getSelectedItem().toString();
             if(cmbNam.getSelectedIndex()!=0){
-                if(cmbQuy.getSelectedIndex()==0 && cmbThang.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByNam(from, to, Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbQuy.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Nam(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbThang.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByQuy_Nam(from, to, Integer.parseInt(cmbQuy.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else{
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Quy_Nam(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbQuy.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }
+              if(cmbThang.getSelectedIndex()==0)thang = "";
+              if(cmbQuy.getSelectedIndex()==0)quy ="";
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              xoaDuLieu();
+              taiLaiDuLieu(dsHoaDon);
             }else{
-                if(cmbQuy.getSelectedIndex()==0 && cmbThang.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(from, to);
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbQuy.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbThang.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByQuy(from, to, Integer.parseInt(cmbQuy.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else{
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Quy(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbQuy.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }
+              nam = "";
+              if(cmbThang.getSelectedIndex()==0)thang = "";
+              if(cmbQuy.getSelectedIndex()==0)quy ="";
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              xoaDuLieu();
+              taiLaiDuLieu(dsHoaDon);
             }
         }
         if(obj.equals(cmbQuy)){
             String from = kiemTraNgayBatDau();
             String to =kiemTraNgayKetThuc();
+            String thang = cmbThang.getSelectedItem().toString();
+            String nam = cmbNam.getSelectedItem().toString();
+            String quy = cmbQuy.getSelectedItem().toString();
             if(cmbQuy.getSelectedIndex()!=0){
-                if(cmbNam.getSelectedIndex()==0 && cmbThang.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByQuy(from, to, Integer.parseInt(cmbQuy.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbNam.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Quy(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbQuy.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbThang.getSelectedIndex()==0){
-                    dsHoaDon =hoaDon_Dao.sapXepHoaDonByQuy_Nam(from, to, Integer.parseInt(cmbQuy.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else{
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Quy_Nam(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbQuy.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }
+              if(cmbThang.getSelectedIndex()==0)thang = "";
+              if(cmbNam.getSelectedIndex()==0)nam ="";
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              xoaDuLieu();
+              taiLaiDuLieu(dsHoaDon);
             }else{
-                if(cmbNam.getSelectedIndex()==0 && cmbThang.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(from, to);
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbNam.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbThang.getSelectedIndex()==0){
-                    dsHoaDon =hoaDon_Dao.sapXepHoaDonByNam(from, to, Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else{
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Nam(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }
+              quy = "";
+              if(cmbThang.getSelectedIndex()==0)thang = "";
+              if(cmbNam.getSelectedIndex()==0)nam ="";
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              xoaDuLieu();
+              taiLaiDuLieu(dsHoaDon); 
             }
         }
         if(obj.equals(cmbThang)){
             String from = kiemTraNgayBatDau();
             String to =kiemTraNgayKetThuc();
+            String thang = cmbThang.getSelectedItem().toString();
+            String nam = cmbNam.getSelectedItem().toString();
+            String quy = cmbQuy.getSelectedItem().toString();
             if(cmbThang.getSelectedIndex()!=0){
-                if(cmbNam.getSelectedIndex()==0 && cmbQuy.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbNam.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Quy(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbQuy.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbQuy.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Nam(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else{
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByThang_Quy_Nam(from, to, Integer.parseInt(cmbThang.getSelectedItem().toString()), Integer.parseInt(cmbQuy.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }
+              if(cmbQuy.getSelectedIndex()==0)quy = "";
+              if(cmbNam.getSelectedIndex()==0)nam ="";
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              xoaDuLieu();
+              taiLaiDuLieu(dsHoaDon);
             }else{
-                if(cmbNam.getSelectedIndex()==0 && cmbQuy.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(from, to);
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbNam.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByQuy(from, to, Integer.parseInt(cmbQuy.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else if(cmbQuy.getSelectedIndex()==0){
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByNam(from, to, Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }else{
-                    dsHoaDon = hoaDon_Dao.sapXepHoaDonByQuy_Nam(from, to, Integer.parseInt(cmbQuy.getSelectedItem().toString()), Integer.parseInt(cmbNam.getSelectedItem().toString()));
-                    xoaDuLieu();
-                    taiLaiDuLieu(dsHoaDon);
-                }
+              thang = "";
+              if(cmbQuy.getSelectedIndex()==0)quy = "";
+              if(cmbNam.getSelectedIndex()==0)nam ="";
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              xoaDuLieu();
+              taiLaiDuLieu(dsHoaDon); 
             }
         }
         if(obj.equals(cmbCot)){

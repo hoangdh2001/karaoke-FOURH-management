@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -28,7 +27,7 @@ import javax.swing.event.TableModelListener;
  * @author Hao
  */
 public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, KeyListener{
-    List<KhachHang> dsKhachHang = new ArrayList<KhachHang>();
+    List<KhachHang> dsKhachHang ;
     private KhachHang_DAO khachHang_Dao;
     private JTextField txtTimKiem;
     private Button btnLamMoi;
@@ -211,7 +210,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                                 if(khachHang_Dao.capNhatKhachHang(maKhachHang, soDienThoai)) {
                                     JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
                                     xoaDuLieu();
-                                    dsKhachHang = khachHang_Dao.getDSKhachHang();
+                                    dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
                                     taiLaiDuLieu(dsKhachHang);
                                 }else{
                                     JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng không thành công");         
@@ -219,7 +218,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                             }else{
                                 JOptionPane.showMessageDialog(GD_KhachHang.this, "Số điện thoại khách hàng không hợp lệ"); 
                                 xoaDuLieu();
-                                dsKhachHang = khachHang_Dao.getDSKhachHang();
+                                dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
                                 taiLaiDuLieu(dsKhachHang);
                             }
                         }
@@ -230,7 +229,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             });
     }
     private void loadData(int numPage) {
-        dsKhachHang = khachHang_Dao.getDSKhachHang();
+        dsKhachHang = khachHang_Dao.getDSKhachHang(numPage);
         xoaDuLieu();
         taiLaiDuLieu(dsKhachHang);
     }
@@ -242,6 +241,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     }
     
     public void taiLaiDuLieu(List<KhachHang> dsKhachHang){
+        xuLyTimKiem(dsKhachHang.size());
         for(KhachHang kh: dsKhachHang){
             tblKhachHang.addRow(new Object[] {JCheckBox.class,kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
         }
@@ -253,6 +253,10 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         xuLySuKien();
     }
     
+    private void xuLyTimKiem(int soLuong){
+        pnlPage.init(soLuong % 20 == 0 ? soLuong / 20 : (soLuong / 20) + 1);
+    }
+    
      private void createPanelBottom() {
         pnlPage.addEventPagination(new EventPagination() {
             @Override
@@ -260,12 +264,12 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                 loadData(pageClick);
             }
         });
-        int soLuongKhachHang = khachHang_Dao.getSoLuongKhachHang();
-        pnlPage.init(soLuongKhachHang % 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
+//        int soLuongKhachHang = khachHang_Dao.getSoLuongKhachHang();
+//        pnlPage.init(soLuongKhachHang % 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
     }
 
     private boolean valiDataSDT(String soDienThoai){
-        if (!(soDienThoai.matches("^(09|03|07|08|05)([0-9]{8})"))) {
+        if(!(soDienThoai.matches("^(09|03|07|08|05)([0-9]{8})"))) {
             return false;
         }
         return true;
@@ -284,7 +288,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         Object obj = e.getSource();
         if(obj.equals(btnLamMoi)){
            txtTimKiem.setText("");
-           dsKhachHang = khachHang_Dao.getDSKhachHang();
+           dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
            xoaDuLieu();
            taiLaiDuLieu(dsKhachHang);
         }

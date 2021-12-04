@@ -5,17 +5,14 @@ import entity.HoaDon;
 import entity.Phong;
 import java.text.SimpleDateFormat;
 import entity.TrangThaiHoaDon;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -32,10 +29,6 @@ public class HoaDon_DAO implements HoaDonService {
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-//  Này để làm gì
-//    public HoaDon_DAO(SessionFactory sessionFactory) {
-//        this.sessionFactory = sessionFactory;
-//    }
 
     @Override
     public boolean addHoaDon(HoaDon hoaDon) {
@@ -114,7 +107,8 @@ public class HoaDon_DAO implements HoaDonService {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select h.* from [dbo].[HoaDon] h\n"
-                + "where h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')";
+                + "where h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')"
+                + "order by h.[ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -136,7 +130,8 @@ public class HoaDon_DAO implements HoaDonService {
         Transaction tr = session.getTransaction();
         String sql = "  select h.*\n"
                 + "  from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang\n"
-                + "  where [dbo].[ufn_removeMark](k.tenKhachHang) like N'%" + tenKhachHang + "%'";
+                + "  where k.tenKhachHang like N'%" + tenKhachHang + "%'"
+                + "order by h.[ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -158,7 +153,8 @@ public class HoaDon_DAO implements HoaDonService {
         Transaction tr = session.getTransaction();
         String sql = "   select h.*\n"
                 + "  from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong\n"
-                + "  where p.tenPhong like N'%" + tenPhong + "%'";
+                + "  where p.tenPhong like N'%" + tenPhong + "%'"
+                + "order by h.[ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -180,7 +176,8 @@ public class HoaDon_DAO implements HoaDonService {
         Transaction tr = session.getTransaction();
         String sql = "select  h.* \n"
                 + "  from [dbo].[HoaDon] h\n"
-                + "  where h." + tieuChiKhac + " like '%" + duLieu + "%'";
+                + "  where h." + tieuChiKhac + " like '%" + duLieu + "%'"
+                + "order by h.[ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -233,144 +230,11 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public List<HoaDon> sapXepHoaDonByThang(String from, String to, int thang) {
+    public List<HoaDon> locHoaDonByThang_Quy_Nam(String from, String to, String thang, String quy, String nam) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(month, ngayLapHoaDon) = " + thang + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByNam(String from, String to, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(year, ngayLapHoaDon) = " + nam + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByQuy(String from, String to, int quy) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();//"+from+""+to+"
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(quarter, ngayLapHoaDon) = " + quy + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByThang_Quy(String from, String to, int thang, int quy) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(quarter, ngayLapHoaDon) = " + quy + " and DATEPART(month, ngayLapHoaDon) = " + thang + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByThang_Nam(String from, String to, int thang, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(year, ngayLapHoaDon) = " + nam + " and DATEPART(month, ngayLapHoaDon) = " + thang + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByQuy_Nam(String from, String to, int quy, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(year, ngayLapHoaDon) = " + nam + " and DATEPART(quarter, ngayLapHoaDon) = " + quy + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByThang_Quy_Nam(String from, String to, int thang, int quy, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(year, ngayLapHoaDon) = " + nam + " and DATEPART(quarter, ngayLapHoaDon) = " + quy + " and DATEPART(month, ngayLapHoaDon) = " + thang + ")";
+        String sql = "select * from [dbo].[HoaDon] where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')"
+                + "order by [ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -615,7 +479,7 @@ public class HoaDon_DAO implements HoaDonService {
     
     @Override
     public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma) {
-        String sql;
+        String sql= "";
         if(ma != null){
             sql = "select * from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"' and p.maLoaiPhong = '"+ma+"'";
         }else{
