@@ -723,11 +723,11 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public Map<Integer, Double> getDoanhThuHoaDonTheoThangNam(int nam) {
+    public Map<Integer, Double> getDoanhThuHoaDonTheoNam(int nam) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
 
-        String sql = "exec doanhThuTheoName ?";
+        String sql = "exec doanhThuTheoNam ?";
 
         try {
             tr.begin();
@@ -757,4 +757,18 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    @Override
+    public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "";
+        try {
+            tr.begin();
+            tr.commit();
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
 }

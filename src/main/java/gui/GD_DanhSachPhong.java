@@ -4,6 +4,7 @@ import dao.LoaiPhong_DAO;
 import dao.Phong_DAO;
 import entity.LoaiPhong;
 import entity.Phong;
+import entity.TrangThaiPhong;
 import gui.dialog.DL_TaoPhong;
 import gui.swing.button.Button;
 
@@ -15,6 +16,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -113,9 +116,6 @@ public class GD_DanhSachPhong extends JPanel {
 
     private void createTable() {
         table.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
-
-//        LoaiPhong loaiPhong = new LoaiPhong();
-//        loaiPhong.setTenLoaiPhong("Phòng thường");
         eventAction = new EventAction() {
             @Override
             public void delete(Object obj) {
@@ -156,14 +156,25 @@ public class GD_DanhSachPhong extends JPanel {
         cmbColumnLoaiPhong.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                String maPhong = table.getValueAt(table.getSelectedRow(), 1).toString();
-                Phong phong = phong_DAO.getPhong(maPhong);
-                LoaiPhong loaiPhong = loaiPhong_DAO.getLoaiPhongByName(cmbColumnLoaiPhong.getSelectedItem().toString());
-                phong.setLoaiPhong(loaiPhong);
-                phong_DAO.updatePhong(phong);
+                if (table.getSelectedRow() != -1) {
+                    String maPhong = table.getValueAt(table.getSelectedRow(), 1).toString();
+                    Phong phong = phong_DAO.getPhong(maPhong);
+
+                    LoaiPhong loaiPhong = loaiPhong_DAO.getLoaiPhongByName(cmbColumnLoaiPhong.getSelectedItem().toString());
+                    if (!phong.getLoaiPhong().getMaLoaiPhong().equals(loaiPhong.getMaLoaiPhong())) {
+                        if (phong.getTrangThai() != TrangThaiPhong.DANG_HAT) {
+                            phong.setLoaiPhong(loaiPhong);
+                            phong_DAO.updatePhong(phong);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Phòng đang hát cập nhật sau!");
+                            
+                        }
+                        loadData(pnlPage.getCurrentIndex());
+                    }
+                }
             }
         });
-        tableColumnModel.getColumn(5).setCellEditor(new DefaultCellEditor(cmbColumnLoaiPhong)); 
+        tableColumnModel.getColumn(5).setCellEditor(new DefaultCellEditor(cmbColumnLoaiPhong));
     }
 
     private void loadData(int numPage) {
@@ -301,7 +312,7 @@ public class GD_DanhSachPhong extends JPanel {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, true, true
+                false, false, false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -320,6 +331,7 @@ public class GD_DanhSachPhong extends JPanel {
         table.setShowVerticalLines(false);
         sp.setViewportView(table);
         if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
             table.getColumnModel().getColumn(0).setPreferredWidth(20);
             table.getColumnModel().getColumn(1).setResizable(false);
             table.getColumnModel().getColumn(1).setPreferredWidth(60);
