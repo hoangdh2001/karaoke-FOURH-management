@@ -5,6 +5,8 @@
 package gui;
 
 import dao.LoHang_DAO;
+import dao.LoaiDichVu_DAO;
+import dao.MatHang_DAO;
 import entity.NhaCungCap;
 import java.util.List;
 import dao.NhaCungCapVaNhapHang_DAO;
@@ -43,6 +45,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import objectcombobox.ObjectComboBox;
+import service.LoaiDichVuService;
+import service.MatHangService;
 
 /**
  *
@@ -64,6 +68,8 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     private MyTextField txtGiaban;
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO ;
+    private LoaiDichVuService loaiDichVuDao;
+    private MatHangService matHangDao;
     private LoHang_DAO loHangDAO;
     private PanelTenSanPham pnlSPMoi;
     
@@ -302,8 +308,10 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     }
     
     public void initDao(){
+        loaiDichVuDao = new LoaiDichVu_DAO();
         loHang = new LoHang();
         loHangDAO = new LoHang_DAO();
+        matHangDao = new MatHang_DAO();
         isNewSP = new HashMap<MatHang,Boolean>();
         df = new DecimalFormat("#,##0.00");
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
@@ -311,7 +319,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
         
         loadNCC();
         
-        List<LoaiDichVu> listDV = nhaCungCapVaNhapHang_DAO.getLoaiDichVu();
+        List<LoaiDichVu> listDV = loaiDichVuDao.getDsLoaiDichVu();
         for (int i = 0; i < listDV.size(); i++) {
             LoaiDichVu dv = listDV.get(i);
             cbLoaiSP.addItem(new ObjectComboBox(dv.getTenLoaiDichVu(),dv.getMaLoaiDichVu()));  
@@ -540,9 +548,9 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
 ////insert and update sp
                 isNewSP.forEach((sp,isInsert) ->{
                     if(isInsert){
-                        nhaCungCapVaNhapHang_DAO.insertMatHang(sp);
+                        matHangDao.insertMatHang(sp);
                     }else{
-                        nhaCungCapVaNhapHang_DAO.updateMatHang(sp);
+                        matHangDao.updateMatHang(sp);
                     }
                 });
 //insert ct nhap
@@ -563,12 +571,12 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
                 double giaNhap = convertMoneyToDouble(txtGiaNhap.getText().trim());
                 double giaBan = convertMoneyToDouble(txtGiaban.getText().trim());
                 ObjectComboBox cb = (ObjectComboBox)cbLoaiSP.getSelectedItem();
-                LoaiDichVu loaiDichVu = nhaCungCapVaNhapHang_DAO.getLoaiDichVuByMa(cb.getMa());
+                LoaiDichVu loaiDichVu = loaiDichVuDao.getLoaiDichVuByMa(cb.getMa());
                 String tenMatHang ="";
                 MatHang matHang;
                 
                 if(cbSpMoi.isSelected()){
-                    String maMatHang = nhaCungCapVaNhapHang_DAO.getLastMatHang();
+                    String maMatHang = matHangDao.getLastMatHang();
                     tenMatHang  = pnlSPMoi.getTenSanPhamMoi();
                     matHang = new MatHang(maMatHang, pnlSPMoi.getTenSanPhamMoi(), loaiDichVu, soLuong, giaBan);
                     isNewSP.put(matHang,true);

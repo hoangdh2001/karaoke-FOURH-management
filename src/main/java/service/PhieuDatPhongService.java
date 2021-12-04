@@ -27,4 +27,13 @@ public interface PhieuDatPhongService {
     public boolean capNhatTrangThaiPhieu(String maPhieu);
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong);
     public boolean xoaPhieuDatPhong(String maPhieuDat);
+    
+//    Huu
+    public boolean updatePhieuDatPhong(String maPhieu);
+    public List<PhieuDatPhong> getPhieuHomNay(String maPhong);
+    public String getLastPhieuDatPhong();
+    public PhieuDatPhong getPhieuById(String maPhieuDatPhong);
+    public boolean addPhieuDatPhong(PhieuDatPhong phieu,String ngayDat);
+    public double getTienCoc(String maPhieuDat);
+    public PhieuDatPhong getPhieuCuaPhong(String maKhachhang);
 }

@@ -17,4 +17,8 @@ public interface NhanVienService {
     public List<String> getMaNhanVienQuanLy();
     public boolean checkSDT(String sdt);
     public boolean checkCCCD(String cccd);
+    
+    
+//  Huu
+    public NhanVien getNhanVienByID(String maNhanVien);
 }

@@ -4,6 +4,7 @@
  */
 package gui;
 
+import dao.MatHang_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
 import entity.MatHang;
 import gui.swing.button.Button;
@@ -36,6 +37,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import service.MatHangService;
 
 /**
  *
@@ -52,7 +54,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     private Button btnXuatFile;
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
-    
+    private MatHangService matHangDao;
     private List<MatHang> listMatHang;
     
     private String fontName = "sansserif";
@@ -163,10 +165,10 @@ public class GD_XemDichVu extends javax.swing.JPanel {
                 String text = txtNhap.getText().trim();
                 int cmbSelected = cmbLoaiTimKiem.getSelectedIndex();
                 if(!text.equals("")){
-                    listMatHang = nhaCungCapVaNhapHang_DAO.findMatHang(txtNhap.getText().trim(), cmbSelected);
+                    listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
                 }else{
-                    listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+                    listMatHang = matHangDao.getDanhSachMatHang();
                     addDataToTable();
                 }
             }
@@ -177,10 +179,10 @@ public class GD_XemDichVu extends javax.swing.JPanel {
             String text = txtNhap.getText().trim();
                 int cmbSelected = cmbLoaiTimKiem.getSelectedIndex();
                 if(!text.equals("")){
-                    listMatHang = nhaCungCapVaNhapHang_DAO.findMatHang(txtNhap.getText().trim(), cmbSelected);
+                    listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
                 }else{
-                    listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+                    listMatHang = matHangDao.getDanhSachMatHang();
                     addDataToTable();
                 }
             }
@@ -190,9 +192,9 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     public void initData(){
         cmbLoaiTimKiem.addItem("Sản phẩm");
         cmbLoaiTimKiem.addItem("Loại sản phẩm");
-        
+        matHangDao = new MatHang_DAO();
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
-        listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+        listMatHang = matHangDao.getDanhSachMatHang();
         addDataToTable();
     }
     

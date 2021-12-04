@@ -5,7 +5,10 @@
 package gui;
 
 import dao.HoaDon_DAO;
+import dao.KhachHang_DAO;
+import dao.MatHang_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
+import dao.NhanVien_DAO;
 import dao.Phong_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
@@ -48,6 +51,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import objectcombobox.ObjectComboBox;
+import service.KhachHangService;
+import service.MatHangService;
+import service.PhieuDatPhongService;
+import service.PhongService;
 
 /**
  *
@@ -93,6 +100,10 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     private Color colorLabel = new Color(47, 72, 210);
 
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhaphang_DAO;
+    private PhieuDatPhongService phieuDatPhongDao;
+    private PhongService phongDao;
+    private KhachHangService khachHangDao;
+    private MatHangService matHangDao;
     private HoaDon_DAO hoaDon_Dao;
     private Phong phong;
     private NhanVien nhanVien;
@@ -138,7 +149,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
             public void run() {
                 Phong phong = new Phong_DAO().getPhong("PH0001");
                 System.out.println(phong);
-                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+                NhanVien nhanVien = new NhanVien_DAO().getNhanVienByID("NV0001");
                 GD_TiepNhanDatPhong dialog = new GD_TiepNhanDatPhong(phong, nhanVien);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -473,6 +484,9 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     
     public void initForm(){
         hoaDon_Dao = new HoaDon_DAO();
+        matHangDao = new MatHang_DAO();
+        khachHangDao = new KhachHang_DAO();
+        phongDao = new Phong_DAO();
         listDaChon = new ArrayList<ObjectComboBox>();
         listDaChonSoLuong = new ArrayList<ObjectComboBox>();
         nhaCungCapVaNhaphang_DAO = new NhaCungCapVaNhapHang_DAO();
@@ -507,11 +521,11 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
             txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
             txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
             txtNhanVien.setText(nhanVien.getTenNhanVien());
-            List<PhieuDatPhong> dsPhieuDatPhong = nhaCungCapVaNhaphang_DAO.getPhieuHomNay(phong.getMaPhong());
+            List<PhieuDatPhong> dsPhieuDatPhong = phieuDatPhongDao.getPhieuHomNay(phong.getMaPhong());
             dsPhieuDatPhong.forEach(phieu
                     -> tablePhieuDatPhong.addRow(phieu.convertToRowTableInGDTiepNhanDatPhong()));
 
-            List<MatHang> dsMatHang = nhaCungCapVaNhaphang_DAO.getDanhSachMatHang();
+            List<MatHang> dsMatHang = matHangDao.getDanhSachMatHang();
             dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
         }
     }
@@ -527,7 +541,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     }
 
     public void initKhachHang(String sdt) {
-        KhachHang kh = nhaCungCapVaNhaphang_DAO.getKhachHangBySDT(sdt);
+        KhachHang kh = khachHangDao.getKhachHangBySDT(sdt);
         if (kh != null) {
             txtTenKhachHang.setText(kh.getTenKhachHang());
             txtCCCD.setText(kh.getCanCuocCD());
@@ -645,7 +659,7 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
             Object obj = e.getSource();
             if (obj.equals(tablePhieuDatPhong)) {
                 String ma = tablePhieuDatPhong.getModel().getValueAt(tablePhieuDatPhong.getSelectedRow(), 0).toString();
-                PhieuDatPhong phieuDatPhong = nhaCungCapVaNhaphang_DAO.getPhieuById(ma);
+                PhieuDatPhong phieuDatPhong = phieuDatPhongDao.getPhieuById(ma);
                 txtSdt.setText(phieuDatPhong.getKhachHang().getSoDienThoai());
                 txtTenKhachHang.setText(phieuDatPhong.getKhachHang().getTenKhachHang());
                 txtCCCD.setText(phieuDatPhong.getKhachHang().getCanCuocCD());
@@ -728,21 +742,21 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
             Object obj = e.getSource();
             if (obj.equals(btnGiaoPhong) && validateData()) {
                 double tienCoc = 0;
-                KhachHang kh = nhaCungCapVaNhaphang_DAO.getKhachHangBySDT(txtSdt.getText());
+                KhachHang kh = khachHangDao.getKhachHangBySDT(txtSdt.getText());
                 if (kh == null) {
-                    String maKhachhang = nhaCungCapVaNhaphang_DAO.getlastKhachHangTang();
+                    String maKhachhang = khachHangDao.getlastKhachHangTang();
                     kh = new KhachHang(maKhachhang,
                              txtTenKhachHang.getText(),
                              txtCCCD.getText(),
                              txtSdt.getText());
-                    nhaCungCapVaNhaphang_DAO.addKhachHang(kh);
+                    khachHangDao.addKhachHang(kh);
                 }
                 if (tablePhieuDatPhong.getSelectedRow() != -1) {
                     String maPhieuDatPhong = tablePhieuDatPhong.getValueAt(tablePhieuDatPhong.getSelectedRow(), 0).toString();
-                    nhaCungCapVaNhaphang_DAO.updatePhieuDatPhong(maPhieuDatPhong);
-                    tienCoc = nhaCungCapVaNhaphang_DAO.getTienCoc(maPhieuDatPhong);
+                    phieuDatPhongDao.updatePhieuDatPhong(maPhieuDatPhong);
+                    tienCoc = phieuDatPhongDao.getTienCoc(maPhieuDatPhong);
                 }
-                nhaCungCapVaNhaphang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_HAT);
+                phongDao.updatePhong(phong.getMaPhong(), TrangThaiPhong.DANG_HAT);
                 
                 String maHoaDon = hoaDon_Dao.getlastMaHoaDonTang();
                 hoaDon = new HoaDon(maHoaDon, kh, phong, nhanVien);
@@ -756,10 +770,10 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
                         ObjectComboBox cb = (ObjectComboBox) tableDichVuDaChon.getValueAt(i, 0);
                         int soluong = Integer.parseInt(tableDichVuDaChon.getValueAt(i, 1).toString());
                         if (soluong > 0) {
-                            MatHang matHang = nhaCungCapVaNhaphang_DAO.getMatHang(cb.getMa());
+                            MatHang matHang = matHangDao.getMatHang(cb.getMa());
                             ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(hoaDon,matHang, soluong);
                             hoaDon_Dao.insertCTHoaDon(ctHoaDon);
-                            nhaCungCapVaNhaphang_DAO.updateSLMatHang(cb.getMa(),soluong,"decrease");
+                            matHangDao.updateSLMatHang(cb.getMa(),soluong,"decrease");
                         }
                     }
                 }

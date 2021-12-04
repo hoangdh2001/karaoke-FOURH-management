@@ -224,4 +224,68 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
+    
+    @Override
+    public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangthai) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select * from Phong where trangThai = '"+trangthai+"' and maLoaiPhong != 'LP0003'";
+        
+        try {
+            tr.begin();
+                List<Phong> dsPhong = session.createNativeQuery(sql, Phong.class).getResultList();  
+            tr.commit();
+            return dsPhong;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
+    
+    @Override
+    public boolean updatePhong(String maPhong,TrangThaiPhong trangThai) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql = "update Phong set trangThai = '"+trangThai+"' where maPhong = '"+maPhong+"'";
+        try {
+            tr.begin();
+                session.createNativeQuery(sql).executeUpdate();
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+        
+    }
+    
+    @Override
+    public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong) {
+        String sql = "select * from Phong where maPhong not in (\n" +
+                    "select p.maPhong from Phong p join PhieuDatPhong pdp on p.maPhong = pdp.maPhong and pdp.trangThai = 'DANG_DOI' \n" +
+                    "where Cast(( CAST(N'"+date+"' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) ";
+        String sqlMa = "select * from Phong where maPhong not in (\n" +
+                    "select p.maPhong from Phong p join PhieuDatPhong pdp on p.maPhong = pdp.maPhong and pdp.trangThai = 'DANG_DOI' \n" +
+                    "where Cast(( CAST(N'"+date+"' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) "
+                    + "and maLoaiPhong = '"+maLoaiPhong+"'";
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+            List<Phong> dsPhong = null;
+            if(maLoaiPhong.equals("")){
+                dsPhong = session.createNativeQuery(sql,Phong.class).getResultList();
+            }else{
+                dsPhong = session.createNativeQuery(sqlMa,Phong.class).getResultList();
+            }
+            tr.commit();
+            return dsPhong;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
 }

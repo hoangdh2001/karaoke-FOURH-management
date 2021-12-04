@@ -446,6 +446,11 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         lblGioHat.setText("Giờ hát");
 
         txtGioHat.setEnabled(false);
+        txtGioHat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGioHatActionPerformed(evt);
+            }
+        });
 
         lblGiaPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblGiaPhong.setText("Giá phòng");
@@ -834,6 +839,10 @@ public class DL_ThanhToan extends javax.swing.JDialog {
     private void cbLoaiDichVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLoaiDichVuActionPerformed
         searchMatHang();
     }//GEN-LAST:event_cbLoaiDichVuActionPerformed
+
+    private void txtGioHatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGioHatActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGioHatActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHuy;

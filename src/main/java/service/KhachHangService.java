@@ -16,4 +16,9 @@ public interface KhachHangService {
     public List<KhachHang> getDsKhachHangLimit(String tuKhoa);
     public String getMaxID();
     public boolean checkKhachHang(String text);
+    
+//    Huu
+    public KhachHang getKhachHangBySDT(String sdt);
+    public boolean addKhachHang(KhachHang kh);
+    public String getlastKhachHangTang();
 }

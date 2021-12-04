@@ -5,6 +5,7 @@
 package gui;
 
 import dao.NhaCungCapVaNhapHang_DAO;
+import dao.NhanVien_DAO;
 import entity.NhanVien;
 import net.miginfocom.swing.MigLayout;
 
@@ -19,7 +20,7 @@ public class test extends javax.swing.JFrame {
      */
     public test() {
         initComponents();
-        NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+        NhanVien nhanVien = new NhanVien_DAO().getNhanVienByID("NV0001");
         GD_ThemSanPham themSP = new GD_ThemSanPham(nhanVien);
         this.setLayout(new MigLayout());
         this.add(themSP,"w 100%, h 100%");

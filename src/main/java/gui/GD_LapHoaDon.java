@@ -5,7 +5,9 @@
 package gui;
 
 import dao.HoaDon_DAO;
+import dao.MatHang_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
+import dao.NhanVien_DAO;
 import dao.Phong_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
@@ -47,6 +49,8 @@ import net.miginfocom.swing.MigLayout;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import service.MatHangService;
+import service.PhongService;
 
 /**
  *
@@ -92,6 +96,8 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
     private String GioHat;
 
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
+    private PhongService phongDao;
+    private MatHangService matHangDao;
     private HoaDon_DAO hoaDonDao;
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
@@ -181,7 +187,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
             public void run() {
                 Phong phong = new Phong_DAO().getPhong("PH0001");
                 System.out.println(phong);
-                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+                NhanVien nhanVien = new NhanVien_DAO().getNhanVienByID("NV0001");
                 GD_LapHoaDon dialog = new GD_LapHoaDon(phong, nhanVien);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -486,6 +492,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
         final int y = (screenSize.height - this.getHeight()) / 2;
         setLocation(x, y);
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+        phongDao = new Phong_DAO();
         df = new DecimalFormat("#,##0.00");
         mainPanel.setLayout(new MigLayout("", "20[center]20"));
 //        MainPanel.setBackground(Color.WHITE);
@@ -508,6 +515,7 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
 
     public void initData(Phong phong, NhanVien nv) {
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+        matHangDao = new MatHang_DAO();
         hoaDonDao = new HoaDon_DAO();
         hoaDon = hoaDonDao.getHoaDon(phong);
         
@@ -757,14 +765,14 @@ public class GD_LapHoaDon extends javax.swing.JDialog {
                         int soluongCu = ctHoaDon.getSoLuong();
                         int soLuongMoi = Integer.parseInt(tableSelected.getValueAt(i, 1).toString());
                         if (soLuongMoi > soluongCu) {
-                            nhaCungCapVaNhapHang_DAO.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soLuongMoi - soluongCu, "decrease");
+                            matHangDao.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soLuongMoi - soluongCu, "decrease");
                         } else {
-                            nhaCungCapVaNhapHang_DAO.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soluongCu - soLuongMoi, "increase");
+                            matHangDao.updateSLMatHang(ctHoaDon.getMatHang().getMaMatHang(), soluongCu - soLuongMoi, "increase");
                         }
                         dsCTHoaDon.get(i).setSoLuong(soLuongMoi);
                         hoaDonDao.updateCTHoaDon(dsCTHoaDon.get(i));
                     }
-                    nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
+                    phongDao.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
                     dispose();
                 } catch (Exception e2) {
                     e2.printStackTrace();

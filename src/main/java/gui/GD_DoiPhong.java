@@ -2,6 +2,7 @@ package gui;
 
 import dao.HoaDon_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
+import dao.NhanVien_DAO;
 import dao.Phong_DAO;
 import entity.HoaDon;
 import entity.NhanVien;
@@ -11,6 +12,7 @@ import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
 import gui.swing.table2.MyTable;
 import gui.swing.textfield.MyTextField;
+import gui.swing.textfield.MyTextFieldPerUnit;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,7 +22,6 @@ import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +36,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import objectcombobox.ObjectComboBox;
+import service.HoaDonService;
+import service.PhongService;
 
 /**
  *
@@ -51,7 +54,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     private MyTextField txtLoaiPhong;
     private MyTextField txtGiaPhong;
     private MyTextField txtGioDaHat;
-    private MyTextField txtTongTienCu;
+    private MyTextFieldPerUnit txtTongTienCu;
     
     private MyTextField txtKhachHang;
     private MyTextField txtLoaiPhongMoi;
@@ -69,8 +72,8 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     private DecimalFormat df;
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
-    
-    private HoaDon_DAO hoaDonDao;
+    private PhongService phongDao;
+    private HoaDonService hoaDonDao;
     
     private String gioHat;
     
@@ -169,7 +172,7 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Phong phong = new Phong_DAO().getPhong("PH0001");
-                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
+                NhanVien nhanVien = new NhanVien_DAO().getNhanVienByID("NV0001");
                 GD_DoiPhong dialog = new GD_DoiPhong(phong,nhanVien);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -247,11 +250,13 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         lblTongTienCu.setFont(new Font(fontName, fontPlain, font14));
         pnlLoc.add(lblTongTienCu, "align right");
 
-        txtTongTienCu = new MyTextField();
+        txtTongTienCu = new MyTextFieldPerUnit();
         txtTongTienCu.setFont(new Font(fontName, fontPlain, font14));
         txtTongTienCu.setEnabled(false);
-        txtTongTienCu.setBorderLine(true);
-        txtTongTienCu.setBorderRadius(5);
+//        ----------------------------------------------------------------------------------------------???????????????????????????????
+//        txtTongTienCu.setBorderLine(true);
+//        txtTongTienCu.setBorderRadius(5);
+        txtTongTienCu.setUnit("VNĐ");
         
         pnlLoc.add(txtTongTienCu, "w 100:260:300, h 36! , wrap");
         pnlInfo.add(pnlLoc,"w 35%,h 100%");
@@ -393,10 +398,10 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     }
     
     public void initForm(){
-        
+        phongDao = new Phong_DAO();
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+        hoaDonDao = new HoaDon_DAO();
         df = new DecimalFormat("#,##0.00");
-        hoaDon = hoaDonDao.getHoaDon(phong);
         
         setSize(new Dimension(1350,560));
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -421,78 +426,34 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         initNewRoom();
         initNewRoomInfo();
         
-    
         MainPanel.add(pnlInfo,"w 100%,h 30%,wrap");
         MainPanel.add(pnlHieuChinh,"w 100%,h 240");
     }
     
     public void initData(){
         hoaDon = hoaDonDao.getHoaDon(phong);
+        hoaDon.setThoiGianKetThuc(new Date());
         
+        System.out.println(hoaDon);
         txtTenPhong.setText(phong.getTenPhong());
         txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         txtGiaPhong.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
+        
         try {
             TongTienPhongCu();
         } catch (ParseException ex) {
             Logger.getLogger(GD_DoiPhong.class.getName()).log(Level.SEVERE, null, ex);
         }
-        txtGioDaHat.setText(gioHat);
-        txtKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
+        txtGioDaHat.setText(hoaDon.getGioHat());
+//        thong tin khách
+//        txtKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
         
-        List<Phong> dsPhong  = nhaCungCapVaNhapHang_DAO.getDSPhongByTrangThai(TrangThaiPhong.TRONG);
+        List<Phong> dsPhong  = phongDao.getDSPhongByTrangThai(TrangThaiPhong.TRONG);
         dsPhong.forEach(phong -> table.addRow(phong.convertToRowTableInGDoiPhong()));
     }
     
     public double TongTienPhongCu() throws ParseException{
-        SimpleDateFormat formatterGio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        Date date = new Date(System.currentTimeMillis());
-        
-        String txtgioBatDau = formatterGio.format(hoaDon.getThoiGianBatDau());
-        String txtgioKetThuc = formatterGio.format(date);
-        
-        SimpleDateFormat gio = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-
-        Date dateGioBatDau = (Date) gio.parse(txtgioBatDau);
-        Date dateGioKetThuc = (Date) gio.parse(txtgioKetThuc);
-        
-        long ngayDaSuDung = ChronoUnit.DAYS.between(dateGioBatDau.toInstant(), dateGioKetThuc.toInstant()) - 1;
-        
-        long millisBatDau = dateGioBatDau.getTime();
-        long millisKetThuc = dateGioKetThuc.getTime();
-        long tongThoiGian = 0;
-        int hours = 0;
-        int minutes = 0;
-        double tienPhong = 0;
-        double giaPhong = phong.getLoaiPhong().getGiaPhong();
-        if(ngayDaSuDung > 0){
-            int hoursBatDau= 0;
-            int minutesBatDau = 60 - (int) ((millisBatDau / (1000*60)) % 60);
-            if((int) ((millisBatDau / (1000*60)) % 60) > 0){
-                hoursBatDau = 24 - (int) ((millisBatDau / (1000*60*60)) % 24) - 1;
-            }else{
-                hoursBatDau = 24 - (int) ((millisBatDau / (1000*60*60)) % 24);
-            }
-            int minutesKetThuc = (int) ((millisKetThuc / (1000*60)) % 60);
-            int hoursKetThuc = (int) ((millisKetThuc / (1000*60*60)) % 24);
-            
-            hours = hoursBatDau + hoursKetThuc;
-            minutes = minutesBatDau + minutesKetThuc ;
-            if(minutes >= 60){
-                hours += 1;
-                minutes -= 60;
-            }
-            tienPhong =(ngayDaSuDung-1)*24*giaPhong + hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
-            gioHat = String.valueOf((ngayDaSuDung - 1)*24+hours) +":"+String.valueOf(minutes);
-        }else{
-            tongThoiGian = millisKetThuc - millisBatDau;
-            minutes = (int) ((tongThoiGian / (1000*60)) % 60);
-            hours   = (int) ((tongThoiGian / (1000*60*60)) % 24);
-            tienPhong = hours*giaPhong + (Double.parseDouble(String.valueOf(minutes))/60)*giaPhong;
-            System.out.println(tongThoiGian);
-            gioHat = String.valueOf(hours) +":"+String.valueOf(minutes);
-        }
-        System.out.println(gioHat);
+        double tienPhong = hoaDon.getDonGiaPhong();
         txtTongTienCu.setText(df.format(tienPhong));
         return tienPhong;
     }
@@ -531,8 +492,8 @@ public class GD_DoiPhong extends javax.swing.JDialog {
                     }
                     ObjectComboBox cb = (ObjectComboBox)table.getValueAt(table.getSelectedRow(), 0);
                     hoaDonDao.updateHoaDonDoiPhong(hoaDon,tienPhongCu, cb.getMa());
-                    nhaCungCapVaNhapHang_DAO.updatePhong(cb.getMa(),TrangThaiPhong.DANG_HAT);
-                    nhaCungCapVaNhapHang_DAO.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
+                    phongDao.updatePhong(cb.getMa(),TrangThaiPhong.DANG_HAT);
+                    phongDao.updatePhong(phong.getMaPhong(), TrangThaiPhong.BAN);
                     
                     showMsg("Đổi phòng thành công");
                 }

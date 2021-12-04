@@ -16,4 +16,9 @@ public interface PhongService {
     public List<Phong> getDsPhongBySDTOrTen(String sdt, int tang);
     public int getTang();
     public List<Phong> getDsPhongByTang(int tang, String tenPhong, LoaiPhong loaiPhong);
+    
+//    Huu
+    public boolean updatePhong(String maPhong,TrangThaiPhong trangThai);
+    public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangThai);
+    public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong);
 }

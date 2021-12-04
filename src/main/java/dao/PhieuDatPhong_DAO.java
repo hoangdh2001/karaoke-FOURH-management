@@ -7,6 +7,9 @@ package dao;
 
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -290,5 +293,166 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
             tr.rollback();
         }
         return null;
+    }
+    @Override
+    public boolean addPhieuDatPhong(PhieuDatPhong phieu,String ngayDat) {
+        
+        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+        String ngayLap = gio.format(date);
+        
+        String sql = "INSERT [dbo].[PhieuDatPhong] ([maPhieuDat], [ngayDat], [ngayTao], [tienCoc], [trangThai], [maKhachHang], [maPhong],[maNhanVien]) "
+                + "VALUES (N'"+phieu.getMaPhieuDat()+"', CAST(N'"+ngayDat+"' AS datetime),"
+                + " CAST(N'"+ngayLap+"' AS datetime), "+phieu.getTienCoc()+", N'DANG_DOI', N'"+phieu.getKhachHang().getMaKhachHang()+"',"
+                + " N'"+phieu.getPhong().getMaPhong()+"','"+phieu.getNhanVien().getMaNhanVien()+"')";
+        Session session = sessionFactory.getCurrentSession();
+        
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+                session.createNativeQuery(sql).executeUpdate();
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+
+    @Override
+    public double getTienCoc(String maPhieuDat) {
+    Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select tienCoc from PhieuDatPhong where maPhieuDat = '"+maPhieuDat+"'";
+        try {
+            tr.begin();
+                BigDecimal obj = (BigDecimal)session.createNativeQuery(sql).getSingleResult();
+                double tien = obj.doubleValue();
+            tr.commit();
+            return tien;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return 0;
+    }
+    
+    @Override
+    public PhieuDatPhong getPhieuCuaPhong(String maKhachhang) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+        String ngayLap = gio.format(date);
+        String sql = "select top 1 * from PhieuDatPhong where maKhachHang = '"+maKhachhang+"' "
+                + "and datediff(DAY,ngayDat,'"+ngayLap+"') = 0"
+                + " and trangThai = 'DA_TIEP_NHAN' order by ngayDat desc";
+        try {
+            tr.begin();
+                PhieuDatPhong pdp = session.createNativeQuery(sql,PhieuDatPhong.class).getSingleResult();
+            tr.commit();
+            session.clear();
+            return pdp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
+    
+    @Override
+    public String getLastPhieuDatPhong() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select top 1 maPhieuDat from PhieuDatPhong order by maPhieuDat desc";
+        
+        try {
+            tr.begin();
+            String maKhachCuoi="";
+            String maCuoiCung = "PD";
+            try {
+                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
+                int so = Integer.parseInt(maKhachCuoi.split("PD")[1]) + 1;
+                int soChuSo = String.valueOf(so).length();
+                
+                for (int i = 0; i< 7 - soChuSo; i++){
+                    maCuoiCung += "0";
+                }
+                maCuoiCung += String.valueOf(so);
+            } catch (Exception e) {
+                maCuoiCung = "PD0000001";
+            } 
+            tr.commit();
+            return maCuoiCung;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
+    
+    @Override
+    public boolean updatePhieuDatPhong(String maPhieu) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql = "update PhieuDatPhong set trangThai = 'DA_TIEP_NHAN' where maPhieuDat = '"+maPhieu+"'";
+        try {
+            tr.begin();
+                session.createNativeQuery(sql).executeUpdate();
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
+    @Override
+    public PhieuDatPhong getPhieuById(String maPhieuDatPhong) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        Date date = new Date( System.currentTimeMillis());
+        SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd");
+        
+        String sql = "select * from PhieuDatPhong where maPhieuDat = '"+maPhieuDatPhong+"'";
+        try {
+            tr.begin();
+                PhieuDatPhong phieuDatPhong = session.createNativeQuery(sql,PhieuDatPhong.class).getSingleResult();
+            tr.commit();
+            return phieuDatPhong;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    }
+     @Override
+    public List<PhieuDatPhong> getPhieuHomNay(String maPhong) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        Date date = new Date( System.currentTimeMillis());
+        SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        
+        String sql = "select * from PhieuDatPhong where datediff(day,NgayDat,'"+formatterNgay.format(date)+"') = 0 "
+                + "and datediff(MINUTE,'"+formatterNgay.format(date)+"',NgayDat) > 0"
+                + "and maPhong = '"+maPhong+"' and trangThai = 'DANG_DOI'";
+       
+        try {
+            tr.begin();
+                List<PhieuDatPhong> phieuDatPhong = session.createNativeQuery(sql,PhieuDatPhong.class).getResultList();
+            tr.commit();
+            return phieuDatPhong;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+        
     }
 }
