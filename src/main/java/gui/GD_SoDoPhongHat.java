@@ -38,9 +38,6 @@ import gui.swing.textfield.MyTextFieldFlatlaf;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
@@ -76,7 +73,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private void buildGD() {
         pnlTop.setLayout(new MigLayout("fill, insets 0, wrap", "0[fill]0", "0[fill]0[fill]0[fill]0"));
 
-        pnlTop.add(createPanelTitle(), "h 40!, span 2");
+        pnlTop.add(createPanelTitle(), "h 50!, span 2");
 
         pnlTop.add(createPanelForm(), "split 2");
 
@@ -302,14 +299,19 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     }
 
     private void loadMap(int index) {
-        String tenPhong = txtTenPhong.getText().trim();
-        LoaiPhong loaiPhong = null;
-        if (!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--")) {
-            loaiPhong = (LoaiPhong) cbLoaiPhongModel.getSelectedItem();
-        }
-        List<Phong> dsPhong = phong_DAO.getDsPhongByTang(index, tenPhong, loaiPhong);
-        System.out.println(dsPhong);
-        panelMap.loadMap(dsPhong, index);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String tenPhong = txtTenPhong.getText().trim();
+                LoaiPhong loaiPhong = null;
+                if (!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--")) {
+                    loaiPhong = (LoaiPhong) cbLoaiPhongModel.getSelectedItem();
+                }
+                List<Phong> dsPhong = phong_DAO.getDsPhongByTang(index, tenPhong, loaiPhong);
+                System.out.println(dsPhong);
+                panelMap.loadMap(dsPhong, index);
+            }
+        }).start();
     }
 
     @SuppressWarnings("unchecked")

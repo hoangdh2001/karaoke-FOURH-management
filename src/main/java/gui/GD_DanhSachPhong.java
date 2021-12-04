@@ -1,10 +1,11 @@
 package gui;
 
+import dao.LoaiPhong_DAO;
 import dao.Phong_DAO;
 import entity.LoaiPhong;
 import entity.Phong;
 import gui.dialog.DL_TaoPhong;
-import gui.swing.button.ToggleButton;
+import gui.swing.button.Button;
 
 import gui.swing.table2.EventAction;
 import gui.swing.model.ModelAction;
@@ -14,8 +15,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -25,16 +30,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.event.ListDataListener;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import net.miginfocom.swing.MigLayout;
 
 public class GD_DanhSachPhong extends JPanel {
 
     private final Phong_DAO phong_DAO;
+    private final LoaiPhong_DAO loaiPhong_DAO;
     private EventAction eventAction;
+    private JTextField txtTenPhong;
+    private DefaultComboBoxModel<Object> loaiphongModel;
+    private JComboBox<Object> cmbLoaiPhong;
 
     public GD_DanhSachPhong() {
         phong_DAO = new Phong_DAO();
+        loaiPhong_DAO = new LoaiPhong_DAO();
         initComponents();
         buildGD();
 
@@ -42,8 +55,8 @@ public class GD_DanhSachPhong extends JPanel {
 
     private void buildGD() {
         createPanelTop();
-        createTable();
         createPanelBottom();
+        createTable();
     }
 
     private void createPanelTop() {
@@ -57,16 +70,19 @@ public class GD_DanhSachPhong extends JPanel {
         lblTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlTop.add(lblTenPhong);
 
-        JTextField txtMaPhong = new JTextField();
-        txtMaPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
-        pnlTop.add(txtMaPhong, "w 20%, h 30!");
+        txtTenPhong = new JTextField();
+        txtTenPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
+        pnlTop.add(txtTenPhong, "w 20%, h 30!");
 
         //Tên phòng
         JLabel lblLoaiPhong = new JLabel("Loại phòng");
         lblLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlTop.add(lblLoaiPhong);
 
-        JComboBox<String> cmbLoaiPhong = new JComboBox<>(new String[]{"--Tất cả--", "Phòng trống", "Phòng đang hát", "Phòng đặt trước"});
+        loaiphongModel = new DefaultComboBoxModel<>();
+        loaiphongModel.addElement("--Tất cả--");
+        loaiphongModel.addAll(loaiPhong_DAO.getDsLoaiPhong());
+        cmbLoaiPhong = new JComboBox<>(loaiphongModel);
         cmbLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
         pnlTop.add(cmbLoaiPhong, "w 20%, h 30!");
 
@@ -74,12 +90,32 @@ public class GD_DanhSachPhong extends JPanel {
          * end: group thông tin phòng hát
          */
         pnlTop.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
+        actionGroup();
+    }
+
+    private void actionGroup() {
+        txtTenPhong.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                loadData(0);
+                loadPage();
+            }
+        });
+
+        cmbLoaiPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                loadData(0);
+                loadPage();
+            }
+        });
     }
 
     private void createTable() {
         table.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
-        LoaiPhong loaiPhong = new LoaiPhong();
-        loaiPhong.setTenLoaiPhong("Phòng thường");
+
+//        LoaiPhong loaiPhong = new LoaiPhong();
+//        loaiPhong.setTenLoaiPhong("Phòng thường");
         eventAction = new EventAction() {
             @Override
             public void delete(Object obj) {
@@ -110,18 +146,44 @@ public class GD_DanhSachPhong extends JPanel {
             }
         };
         loadData(pnlPage.getCurrentIndex());
+        TableColumnModel tableColumnModel = table.getColumnModel();
+        DefaultComboBoxModel<String> clLoaiPhongModel = new DefaultComboBoxModel<>();
+        for (LoaiPhong loaiPhong : loaiPhong_DAO.getDsLoaiPhong()) {
+            clLoaiPhongModel.addElement(loaiPhong.getTenLoaiPhong());
+        }
+        JComboBox<String> cmbColumnLoaiPhong = new JComboBox<>(clLoaiPhongModel);
+        cmbColumnLoaiPhong.setFont(new Font("sansserif", Font.PLAIN, 14));
+        cmbColumnLoaiPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                String maPhong = table.getValueAt(table.getSelectedRow(), 1).toString();
+                Phong phong = phong_DAO.getPhong(maPhong);
+                LoaiPhong loaiPhong = loaiPhong_DAO.getLoaiPhongByName(cmbColumnLoaiPhong.getSelectedItem().toString());
+                phong.setLoaiPhong(loaiPhong);
+                phong_DAO.updatePhong(phong);
+            }
+        });
+        tableColumnModel.getColumn(5).setCellEditor(new DefaultCellEditor(cmbColumnLoaiPhong)); 
     }
 
     private void loadData(int numPage) {
         ((DefaultTableModel) table.getModel()).setRowCount(0);
-        List<Phong> dsPhong = phong_DAO.getDsPhong(numPage);
-        if (dsPhong != null) {
-            dsPhong.forEach((phong) -> {
-                ((DefaultTableModel) table.getModel()).addRow(phong.convertToRowTable(eventAction));
-            });
-        }
-        table.repaint();
-        table.revalidate();
+        String tenPhong = txtTenPhong.getText().trim();
+        String loaiPhong = loaiphongModel.getSelectedItem() instanceof LoaiPhong ? ((LoaiPhong) loaiphongModel.getSelectedItem()).getMaLoaiPhong() : "";
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Phong> dsPhong = phong_DAO.getDsPhong(numPage, tenPhong, loaiPhong);
+                if (dsPhong != null) {
+                    dsPhong.forEach((phong) -> {
+                        ((DefaultTableModel) table.getModel()).addRow(phong.convertToRowTable(eventAction));
+                    });
+                }
+                table.repaint();
+                table.revalidate();
+            }
+        }).start();
+
     }
 
     private JPanel createPanelTitle() {
@@ -133,25 +195,39 @@ public class GD_DanhSachPhong extends JPanel {
         lblTitle.setText("Danh sách phòng hát");
         lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
         lblTitle.setForeground(new Color(68, 68, 68));
-        ToggleButton open = new ToggleButton();
+
+        Button open = new Button();
+        open.setToolTipText("Mở rộng");
         open.setIcon(new ImageIcon(getClass().getResource("/icon/more_15px.png")));
 
         JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem("Thêm phòng");
-        menuItem.addActionListener(new ActionListener() {
+        JMenuItem mniTaoPhong = new JMenuItem("Tạo phòng");
+
+        mniTaoPhong.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 new DL_TaoPhong(GD_Chinh.FRAME, true).setVisible(true);
                 loadData(pnlPage.getCurrentIndex());
             }
         });
-        popupMenu.add(menuItem);
+        popupMenu.add(mniTaoPhong);
+
+        JMenuItem mniLamMoi = new JMenuItem("Làm mới");
+        mniLamMoi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                txtTenPhong.setText("");
+                txtTenPhong.requestFocus();
+                cmbLoaiPhong.setSelectedIndex(0);
+            }
+        });
+        popupMenu.add(mniLamMoi);
 
         open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 popupMenu.show(open, 0, open.getHeight());
-                popupMenu.setPopupSize(popupMenu.getWidth(), 30);
+                popupMenu.setPopupSize(popupMenu.getWidth(), 60);
             }
         });
 
@@ -167,7 +243,13 @@ public class GD_DanhSachPhong extends JPanel {
                 loadData(pageClick);
             }
         });
-        int soLuongPhong = phong_DAO.getSoLuongPhong();
+        loadPage();
+    }
+
+    private void loadPage() {
+        String tenPhong = txtTenPhong.getText().trim();
+        String loaiPhong = loaiphongModel.getSelectedItem() instanceof LoaiPhong ? ((LoaiPhong) loaiphongModel.getSelectedItem()).getMaLoaiPhong() : "";
+        int soLuongPhong = phong_DAO.getSoLuongPhong(tenPhong, loaiPhong);
         pnlPage.init(soLuongPhong % 20 == 0 ? soLuongPhong / 20 : (soLuongPhong / 20) + 1);
     }
 
@@ -212,12 +294,19 @@ public class GD_DanhSachPhong extends JPanel {
 
             },
             new String [] {
-                "", "Mã phòng", "Tên phòng", "Tầng", "Trạng thái", "Giá phòng", ""
+                "", "Mã phòng", "Tên phòng", "Tầng", "Trạng thái", "Loại phòng", ""
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false, false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -235,10 +324,10 @@ public class GD_DanhSachPhong extends JPanel {
             table.getColumnModel().getColumn(1).setResizable(false);
             table.getColumnModel().getColumn(1).setPreferredWidth(60);
             table.getColumnModel().getColumn(2).setResizable(false);
-            table.getColumnModel().getColumn(2).setPreferredWidth(300);
+            table.getColumnModel().getColumn(2).setPreferredWidth(200);
             table.getColumnModel().getColumn(3).setResizable(false);
             table.getColumnModel().getColumn(4).setResizable(false);
-            table.getColumnModel().getColumn(4).setPreferredWidth(200);
+            table.getColumnModel().getColumn(4).setPreferredWidth(150);
             table.getColumnModel().getColumn(5).setResizable(false);
             table.getColumnModel().getColumn(6).setResizable(false);
             table.getColumnModel().getColumn(6).setPreferredWidth(60);

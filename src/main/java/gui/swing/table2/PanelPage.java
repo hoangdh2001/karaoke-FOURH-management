@@ -54,7 +54,7 @@ public class PanelPage extends javax.swing.JPanel {
         cmbNumPage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (cmbNumPage.getSelectedIndex() != currentIndex) {
+                if (cmbNumPage.getSelectedIndex() != currentIndex && pnlNum.getComponentCount() > 0) {
                     event.onClick(cmbNumPage.getSelectedIndex());
                     currentIndex = cmbNumPage.getSelectedIndex();
                 }
@@ -120,6 +120,7 @@ public class PanelPage extends javax.swing.JPanel {
     public void init(int num) {
         pnlNum.removeAll();
         cmbNumPage.removeAllItems();
+        currentIndex = 0;
         for (int i = 0; i < num; i++) {
             if (i < 4) {
                 Item item = new Item(i, event);

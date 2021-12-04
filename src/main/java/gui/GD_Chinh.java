@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
@@ -35,7 +34,6 @@ import gui.swing.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
-import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;

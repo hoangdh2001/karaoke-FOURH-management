@@ -96,10 +96,10 @@
                   <Table columnCount="7" rowCount="0">
                     <Column editable="false" title="" type="java.lang.Object"/>
                     <Column editable="false" title="Ma&#x303; pho&#x300;ng" type="java.lang.Object"/>
-                    <Column editable="false" title="T&#xea;n pho&#x300;ng" type="java.lang.Object"/>
+                    <Column editable="true" title="T&#xea;n pho&#x300;ng" type="java.lang.Object"/>
                     <Column editable="false" title="T&#xe2;&#x300;ng" type="java.lang.Object"/>
                     <Column editable="false" title="Tra&#x323;ng tha&#x301;i" type="java.lang.Object"/>
-                    <Column editable="false" title="Gia&#x301; pho&#x300;ng" type="java.lang.Object"/>
+                    <Column editable="true" title="Loa&#x323;i pho&#x300;ng" type="java.lang.String"/>
                     <Column editable="true" title="" type="java.lang.Object"/>
                   </Table>
                 </Property>
@@ -115,7 +115,7 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="300" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -125,7 +125,7 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="150" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
