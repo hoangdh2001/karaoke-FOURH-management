@@ -163,8 +163,8 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
         if (cmbKhac.getSelectedIndex() == 0) {
             ma = null;
         } else {
-            ObjectComboBox cb = (ObjectComboBox) cmbKhac.getSelectedItem();
-            ma = cb.getMa();
+            LoaiPhong cb = (LoaiPhong) cmbKhac.getSelectedItem();
+            ma = cb.getMaLoaiPhong();
         }
         System.out.println(ma);
 
@@ -274,8 +274,8 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
                 }
             } else if (obj.equals(cmbTKChiTiet)) {
                 if (cmbTKChiTiet.getSelectedIndex() != -1 && cmbTKChiTiet.getSelectedIndex() != 0) {
-                    loadDataChart();
                     filter();
+                    loadDataChart();
                 }
             } else if (obj.equals(cmbKhac)) {
                 if (cmbTKChiTiet.getSelectedIndex() != -1 && cmbTKChiTiet.getSelectedIndex() != 0) {
@@ -324,10 +324,11 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
     }
 
     private void loadDataChart() {
-        chart.clear();
+        
         new Thread(new Runnable() {
             @Override
             public void run() {
+                chart.clear();
                 if (cmbTKTheo.getSelectedIndex() == 1) {
                     int thang = 0;
                     try {
@@ -337,6 +338,7 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
                     }
                     sleep();
                     Map<Integer, Double> rs = hoaDonService.getDoanhThuHoaDonTheoThang(thang);
+                    System.err.println(rs);
                     if (rs != null) {
                         rs.entrySet()
                                 .iterator()

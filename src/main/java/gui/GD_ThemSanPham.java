@@ -93,10 +93,10 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     /**
      * Creates new form GD_ThemDichVu
      */
-    public GD_ThemSanPham(NhanVien nhanVien) {
+    public GD_ThemSanPham() {
         initComponents();
         this.setLayout(new MigLayout("","10[]10","10[]10"));
-        this.nhanVien = nhanVien;
+        this.nhanVien = GD_Chinh.NHAN_VIEN;
         initFrom();
         initTable();
         initDao();

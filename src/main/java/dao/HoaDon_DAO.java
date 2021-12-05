@@ -772,7 +772,7 @@ public class HoaDon_DAO implements HoaDonService {
                         st = arg0.prepareStatement(sql);
                         st.setInt(1, thang);
                         ResultSet rs = st.executeQuery();
-                        while (rs.next()) {                            
+                        while (rs.next()) {   
                             map.put(rs.getInt("ngay"), rs.getDouble("tongTien"));
                         }
                     } catch (SQLException e) {
@@ -782,6 +782,7 @@ public class HoaDon_DAO implements HoaDonService {
                 }
             });
             tr.commit();
+            return rs;
         } catch (Exception e) {
             tr.rollback();
         }
