@@ -149,6 +149,10 @@ public class PanelPage extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void addEventPagination() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private class Item extends JButton {
 
         private int index;
