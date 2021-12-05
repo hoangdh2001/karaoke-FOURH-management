@@ -131,7 +131,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                 return canEdit [columnIndex];
             }
         });
-        tblKhachHang.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tblKhachHang.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tblKhachHang.setRowHeight(40);
         tblKhachHang.setSelectionBackground(new java.awt.Color(239, 244, 255));
         tblKhachHang.setSelectionForeground(new java.awt.Color(51, 51, 51));
@@ -211,16 +211,14 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                                 if(khachHang_Dao.capNhatKhachHang(maKhachHang, soDienThoai)) {
                                     JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
                                     xoaDuLieu();
-                                    dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
-                                    taiLaiDuLieu(dsKhachHang);
+                                    loadData(pnlPage.getCurrentIndex());
                                 }else{
                                     JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng không thành công");         
                                 }
                             }else{
                                 JOptionPane.showMessageDialog(GD_KhachHang.this, "Số điện thoại khách hàng không hợp lệ"); 
                                 xoaDuLieu();
-                                dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
-                                taiLaiDuLieu(dsKhachHang);
+                                loadData(pnlPage.getCurrentIndex());
                             }
                         }
                     }catch(Exception ex){
@@ -231,10 +229,14 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     }
     private void loadData(int numPage) {
         dsKhachHang = khachHang_Dao.getDSKhachHang(numPage);
-        System.out.println(dsKhachHang.listIterator().nextIndex());
-        
         xoaDuLieu();
-        taiLaiDuLieu(dsKhachHang);
+        if (dsKhachHang != null) {
+            dsKhachHang.forEach((kh) -> {
+                ((DefaultTableModel) tblKhachHang.getModel()).addRow(new Object[] {new JCheckBox(),kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
+            });
+        }
+        tblKhachHang.repaint();
+        tblKhachHang.revalidate();
     }
     
     
@@ -243,10 +245,22 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         df.setRowCount(0);
     }
     
-    public void taiLaiDuLieu(List<KhachHang> dsKhachHang){
-        for(KhachHang kh: dsKhachHang){
-            tblKhachHang.addRow(new Object[] {new JCheckBox(),kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
-        }
+    public void taiLaiDuLieu(int numPage){
+        ((DefaultTableModel) tblKhachHang.getModel()).setRowCount(0);
+        String tuKhoa = txtTimKiem.getText().trim();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<KhachHang> dsKhachHang = khachHang_Dao.getDSKhachHangByTuKhoa(tuKhoa,numPage);
+                if (dsKhachHang != null) {
+                    dsKhachHang.forEach((kh) -> {
+                        ((DefaultTableModel) tblKhachHang.getModel()).addRow(new Object[] {new JCheckBox(),kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
+                    });
+                }
+                tblKhachHang.repaint();
+                tblKhachHang.revalidate();
+            }
+        }).start();
     }
     
     private void createTable() {
@@ -255,8 +269,10 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         xuLySuKien();
     }
     
-    private void xuLyTimKiem(int soLuong){
-        pnlPage.init(soLuong % 20 == 0 ? soLuong / 20 : (soLuong / 20) + 1);
+    private void loadPage() {
+        String tuKhoa = txtTimKiem.getText().trim();
+        int soLuongKhachHang= khachHang_Dao.getSoLuongKhachHangByTuKhoa(tuKhoa);
+        pnlPage.init(soLuongKhachHang% 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
     }
     
      private void createPanelBottom() {
@@ -266,8 +282,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                 loadData(pageClick);
             }
         });
-        int soLuongKhachHang = khachHang_Dao.getSoLuongKhachHang();
-        pnlPage.init(soLuongKhachHang % 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
+        loadPage();
     }
 
     private boolean valiDataSDT(String soDienThoai){
@@ -292,7 +307,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
            txtTimKiem.setText("");
            dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
            xoaDuLieu();
-           taiLaiDuLieu(dsKhachHang);
+           taiLaiDuLieu(pnlPage.getCurrentIndex());
         }
     }
 
@@ -308,9 +323,10 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     public void keyReleased(KeyEvent arg0) {
         Object obj = arg0.getSource();
         if(obj.equals(txtTimKiem)){
-            List<KhachHang> dsKhachHang = khachHang_Dao.layDSKhachHang(txtTimKiem.getText().trim());
             xoaDuLieu();
-            taiLaiDuLieu(dsKhachHang);
+            //loadData(0);
+            loadPage();
+            taiLaiDuLieu(pnlPage.getCurrentIndex());
         }
     }
 

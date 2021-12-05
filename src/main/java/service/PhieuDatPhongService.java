@@ -18,9 +18,10 @@ public interface PhieuDatPhongService {
     public List<PhieuDatPhong> getDsPhieuDatPhong(int numPage);
     public List<String> getDSTrangThaiPhieu();
     public PhieuDatPhong getPhieuDatPhong(String maPhieuDat);
-    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat);
+    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat, int numPage);
     public boolean capNhatTrangThaiPhieu(String maPhieu);
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong);
     public boolean xoaPhieuDatPhong(String maPhieuDat);
     public int getSoLuongPhieuDatPhong();
+    public int getSoLuongPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat);
 }

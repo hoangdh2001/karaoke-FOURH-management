@@ -75,7 +75,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Container class="javax.swing.JPanel" name="pnlBottom_Page">
           <Properties>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
@@ -89,19 +89,19 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="panelPage1" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlPage" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="862" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelPage1" alignment="0" pref="32" max="32767" attributes="0"/>
+                  <Component id="pnlPage" alignment="0" pref="32" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="gui.swing.table2.PanelPage" name="panelPage1">
+            <Component class="gui.swing.table2.PanelPage" name="pnlPage">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -194,6 +194,12 @@
                   <Font name="Segoe UI" size="14" style="0"/>
                 </Property>
                 <Property name="rowHeight" type="int" value="40"/>
+                <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="f4" red="ef" type="rgb"/>
+                </Property>
+                <Property name="selectionForeground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="33" red="33" type="rgb"/>
+                </Property>
                 <Property name="showGrid" type="boolean" value="true"/>
                 <Property name="showVerticalLines" type="boolean" value="false"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">

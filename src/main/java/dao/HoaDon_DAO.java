@@ -67,14 +67,15 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public List<HoaDon> getDsHoaDon() {
+    public List<HoaDon> getDsHoaDon(int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select h.* from HoaDon h order by h.ngayLapHoaDon, h.maHoaDon desc";
+        String sql = "select h.* from HoaDon h order by h.ngayLapHoaDon, h.maHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
                     .createNativeQuery(sql, HoaDon.class)
+                    .setParameter("x", numPage*20)
                     .getResultList();
             tr.commit();
             return dsHoaDon;
@@ -103,16 +104,17 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to) {
+    public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to,int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select h.* from [dbo].[HoaDon] h\n"
                 + "where h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')"
-                + "order by h.[ngayLapHoaDon] desc";
+                + "order by h.ngayLapHoaDon, h.maHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
                     .createNativeQuery(sql, HoaDon.class)
+                    .setParameter("x", numPage*20)
                     .getResultList();
             tr.commit();
             return dsHoaDon;
@@ -125,17 +127,18 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang) {
+    public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang,int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "  select h.*\n"
+        String sql = "select h.*\n"
                 + "  from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang\n"
                 + "  where k.tenKhachHang like N'%" + tenKhachHang + "%'"
-                + "order by h.[ngayLapHoaDon] desc";
+                + "order by h.ngayLapHoaDon, h.maHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
                     .createNativeQuery(sql, HoaDon.class)
+                    .setParameter("x", numPage*20)
                     .getResultList();
             tr.commit();
             return dsHoaDon;
@@ -148,17 +151,18 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public List<HoaDon> getDSHoaDonByTenPhong(String tenPhong) {
+    public List<HoaDon> getDSHoaDonByTenPhong(String tenPhong,int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "   select h.*\n"
+        String sql = "select h.*\n"
                 + "  from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong\n"
                 + "  where p.tenPhong like N'%" + tenPhong + "%'"
-                + "order by h.[ngayLapHoaDon] desc";
+                + "order by h.ngayLapHoaDon, h.maHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
                     .createNativeQuery(sql, HoaDon.class)
+                    .setParameter("x", numPage*20)
                     .getResultList();
             tr.commit();
             return dsHoaDon;
@@ -171,17 +175,18 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public List<HoaDon> getDSHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu) {
+    public List<HoaDon> getDSHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu,int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select  h.* \n"
                 + "  from [dbo].[HoaDon] h\n"
                 + "  where h." + tieuChiKhac + " like '%" + duLieu + "%'"
-                + "order by h.[ngayLapHoaDon] desc";
+                + "order by h.ngayLapHoaDon, h.maHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
                     .createNativeQuery(sql, HoaDon.class)
+                    .setParameter("x", numPage*20)
                     .getResultList();
             tr.commit();
             return dsHoaDon;
@@ -230,15 +235,16 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public List<HoaDon> locHoaDonByThang_Quy_Nam(String from, String to, String thang, String quy, String nam) {
+    public List<HoaDon> locHoaDonByThang_Quy_Nam(String from, String to, String thang, String quy, String nam,int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select * from [dbo].[HoaDon] where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')"
-                + "order by [ngayLapHoaDon] desc";
+                + "order by h.ngayLapHoaDon, h.maHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
                     .createNativeQuery(sql, HoaDon.class)
+                    .setParameter("x", numPage*20)
                     .getResultList();
             tr.commit();
             return dsHoaDon;
@@ -308,6 +314,121 @@ public class HoaDon_DAO implements HoaDonService {
         }
         session.close();
         return null;
+    }
+    
+    
+    @Override
+    public int getSoLuongHoaDon() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from HoaDon";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getSoLuongHoaDonByTenKhachHang(String tenKhachHang) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang where k.tenKhachHang like N'%" + tenKhachHang + "%'";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getSoLuongHoaDonByTenPhong(String tenPhong) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong where p.tenPhong like N'%" + tenPhong + "%'";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getSoLuongHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] h where h." + tieuChiKhac + " like '%" + duLieu + "%'";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getSoLuongHoaDonFromDateToDate(String from, String to) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] h where h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getSoLuongHoaDonByAll(String from, String to, String thang, String quy, String nam) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
     }
     
 //    Huu
@@ -652,4 +773,5 @@ public class HoaDon_DAO implements HoaDonService {
         }
         return null;
     }
+
 }
