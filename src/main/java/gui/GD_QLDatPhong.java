@@ -234,7 +234,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
          DecimalFormat dcf = new DecimalFormat("#,### VND");
         SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         for(PhieuDatPhong phieu : dsPhieu){
-            tblPhieuDatPhong.addRow(new Object[]{JCheckBox.class,phieu.getMaPhieuDat(), fm.format(phieu.getNgayTao()),phieu.getKhachHang().getTenKhachHang(), phieu.getPhong().getTenPhong(), fm.format(phieu.getNgayDat()), phieu.getTrangThai(), dcf.format(phieu.getTienCoc())});
+            tblPhieuDatPhong.addRow(phieu.convertToRowTable());
         }
     }
     
@@ -321,7 +321,15 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             new String [] {
                 "", "Mã phiếu đặt", "Ngày lập phiếu", "Khách hàng", "Phòng", "Ngày đặt", "Trạng thái", "Tiền cọc"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblPhieuDatPhong.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tblPhieuDatPhong.setRowHeight(40);
         tblPhieuDatPhong.setSelectionBackground(new java.awt.Color(239, 244, 255));
@@ -330,11 +338,19 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         tblPhieuDatPhong.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tblPhieuDatPhong);
         if (tblPhieuDatPhong.getColumnModel().getColumnCount() > 0) {
+            tblPhieuDatPhong.getColumnModel().getColumn(0).setResizable(false);
             tblPhieuDatPhong.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tblPhieuDatPhong.getColumnModel().getColumn(1).setResizable(false);
             tblPhieuDatPhong.getColumnModel().getColumn(1).setPreferredWidth(60);
+            tblPhieuDatPhong.getColumnModel().getColumn(2).setResizable(false);
             tblPhieuDatPhong.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tblPhieuDatPhong.getColumnModel().getColumn(3).setResizable(false);
             tblPhieuDatPhong.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tblPhieuDatPhong.getColumnModel().getColumn(4).setResizable(false);
+            tblPhieuDatPhong.getColumnModel().getColumn(5).setResizable(false);
             tblPhieuDatPhong.getColumnModel().getColumn(5).setPreferredWidth(100);
+            tblPhieuDatPhong.getColumnModel().getColumn(6).setResizable(false);
+            tblPhieuDatPhong.getColumnModel().getColumn(7).setResizable(false);
         }
 
         pnlBottom.add(jScrollPane1, java.awt.BorderLayout.CENTER);

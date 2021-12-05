@@ -347,7 +347,11 @@ public class GD_Chinh extends JFrame {
                         }
                         break;
                     case 6:
-                        content.showForm(new GD_QLHangHoa());
+                        if(subMenuIndex == 0) {
+                            content.showForm(new GD_XemDichVu());
+                        } else if (subMenuIndex == 1) {
+                            content.showForm(new GD_QLHangHoa());
+                        }
                         break;
                     default:
                         break;

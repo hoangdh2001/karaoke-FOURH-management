@@ -91,7 +91,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         int font14 = 14;
         Color colorBtn = new Color(184, 238, 241);
         Color colorLabel = new Color(47, 72, 210);
-//        int separatorHeight = 150;
        
         pnlForm.setLayout(new MigLayout("fillx, insets 0, wrap", "[fill][fill]", "40[][]"));
         pnlForm.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
@@ -136,17 +135,13 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         
         cmbNam = new JComboBox<>();
         cmbNam.setFont(new Font(fontName, fontPlain, font14));
-//        cmbNam.setBorderLine(true);
-//        cmbNam.setBorderRadius(10);
         cmbNam.addItem("Lọc theo năm");
         pnlCmbThoiGian.add(cmbNam, "w 32%, h 30!");
         
 //        //Tùy chỉnh
         cmbQuy = new JComboBox<>();
         cmbQuy.setFont(new Font(fontName, fontPlain, font14));
-//        cmbQuy.setBorderLine(true);
         cmbQuy.addItem("Lọc theo quý");
-//        cmbQuy.setBorderRadius(10);
         pnlCmbThoiGian.add(cmbQuy, "w 32%, h 30!");
         
         cmbThang = new JComboBox<>();
@@ -183,8 +178,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         //Chọn cột cần tìm
         cmbCot = new JComboBox<>(new String[]{"Chọn cột cần tìm","Mã hóa đơn","Khách hàng","Phòng"});
         cmbCot.setFont(new Font(fontName, fontPlain, font14));
-//        cmbCot.setBorderLine(true);
-//        cmbCot.setBorderRadius(10);
         cmbCot.addItem("Chọn cột cần tìm");
         pnlTimKiemHD.add(cmbCot, "span 2, h 30!, w 100%");
         
@@ -192,8 +185,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         // Tìm kiếm  
         txtTimKiem = new MyTextFieldFlatlaf();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
-//        txtTimKiem.setBorderLine(true);
-//        txtTimKiem.setBorderRadius(5);
         txtTimKiem.setHint("Nhập thông tin tìm kiếm theo tùy chọn của bạn.");
         pnlTimKiemHD.add(txtTimKiem, "h 30!, w 100%");
 
@@ -206,26 +197,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         pnlTimKiemHD.add(btnLamMoi, "w 100!, h 36!");
 
         /*Đăng ký sự kiện*/
-//        cmbCot.addActionListener(this);
-//        btnLamMoi.addActionListener(this);
-//        cmbQuy.addActionListener(this);
-//        cmbThang.addActionListener(this);
-//        cmbNam.addActionListener(this);
-//        xuLySuKien();
-//
-//        tblHoaDon.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                //Nếu click chuột trái và click 2 lần
-//                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
-//                    int row = tblHoaDon.getSelectedRow();
-//                    String maHoaDon = tblHoaDon.getValueAt(row, 0).toString();
-//                    System.out.println(hoaDon_Dao.getHoaDon(maHoaDon));
-//                    eventOnClick.selectedRow(hoaDon_Dao.getHoaDon(maHoaDon));
-//                }
-//            }
-//        });
-
     }
 
     private JPanel createPanelTitle() {
@@ -242,26 +213,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     }
     
     private void createTable(){
-//        Object rows[][] = { {"","","","","","","","","","",""},{"","","","","","","","","","",""}, };
-//        String columns[] = {"Mã hóa đơn","Khách hàng","Phòng","Số phút hát", "Ngày lập hóa đơn","Giờ bắt đầu","Tổng mặt hàng","giá phòng","Tổng hóa đơn","Nhân viên"};
-//        TableModel model = new DefaultTableModel(rows, columns){
-//            boolean[] canEdit = new boolean [] {
-//                false, false, false,false,true
-//            }; 
-//            public boolean isCellEditable(int rowIndex, int columnIndex) {
-//                return false;
-//            }
-//            public Class getColumnClass(int column) {
-//                Class returnValue;
-//                if ((column >= 0) && (column < getColumnCount())) {
-//                  returnValue = getValueAt(0, column).getClass();
-//                } else {
-//                  returnValue = Object.class;
-//                }
-//                return returnValue;
-//            }
-//        };
-//        tblHoaDon.setModel(model);
+        tblHoaDon.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         tblHoaDon.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
         RowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) tblHoaDon.getModel());
         tblHoaDon.setRowSorter(sorter);
@@ -488,7 +440,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         pnlForm.setLayout(pnlFormLayout);
         pnlFormLayout.setHorizontalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 903, Short.MAX_VALUE)
+            .addGap(0, 1020, Short.MAX_VALUE)
         );
         pnlFormLayout.setVerticalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -498,6 +450,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         add(pnlForm, java.awt.BorderLayout.PAGE_START);
 
         panelShadow2.setBackground(new java.awt.Color(255, 255, 255));
+        panelShadow2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panelShadow2.setShadowOpacity(0.3F);
         panelShadow2.setShadowSize(2);
         panelShadow2.setShadowType(gui.swing.graphics.ShadowType.TOP);
@@ -513,7 +466,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(panelPage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 755, Short.MAX_VALUE))
+                .addGap(0, 862, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,13 +477,10 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
 
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Mã hóa đơn", "Khách hàng", "Phòng", "Giờ hát", "Ngày lập hóa đơn", "Giờ bắt đầu", "Tổng mặt hàng", "Giá phòng", "Tổng hóa đơn", "Nhân viên"
+                "ID", "Khách hàng", "Phòng", "Giờ hát", "Ngày lập", "Giờ bắt đầu", "Tổng mặt hàng", "Giá phòng", "Tổng hóa đơn", "Nhân viên"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -541,19 +491,25 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
                 return canEdit [columnIndex];
             }
         });
+        tblHoaDon.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tblHoaDon.setRowHeight(40);
         jScrollPane2.setViewportView(tblHoaDon);
         if (tblHoaDon.getColumnModel().getColumnCount() > 0) {
             tblHoaDon.getColumnModel().getColumn(0).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(0).setPreferredWidth(80);
             tblHoaDon.getColumnModel().getColumn(1).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(1).setPreferredWidth(150);
             tblHoaDon.getColumnModel().getColumn(2).setResizable(false);
             tblHoaDon.getColumnModel().getColumn(3).setResizable(false);
             tblHoaDon.getColumnModel().getColumn(4).setResizable(false);
-            tblHoaDon.getColumnModel().getColumn(4).setPreferredWidth(100);
             tblHoaDon.getColumnModel().getColumn(5).setResizable(false);
             tblHoaDon.getColumnModel().getColumn(6).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(6).setPreferredWidth(120);
             tblHoaDon.getColumnModel().getColumn(7).setResizable(false);
             tblHoaDon.getColumnModel().getColumn(8).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(8).setPreferredWidth(120);
             tblHoaDon.getColumnModel().getColumn(9).setResizable(false);
+            tblHoaDon.getColumnModel().getColumn(9).setPreferredWidth(150);
         }
 
         panelShadow2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
