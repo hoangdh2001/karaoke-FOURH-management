@@ -34,7 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import objectcombobox.ObjectComboBox;
 
-public class GD_QLHangHoa extends javax.swing.JPanel {
+public class GD_ThemMatHang extends javax.swing.JPanel {
 
     private JComboBox<Object> cbNhaCungCap;
     private JComboBox<Object> cbLoaiSP;
@@ -75,7 +75,7 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
     private Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
 
-    public GD_QLHangHoa() {
+    public GD_ThemMatHang() {
         nhanVien = GD_Chinh.NHAN_VIEN;
         initComponents();
         buildDisplay();
@@ -613,6 +613,8 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        table.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        table.setRowHeight(40);
         table.setShowGrid(true);
         table.setShowVerticalLines(false);
         jScrollPane2.setViewportView(table);

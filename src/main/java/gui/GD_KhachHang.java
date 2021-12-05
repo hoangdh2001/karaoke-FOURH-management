@@ -152,15 +152,16 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
 
         pnlBottom.add(srcKhachHang, java.awt.BorderLayout.CENTER);
 
+        pnlBottom_Page.setOpaque(false);
         pnlBottom_Page.setPreferredSize(new java.awt.Dimension(1022, 32));
+
+        pnlPage.setOpaque(false);
 
         javax.swing.GroupLayout pnlBottom_PageLayout = new javax.swing.GroupLayout(pnlBottom_Page);
         pnlBottom_Page.setLayout(pnlBottom_PageLayout);
         pnlBottom_PageLayout.setHorizontalGroup(
             pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBottom_PageLayout.createSequentialGroup()
-                .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 692, Short.MAX_VALUE))
+            .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, 1022, Short.MAX_VALUE)
         );
         pnlBottom_PageLayout.setVerticalGroup(
             pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

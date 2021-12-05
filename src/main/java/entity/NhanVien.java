@@ -258,6 +258,6 @@ public class NhanVien {
         String caLamString = caLam.getGioBatDau() + "-" + caLam.getGioKetThuc();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         
-        return new Object[]{JCheckBox.class, maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai, canCuocCD,caLamString, loaiNhanVien.getTenLoaiNV()};
+        return new Object[]{new JCheckBox(), maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai, canCuocCD,caLamString, loaiNhanVien.getTenLoaiNV()};
     }
 }

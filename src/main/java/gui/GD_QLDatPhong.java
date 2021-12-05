@@ -348,6 +348,10 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
         pnlBottom.add(srcPhieuDatPhong, java.awt.BorderLayout.CENTER);
 
+        pnlBottom_Page.setOpaque(false);
+
+        pnlPage.setOpaque(false);
+
         javax.swing.GroupLayout pnlBottom_PageLayout = new javax.swing.GroupLayout(pnlBottom_Page);
         pnlBottom_Page.setLayout(pnlBottom_PageLayout);
         pnlBottom_PageLayout.setHorizontalGroup(
