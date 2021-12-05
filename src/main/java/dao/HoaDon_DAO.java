@@ -70,7 +70,7 @@ public class HoaDon_DAO implements HoaDonService {
     public List<HoaDon> getDsHoaDon() {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select h.* from [dbo].[HoaDon] h order by h.[ngayLapHoaDon] desc";
+        String sql = "select h.* from HoaDon h order by h.ngayLapHoaDon, h.maHoaDon desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -230,6 +231,8 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     }
     private void loadData(int numPage) {
         dsKhachHang = khachHang_Dao.getDSKhachHang(numPage);
+        System.out.println(dsKhachHang.listIterator().nextIndex());
+        
         xoaDuLieu();
         taiLaiDuLieu(dsKhachHang);
     }
@@ -241,7 +244,6 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     }
     
     public void taiLaiDuLieu(List<KhachHang> dsKhachHang){
-        xuLyTimKiem(dsKhachHang.size());
         for(KhachHang kh: dsKhachHang){
             tblKhachHang.addRow(new Object[] {JCheckBox.class,kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
         }
@@ -264,8 +266,8 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                 loadData(pageClick);
             }
         });
-//        int soLuongKhachHang = khachHang_Dao.getSoLuongKhachHang();
-//        pnlPage.init(soLuongKhachHang % 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
+        int soLuongKhachHang = khachHang_Dao.getSoLuongKhachHang();
+        pnlPage.init(soLuongKhachHang % 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
     }
 
     private boolean valiDataSDT(String soDienThoai){
