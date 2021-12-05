@@ -35,7 +35,7 @@ public class CellAdd extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, Short.MAX_VALUE)
+                .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

@@ -5,7 +5,6 @@ import dao.Phong_DAO;
 import entity.KhachHang;
 import entity.Phong;
 import entity.PhieuDatPhong;
-import entity.TrangThaiPhieuDat;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;

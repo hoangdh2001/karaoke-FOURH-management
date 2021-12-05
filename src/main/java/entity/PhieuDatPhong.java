@@ -2,6 +2,7 @@ package entity;
 
 import gui.swing.table2.EventAction;
 import gui.swing.model.ModelAction;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -204,8 +205,9 @@ public class PhieuDatPhong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
+        DecimalFormat dcf = new DecimalFormat("#,###");
         SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-        return new Object[]{JCheckBox.class, maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, tienCoc, new ModelAction(this, event)};
+        return new Object[]{new JCheckBox(), maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, dcf.format(tienCoc), new ModelAction(this, event)};
     }
     
     public Object[] convertToRowTableInGDTiepNhanDatPhong(){

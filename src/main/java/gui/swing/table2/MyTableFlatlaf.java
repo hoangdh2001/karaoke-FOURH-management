@@ -1,5 +1,6 @@
 package gui.swing.table2;
 
+import entity.LoaiPhong;
 import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
 import gui.swing.event.EventMinus;
@@ -7,6 +8,7 @@ import gui.swing.model.ModelAction;
 import gui.swing.model.ModelAdd;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -40,7 +42,7 @@ public class MyTableFlatlaf extends JTable {
                         button.setForeground(getForeground());
                     }
                     return button;
-                } else if(value instanceof Class) {
+                } else if (value instanceof JCheckBox) {
                     CellCheckBox cell = new CellCheckBox(isSelected);
                     cell.select(isSelected);
                     if (isSelected) {
@@ -51,7 +53,7 @@ public class MyTableFlatlaf extends JTable {
                         cell.setForeground(Color.BLACK);
                     }
                     return cell;
-                }else if(value instanceof ModelAction) {
+                } else if (value instanceof ModelAction) {
                     ModelAction action = (ModelAction) value;
                     CellAction cell = new CellAction(action, isSelected);
                     if (isSelected) {
@@ -88,7 +90,7 @@ public class MyTableFlatlaf extends JTable {
             }
         });
     }
-    
+
     public void addRow(Object[] row) {
         DefaultTableModel model = (DefaultTableModel) getModel();
         model.addRow(row);
@@ -98,10 +100,10 @@ public class MyTableFlatlaf extends JTable {
     public TableCellEditor getCellEditor(int row, int column) {
         if (getValueAt(row, column) instanceof ModelAdd) {
             return new TableCellAdd();
-        } else if(getValueAt(row, column) instanceof EventMinus) {
+        } else if (getValueAt(row, column) instanceof EventMinus) {
             return new TableCellMinus();
-        } else if(getValueAt(row, column) instanceof  ModelAction) {
-            return  new TableCellAction();
+        } else if (getValueAt(row, column) instanceof ModelAction) {
+            return new TableCellAction();
         }
         return super.getCellEditor(row, column);
     }

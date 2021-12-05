@@ -93,10 +93,12 @@ public class Phong_DAO implements PhongService {
     }
 
     @Override
-    public List<Phong> getDsPhong(int numPage) {
+    public List<Phong> getDsPhong(int numPage, String tenPhong, String loaiPhong) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select p.* from Phong p order by maPhong offset :x row fetch next 20 rows only";
+        String sql = "select p.* from Phong p where tenPhong like N'%"+ tenPhong +"%' "
+                + "and maLoaiPhong like '%"+ loaiPhong +"%' "
+                + "order by maPhong offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<Phong> dsPhong = session
@@ -108,6 +110,7 @@ public class Phong_DAO implements PhongService {
             return dsPhong;
 
         } catch (Exception e) {
+            e.printStackTrace();
             tr.rollback();
         }
         session.close();
@@ -115,11 +118,12 @@ public class Phong_DAO implements PhongService {
     }
 
     @Override
-    public int getSoLuongPhong() {
+    public int getSoLuongPhong(String tenPhong, String loaiPhong) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "select count(*) from Phong";
+        String sql = "select count(*) from Phong where tenPhong like N'%"+ tenPhong +"%' "
+                + "and maLoaiPhong like '%"+ loaiPhong +"%'";
         try {
             tr.begin();
             int rs = (int) session.

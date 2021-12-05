@@ -14,6 +14,7 @@ public class ObjectComboBox {
     private String ten;
     private String ma;
 
+
     public String getMa() {
         return ma;
     }

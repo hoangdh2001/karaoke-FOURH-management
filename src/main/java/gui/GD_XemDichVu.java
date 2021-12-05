@@ -23,11 +23,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -43,11 +43,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class GD_XemDichVu extends javax.swing.JPanel {
     
-    private MyTable table;
+    private JTextField txtNhap;
     
-    private MyTextField txtNhap;
-    
-    private MyComboBox<String> cmbLoaiTimKiem;
+    private JComboBox<String> cmbLoaiTimKiem;
     
     private Button btnXuatFile;
     
@@ -76,21 +74,15 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     
     public void initSearch(){
      
-        pnlSearch.setLayout(new MigLayout("","20[]5[][]push[]20","20[]20"));
-        pnlSearch.setBackground(Color.WHITE);
+        pnlSearch.setLayout(new MigLayout("fillx, insets 0","20[]5[][]push[]20","20[]20"));
         JLabel lblTimKiem = new JLabel("Tìm Kiếm :");
         lblTimKiem.setFont(new Font(fontName, fontPlain, font14));
         
-        txtNhap = new MyTextField();
+        txtNhap = new JTextField();
         txtNhap.setFont(new Font(fontName, fontPlain, font14));
-        txtNhap.setBorderLine(true);
-        txtNhap.setBorderRadius(5);
         
-        cmbLoaiTimKiem = new MyComboBox<>(new String[] {"--Tất cả--"});
+        cmbLoaiTimKiem = new JComboBox<>(new String[] {"--Tất cả--"});
         cmbLoaiTimKiem.setFont(new Font("sansserif", Font.PLAIN, 12));
-        cmbLoaiTimKiem.setBorderLine(true);
-        cmbLoaiTimKiem.setBorderRadius(10);
-//        panelForm.add(cbLoaiPhong, "w 20%, h 30!");
 
         btnXuatFile = new Button("Xuất file");
         btnXuatFile.setFont(new Font(fontName, fontPlain, font14));
@@ -98,61 +90,15 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         btnXuatFile.setBorderRadius(5);
         
         pnlSearch.add(lblTimKiem);
-        pnlSearch.add(txtNhap,"w 100:300:500, h 36!");
-        pnlSearch.add(cmbLoaiTimKiem,"w 200,h 36!");
-        pnlSearch.add(btnXuatFile,"w 150,h 36!");
+        pnlSearch.add(txtNhap,"w 100:300:500, h 30!");
+        pnlSearch.add(cmbLoaiTimKiem,"w 200,h 30!");
+        pnlSearch.add(btnXuatFile,"w 120 ,h 36!");
         
-        this.add(pnlSearch,"w 100%,wrap");
+        this.add(pnlSearch,"wrap");
     }
     
     public void initTable(){
-        lbldsDichVu.setLayout(new MigLayout("","15[]15","20[][]20"));
-        lbldsDichVu.setBackground(Color.WHITE);
-        
-        JLabel lblTTSanPham = new JLabel("Thông tin sản phẩm");
-        lblTTSanPham.setFont(new Font(fontName, fontPlain, font16));
-        lblTTSanPham.setForeground(colorLabel);
-        lbldsDichVu.add(lblTTSanPham, "span, w 100%, h 30!, wrap");
-        
-        JPanel pnlTable = new PanelShadow();
-        pnlTable.setLayout(new MigLayout("fill"));
-        pnlTable.setBackground(Color.WHITE);
-        String col[] = {"Tên sản phẩm","loại sản phẩm","Số lượng","Giá bán"};
-        
-        DefaultTableModel model = new DefaultTableModel(
-            col,
-            0
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, false,false
-            }; 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        };
-        
-        table = new MyTable(){
-			public Class getColumnClass(int column) {
-				switch (column) {
-				case 0:
-					return String.class;
-				case 1:
-					return String.class;
-				case 2:
-					return String.class;
-				default:
-					return String.class;
-				}
-			}
-        };
-    
-        table.setModel(model);
-        
-        JScrollPane sp = new JScrollPane(table);
-        table.fixTable(sp);
-        
-        pnlTable.add(sp,"w 100%,h 100%");
-        lbldsDichVu.add(pnlTable,"w 100%,h 100%");
+        table.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
     }
     
     public void addAction(){
@@ -283,6 +229,13 @@ public class GD_XemDichVu extends javax.swing.JPanel {
 
         pnlSearch = new gui.swing.panel.PanelShadow();
         lbldsDichVu = new gui.swing.panel.PanelShadow();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new gui.swing.table2.MyTableFlatlaf();
+
+        pnlSearch.setBackground(new java.awt.Color(255, 255, 255));
+        pnlSearch.setShadowOpacity(0.3F);
+        pnlSearch.setShadowSize(2);
+        pnlSearch.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
         javax.swing.GroupLayout pnlSearchLayout = new javax.swing.GroupLayout(pnlSearch);
         pnlSearch.setLayout(pnlSearchLayout);
@@ -295,36 +248,62 @@ public class GD_XemDichVu extends javax.swing.JPanel {
             .addGap(0, 86, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout lbldsDichVuLayout = new javax.swing.GroupLayout(lbldsDichVu);
-        lbldsDichVu.setLayout(lbldsDichVuLayout);
-        lbldsDichVuLayout.setHorizontalGroup(
-            lbldsDichVuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 561, Short.MAX_VALUE)
-        );
-        lbldsDichVuLayout.setVerticalGroup(
-            lbldsDichVuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 325, Short.MAX_VALUE)
-        );
+        lbldsDichVu.setBackground(new java.awt.Color(255, 255, 255));
+        lbldsDichVu.setShadowOpacity(0.3F);
+        lbldsDichVu.setShadowSize(2);
+        lbldsDichVu.setShadowType(gui.swing.graphics.ShadowType.TOP);
+        lbldsDichVu.setLayout(new java.awt.BorderLayout());
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Tên mặt hàng", "Loại mặt hàng", "Số lượng", "Giá bán"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        table.setRowHeight(40);
+        table.setShowGrid(true);
+        jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
+            table.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        lbldsDichVu.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lbldsDichVu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lbldsDichVu, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbldsDichVu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lbldsDichVu, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
     private gui.swing.panel.PanelShadow lbldsDichVu;
     private gui.swing.panel.PanelShadow pnlSearch;
+    private gui.swing.table2.MyTableFlatlaf table;
     // End of variables declaration//GEN-END:variables
 }

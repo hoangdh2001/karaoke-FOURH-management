@@ -5,17 +5,14 @@ import entity.HoaDon;
 import entity.Phong;
 import java.text.SimpleDateFormat;
 import entity.TrangThaiHoaDon;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -32,10 +29,6 @@ public class HoaDon_DAO implements HoaDonService {
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-//  Này để làm gì
-//    public HoaDon_DAO(SessionFactory sessionFactory) {
-//        this.sessionFactory = sessionFactory;
-//    }
 
     @Override
     public boolean addHoaDon(HoaDon hoaDon) {
@@ -77,7 +70,7 @@ public class HoaDon_DAO implements HoaDonService {
     public List<HoaDon> getDsHoaDon() {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select h.* from [dbo].[HoaDon] h order by h.[ngayLapHoaDon] desc";
+        String sql = "select h.* from HoaDon h order by h.ngayLapHoaDon, h.maHoaDon desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -114,7 +107,8 @@ public class HoaDon_DAO implements HoaDonService {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select h.* from [dbo].[HoaDon] h\n"
-                + "where h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')";
+                + "where h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')"
+                + "order by h.[ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -136,7 +130,8 @@ public class HoaDon_DAO implements HoaDonService {
         Transaction tr = session.getTransaction();
         String sql = "  select h.*\n"
                 + "  from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang\n"
-                + "  where [dbo].[ufn_removeMark](k.tenKhachHang) like N'%" + tenKhachHang + "%'";
+                + "  where k.tenKhachHang like N'%" + tenKhachHang + "%'"
+                + "order by h.[ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -158,7 +153,8 @@ public class HoaDon_DAO implements HoaDonService {
         Transaction tr = session.getTransaction();
         String sql = "   select h.*\n"
                 + "  from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong\n"
-                + "  where p.tenPhong like N'%" + tenPhong + "%'";
+                + "  where p.tenPhong like N'%" + tenPhong + "%'"
+                + "order by h.[ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -180,7 +176,8 @@ public class HoaDon_DAO implements HoaDonService {
         Transaction tr = session.getTransaction();
         String sql = "select  h.* \n"
                 + "  from [dbo].[HoaDon] h\n"
-                + "  where h." + tieuChiKhac + " like '%" + duLieu + "%'";
+                + "  where h." + tieuChiKhac + " like '%" + duLieu + "%'"
+                + "order by h.[ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -233,144 +230,11 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public List<HoaDon> sapXepHoaDonByThang(String from, String to, int thang) {
+    public List<HoaDon> locHoaDonByThang_Quy_Nam(String from, String to, String thang, String quy, String nam) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(month, ngayLapHoaDon) = " + thang + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByNam(String from, String to, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(year, ngayLapHoaDon) = " + nam + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByQuy(String from, String to, int quy) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();//"+from+""+to+"
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(quarter, ngayLapHoaDon) = " + quy + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByThang_Quy(String from, String to, int thang, int quy) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(quarter, ngayLapHoaDon) = " + quy + " and DATEPART(month, ngayLapHoaDon) = " + thang + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByThang_Nam(String from, String to, int thang, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(year, ngayLapHoaDon) = " + nam + " and DATEPART(month, ngayLapHoaDon) = " + thang + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByQuy_Nam(String from, String to, int quy, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(year, ngayLapHoaDon) = " + nam + " and DATEPART(quarter, ngayLapHoaDon) = " + quy + ")";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<HoaDon> sapXepHoaDonByThang_Quy_Nam(String from, String to, int thang, int quy, int nam) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon]  \n"
-                + "   where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) \n"
-                + "	and (DATEPART(year, ngayLapHoaDon) = " + nam + " and DATEPART(quarter, ngayLapHoaDon) = " + quy + " and DATEPART(month, ngayLapHoaDon) = " + thang + ")";
+        String sql = "select * from [dbo].[HoaDon] where (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')"
+                + "order by [ngayLapHoaDon] desc";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -615,7 +479,7 @@ public class HoaDon_DAO implements HoaDonService {
     
     @Override
     public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma) {
-        String sql;
+        String sql= "";
         if(ma != null){
             sql = "select * from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"' and p.maLoaiPhong = '"+ma+"'";
         }else{
@@ -679,7 +543,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsHoaDon;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         
@@ -697,7 +560,6 @@ public class HoaDon_DAO implements HoaDonService {
             session.clear();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -723,11 +585,11 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public Map<Integer, Double> getDoanhThuHoaDonTheoThangNam(int nam) {
+    public Map<Integer, Double> getDoanhThuHoaDonTheoNam(int nam) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
 
-        String sql = "exec doanhThuTheoName ?";
+        String sql = "exec doanhThuTheoNam ?";
 
         try {
             tr.begin();
@@ -757,4 +619,37 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    @Override
+    public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "exec doanhThuTheoThang ?";
+        try {
+            tr.begin();
+            Map<Integer, Double> rs = session.doReturningWork(new ReturningWork<Map<Integer, Double>>() {
+                @Override
+                public Map<Integer, Double> execute(Connection arg0) throws SQLException {
+                    PreparedStatement st = null;
+                    Map<Integer, Double> map = new HashMap<>();
+                    try {
+                        st = arg0.prepareStatement(sql);
+                        st.setInt(1, thang);
+                        ResultSet rs = st.executeQuery();
+                        while (rs.next()) {   
+                            map.put(rs.getInt("ngay"), rs.getDouble("tongTien"));
+                        }
+                    } catch (SQLException e) {
+                        System.out.println(e);
+                    }
+                    return map;
+                }
+            });
+            tr.commit();
+            return rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
 }

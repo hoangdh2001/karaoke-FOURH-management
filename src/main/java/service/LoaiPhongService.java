@@ -8,5 +8,6 @@ public interface LoaiPhongService {
     public boolean updateLoaiPhong(LoaiPhong loaiPhong);
     public boolean deleteLoaiPhong(String id);
     public LoaiPhong getLoaiPhong(String id);
+    public LoaiPhong getLoaiPhongByName(String name);
     public List<LoaiPhong> getDsLoaiPhong();
 }

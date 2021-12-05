@@ -44,7 +44,7 @@ public class GD_DangNhap extends javax.swing.JFrame {
                 if (!show) {
                     dispose();
                     if (!close) {
-                        new GD_Info(nhanVien).setVisible(true);
+                        new GD_Chinh(GD_DangNhap.this, "Quản lý Karaoke FourH", nhanVien).setVisible(true);
                     }
                 }
             }
@@ -115,11 +115,9 @@ public class GD_DangNhap extends javax.swing.JFrame {
                             pnlLoading.setVisible(false);
                             comShow.setVisible(true);
                             comHidden.setVisible(false);
-                            thread.stop();
                         } else {
                             pnlLoading.setVisible(false);
                             pnlForm.showMessage(Message.MessageType.ERROR, "Số điện thoại hoặc email không tồn tại!");
-                            thread.stop();
                         }
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
