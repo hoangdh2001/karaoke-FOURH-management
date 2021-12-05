@@ -204,10 +204,10 @@ public class PhieuDatPhong {
         return "PhieuDatPhong{" + "maPhieuDat=" + maPhieuDat + ", khachHang=" + khachHang + ", phong=" + phong + ", ngayDat=" + ngayDat + ", ngayTao=" + ngayTao + ", trangThai=" + trangThai + ", tienCoc=" + tienCoc + '}';
     }
     
-    public Object[] convertToRowTable() {
+    public Object[] convertToRowTable(EventAction event) {
+        DecimalFormat dcf = new DecimalFormat("#,###");
         SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-        DecimalFormat dcf = new DecimalFormat("#,### VND");
-        return new Object[]{new JCheckBox(), maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, dcf.format(tienCoc)};
+        return new Object[]{new JCheckBox(), maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, dcf.format(tienCoc), new ModelAction(this, event)};
     }
     
     public Object[] convertToRowTableInGDTiepNhanDatPhong(){

@@ -330,6 +330,13 @@ public class HoaDon {
         return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong=" + phong + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", thoiGianBatDau=" + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + ", chietKhau=" + chietKhau + ", trangThai=" + trangThai + ", dsChiTietHoaDon=" + dsChiTietHoaDon + ", gioHat=" + gioHat + ", donGiaPhong=" + donGiaPhong + ", tongTienMatHang=" + tongTienMatHang + ", tongHoaDon=" + tongHoaDon + ", tienKhachDua=" + tienKhachDua + ", tienThua=" + tienThua + '}';
     }
 
+    public Object[] convertToRowTable(){
+        DecimalFormat dcf = new DecimalFormat("#,###");
+        SimpleDateFormat fm1 = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
+        return new Object[]{maHoaDon, khachHang.getTenKhachHang(), phong.getTenPhong(), gioHat, fm1.format(ngayLapHoaDon), fm2.format(thoiGianBatDau),fm2.format(thoiGianKetThuc), dcf.format(tongTienMatHang), dcf.format(phong.getLoaiPhong().getGiaPhong()),chietKhau, dcf.format(tongHoaDon), nhanVien.getTenNhanVien()};
+    }
+    
     public Object[] convertToRowTableInGDThongKeDoanhThu() {
         DecimalFormat df;
         df = new DecimalFormat("#,##0.00");
