@@ -317,7 +317,8 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
     }
     
     private void createChart() {
-        lineChart.addLegend("Doanh thu", new Color(12, 84, 175), new Color(0, 108, 247));
+        chart.setDescription("Tổng tiền");
+        chart.addLegend("Doanh thu", new Color(12, 84, 175));
     }
 
     private void loadDataChart() {
@@ -331,9 +332,9 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
                     rs.entrySet()
                             .iterator()
                             .forEachRemaining(entry -> {
-                                lineChart.addData(new ModelChart("Tháng " + entry.getKey(), new double[]{entry.getValue()}));
+                                chart.addData(new ModelChart("Tháng " + entry.getKey(), new double[]{entry.getValue()}));
                             });
-                    lineChart.start();
+                    chart.start();
                 }
             }
         }).start();
@@ -351,7 +352,7 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void begin() {
-                lineChart.setVisible(true);
+                chart.setVisible(true);
             }
 
             @Override
@@ -401,9 +402,10 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
         txtTong = new javax.swing.JTextField();
         btnXuat = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        lineChart = new gui.swing.chart.LineChart();
         pnlLoading = new gui.component.PanelLoading();
+        chart = new gui.swing.chart.Chart();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout(0, 5));
@@ -631,12 +633,17 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.BorderLayout());
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Tổng doanh thu");
+        jPanel3.add(jLabel5, java.awt.BorderLayout.SOUTH);
+
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.CardLayout());
-        jPanel5.add(lineChart, "card3");
 
         pnlLoading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Ellipsis-1s-58px.gif"))); // NOI18N
         jPanel5.add(pnlLoading, "card2");
+        jPanel5.add(chart, "card3");
 
         jPanel3.add(jPanel5, java.awt.BorderLayout.CENTER);
 
@@ -649,9 +656,9 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         if (jTabbedPane1.getSelectedIndex() == 1) {
-            lineChart.clear();
+            chart.clear();
             pnlLoading.setVisible(true);
-            lineChart.setVisible(false);
+            chart.setVisible(false);
             loadDataChart();
 
         }
@@ -660,6 +667,7 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnXuat;
+    private gui.swing.chart.Chart chart;
     private javax.swing.JComboBox<Object> cmbKhac;
     private javax.swing.JComboBox<Object> cmbTKChiTiet;
     private javax.swing.JComboBox<String> cmbTKTheo;
@@ -669,6 +677,7 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -680,7 +689,6 @@ public class GD_ThongKeDoanhThu2 extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblChenhLech;
-    private gui.swing.chart.LineChart lineChart;
     private gui.swing.panel.PanelShadow pnlCenter;
     private gui.component.PanelLoading pnlLoading;
     private gui.swing.panel.PanelShadow pnlTop;
