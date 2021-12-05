@@ -335,6 +335,6 @@ public class HoaDon {
         df = new DecimalFormat("#,##0.00");
         SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String ngayLap = gio.format(ngayLapHoaDon);
-        return new Object[]{maHoaDon, ngayLap, khachHang.getTenKhachHang(), nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
+        return new Object[]{maHoaDon, ngayLap, khachHang == null ? "Trống":khachHang.getTenKhachHang(), nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
     }
 }

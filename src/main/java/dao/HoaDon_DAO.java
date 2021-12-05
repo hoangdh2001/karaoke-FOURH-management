@@ -679,7 +679,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsHoaDon;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         
@@ -697,7 +696,6 @@ public class HoaDon_DAO implements HoaDonService {
             session.clear();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -762,9 +760,27 @@ public class HoaDon_DAO implements HoaDonService {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "";
+        String sql = "exec doanhThuTheoThang ?";
         try {
             tr.begin();
+            Map<Integer, Double> rs = session.doReturningWork(new ReturningWork<Map<Integer, Double>>() {
+                @Override
+                public Map<Integer, Double> execute(Connection arg0) throws SQLException {
+                    PreparedStatement st = null;
+                    Map<Integer, Double> map = new HashMap<>();
+                    try {
+                        st = arg0.prepareStatement(sql);
+                        st.setInt(1, thang);
+                        ResultSet rs = st.executeQuery();
+                        while (rs.next()) {                            
+                            map.put(rs.getInt("ngay"), rs.getDouble("tongTien"));
+                        }
+                    } catch (SQLException e) {
+                        System.out.println(e);
+                    }
+                    return map;
+                }
+            });
             tr.commit();
         } catch (Exception e) {
             tr.rollback();
