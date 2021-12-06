@@ -119,10 +119,11 @@ public class PanelPage extends javax.swing.JPanel {
         pnlNum.removeAll();
         cmbNumPage.removeAllItems();
         currentIndex = 0;
+        
         for (int i = 0; i < num; i++) {
             if (i < 4) {
                 Item item = new Item(i, event);
-                pnlNum.add(item);
+                pnlNum.add(item, "w 45!");
                 listBtn.add(item);
 
             } else {
