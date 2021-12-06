@@ -25,6 +25,7 @@ public interface PhieuDatPhongService {
     
 //    Huu
     public boolean updatePhieuDatPhong(String maPhieu);
+    public boolean updatePhieuDatPhong(PhieuDatPhong maPhieu);
     public List<PhieuDatPhong> getPhieuHomNay(String maPhong);
     public String getLastPhieuDatPhong();
     public PhieuDatPhong getPhieuById(String maPhieuDatPhong);

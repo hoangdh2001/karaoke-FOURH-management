@@ -15,6 +15,7 @@ import entity.KhachHang;
 import entity.NhanVien;
 import entity.Phong;
 import entity.PhieuDatPhong;
+import gui.GD_Chinh;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
@@ -33,8 +34,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -67,19 +72,23 @@ public class DL_DatPhong extends javax.swing.JDialog {
     private MyTextField txtTienCoc;
     private DateTimePicker thoiGianBatDau;
     private MyComboBox cmbLoaiPhong;
-
+    
     private SimpleDateFormat gio;
 
     private Button btnHuy;
     private Button btnDat;
     private NhanVien nhanVien;
-
-    public DL_DatPhong(NhanVien nhanVien) {
+    private PhieuDatPhong phieuDatPhong;
+    
+    private DecimalFormat df;
+    
+    public DL_DatPhong(PhieuDatPhong phieuDatPhong) {
         super();
         initComponents();
         buildGD();
         tblPhieu.fixTable(scrBang);
-        this.nhanVien = nhanVien;
+        this.nhanVien = GD_Chinh.NHAN_VIEN;
+        this.phieuDatPhong = phieuDatPhong;
         initData();
         createDatePicker();
         addAction();
@@ -450,8 +459,8 @@ public class DL_DatPhong extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NhanVien nhanVien = new NhanVien_DAO().getNhanVienByID("NV0001");
-                DL_DatPhong dialog = new DL_DatPhong(nhanVien);
+                PhieuDatPhong pdp = new PhieuDatPhong_DAO().getPhieuById("PD0000001");
+                DL_DatPhong dialog = new DL_DatPhong(pdp);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -464,6 +473,8 @@ public class DL_DatPhong extends javax.swing.JDialog {
     }
 
     public void initData() {
+        
+        df = new DecimalFormat("#,###");
         khachHangDao = new KhachHang_DAO();
         phieuDatPhongDao = new PhieuDatPhong_DAO();
         loaiPhongDao = new LoaiPhong_DAO();
@@ -473,6 +484,23 @@ public class DL_DatPhong extends javax.swing.JDialog {
         loaiPhongDao.getDsLoaiPhong().forEach(doc -> {
             cmbLoaiPhong.addItem(new ObjectComboBox(doc.getTenLoaiPhong(), doc.getMaLoaiPhong()));
         });
+        initUpdate();
+    }
+    
+    public void initUpdate(){
+        if(phieuDatPhong !=null){
+            btnDat.setText("Chỉnh sửa");
+            txtTenKH.setText(phieuDatPhong.getKhachHang().getTenKhachHang());
+            txtCCCD.setText(phieuDatPhong.getKhachHang().getCanCuocCD());
+            txtSDT.setText(phieuDatPhong.getKhachHang().getSoDienThoai());
+            txtTenPhong.setText(phieuDatPhong.getPhong().getTenPhong());
+            txtLoaiPhongTT.setText(phieuDatPhong.getPhong().getLoaiPhong().getTenLoaiPhong());
+            txtGia.setText(df.format(phieuDatPhong.getPhong().getLoaiPhong().getGiaPhong()));
+            txtTienCoc.setText(df.format(phieuDatPhong.getTienCoc()));
+            thoiGianBatDau.getDatePicker().setDate(phieuDatPhong.getNgayDat().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            cmbLoaiPhong.setSelectedItem(new ObjectComboBox(phieuDatPhong.getPhong().getLoaiPhong().getTenLoaiPhong(), phieuDatPhong.getPhong().getLoaiPhong().getMaLoaiPhong()));
+            addDataToTable(thoiGianBatDau.getDatePicker().getText(), phieuDatPhong.getPhong().getLoaiPhong().getMaLoaiPhong());
+        }
     }
 
     private void createDatePicker() {
@@ -621,8 +649,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
     }
 
     public boolean validataTienCoc() {
-        DecimalFormat df;
-        df = new DecimalFormat("#,###");
+        
         double tienCoc = 0;
         try {
             tienCoc = Double.parseDouble(txtTienCoc.getText().trim());
@@ -693,30 +720,59 @@ public class DL_DatPhong extends javax.swing.JDialog {
     class createActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            String date = thoiGianBatDau.getDatePicker().getText() + " " + thoiGianBatDau.getTimePicker().getText();
             if (e.getSource().equals(btnDat) && validateData() && validataTienCoc()) {
-                KhachHang kh = khachHangDao.getKhachHangBySDT(txtSDT.getText());
-                if (kh == null) {
-                    String maKhachhang = khachHangDao.getlastKhachHangTang();
-                    kh = new KhachHang(maKhachhang,
-                            txtTenKH.getText(),
-                            txtCCCD.getText(),
-                            txtSDT.getText());
-                    khachHangDao.addKhachHang(kh);
-                }
-                
-                ObjectComboBox cb = (ObjectComboBox) tblPhieu.getValueAt(tblPhieu.getSelectedRow(), 0);
-                Phong phong = phongDAO.getPhong(cb.getMa());
-                String maPhieuDat = phieuDatPhongDao.getLastPhieuDatPhong();
+                if(phieuDatPhong != null){
+                    KhachHang kh = phieuDatPhong.getKhachHang();
+                    kh.setCanCuocCD(txtCCCD.getText().trim());
+                    kh.setSoDienThoai(txtSDT.getText().trim());
+                    kh.setTenKhachHang(txtTenKH.getText().trim());
+                    
+                    phieuDatPhong.setTienCoc(Double.parseDouble(txtTienCoc.getText().replace(",", "")));
+                    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm");  
+                    try {  
+                        Date dateFormat =formatter.parse(date);
+                        phieuDatPhong.setNgayDat(dateFormat);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(DL_DatPhong.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    ObjectComboBox cb = (ObjectComboBox) tblPhieu.getValueAt(tblPhieu.getSelectedRow(), 0);
+                    Phong phong = phongDAO.getPhong(cb.getMa());
+                    
+                    phieuDatPhong.setPhong(phong);
+                    
+//                    phieuDatPhong.setNgayDat();
+                    
+                    phieuDatPhongDao.updatePhieuDatPhong(phieuDatPhong);
+                    
+                    showMsg("Chỉnh sửa thông tin thành công");
+                    dispose();
+                }else{
+                    KhachHang kh = khachHangDao.getKhachHangBySDT(txtSDT.getText());
+                    if (kh == null) {
+                        String maKhachhang = khachHangDao.getlastKhachHangTang();
+                        kh = new KhachHang(maKhachhang,
+                                txtTenKH.getText(),
+                                txtCCCD.getText(),
+                                txtSDT.getText());
+                        khachHangDao.addKhachHang(kh);
+                    }
 
-                PhieuDatPhong phieu = new PhieuDatPhong(maPhieuDat, kh, phong, Double.parseDouble(txtTienCoc.getText().replace(",", "")),nhanVien);
-                String date = thoiGianBatDau.getDatePicker().getText() + " " + thoiGianBatDau.getTimePicker().getText();
-                try {
-                    phieuDatPhongDao.addPhieuDatPhong(phieu, date);
-                } catch (Exception e2) {
-                    e2.printStackTrace();
+                    ObjectComboBox cb = (ObjectComboBox) tblPhieu.getValueAt(tblPhieu.getSelectedRow(), 0);
+                    Phong phong = phongDAO.getPhong(cb.getMa());
+                    String maPhieuDat = phieuDatPhongDao.getLastPhieuDatPhong();
+
+                    PhieuDatPhong phieu = new PhieuDatPhong(maPhieuDat, kh, phong, Double.parseDouble(txtTienCoc.getText().replace(",", "")),nhanVien);
+
+                    try {
+                        phieuDatPhongDao.addPhieuDatPhong(phieu, date);
+                    } catch (Exception e2) {
+                        e2.printStackTrace();
+                    }
+                    showMsg("Đặt thành công " + phong.getTenPhong() + " vào lúc: " + date);
+                    dispose();
                 }
-                showMsg("Đặt thành công " + phong.getTenPhong() + " vào lúc: " + date);
-                dispose();
 
             } else if (e.getSource().equals(btnHuy)) {
                 dispose();

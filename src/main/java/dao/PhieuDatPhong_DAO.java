@@ -336,4 +336,19 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return null;
         
     }
+
+     @Override
+    public boolean updatePhieuDatPhong(PhieuDatPhong maPhieu) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+            session.update(maPhieu);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return false;
+    }
 }
