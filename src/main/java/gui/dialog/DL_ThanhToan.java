@@ -887,16 +887,15 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             });
             hoaDonService.finishHoaDon(hoaDon);
             bHeight = Double.valueOf(hoaDon.getDsChiTietHoaDon().size());
-            JOptionPane.showMessageDialog(rootPane, bHeight);
             
             PrinterJob pj = PrinterJob.getPrinterJob();
             pj.setPrintable(new BillPrintable(hoaDon), getPageFormat(pj));
             try {
                 pj.print();
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
-//            dispose();
+            dispose();
         }
     }//GEN-LAST:event_btnThanhToanActionPerformed
 

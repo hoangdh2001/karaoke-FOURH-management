@@ -2,6 +2,7 @@ package gui.component;
 
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,7 +15,6 @@ import static java.awt.print.Printable.NO_SUCH_PAGE;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import javax.swing.Icon;
 
 public class BillPrintable implements Printable {
 
@@ -31,7 +31,8 @@ public class BillPrintable implements Printable {
     public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
         int row = hoaDon.getDsChiTietHoaDon().size();
         ImageIcon icon = new ImageIcon(getClass().getResource("/icon/logo_small.png"));
-        if (pageIndex == 0) {
+        if (pageIndex > 0) {
+            System.out.println("Vào");
             return NO_SUCH_PAGE;
         }
         
@@ -41,6 +42,7 @@ public class BillPrintable implements Printable {
             int y = 20;
             int yShift = 10;
             int headerRectHeight = 15;
+            
             g2.setFont(new Font("Monospaced", Font.PLAIN, 9));
             g2.drawImage(icon.getImage(), 50, 20, 90, 30, null); y += yShift + 30;
             g2.drawString("-------------------------------------", 12, y); y += yShift;
@@ -66,7 +68,8 @@ public class BillPrintable implements Printable {
             g2.drawString("TIEN KHACH DUA:             " + hoaDon.getTienKhachDua(), 12, y); y += yShift;
             g2.drawString("-------------------------------------", 12, y); y += yShift;
             g2.drawString("     Cám ơn quý khách hẹn gặp lại    ", 12, y); y += yShift;
-            g2.drawString("-------------------------------------", 12, y); y += yShift;
+            g2.drawString("-------------------------------------", 12, y);
+            g2.setColor(Color.RED);
             return PAGE_EXISTS;
     }
     
