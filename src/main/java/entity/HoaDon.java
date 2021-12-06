@@ -31,8 +31,11 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "maNhanVien", nullable = false)
     private NhanVien nhanVien;
+    @Column(columnDefinition = "datetime")
     private Date ngayLapHoaDon;
+    @Column(columnDefinition = "datetime")
     private Date thoiGianBatDau;
+    @Column(nullable = false,columnDefinition = "datetime")
     private Date thoiGianKetThuc;
     private float chietKhau;
     @Enumerated(EnumType.STRING)

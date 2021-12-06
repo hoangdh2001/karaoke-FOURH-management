@@ -78,7 +78,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = "update PhieuDatPhong p set p.trangThai = 'DA_HUY'  where p.maPhieuDat = :maPhieuDat";
+            String sql = "update PhieuDatPhong p set p.trangThai = 'DA_HUY'  where p.maPhieuDat = :maPhieuDat and trangThai =  'DANG_DOI'";
             session.createQuery(sql)
                     .setParameter("maPhieuDat", maPhieuDat)
                     .executeUpdate();

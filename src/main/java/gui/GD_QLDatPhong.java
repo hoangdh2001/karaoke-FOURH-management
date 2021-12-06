@@ -106,7 +106,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlTop.add(cmbTrangThaiTK, "w 15%, h 30!");
 
         // Tìm kiếm Ngày đặt
-        JLabel lblNgayDaLabelTK = new JLabel("Lọc theo ngày đặt");
+        JLabel lblNgayDaLabelTK = new JLabel("Tìm theo ngày đặt");
         lblNgayDaLabelTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTop.add(lblNgayDaLabelTK);
 
@@ -198,7 +198,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                         xoaDuLieu();
                         taiLaiDuLieu(dsPhieu);
                     } else {
-                        JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Quá trình hủy phiếu " + phieu.getMaPhieuDat() + " thất bại.");
+                        JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể hủy.");
                     }
                 }
             }
@@ -238,13 +238,18 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     private void loadData(int numPage) {
         ((DefaultTableModel) tblPhieuDatPhong.getModel()).setRowCount(0);
         dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
-        if (dsPhieu != null) {
-            for (PhieuDatPhong phieu : dsPhieu) {
-                ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
-            }
-        }
-        tblPhieuDatPhong.repaint();
-        tblPhieuDatPhong.revalidate();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (dsPhieu != null) {
+                    for (PhieuDatPhong phieu : dsPhieu) {
+                        ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
+                    }
+                }
+                tblPhieuDatPhong.repaint();
+                tblPhieuDatPhong.revalidate();
+         }
+        }).start();
     }
     
     private void loadPage() {

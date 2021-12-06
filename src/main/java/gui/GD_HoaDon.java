@@ -257,19 +257,25 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         }
     }    
     private void loadData(int numPage) {
+        hoaDon_Dao.capNhatTrangThaiPhieuHetHan();
         ((DefaultTableModel) tblHoaDon.getModel()).setRowCount(0);
         DecimalFormat dcf = new DecimalFormat("#,###");
         SimpleDateFormat fm1 = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
         dsHoaDon = hoaDon_Dao.getDsHoaDon(numPage);
-        if(dsHoaDon != null) {
-            List<HoaDon> dsTam = xuLyLoai(dsHoaDon);
-            for(HoaDon hoaDon: dsTam){
-                ((DefaultTableModel) tblHoaDon.getModel()).addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), fm1.format(hoaDon.getNgayLapHoaDon()), fm2.format(hoaDon.getThoiGianBatDau()), dcf.format(hoaDon.getTongTienMatHang()), dcf.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()), dcf.format(hoaDon.getTongHoaDon()), hoaDon.getNhanVien().getTenNhanVien()});
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(dsHoaDon != null) {
+                    List<HoaDon> dsTam = xuLyLoai(dsHoaDon);
+                    for(HoaDon hoaDon: dsTam){
+                        ((DefaultTableModel) tblHoaDon.getModel()).addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), fm1.format(hoaDon.getNgayLapHoaDon()), fm2.format(hoaDon.getThoiGianBatDau()), dcf.format(hoaDon.getTongTienMatHang()), dcf.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()), dcf.format(hoaDon.getTongHoaDon()), hoaDon.getNhanVien().getTenNhanVien()});
+                    }
+                }
+                tblHoaDon.repaint();
+                tblHoaDon.revalidate();
             }
-        }
-        tblHoaDon.repaint();
-        tblHoaDon.revalidate();
+        }).start();
     }
     
     private void loadPage(int soLuongPhieu) {
@@ -483,7 +489,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
 
             },
             new String [] {
-                "ID", "Khách hàng", "Phòng", "Giờ hát", "Ngày lập", "Giờ bắt đầu", "Tổng mặt hàng", "Giá phòng", "Tổng hóa đơn", "Nhân viên"
+                "Mã", "Khách hàng", "Phòng", "Giờ hát", "Ngày lập", "Giờ bắt đầu", "Tổng mặt hàng", "Giá phòng", "Tổng hóa đơn", "Nhân viên"
             }
         ) {
             boolean[] canEdit = new boolean [] {

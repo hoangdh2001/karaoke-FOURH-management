@@ -186,7 +186,7 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
 
         lblSoGio.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         lblSoGio.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblSoGio.setText("Số phút hát: ");
+        lblSoGio.setText("Số giờ hát: ");
 
         lblTTSoGio.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         lblTTSoGio.setText("5");
