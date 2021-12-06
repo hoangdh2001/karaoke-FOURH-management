@@ -4,6 +4,7 @@ import com.toedter.calendar.JDateChooser;
 import dao.PhieuDatPhong_DAO;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
+import gui.dialog.DL_DatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
@@ -34,6 +35,7 @@ import gui.swing.panel.slideshow.EventPagination;
 import gui.swing.textfield.MyTextFieldFlatlaf;
 import java.util.Date;
 import javax.swing.JComboBox;
+import org.apache.bcel.generic.DLOAD;
 
 /**
  *
@@ -196,6 +198,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                         JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
                         dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
                         xoaDuLieu();
+                        loadPage();
                         taiLaiDuLieu(dsPhieu);
                     } else {
                         JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể hủy.");
@@ -205,9 +208,18 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
             @Override
             public void update(ModelAction action) {
-                System.out.println(".update()");
                 int row = tblPhieuDatPhong.getSelectedRow();
-                String maPhieu = tblPhieuDatPhong.getValueAt(row, 1).toString();
+                String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
+                PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
+                if(phieu.getTrangThai()==TrangThaiPhieuDat.DANG_DOI){
+                    DL_DatPhong dldatPhong = new DL_DatPhong(phieu);
+                    dldatPhong.setVisible(true);
+                    xoaDuLieu();
+                    loadPage();
+                    taiLaiDuLieu(dsPhieu);
+                }else{
+                    JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Phiếu "+ phieu.getMaPhieuDat()+" không thể sửa.");
+                }
             }
         };
         loadData(pnlPage.getCurrentIndex());
@@ -405,7 +417,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            System.out.println(trangThai);
             dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();

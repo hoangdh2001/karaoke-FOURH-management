@@ -238,8 +238,8 @@ public class HoaDon_DAO implements HoaDonService {
     public List<HoaDon> locHoaDonByThang_Quy_Nam(String from, String to, String thang, String quy, String nam,int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon] where ISDATE(h.ngayLapHoaDon) = 1 and (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')"
-                + "order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
+        String sql = "select * from [dbo].[HoaDon] where ISDATE(ngayLapHoaDon) = 1 and (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')"
+                + "order by ngayLapHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -260,7 +260,7 @@ public class HoaDon_DAO implements HoaDonService {
     public List<Integer> getDSThangTheoNgayLap() {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select DISTINCT(DATEPART(month, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1";
+        String sql = "select DISTINCT(DATEPART(month, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1 order by DATEPART(month, ngayLapHoaDon)";
         try {
             tr.begin();
             List<Integer> dsThang = session
@@ -280,7 +280,7 @@ public class HoaDon_DAO implements HoaDonService {
     public List<Integer> getDSNamTheoNgayLap() {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select DISTINCT(DATEPART(year, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1";
+        String sql = "select DISTINCT(DATEPART(year, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1 order by DATEPART(year, ngayLapHoaDon)";
         try {
             tr.begin();
             List<Integer> dsThang = session
@@ -300,7 +300,7 @@ public class HoaDon_DAO implements HoaDonService {
     public List<Integer> getDSQuyTheoNgayLap() {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select DISTINCT(DATEPART(quarter, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1";
+        String sql = "select DISTINCT(DATEPART(quarter, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1 order by DATEPART(quarter, ngayLapHoaDon)";
         try {
             tr.begin();
             List<Integer> dsThang = session
@@ -417,7 +417,7 @@ public class HoaDon_DAO implements HoaDonService {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "select count(*) from [dbo].[HoaDon] where ISDATE(h.ngayLapHoaDon) = 1 and (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')";
+        String sql = "select count(*) from [dbo].[HoaDon] where ISDATE(ngayLapHoaDon) = 1 and (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')";
         try {
             tr.begin();
             int rs = (int) session.

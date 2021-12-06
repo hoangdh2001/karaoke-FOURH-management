@@ -129,8 +129,13 @@ public class PanelPage extends javax.swing.JPanel {
                 lblNext.setText("...");
             }
             cmbNumPage.addItem(i + 1);
+            pnlNum.repaint();
+            pnlNum.revalidate();
         }
+        cmbNumPage.setSelectedIndex(currentIndex);
+        
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

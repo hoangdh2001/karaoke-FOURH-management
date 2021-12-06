@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -307,6 +306,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
            txtTimKiem.setText("");
            dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
            xoaDuLieu();
+           loadPage();
            taiLaiDuLieu(pnlPage.getCurrentIndex());
         }
     }
@@ -326,7 +326,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             xoaDuLieu();
             //loadData(0);
             loadPage();
-            taiLaiDuLieu(pnlPage.getCurrentIndex());
+            taiLaiDuLieu(0);
         }
     }
 
