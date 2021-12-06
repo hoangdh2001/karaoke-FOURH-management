@@ -451,27 +451,22 @@ public class HoaDon_DAO implements HoaDonService {
     }
     
     @Override
-    public boolean updateHoaDonDoiPhong(HoaDon hoaDon, double tongTienPhong,String maPhongMoi) {
-        
-        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        java.util.Date date = new java.util.Date(System.currentTimeMillis());
-        String thoiGianBatDau = gio.format(date);
-        
-        String sql = "update HoaDon set maPhong = '"+maPhongMoi+"'"
-                +",gioHat = '00:00',tongHoaDon = 0"
-                + ",donGiaPhong = donGiaPhong + " +tongTienPhong
-                + ",thoiGianBatDau = CAST(N'"+thoiGianBatDau+"' AS datetime)"
-                + ",thoiGianKetThuc = CAST(N'"+thoiGianBatDau+"' AS datetime)"
-                + " where maHoaDon = '"+hoaDon.getMaHoaDon()+"'";
+    public boolean updateHoaDonDoiPhong(HoaDon hoaDon) {
+//        String sql = "update HoaDon set maPhong = :x"
+//                +",gioHat = '00:00', "
+//                + ",donGiaPhongCu = :y"
+//                + ",thoiGianBatDau = :z"
+//                + ",thoiGianKetThuc = :a"
+//                + " where maHoaDon = :b";
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
+        
         try {
             tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
+                session.update(hoaDon);
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -620,11 +615,11 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang) {
+    public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang, int nam) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "exec doanhThuTheoThang ?";
+        String sql = "exec doanhThuTheoThang ?, ?";
         try {
             tr.begin();
             Map<Integer, Double> rs = session.doReturningWork(new ReturningWork<Map<Integer, Double>>() {
@@ -635,6 +630,7 @@ public class HoaDon_DAO implements HoaDonService {
                     try {
                         st = arg0.prepareStatement(sql);
                         st.setInt(1, thang);
+                        st.setInt(2, nam);
                         ResultSet rs = st.executeQuery();
                         while (rs.next()) {   
                             map.put(rs.getInt("ngay"), rs.getDouble("tongTien"));

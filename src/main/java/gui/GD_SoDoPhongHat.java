@@ -12,6 +12,7 @@ import gui.component.PanelStatus;
 import gui.component.Slide1;
 import gui.component.Slide2;
 import gui.dialog.DL_CapNhatDichVu;
+import gui.dialog.DL_DoiPhong;
 import gui.dialog.DL_ThanhToan;
 import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.graphics.ShadowType;
@@ -274,6 +275,11 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 loadMap(panelMap.getIndexShowing());
             }
 
+            @Override
+            public void addBtnDoiPhongEvent(Phong phong, HoaDon hoaDon) {
+                new DL_DoiPhong(hoaDon).setVisible(true);
+                loadMap(panelMap.getIndexShowing());
+            }
         });
         loadMap(0);
         txtSearch = new MyTextField();

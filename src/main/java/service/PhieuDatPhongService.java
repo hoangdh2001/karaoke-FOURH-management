@@ -21,7 +21,6 @@ public interface PhieuDatPhongService {
     public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat);
     public boolean capNhatTrangThaiPhieu(String maPhieu);
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong);
-    public boolean xoaPhieuDatPhong(String maPhieuDat);
     
 //    Huu
     public boolean updatePhieuDatPhong(String maPhieu);

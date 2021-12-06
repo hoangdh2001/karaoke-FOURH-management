@@ -50,6 +50,8 @@ public class HoaDon {
     private double tienKhachDua;
     @Column(columnDefinition = "money")
     private double tienThua;
+    @Column(columnDefinition = "money")
+    private double donGiaPhongCu;
 
     /**
      * @param maHoaDon
@@ -282,9 +284,16 @@ public class HoaDon {
      * @return the donGiaPhongCu
      */
     public double getDonGiaPhongCu() {
-        return donGiaPhong;
+        return donGiaPhongCu;
     }
-
+    
+    /**
+     * @param donPhongCu 
+     */
+    public void setDonPhongCu(double donPhongCu) {
+        this.donGiaPhongCu = donPhongCu;
+    }
+    
     /**
      * @return the tongTienMatHang
      */
@@ -301,7 +310,7 @@ public class HoaDon {
      * @return the tongHoaDon
      */
     public double getTongHoaDon() {
-        return tongHoaDon = (getTongTienMatHang() + getDonGiaPhong()) * (1 - chietKhau);
+        return tongHoaDon = (getTongTienMatHang() + getDonGiaPhong() + getDonGiaPhongCu()) * (1 - chietKhau);
     }
 
     /**

@@ -87,7 +87,7 @@
             <Component class="gui.swing.table2.MyTableFlatlaf" name="tblPhieuDatPhong">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="8" rowCount="0">
+                  <Table columnCount="9" rowCount="0">
                     <Column editable="false" title="" type="java.lang.Object"/>
                     <Column editable="false" title="Ma&#x303; phi&#xea;&#x301;u &#x111;&#x103;&#x323;t" type="java.lang.Object"/>
                     <Column editable="false" title="Nga&#x300;y l&#xe2;&#x323;p phi&#xea;&#x301;u" type="java.lang.Object"/>
@@ -96,6 +96,7 @@
                     <Column editable="false" title="Nga&#x300;y &#x111;&#x103;&#x323;t" type="java.lang.Object"/>
                     <Column editable="false" title="Tra&#x323;ng tha&#x301;i" type="java.lang.Object"/>
                     <Column editable="false" title="Ti&#xea;&#x300;n co&#x323;c" type="java.lang.Object"/>
+                    <Column editable="true" title="" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -167,6 +168,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlBottom_Page">
+          <Properties>
+            <Property name="opaque" type="boolean" value="false"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="Last"/>
@@ -190,6 +194,9 @@
           </Layout>
           <SubComponents>
             <Component class="gui.swing.table2.PanelPage" name="pnlPage">
+              <Properties>
+                <Property name="opaque" type="boolean" value="false"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.PhieuDatPhong;
-import entity.TrangThaiPhieuDat;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
+import entity.TrangThaiPhieuDat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
@@ -19,10 +13,6 @@ import org.hibernate.Transaction;
 import service.PhieuDatPhongService;
 import util.HibernateUtil;
 
-/**
- *
- * @author Hao
- */
 public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     
     List<PhieuDatPhong> dsPhieu = new ArrayList<>();
@@ -101,22 +91,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         try {
             tr.begin();
             session.update(phieuDatPhong);
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean xoaPhieuDatPhong(String maPhieuDat) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            session.delete(session.find(PhieuDatPhong.class, maPhieuDat));
             tr.commit();
             return true;
         } catch (Exception e) {
@@ -363,5 +337,4 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         return 0;
     }
-
 }

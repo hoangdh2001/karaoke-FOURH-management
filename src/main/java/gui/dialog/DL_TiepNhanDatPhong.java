@@ -10,12 +10,14 @@ import dao.HoaDon_DAO;
 import dao.KhachHang_DAO;
 import dao.LoaiDichVu_DAO;
 import dao.MatHang_DAO;
+import dao.PhieuDatPhong_DAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.KhachHang;
 import entity.MatHang;
 import entity.Phong;
 import entity.NhanVien;
+import entity.PhieuDatPhong;
 import entity.TrangThaiPhong;
 import gui.swing.event.EventAdd;
 import gui.swing.event.EventMinus;
@@ -78,6 +80,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         this.khachHangService = new KhachHang_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
         this.loaiDichVuService = new LoaiDichVu_DAO();
+        this.phieuDatPhongService = new PhieuDatPhong_DAO();
         String maxID = hoaDonService.getMaxID();
         String maHoaDon;
         if (maxID == null) {
@@ -94,6 +97,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void buildDisplay() {
         createTableMatHang();
         createTableCTHoaDon();
+        createTablePhieuDatPhong();
         createTxtKhachHang();
         createDateChooseThoiGianBatDau();
         createDateChooseThoiGianKetThuc();
@@ -108,6 +112,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void createTableCTHoaDon() {
         tableCTHoaDon.getColumnModel().getColumn(2).setCellEditor(new SpinnerEditor(200));
         loadDataTableCTHoaDon();
+    }
+    
+    private void createTablePhieuDatPhong() {
+        loadDataTablePhieuDatPhong();
     }
 
     private void createDateChooseThoiGianBatDau() {
@@ -258,6 +266,15 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         dsChiTietHoaDon.forEach(chiTietHoaDon -> {
             ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon(eventMinus));
         });
+    }
+    
+    private void loadDataTablePhieuDatPhong() {
+        List<PhieuDatPhong> dsPhieuDat = phieuDatPhongService.getPhieuHomNay(hoaDon.getPhong().getMaPhong());
+        if(dsPhieuDat != null) {
+            for (PhieuDatPhong phieuDatPhong : dsPhieuDat) {
+                ((DefaultTableModel) tablePhieuDatPhong.getModel()).addRow(phieuDatPhong.convertToRowTableInGDTiepNhanDatPhong());
+            }
+        }
     }
 
     private void createTxtKhachHang() {

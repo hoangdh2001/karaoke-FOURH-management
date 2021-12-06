@@ -68,8 +68,8 @@ public class BlankPlotChart extends JComponent {
     public BlankPlotChart() {
         setBackground(Color.WHITE);
         setOpaque(false);
-        setForeground(new Color(100, 100, 100));
-        setBorder(new EmptyBorder(20, 10, 10, 10));
+        setForeground(new Color(180, 180, 180));
+        setBorder(new EmptyBorder(35, 10, 10, 10));
         init();
     }
 
@@ -105,7 +105,7 @@ public class BlankPlotChart extends JComponent {
     }
 
     private void createLine(Graphics2D g2) {
-        g2.setColor(new Color(220, 220, 220));
+        g2.setColor(new Color(150, 150, 150, 20));
         Insets insets = getInsets();
         double textHeight = getLabelTextHeight(g2);
         double height = getHeight() - (insets.top + insets.bottom) - textHeight;
