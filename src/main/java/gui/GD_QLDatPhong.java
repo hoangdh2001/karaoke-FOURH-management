@@ -32,8 +32,6 @@ import gui.swing.event.EventSelectedRow;
 import gui.swing.model.ModelAction;
 import gui.swing.panel.slideshow.EventPagination;
 import gui.swing.textfield.MyTextFieldFlatlaf;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JComboBox;
 
@@ -47,7 +45,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     private PhieuDatPhong_DAO phieuDatPhong_Dao;
     private List<PhieuDatPhong> dsPhieu = new ArrayList<PhieuDatPhong>();
     private MyTextFieldFlatlaf txtTimKiemKhachHang, txtTimKiemPhong;
-    private Button btnHuyDatPhieu, btnLamMoi;
+    private Button btnLamMoi;
     private JDateChooser dcsNgayDatTK;
     JComboBox<String> cmbTrangThaiTK;
 
@@ -108,7 +106,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlTop.add(cmbTrangThaiTK, "w 15%, h 30!");
 
         // Tìm kiếm Ngày đặt
-        JLabel lblNgayDaLabelTK = new JLabel("Lọc theo ngày đặt");
+        JLabel lblNgayDaLabelTK = new JLabel("Tìm theo ngày đặt");
         lblNgayDaLabelTK.setFont(new Font(fontName, fontPlain, font14));
         pnlTop.add(lblNgayDaLabelTK);
 
@@ -124,14 +122,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         btnLamMoi.setBorderRadius(5);
         btnLamMoi.setBorderline(true);
         pnlTop.add(btnLamMoi, "w 100!, h 36!");
-//        
-//        // Nút Hủy đặt
-//        btnHuyDatPhieu = new Button("Hủy đặt");
-//        btnHuyDatPhieu.setFont(new Font(fontName, fontPlain, font14));
-//        btnHuyDatPhieu.setBackground(colorBtn);
-//        btnHuyDatPhieu.setBorderline(true);
-//        btnHuyDatPhieu.setBorderRadius(5);
-//        pnlTop.add(btnHuyDatPhieu, "w 100!, h 36!");
 
         pnlTop.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
 
@@ -143,7 +133,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     private void xuLyTimKiem() {
         cmbTrangThaiTK.addActionListener(this);
         btnLamMoi.addActionListener(this);
-        //btnHuyDatPhieu.addActionListener(this);
         txtTimKiemPhong.addKeyListener(this);
         txtTimKiemKhachHang.addKeyListener(this);
         dcsNgayDatTK.addPropertyChangeListener(new PropertyChangeListener() {
@@ -152,11 +141,11 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 Date ngayDat = dcsNgayDatTK.getDate();
                 String tenPhong = txtTimKiemPhong.getText().trim();
                 String tenKhachHang = txtTimKiemKhachHang.getText().trim();
-                //TrangThaiPhieuDat trangThaiPhieu = TrangThaiPhieuDat.getTrangThaiPhieuDatByTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
                 String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
                 if (dcsNgayDatTK.getDate() != null) {
-                    dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat);
+                    dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
                     xoaDuLieu();
+                    loadPage();
                     taiLaiDuLieu(dsPhieu);
                 }
             }
@@ -209,7 +198,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                         xoaDuLieu();
                         taiLaiDuLieu(dsPhieu);
                     } else {
-                        JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Quá trình hủy phiếu " + phieu.getMaPhieuDat() + " thất bại.");
+                        JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể hủy.");
                     }
                 }
             }
@@ -231,25 +220,45 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     }
 
     public void taiLaiDuLieu(List<PhieuDatPhong> dsPhieu) {
-        DecimalFormat dcf = new DecimalFormat("#,### VND");
-        SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-        for (PhieuDatPhong phieu : dsPhieu) {
-            tblPhieuDatPhong.addRow(phieu.convertToRowTable(event));
-        }
-        tblPhieuDatPhong.repaint();
-        tblPhieuDatPhong.revalidate();
+        ((DefaultTableModel) tblPhieuDatPhong.getModel()).setRowCount(0);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (dsPhieu != null) {
+                    dsPhieu.forEach((phieu) -> {
+                        ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
+                    });
+                }
+                tblPhieuDatPhong.repaint();
+                tblPhieuDatPhong.revalidate();
+            }
+        }).start();
     }
 
     private void loadData(int numPage) {
         ((DefaultTableModel) tblPhieuDatPhong.getModel()).setRowCount(0);
         dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
-        if (dsPhieu != null) {
-            for (PhieuDatPhong phieu : dsPhieu) {
-                ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
-            }
-        }
-        tblPhieuDatPhong.repaint();
-        tblPhieuDatPhong.revalidate();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (dsPhieu != null) {
+                    for (PhieuDatPhong phieu : dsPhieu) {
+                        ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
+                    }
+                }
+                tblPhieuDatPhong.repaint();
+                tblPhieuDatPhong.revalidate();
+         }
+        }).start();
+    }
+    
+    private void loadPage() {
+        Date ngayDat = dcsNgayDatTK.getDate();
+        String tenPhong = txtTimKiemPhong.getText().trim();
+        String tenKhachHang = txtTimKiemKhachHang.getText().trim();
+        String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
+        int soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat);
+        pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
     }
 
     private String kiemTraTrangThai(String trangThaiPhieu) {
@@ -268,8 +277,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 loadData(pageClick);
             }
         });
-        int soLuongPhieu = phieuDatPhong_Dao.getSoLuongPhieuDatPhong();
-        pnlPage.init(soLuongPhieu % 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
+        loadPage();
     }
 
     @SuppressWarnings("unchecked")
@@ -398,12 +406,12 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
             System.out.println(trangThai);
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat);
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
+            loadPage();
             taiLaiDuLieu(dsPhieu);
         }
         if (obj.equals(btnLamMoi)) {
-
             txtTimKiemPhong.setText("");
             txtTimKiemKhachHang.setText("");
             String tk = (String) cmbTrangThaiTK.getItemAt(0);
@@ -411,23 +419,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             dcsNgayDatTK.setDate(null);
             dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
             xoaDuLieu();
+            loadPage();
             taiLaiDuLieu(dsPhieu);
         }
-//        if(obj.equals(btnHuyDatPhieu)){
-//            int row = tblPhieuDatPhong.getSelectedRow();
-//            if(tblPhieuDatPhong.getSelectedRow()==-1){
-//                JOptionPane.showMessageDialog(this,"Chọn phiếu bạn muốn hủy đặt.");
-//            }else{
-//                if(phieuDatPhong_Dao.capNhatTrangThaiPhieu(tblPhieuDatPhong.getValueAt(row, 0).toString())){
-//                    JOptionPane.showMessageDialog(this,"Bạn đã hủy thành công phiếu "+ tblPhieuDatPhong.getValueAt(row, 0));
-//                    dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
-//                    xoaDuLieu();
-//                    taiLaiDuLieu(dsPhieu);
-//                }else{
-//                    JOptionPane.showMessageDialog(this,"Quá trình hủy phiếu "+tblPhieuDatPhong.getValueAt(row, 0)+" thất bại.");
-//                }
-//            }
-//        }
     }
 
     @Override
@@ -446,8 +440,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat);
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
+            loadPage();
             taiLaiDuLieu(dsPhieu);
         }
 
@@ -456,8 +451,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat);
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
+            loadPage();
             taiLaiDuLieu(dsPhieu);
 
         }
