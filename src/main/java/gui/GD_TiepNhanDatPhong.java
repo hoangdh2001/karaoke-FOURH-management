@@ -502,18 +502,18 @@ public class GD_TiepNhanDatPhong extends javax.swing.JDialog {
     }
 
     public void initData() {
-        if (phong != null | nhanVien != null) {
-            txtTenPhong.setText(phong.getTenPhong());
-            txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
-            txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
-            txtNhanVien.setText(nhanVien.getTenNhanVien());
-            List<PhieuDatPhong> dsPhieuDatPhong = nhaCungCapVaNhaphang_DAO.getPhieuHomNay(phong.getMaPhong());
-            dsPhieuDatPhong.forEach(phieu
-                    -> tablePhieuDatPhong.addRow(phieu.convertToRowTableInGDTiepNhanDatPhong()));
-
-            List<MatHang> dsMatHang = nhaCungCapVaNhaphang_DAO.getDanhSachMatHang();
-            dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
-        }
+//        if (phong != null | nhanVien != null) {
+//            txtTenPhong.setText(phong.getTenPhong());
+//            txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
+//            txtGia.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
+//            txtNhanVien.setText(nhanVien.getTenNhanVien());
+//            List<PhieuDatPhong> dsPhieuDatPhong = nhaCungCapVaNhaphang_DAO.getPhieuHomNay(phong.getMaPhong());
+//            dsPhieuDatPhong.forEach(phieu
+//                    -> tablePhieuDatPhong.addRow(phieu.convertToRowTableInGDTiepNhanDatPhong()));
+//
+//            List<MatHang> dsMatHang = nhaCungCapVaNhaphang_DAO.getDanhSachMatHang();
+//            dsMatHang.forEach(matHang -> tableDichVu.addRow(matHang.convertToRowTableInGDTiepNhanDatPhong()));
+//        }
     }
 
     public void addAction() {

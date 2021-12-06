@@ -54,7 +54,6 @@ public interface NhaCungCapVaNhapHangDaoService {
     public String getlastKhachHangTang();
     
 //  PhieuDatPhong
-    public List<PhieuDatPhong> getPhieuHomNay(String maPhong);
     public String getLastPhieuDatPhong();
     public PhieuDatPhong getPhieuById(String maPhieuDatPhong);
     public boolean addPhieuDatPhong(PhieuDatPhong phieu,String ngayDat);

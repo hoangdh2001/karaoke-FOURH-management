@@ -274,6 +274,10 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 loadMap(panelMap.getIndexShowing());
             }
 
+            @Override
+            public void addBtnDoiPhongEvent(Phong phong, HoaDon hoaDon) {
+                new GD_DoiPhong(phong, hoaDon).setVisible(true);
+            }
         });
         loadMap(0);
         txtSearch = new MyTextField();

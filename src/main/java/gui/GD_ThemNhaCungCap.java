@@ -356,43 +356,34 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlMain = new gui.swing.panel.PanelShadow();
-        pnlLeft = new gui.swing.panel.PanelShadow();
-        pnlRight = new gui.swing.panel.PanelShadow();
+        pnlMain = new javax.swing.JPanel();
+        pnlLeft = new javax.swing.JPanel();
+        pnlRight = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnlMain.setBackground(new java.awt.Color(255, 255, 255));
-        pnlMain.setShadowOpacity(0.3F);
-        pnlMain.setShadowSize(3);
-        pnlMain.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
-        pnlLeft.setBackground(new java.awt.Color(255, 255, 255));
-        pnlLeft.setShadowColor(new java.awt.Color(255, 255, 255));
-        pnlLeft.setShadowOpacity(0.0F);
-        pnlLeft.setShadowSize(1);
+        pnlLeft.setOpaque(false);
 
         javax.swing.GroupLayout pnlLeftLayout = new javax.swing.GroupLayout(pnlLeft);
         pnlLeft.setLayout(pnlLeftLayout);
         pnlLeftLayout.setHorizontalGroup(
             pnlLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 203, Short.MAX_VALUE)
+            .addGap(0, 210, Short.MAX_VALUE)
         );
         pnlLeftLayout.setVerticalGroup(
             pnlLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 243, Short.MAX_VALUE)
         );
 
-        pnlRight.setBackground(new java.awt.Color(255, 255, 255));
-        pnlRight.setShadowColor(new java.awt.Color(255, 255, 255));
-        pnlRight.setShadowOpacity(0.0F);
-        pnlRight.setShadowSize(1);
+        pnlRight.setOpaque(false);
 
         javax.swing.GroupLayout pnlRightLayout = new javax.swing.GroupLayout(pnlRight);
         pnlRight.setLayout(pnlRightLayout);
         pnlRightLayout.setHorizontalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
+            .addGap(0, 218, Short.MAX_VALUE)
         );
         pnlRightLayout.setVerticalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,7 +402,7 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlRight, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -422,7 +413,7 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -470,9 +461,9 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.swing.panel.PanelShadow pnlLeft;
-    private gui.swing.panel.PanelShadow pnlMain;
-    private gui.swing.panel.PanelShadow pnlRight;
+    private javax.swing.JPanel pnlLeft;
+    private javax.swing.JPanel pnlMain;
+    private javax.swing.JPanel pnlRight;
     // End of variables declaration//GEN-END:variables
 
    

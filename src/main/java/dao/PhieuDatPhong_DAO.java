@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.PhieuDatPhong;
-import entity.TrangThaiPhieuDat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
@@ -17,10 +11,6 @@ import org.hibernate.Transaction;
 import service.PhieuDatPhongService;
 import util.HibernateUtil;
 
-/**
- *
- * @author Hao
- */
 public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     
     List<PhieuDatPhong> dsPhieu = new ArrayList<>();
@@ -109,22 +99,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public boolean xoaPhieuDatPhong(String maPhieuDat) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            session.delete(session.find(PhieuDatPhong.class, maPhieuDat));
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        return false;
-    }
-
-    @Override
     public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat) {
         String sql; 
         if(ngayDat==null){
@@ -187,5 +161,31 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         return 0;
     }
-
+    
+    
+    @Override
+    public List<PhieuDatPhong> getPhieuHomNay(String maPhong) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        java.sql.Date date = new java.sql.Date( System.currentTimeMillis());
+        SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        
+        String sql = "select * from PhieuDatPhong where datediff(day,NgayDat,'"+formatterNgay.format(date)+"') = 0 "
+                + "and datediff(MINUTE,'"+formatterNgay.format(date)+"',NgayDat) > 0"
+                + "and maPhong = '"+maPhong+"' and trangThai = 'DANG_DOI'";
+       
+        try {
+            tr.begin();
+                List<PhieuDatPhong> phieuDatPhong = session.createNativeQuery(sql,PhieuDatPhong.class).getResultList();
+            tr.commit();
+            return phieuDatPhong;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+        
+    }
 }

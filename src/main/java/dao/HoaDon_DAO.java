@@ -620,11 +620,11 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     @Override
-    public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang) {
+    public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang, int nam) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "exec doanhThuTheoThang ?";
+        String sql = "exec doanhThuTheoThang ?, ?";
         try {
             tr.begin();
             Map<Integer, Double> rs = session.doReturningWork(new ReturningWork<Map<Integer, Double>>() {
@@ -635,6 +635,7 @@ public class HoaDon_DAO implements HoaDonService {
                     try {
                         st = arg0.prepareStatement(sql);
                         st.setInt(1, thang);
+                        st.setInt(2, nam);
                         ResultSet rs = st.executeQuery();
                         while (rs.next()) {   
                             map.put(rs.getInt("ngay"), rs.getDouble("tongTien"));

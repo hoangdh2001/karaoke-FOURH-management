@@ -2,7 +2,6 @@ package gui;
 
 import dao.HoaDon_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
-import dao.Phong_DAO;
 import entity.HoaDon;
 import entity.NhanVien;
 import entity.Phong;
@@ -80,11 +79,12 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     /**
      * Creates new form GD_CuaSoDatPhong2
      */
-    public GD_DoiPhong(Phong phong,NhanVien nhanVien) {
+    public GD_DoiPhong(Phong phong, HoaDon hoaDon) {
         setModal(true);
         initComponents();
+        this.hoaDon = hoaDon;
         this.phong = phong;
-        this.nhanVien = nhanVien;
+        this.nhanVien = GD_Chinh.NHAN_VIEN;
         setTitle("Đổi phòng");
         initForm();
         initData();
@@ -126,53 +126,6 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GD_DoiPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GD_DoiPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GD_DoiPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GD_DoiPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Phong phong = new Phong_DAO().getPhong("PH0001");
-                NhanVien nhanVien = new NhaCungCapVaNhapHang_DAO().getNhanVienByID("NV0001");
-                GD_DoiPhong dialog = new GD_DoiPhong(phong,nhanVien);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-                
-            }
-        });
-    }
-
-    
     public void initOldRoomInfo(){
         pnlLoc = new JPanel();
         pnlLoc.setLayout(new MigLayout("","33[][]","10[]10"));
@@ -385,7 +338,6 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
         df = new DecimalFormat("#,##0.00");
-//        hoaDon = hoaDonDao.getHoaDon(phong);
         
         setSize(new Dimension(1350,560));
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -395,7 +347,6 @@ public class GD_DoiPhong extends javax.swing.JDialog {
         setLocation(x, y);
         setResizable(false);
         MainPanel.setLayout(new MigLayout("","20[center]10"));
-//        MainPanel.setBackground(Color.WHITE);
         
         pnlInfo = new PanelShadow();
         pnlInfo.setLayout(new MigLayout("", "20[center][center]20", "20[]10"));
@@ -416,8 +367,6 @@ public class GD_DoiPhong extends javax.swing.JDialog {
     }
     
     public void initData(){
-//        hoaDon = hoaDonDao.getHoaDon(phong);
-        
         txtTenPhong.setText(phong.getTenPhong());
         txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
         txtGiaPhong.setText(df.format(phong.getLoaiPhong().getGiaPhong()));

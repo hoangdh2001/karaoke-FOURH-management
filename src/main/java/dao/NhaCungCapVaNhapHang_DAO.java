@@ -195,32 +195,6 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         return null;
     }
 
-     @Override
-    public List<PhieuDatPhong> getPhieuHomNay(String maPhong) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        Date date = new Date( System.currentTimeMillis());
-        SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        
-        String sql = "select * from PhieuDatPhong where datediff(day,NgayDat,'"+formatterNgay.format(date)+"') = 0 "
-                + "and datediff(MINUTE,'"+formatterNgay.format(date)+"',NgayDat) > 0"
-                + "and maPhong = '"+maPhong+"' and trangThai = 'DANG_DOI'";
-       
-        try {
-            tr.begin();
-                List<PhieuDatPhong> phieuDatPhong = session.createNativeQuery(sql,PhieuDatPhong.class).getResultList();
-            tr.commit();
-            return phieuDatPhong;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        
-        return null;
-        
-    }
-
     @Override
     public PhieuDatPhong getPhieuById(String maPhieuDatPhong) {
         Session session = sessionFactory.getCurrentSession();

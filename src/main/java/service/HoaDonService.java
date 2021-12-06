@@ -46,5 +46,5 @@ public interface HoaDonService {
     public String getMaxID();
     public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai );
     public Map<Integer, Double> getDoanhThuHoaDonTheoNam(int nam);
-    public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang);
+    public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang, int nam);
 }
