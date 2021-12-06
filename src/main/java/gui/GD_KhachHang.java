@@ -327,7 +327,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             xoaDuLieu();
             //loadData(0);
             loadPage();
-            taiLaiDuLieu(0);
+            taiLaiDuLieu(pnlPage.getCurrentIndex());
         }
     }
 

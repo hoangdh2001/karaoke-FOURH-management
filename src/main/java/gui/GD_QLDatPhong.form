@@ -180,10 +180,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="pnlPage" min="-2" pref="301" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="640" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="pnlPage" alignment="0" pref="941" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">

@@ -35,7 +35,6 @@ import gui.swing.panel.slideshow.EventPagination;
 import gui.swing.textfield.MyTextFieldFlatlaf;
 import java.util.Date;
 import javax.swing.JComboBox;
-import org.apache.bcel.generic.DLOAD;
 
 /**
  *
@@ -218,7 +217,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                     loadPage();
                     taiLaiDuLieu(dsPhieu);
                 }else{
-                    JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Phiếu "+ phieu.getMaPhieuDat()+" không thể sửa.");
+                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu "+ phieu.getMaPhieuDat()+" không thể sửa.");
                 }
             }
         };
@@ -376,9 +375,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlBottom_Page.setLayout(pnlBottom_PageLayout);
         pnlBottom_PageLayout.setHorizontalGroup(
             pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBottom_PageLayout.createSequentialGroup()
-                .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 640, Short.MAX_VALUE))
+            .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, 941, Short.MAX_VALUE)
         );
         pnlBottom_PageLayout.setVerticalGroup(
             pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
