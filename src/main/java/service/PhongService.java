@@ -10,7 +10,7 @@ public interface PhongService {
     public boolean updatePhong(Phong phong);
     public boolean deletePhong(String maPhong);
     public Phong getPhong(String maPhong);
-    public List<Phong> getDsPhong(int numPage);
+    public List<Phong> getDsPhong(int numPage, String tenPhong, String loaiPhong);
     public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai);
     public List<Phong> getPhongByAttributes(int tang, String tenPhong, LoaiPhong loaiPhong, TrangThaiPhong trangThai);
     public List<Phong> getDsPhongBySDTOrTen(String sdt, int tang);
@@ -22,5 +22,5 @@ public interface PhongService {
     public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangThai);
     public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong);
     public String getMaxId();
-    public int getSoLuongPhong();
+    public int getSoLuongPhong(String tenPhong, String loaiPhong);
 }

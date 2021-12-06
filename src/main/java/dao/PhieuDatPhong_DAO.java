@@ -35,14 +35,15 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> getDsPhieuDatPhong() {
+    public List<PhieuDatPhong> getDsPhieuDatPhong(int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select p.* from PhieuDatPhong p";
+        String sql = "select p.* from PhieuDatPhong p order by p.maPhieuDat DESC offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<PhieuDatPhong> dsPhieuDatPhong = session
                     .createNativeQuery(sql, PhieuDatPhong.class)
+                    .setParameter("x", numPage * 20)
                     .getResultList();
             tr.commit();
             return dsPhieuDatPhong;
@@ -79,7 +80,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = " update PhieuDatPhong p set p.trangThai = 'DA_HUY'  where p.maPhieuDat = :maPhieuDat";
+            String sql = "update PhieuDatPhong p set p.trangThai = 'DA_HUY'  where p.maPhieuDat = :maPhieuDat";
             session.createQuery(sql)
                     .setParameter("maPhieuDat", maPhieuDat)
                     .executeUpdate();
@@ -126,15 +127,9 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, TrangThaiPhieuDat trangThai, Date ngayDat) {
+    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat) {
         String sql; 
-        if(trangThai==null && ngayDat ==null){
-            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' ";
-        }else if(trangThai==null){
-            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"')";
-        }else if(ngayDat==null){
+        if(ngayDat==null){
             sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
                     "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%'";
         }else{
@@ -155,7 +150,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
             System.err.println(e);
         }
         session.close();
-        return Collections.emptyList();
+        return null;
     }
 
     @Override
@@ -351,4 +346,22 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         return false;
     }
+    public int getSoLuongPhieuDatPhong() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from PhieuDatPhong";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
 }

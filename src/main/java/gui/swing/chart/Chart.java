@@ -6,7 +6,9 @@ import gui.swing.chart.blankchart.SeriesSize;
 import gui.swing.model.ModelChart;
 import gui.swing.model.ModelLegend1;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import org.jdesktop.animation.timing.Animator;
@@ -56,6 +58,11 @@ public class Chart extends javax.swing.JPanel {
         });
     }
 
+    public void setDescription(String text) {
+        lblDescription.setText(text);
+        lblDescription.repaint();
+    }
+
     public void addLegend(String name, Color color) {
         ModelLegend1 data = new ModelLegend1(name, color);
         legends.add(data);
@@ -90,15 +97,19 @@ public class Chart extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        blankPlotChart = new gui.swing.chart.blankchart.BlankPlotChart1();
         panelLegend = new javax.swing.JPanel();
+        blankPlotChart = new gui.swing.chart.blankchart.BlankPlotChart1();
+        lblDescription = new gui.swing.label.LabelRotate();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        blankPlotChart.setLayout(null);
-
         panelLegend.setOpaque(false);
         panelLegend.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
+
+        lblDescription.setForeground(new java.awt.Color(150, 150, 150));
+        lblDescription.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDescription.setText("t");
+        lblDescription.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -107,16 +118,21 @@ public class Chart extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelLegend, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
-                    .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelLegend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                    .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelLegend, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -124,6 +140,7 @@ public class Chart extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.swing.chart.blankchart.BlankPlotChart1 blankPlotChart;
+    private gui.swing.label.LabelRotate lblDescription;
     private javax.swing.JPanel panelLegend;
     // End of variables declaration//GEN-END:variables
 }

@@ -14,7 +14,6 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.swing.panel.PanelTransparent;
-import gui.swing.event.EventSelectedRow;
 import java.text.DecimalFormatSymbols;
 
 public class PanelForm extends PanelTransparent {

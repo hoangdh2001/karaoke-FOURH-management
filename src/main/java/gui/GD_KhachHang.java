@@ -3,10 +3,8 @@ package gui;
 import dao.KhachHang_DAO;
 import entity.KhachHang;
 import gui.swing.button.Button;
-import gui.swing.panel.PanelShadow;
-import gui.swing.table2.EventAction;
+import gui.swing.panel.slideshow.EventPagination;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,24 +18,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import gui.swing.event.EventSelectedRow;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 /**
  *
  * @author Hao
  */
 public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, KeyListener{
-    List<KhachHang> dsKhachHang = new ArrayList<KhachHang>();
+    List<KhachHang> dsKhachHang ;
     private KhachHang_DAO khachHang_Dao;
     private JTextField txtTimKiem;
     private Button btnLamMoi;
-    private EventAction eventAction;
-    private PanelShadow panelHidden;
-    private EventSelectedRow eventSelectedRow;
-    private Button btnSua;
-    private Object evt;
+
+
     /**
      * Creates new form GD_KhachHang
      */
@@ -55,7 +51,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         int fontSize = 14;
         Color colorBtn = new Color(184, 238, 241);
         
-        pnlTop.setLayout(new MigLayout("", "push[center]5[center] 20[center]10[center]push", "60[center]10"));
+        pnlTop.setLayout(new MigLayout("", "push[center]5[center] 20[center]push", "60[center]10"));
         pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
       
         JLabel lblKhachHang = new JLabel("Nhập tên/ số điện thoại (các số cuối)");
@@ -65,8 +61,6 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         /*Ô nhập thông tin tìm kiếm*/
         txtTimKiem = new JTextField();
         txtTimKiem.setFont(new Font(fontName, fontStyle, fontSize));
-//        txtTimKiem.setBorderLine(true);
-//        txtTimKiem.setBorderRadius(5);
         pnlTop.add(txtTimKiem, "w 40%, h 36!");
         
         btnLamMoi = new Button("Làm mới");
@@ -76,21 +70,14 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         btnLamMoi.setBorderRadius(5);
         pnlTop.add(btnLamMoi, "w 100!, h 36!");
         
-        btnSua = new Button("Sửa");
-        btnSua.setFont(new Font(fontName, fontStyle, fontSize));
-        btnSua.setBackground(colorBtn);
-        btnSua.setBorderline(true);
-        btnSua.setBorderRadius(5);
-        pnlTop.add(btnSua, "w 100!, h 36!");
         
         btnLamMoi.addActionListener(this);
         txtTimKiem.addKeyListener(this);
-        btnSua.addActionListener(this);
         tblKhachHang.addKeyListener(this);
-        //xuLySuKien();
+       
         createTable();
+        createPanelBottom();
         setOpaque(false);
-//        setPreferredSize(new Dimension(getWidth(), 950));
     }
 
     @SuppressWarnings("unchecked")
@@ -99,8 +86,10 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        srcKhachHang = new javax.swing.JScrollPane();
         tblKhachHang = new gui.swing.table2.MyTableFlatlaf();
+        pnlBottom_Page = new javax.swing.JPanel();
+        pnlPage = new gui.swing.table2.PanelPage();
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
@@ -112,7 +101,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1032, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,7 +124,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -148,7 +137,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         tblKhachHang.setSelectionForeground(new java.awt.Color(51, 51, 51));
         tblKhachHang.setShowGrid(true);
         tblKhachHang.setShowVerticalLines(false);
-        jScrollPane1.setViewportView(tblKhachHang);
+        srcKhachHang.setViewportView(tblKhachHang);
         if (tblKhachHang.getColumnModel().getColumnCount() > 0) {
             tblKhachHang.getColumnModel().getColumn(0).setResizable(false);
             tblKhachHang.getColumnModel().getColumn(0).setPreferredWidth(20);
@@ -161,7 +150,24 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             tblKhachHang.getColumnModel().getColumn(4).setPreferredWidth(200);
         }
 
-        pnlBottom.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        pnlBottom.add(srcKhachHang, java.awt.BorderLayout.CENTER);
+
+        pnlBottom_Page.setPreferredSize(new java.awt.Dimension(1022, 32));
+
+        javax.swing.GroupLayout pnlBottom_PageLayout = new javax.swing.GroupLayout(pnlBottom_Page);
+        pnlBottom_Page.setLayout(pnlBottom_PageLayout);
+        pnlBottom_PageLayout.setHorizontalGroup(
+            pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlBottom_PageLayout.createSequentialGroup()
+                .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 692, Short.MAX_VALUE))
+        );
+        pnlBottom_PageLayout.setVerticalGroup(
+            pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+        );
+
+        pnlBottom.add(pnlBottom_Page, java.awt.BorderLayout.PAGE_END);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -175,7 +181,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE))
+                .addComponent(pnlBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     private JPanel createPanelTitle() {
@@ -191,8 +197,42 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         return  pnlTitle;
     }
     
-    private void loadData() {
-        dsKhachHang = khachHang_Dao.getDSKhachHang();
+    private void xuLySuKien(){
+       tblKhachHang.getModel().addTableModelListener(new TableModelListener() {
+                @Override
+                public void tableChanged(TableModelEvent e) {
+                    try{
+                        int col = e.getColumn();
+                        int row = e.getFirstRow();
+                        if(col==4){
+                            if(valiDataSDT(tblKhachHang.getValueAt(row, 4).toString())){
+                                String soDienThoai = tblKhachHang.getValueAt(row, 4).toString().trim();
+                                String maKhachHang = tblKhachHang.getValueAt(row, 1).toString().trim();
+                                if(khachHang_Dao.capNhatKhachHang(maKhachHang, soDienThoai)) {
+                                    JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
+                                    xoaDuLieu();
+                                    dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
+                                    taiLaiDuLieu(dsKhachHang);
+                                }else{
+                                    JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng không thành công");         
+                                }
+                            }else{
+                                JOptionPane.showMessageDialog(GD_KhachHang.this, "Số điện thoại khách hàng không hợp lệ"); 
+                                xoaDuLieu();
+                                dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
+                                taiLaiDuLieu(dsKhachHang);
+                            }
+                        }
+                    }catch(Exception ex){
+                        JOptionPane.showMessageDialog(GD_KhachHang.this, "Lựa chọn không phù hợp"); 
+                    }
+                }
+            });
+    }
+    private void loadData(int numPage) {
+        dsKhachHang = khachHang_Dao.getDSKhachHang(numPage);
+        System.out.println(dsKhachHang.listIterator().nextIndex());
+        
         xoaDuLieu();
         taiLaiDuLieu(dsKhachHang);
     }
@@ -205,30 +245,43 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     
     public void taiLaiDuLieu(List<KhachHang> dsKhachHang){
         for(KhachHang kh: dsKhachHang){
-            tblKhachHang.addRow(new Object[] {JCheckBox.class,kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
+            tblKhachHang.addRow(new Object[] {new JCheckBox(),kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
         }
     }
     
     private void createTable() {
-//        tblKhachHang.fixTable(scrKhachHang);
         tblKhachHang.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
-        loadData();
-        
+        loadData(pnlPage.getCurrentIndex());
+        xuLySuKien();
+    }
+    
+    private void xuLyTimKiem(int soLuong){
+        pnlPage.init(soLuong % 20 == 0 ? soLuong / 20 : (soLuong / 20) + 1);
+    }
+    
+     private void createPanelBottom() {
+        pnlPage.addEventPagination(new EventPagination() {
+            @Override
+            public void onClick(int pageClick) {
+                loadData(pageClick);
+            }
+        });
+        int soLuongKhachHang = khachHang_Dao.getSoLuongKhachHang();
+        pnlPage.init(soLuongKhachHang % 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
     }
 
-    private boolean valiDataSDT(){
-        int row = tblKhachHang.getSelectedRow();
-        String sdt = tblKhachHang.getValueAt(row, 4).toString().trim();
-        if (!(sdt.matches("^(09|03|07|08|05)([0-9]{8})"))) {
-            JOptionPane.showMessageDialog(this,"Số điện thoại của khách hàng không hợp lệ");
+    private boolean valiDataSDT(String soDienThoai){
+        if(!(soDienThoai.matches("^(09|03|07|08|05)([0-9]{8})"))) {
             return false;
         }
         return true;
     }    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
     private gui.swing.panel.PanelShadow pnlBottom;
+    private javax.swing.JPanel pnlBottom_Page;
+    private gui.swing.table2.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
+    private javax.swing.JScrollPane srcKhachHang;
     private gui.swing.table2.MyTableFlatlaf tblKhachHang;
     // End of variables declaration//GEN-END:variables
 
@@ -237,30 +290,9 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         Object obj = e.getSource();
         if(obj.equals(btnLamMoi)){
            txtTimKiem.setText("");
-           dsKhachHang = khachHang_Dao.getDSKhachHang();
+           dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
            xoaDuLieu();
            taiLaiDuLieu(dsKhachHang);
-        }
-        if(obj.equals(btnSua)){
-            KhachHang khachHang = new KhachHang();
-            int row = tblKhachHang.getSelectedRow();
-            if(row==-1){
-                JOptionPane.showMessageDialog(GD_KhachHang.this, "Bạn chưa chọn đối tượng khách hàng muốn cập nhật.");
-            }else{
-                if(valiDataSDT()){
-                    String soDienThoai = tblKhachHang.getValueAt(row, 4).toString();
-                    String maKhachHang = tblKhachHang.getValueAt(row, 1).toString();
-                    khachHang.setSoDienThoai(soDienThoai);
-                    if (khachHang_Dao.capNhatKhachHang(maKhachHang, soDienThoai)) {
-                        JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
-                        xoaDuLieu();
-                        dsKhachHang = khachHang_Dao.getDSKhachHang();
-                        taiLaiDuLieu(dsKhachHang);
-                    }else{
-                        JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng không thành công");
-                    }
-                }  
-            }
         }
     }
 

@@ -71,13 +71,15 @@ public class KhachHang_DAO implements KhachHangService {
     }
 
     @Override
-    public List<KhachHang> getDSKhachHang() {
+    public List<KhachHang> getDSKhachHang(int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
+            String sql = "select kh.* from KhachHang kh order by kh.maKhachHang offset :x row fetch next 20 rows only";
             tr.begin();
             List<KhachHang> dsKhachHang = session
-                    .createNamedQuery("getDSKhachHang", KhachHang.class)
+                    .createNativeQuery(sql, KhachHang.class)
+                    .setParameter("x", numPage * 20)
                     .getResultList();
             tr.commit();
             return dsKhachHang;
@@ -95,29 +97,11 @@ public class KhachHang_DAO implements KhachHangService {
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = "select * from [dbo].[KhachHang] where [dbo].[ufn_removeMark]([tenKhachHang]) like N'%" + tuKhoa + "%' or [sdt] like '%" + tuKhoa + "'";
+            String sql = "select * from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "' ";
+                   // + "order by kh.maKhachHang offset :x row fetch next 20 rows only";
             List<KhachHang> dsKhachHang = session
                     .createNativeQuery(sql, KhachHang.class)
-                    .getResultList();
-            tr.commit();
-            return dsKhachHang;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    @Override
-    public List<KhachHang> layDSKhachHang1(String tuKhoa) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            List<KhachHang> dsKhachHang = session
-                    .createNamedQuery("getDSKhachHangByName", KhachHang.class)
-                    .setParameter(1, tuKhoa)
+                    //.setParameter("x", numPage * 20)
                     .getResultList();
             tr.commit();
             return dsKhachHang;
@@ -302,5 +286,23 @@ public class KhachHang_DAO implements KhachHangService {
             tr.rollback();
         }
         return null;
+    }
+    @Override
+    public int getSoLuongKhachHang() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from KhachHang";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
     }
 }

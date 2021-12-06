@@ -21,11 +21,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelLegend" pref="573" max="32767" attributes="0"/>
-                  <Component id="blankPlotChart" max="32767" attributes="0"/>
+                  <Component id="panelLegend" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="lblDescription" min="-2" pref="39" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="blankPlotChart" pref="528" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -35,8 +39,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="blankPlotChart" pref="342" max="32767" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblDescription" pref="347" max="32767" attributes="0"/>
+                  <Component id="blankPlotChart" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="panelLegend" min="-2" pref="28" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -44,12 +51,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="org.netbeans.modules.form.InvalidComponent" name="blankPlotChart">
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-    </Container>
     <Container class="javax.swing.JPanel" name="panelLegend">
       <Properties>
         <Property name="opaque" type="boolean" value="false"/>
@@ -59,5 +60,23 @@
         <Property name="verticalGap" type="int" value="0"/>
       </Layout>
     </Container>
+    <Container class="gui.swing.chart.blankchart.BlankPlotChart1" name="blankPlotChart">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+    </Container>
+    <Component class="gui.swing.label.LabelRotate" name="lblDescription">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="96" green="96" red="96" type="rgb"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="t"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="SansSerif" size="14" style="0"/>
+        </Property>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

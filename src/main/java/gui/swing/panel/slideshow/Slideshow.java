@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
+import static javax.swing.JLayeredPane.POPUP_LAYER;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
@@ -121,7 +122,7 @@ public class Slideshow extends JLayeredPane {
         add(panel, "w 100%-6!");
         
         
-        timer = new Timer(5000, new ActionListener() {
+        timer = new Timer(3000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 next();
