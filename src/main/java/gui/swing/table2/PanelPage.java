@@ -118,6 +118,7 @@ public class PanelPage extends javax.swing.JPanel {
     public void init(int num) {
         pnlNum.removeAll();
         cmbNumPage.removeAllItems();
+        listBtn.removeAll(listBtn);
         currentIndex = 0;
         
         for (int i = 0; i < num; i++) {
@@ -130,8 +131,6 @@ public class PanelPage extends javax.swing.JPanel {
                 lblNext.setText("...");
             }
             cmbNumPage.addItem(i + 1);
-            pnlNum.repaint();
-            pnlNum.revalidate();
         }
         cmbNumPage.setSelectedIndex(currentIndex);
         
