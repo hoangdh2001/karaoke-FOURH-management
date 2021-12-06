@@ -31,8 +31,11 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "maNhanVien", nullable = false)
     private NhanVien nhanVien;
+    @Column(columnDefinition = "datetime")
     private Date ngayLapHoaDon;
+    @Column(columnDefinition = "datetime")
     private Date thoiGianBatDau;
+    @Column(nullable = false,columnDefinition = "datetime")
     private Date thoiGianKetThuc;
     private float chietKhau;
     @Enumerated(EnumType.STRING)
@@ -343,7 +346,7 @@ public class HoaDon {
         DecimalFormat dcf = new DecimalFormat("#,###");
         SimpleDateFormat fm1 = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
-        return new Object[]{maHoaDon, khachHang.getTenKhachHang(), phong.getTenPhong(), gioHat, fm1.format(ngayLapHoaDon), fm2.format(thoiGianBatDau),fm2.format(thoiGianKetThuc), dcf.format(tongTienMatHang), dcf.format(phong.getLoaiPhong().getGiaPhong()),chietKhau, dcf.format(tongHoaDon), nhanVien.getTenNhanVien()};
+        return new Object[]{maHoaDon, khachHang.getTenKhachHang(), phong.getTenPhong(), gioHat, fm1.format(ngayLapHoaDon), fm2.format(thoiGianBatDau), dcf.format(tongTienMatHang), dcf.format(phong.getLoaiPhong().getGiaPhong()), dcf.format(tongHoaDon), nhanVien.getTenNhanVien()};
     }
     
     public Object[] convertToRowTableInGDThongKeDoanhThu() {
