@@ -412,7 +412,6 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             taiLaiDuLieu(dsPhieu);
         }
         if (obj.equals(btnLamMoi)) {
-
             txtTimKiemPhong.setText("");
             txtTimKiemKhachHang.setText("");
             String tk = (String) cmbTrangThaiTK.getItemAt(0);
@@ -420,6 +419,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             dcsNgayDatTK.setDate(null);
             dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
             xoaDuLieu();
+            loadPage();
             taiLaiDuLieu(dsPhieu);
         }
     }
