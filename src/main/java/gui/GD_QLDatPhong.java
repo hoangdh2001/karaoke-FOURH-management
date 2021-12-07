@@ -33,7 +33,9 @@ import gui.swing.event.EventSelectedRow;
 import gui.swing.model.ModelAction;
 import gui.swing.panel.slideshow.EventPagination;
 import gui.swing.textfield.MyTextFieldFlatlaf;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.SimpleFormatter;
 import javax.swing.JComboBox;
 
 /**
@@ -114,6 +116,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         dcsNgayDatTK = new JDateChooser();
         dcsNgayDatTK.setFont(new Font(fontName, fontPlain, font14));
         dcsNgayDatTK.setOpaque(false);
+        dcsNgayDatTK.setDateFormatString("yyyy-MM-dd");
         pnlTop.add(dcsNgayDatTK, "w 15%, h 30!");
 
         // Nút Làm mới
@@ -139,12 +142,14 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         dcsNgayDatTK.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent arg0) {
-                Date ngayDat = dcsNgayDatTK.getDate();
-                String tenPhong = txtTimKiemPhong.getText().trim();
-                String tenKhachHang = txtTimKiemKhachHang.getText().trim();
-                String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
                 if (dcsNgayDatTK.getDate() != null) {
-                    dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
+                    Date ngayDat = dcsNgayDatTK.getDate();
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    System.out.println(df.format(ngayDat));
+                    String tenPhong = txtTimKiemPhong.getText().trim();
+                    String tenKhachHang = txtTimKiemKhachHang.getText().trim();
+                    String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
+                    dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat), pnlPage.getCurrentIndex());
                     xoaDuLieu();
                     loadPage();
                     taiLaiDuLieu(dsPhieu);
@@ -264,11 +269,19 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     }
     
     private void loadPage() {
-        Date ngayDat = dcsNgayDatTK.getDate();
         String tenPhong = txtTimKiemPhong.getText().trim();
         String tenKhachHang = txtTimKiemKhachHang.getText().trim();
         String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-        int soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat);
+        int soLuongPhieu;
+        if(dcsNgayDatTK.getDate()==null){
+            soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, null);
+            pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
+        }else{
+            Date ngayDat = dcsNgayDatTK.getDate();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai,df.format(ngayDat));
+            
+        }
         pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
     }
 
@@ -414,11 +427,12 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
         if (obj.equals(cmbTrangThaiTK)) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Date ngayDat = dcsNgayDatTK.getDate();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat), pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);
@@ -448,22 +462,24 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     public void keyReleased(KeyEvent e) {
         Object obj = e.getSource();
         if (obj.equals(txtTimKiemPhong)) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Date ngayDat = dcsNgayDatTK.getDate();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat), pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);
         }
 
         if (obj.equals(txtTimKiemKhachHang)) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Date ngayDat = dcsNgayDatTK.getDate();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat), pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);

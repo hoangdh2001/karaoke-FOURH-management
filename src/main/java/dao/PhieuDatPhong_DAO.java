@@ -128,7 +128,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
      * @return danh sách phiếu đặt phòng
      */
     @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat, int numPage) {
+    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat, int numPage) {
         String sql; 
         if(ngayDat==null){
             sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
@@ -136,7 +136,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
                     + "order by PhieuDatPhong.maPhieuDat DESC offset :x row fetch next 20 rows only";
         }else{
             sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"')"
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"') "
                     + "order by PhieuDatPhong.maPhieuDat DESC offset :x row fetch next 20 rows only";
         }
         Session session = sessionFactory.openSession();
@@ -369,7 +369,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     @Override
-    public int getSoLuongPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat) {
+    public int getSoLuongPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
@@ -389,6 +389,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
             tr.commit();
             return  rs;
         } catch (Exception e) {
+            System.err.println(e);
             tr.rollback();
         }
         return 0;

@@ -23,8 +23,6 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -300,7 +298,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             }
             @Override
             public void keyPressed(KeyEvent arg0) {
-                
                 if(cmbCot.getSelectedIndex()==0){
                     JOptionPane.showMessageDialog(GD_HoaDon.this, "Hãy chọn cột mà bạn muốn tìm kiếm.");
                     txtTimKiem.setText("");
