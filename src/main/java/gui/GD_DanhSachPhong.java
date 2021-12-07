@@ -10,7 +10,7 @@ import gui.swing.button.Button;
 
 import gui.swing.table2.EventAction;
 import gui.swing.model.ModelAction;
-import gui.swing.panel.slideshow.EventPagination;
+import gui.swing.event.EventPagination;
 
 import java.awt.Color;
 import java.awt.Font;

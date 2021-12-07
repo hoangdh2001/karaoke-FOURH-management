@@ -110,17 +110,21 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
         cbNhaCungCap.setFont(new Font(fontName, fontPlain, font12));
 
         btnThemNCC = new Button("Thêm nhà cung cấp");
-        btnThemNCC.setFont(new Font(fontName, fontPlain, font14));
-        btnThemNCC.setBackground(colorBtn);
+        btnThemNCC.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnThemNCC.setForeground(Color.WHITE);
+        btnThemNCC.setBorderRadius(5);
+        btnThemNCC.setBackground(new Color(54, 88, 153));
 
         btnXemThongTin = new Button("Xem thông tin");
-        btnXemThongTin.setFont(new Font(fontName, fontPlain, font14));
-        btnXemThongTin.setBackground(colorBtn);
+        btnXemThongTin.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnXemThongTin.setForeground(Color.WHITE);
+        btnXemThongTin.setBorderRadius(5);
+        btnXemThongTin.setBackground(new Color(54, 88, 153));
 
         pnlNhaCungCap.add(lblNCC);
         pnlNhaCungCap.add(cbNhaCungCap, "w 100:300:500, h 30!");
-        pnlNhaCungCap.add(btnThemNCC, "w 150!,h 36!");
-        pnlNhaCungCap.add(btnXemThongTin, "w 150!,h 36!");
+        pnlNhaCungCap.add(btnThemNCC, "w 150!,h 30!");
+        pnlNhaCungCap.add(btnXemThongTin, "w 120!,h 30!");
 
         pnlForm.add(pnlNhaCungCap);
 
@@ -195,24 +199,30 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
         pnlSanPham.add(txtGiaban, "h 30!, w 100%");
 
         btnThem = new Button("Thêm");
-        btnThem.setFont(new Font(fontName, fontPlain, font14));
-        btnThem.setBackground(colorBtn);
+        btnThem.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnThem.setForeground(Color.WHITE);
+        btnThem.setBorderRadius(5);
+        btnThem.setBackground(new Color(54, 88, 153));
 
         btnXoa = new Button("Xóa rỗng");
-        btnXoa.setFont(new Font(fontName, fontPlain, font14));
-        btnXoa.setBackground(colorBtn);
+        btnXoa.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnXoa.setForeground(Color.WHITE);
+        btnXoa.setBorderRadius(5);
+        btnXoa.setBackground(new Color(54, 88, 153));
 
         btnLuu = new Button("Lưu");
-        btnLuu.setFont(new Font(fontName, fontPlain, font14));
+        btnLuu.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnLuu.setForeground(Color.WHITE);
+        btnLuu.setBorderRadius(5);
         btnLuu.setBackground(new Color(255, 0, 0));
 
         JPanel pnlbtn = new JPanel();
         pnlbtn.setOpaque(false);
         pnlbtn.setLayout(new MigLayout("", "0[fill]10[fill]10[fill]0", "0[]0"));
 
-        pnlbtn.add(btnThem, "w 100!, h 36!");
-        pnlbtn.add(btnXoa, "w 100!, h 36!");
-        pnlbtn.add(btnLuu, "w 100!, h 36!");
+        pnlbtn.add(btnThem, "w 90!, h 30!");
+        pnlbtn.add(btnXoa, "w 90!, h 30!");
+        pnlbtn.add(btnLuu, "w 90!, h 30!");
 
         pnlSanPham.add(pnlbtn, "align right, span 2");
 

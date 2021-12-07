@@ -12,7 +12,7 @@ import gui.swing.event.EventAddNhanVien;
 import gui.swing.event.EventSelectedRow;
 import gui.swing.graphics.ShadowType;
 import gui.swing.panel.PanelShadow;
-import gui.swing.panel.slideshow.EventPagination;
+import gui.swing.event.EventPagination;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -192,19 +192,21 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
         // Button làm mới
         btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, Font.PLAIN, font14));
-        btnLamMoi.setBackground(colorBtn);
+        btnLamMoi.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnLamMoi.setForeground(Color.WHITE);
+        btnLamMoi.setBackground(new Color(54, 88, 153));
         btnLamMoi.setBorderline(true);
         btnLamMoi.setBorderRadius(5);
-        pnlTimKiemNV.add(btnLamMoi, "w 100!, h 36!");
+        pnlTimKiemNV.add(btnLamMoi, "w 70!, h 30!");
 
         // Button tìm kiếm
         btnThem = new Button("Thêm");
-        btnThem.setFont(new Font(fontName, Font.PLAIN, font14));
-        btnThem.setBackground(colorBtn);
+        btnThem.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnThem.setForeground(Color.WHITE);
+        btnThem.setBackground(new Color(54, 88, 153));
         btnThem.setBorderline(true);
         btnThem.setBorderRadius(5);
-        pnlTimKiemNV.add(btnThem, "w 100!, h 36!");
+        pnlTimKiemNV.add(btnThem, "w 70!, h 30!");
         /* End: group tìm nhân viên */
 
     }

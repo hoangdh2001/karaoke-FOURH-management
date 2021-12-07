@@ -31,7 +31,7 @@ import net.miginfocom.swing.MigLayout;
 
 import gui.swing.event.EventSelectedRow;
 import gui.swing.model.ModelAction;
-import gui.swing.panel.slideshow.EventPagination;
+import gui.swing.event.EventPagination;
 import gui.swing.textfield.MyTextFieldFlatlaf;
 import java.util.Date;
 import javax.swing.JComboBox;
@@ -118,11 +118,13 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
         // Nút Làm mới
         btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontPlain, font14));
-        btnLamMoi.setBackground(colorBtn);
+        btnLamMoi = new Button("Làm mới");
+        btnLamMoi.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnLamMoi.setForeground(Color.WHITE);
+        btnLamMoi.setBackground(new Color(54, 88, 153));
         btnLamMoi.setBorderRadius(5);
         btnLamMoi.setBorderline(true);
-        pnlTop.add(btnLamMoi, "w 100!, h 36!");
+        pnlTop.add(btnLamMoi, "w 90!, h 30!");
 
         pnlTop.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
 

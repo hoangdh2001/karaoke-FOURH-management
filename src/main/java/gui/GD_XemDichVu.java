@@ -87,14 +87,15 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         cmbLoaiTimKiem.setFont(new Font("sansserif", Font.PLAIN, 12));
 
         btnXuatFile = new Button("Xuất file");
-        btnXuatFile.setFont(new Font(fontName, fontPlain, font14));
-        btnXuatFile.setBackground(colorBtn);
+        btnXuatFile.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnXuatFile.setForeground(Color.WHITE);
+        btnXuatFile.setBackground(new Color(54, 88, 153));
         btnXuatFile.setBorderRadius(5);
         
         pnlSearch.add(lblTimKiem);
         pnlSearch.add(txtNhap,"w 100:300:500, h 30!");
         pnlSearch.add(cmbLoaiTimKiem,"w 200,h 30!");
-        pnlSearch.add(btnXuatFile,"w 120 ,h 36!");
+        pnlSearch.add(btnXuatFile,"w 90! ,h 30!");
         
         this.add(pnlSearch,"wrap");
     }

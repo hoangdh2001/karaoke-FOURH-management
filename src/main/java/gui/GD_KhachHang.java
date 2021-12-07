@@ -3,7 +3,7 @@ package gui;
 import dao.KhachHang_DAO;
 import entity.KhachHang;
 import gui.swing.button.Button;
-import gui.swing.panel.slideshow.EventPagination;
+import gui.swing.event.EventPagination;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -63,11 +63,12 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlTop.add(txtTimKiem, "w 40%, h 36!");
         
         btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
-        btnLamMoi.setBackground(colorBtn);
+        btnLamMoi.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnLamMoi.setForeground(Color.WHITE);
+        btnLamMoi.setBackground(new Color(54, 88, 153));
         btnLamMoi.setBorderline(true);
         btnLamMoi.setBorderRadius(5);
-        pnlTop.add(btnLamMoi, "w 100!, h 36!");
+        pnlTop.add(btnLamMoi, "w 90!, h 30!");
         
         
         btnLamMoi.addActionListener(this);
