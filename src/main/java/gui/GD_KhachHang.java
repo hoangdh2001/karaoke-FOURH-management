@@ -53,7 +53,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlTop.setLayout(new MigLayout("", "push[center]5[center] 20[center]push", "60[center]10"));
         pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
       
-        JLabel lblKhachHang = new JLabel("Nhập tên/ số điện thoại (các số cuối)");
+        JLabel lblKhachHang = new JLabel("Nhập tên/ Căn cước/ số cuối điện thoại");
         lblKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
         pnlTop.add(lblKhachHang);
         
