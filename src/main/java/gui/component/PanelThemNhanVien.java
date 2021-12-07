@@ -56,64 +56,19 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         clearForm();
     }
 
-
     private void setPropertiesForm() {
         int txtRadius = 10;
         int cmbRadius = 10;
         int btnRadius = 10;
         Color colorBtn = new Color(184, 238, 241);
-
-//        txtMaNV.setBorderLine(true);
-//        txtMaNV.setBorderRadius(txtRadius);
-
-//        txtTenNV.setBorderLine(true);
-//        txtTenNV.setBorderRadius(txtRadius);
-//
-//        cmbGioiTinh.setBorderLine(true);
-//        cmbGioiTinh.setBorderRadius(cmbRadius);
         cmbGioiTinh.addItem("Nam");
         cmbGioiTinh.addItem("Nữ");
-
-        //jDateChooser1.setBorderLine(true);
-        //txtMaNV.setBorderRadius();
         jDateChooser1.setDateFormatString("dd-MM-yyyy");
-//        txtSDT.setBorderLine(true);
-//        txtSDT.setBorderRadius(txtRadius);
-//
-//        txtEmail.setBorderLine(true);
-//        txtEmail.setBorderRadius(txtRadius);
-//
-//        txtCCCD.setBorderLine(true);
-//        txtCCCD.setBorderRadius(txtRadius);
-//
-//        cmbCaLam.setBorderLine(true);
-//        cmbCaLam.setBorderRadius(cmbRadius);
-        cmbCaLam.addItem("Chọn");
 
-//        cmbLoaiNV.setBorderLine(true);
-//        cmbLoaiNV.setBorderRadius(cmbRadius);
         cmbLoaiNV.addItem("Chọn");
-
-//        txtSoNha.setBorderLine(true);
-//        txtSoNha.setBorderRadius(txtRadius);
-
-//        txtTenDuong.setBorderLine(true);
-//        txtTenDuong.setBorderRadius(txtRadius);
-
-//        cmbXaPhuong.setBorderLine(true);
-//        cmbXaPhuong.setBorderRadius(cmbRadius);
         cmbXaPhuong.addItem("Chọn");
-
-//        cmbQuanHuyen.setBorderLine(true);
-//        cmbQuanHuyen.setBorderRadius(cmbRadius);
         cmbQuanHuyen.addItem("Chọn");
-
-//        cmbTinhTP.setBorderLine(true);
-//        cmbTinhTP.setBorderRadius(cmbRadius);
         cmbTinhTP.addItem("Chọn");
-
-//        txtMatKhau.setBorderLine(true);
-//        txtMatKhau.setBorderRadius(txtRadius);
 
         btnLamMoi.setBorderline(true);
         btnLamMoi.setBorderRadius(btnRadius);
@@ -124,7 +79,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         btnThem.setBackground(colorBtn);
 
     }
-    
+
     public void addThemEvent(EventAdd event) {
         this.event = event;
     }
@@ -152,7 +107,23 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
             public void itemStateChanged(ItemEvent e) {
                 String tinhThanh = cmbTinhTP.getSelectedItem().toString();
 
+                //Khi chọn lại combobox tỉnh thì xóa  combobox quuanHuyen, xaPhuong
+                int num1 = cmbQuanHuyen.getItemCount();
+                if (num1 > 1) {
+                    for (int i = num1 - 1; i > 0; i--) {
+                        cmbQuanHuyen.removeItemAt(i);
+                    }
+                }
+
+                int num2 = cmbXaPhuong.getItemCount();
+                if (num2 > 1) {
+                    for (int i = num2 - 1; i > 0; i--) {
+                        cmbXaPhuong.removeItemAt(i);
+                    }
+                }
+
                 diaChiMau_DAO.getQuanHuyenTheoTinhThanh(tinhThanh).forEach(i -> {
+
                     cmbQuanHuyen.addItem(i);
                     System.out.println("them quan huyen");
                 });
@@ -164,7 +135,13 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
             public void itemStateChanged(ItemEvent e) {
                 String quanHuyen = cmbQuanHuyen.getSelectedItem().toString();
                 String tinhThanh = cmbTinhTP.getSelectedItem().toString();
-
+                
+                int num2 = cmbXaPhuong.getItemCount();
+                if (num2 > 1) {
+                    for (int i = num2 - 1; i > 0; i--) {
+                        cmbXaPhuong.removeItemAt(i);
+                    }
+                }
                 diaChiMau_DAO.getPhuongXaTheoQHTH(quanHuyen, tinhThanh).forEach(i -> {
                     cmbXaPhuong.addItem(i);
                 });
@@ -245,6 +222,10 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(null, "Trùng căn cước công dân.");
                         txtCCCD.requestFocus();
                         txtCCCD.selectAll();
+                    } else if (nhanVien_DAO.checkEmail(email)) {
+                        JOptionPane.showMessageDialog(null, "Trùng email.");
+                        txtEmail.requestFocus();
+                        txtEmail.selectAll();
                     } else {
                         String x = cmbLoaiNV.getSelectedItem().toString();
 
@@ -256,7 +237,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
                         System.out.println("Nhan vieen dc them \n " + nhanVien);
                         boolean result = nhanVien_DAO.addNhanVien(nhanVien);
                         event.add(result);
-                        
+
                         if (result) {
                             clearForm();
                         }
@@ -286,7 +267,6 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         System.out.println("ham" + date.get(0) + "/" + date.get(1) + "/" + date.get(2));
         return date;
     }
-   
 
     private boolean validForm() {
         //Kiểm tra họ tên
@@ -358,7 +338,11 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
 
         //Kiểm tra email hợp lệ
         String email = txtEmail.getText().trim();
-        if (email.length() > 0) {
+        if (!(email.length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Chưa nhập email.");
+            txtEmail.requestFocus();
+            return false;
+        } else {
 
             if (!(email.matches("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$"))) {
                 JOptionPane.showMessageDialog(null, "Nhập sai định dạng email.");
@@ -367,7 +351,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
                 return false;
             }
         }
-        
+
         //Kiểm tra số căn cước công dân
         String cccd = txtCCCD.getText().trim();
         if (!(cccd.length() > 0)) {
@@ -557,6 +541,7 @@ public class PanelThemNhanVien extends javax.swing.JPanel {
         btnLamMoi.setText("Làm mới");
         btnLamMoi.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
 
+        txtMaNV.setEditable(false);
         txtMaNV.setBackground(new java.awt.Color(255, 255, 255));
         txtMaNV.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 

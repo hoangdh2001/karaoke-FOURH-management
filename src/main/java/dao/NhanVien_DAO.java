@@ -395,4 +395,25 @@ public class NhanVien_DAO implements NhanVienService {
         return false;
     }
 
+    @Override
+    public boolean checkEmail(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.getTransaction();
+
+        try {
+            transaction.begin();
+            String query = "SELECT * FROM NhanVien WHERE email = '" + email + "'";
+            NhanVien nhanVien = session.createNativeQuery(query, NhanVien.class).getSingleResult();
+            transaction.commit();
+
+            return true;
+        } catch (Exception e) {
+            transaction.rollback();
+        }
+
+        return false;
+    }
+    
+    
+
 }

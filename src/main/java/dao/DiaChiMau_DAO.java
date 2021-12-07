@@ -48,7 +48,7 @@ public class DiaChiMau_DAO implements DiaChiMauService {
 
         try {
             transaction.begin();
-            String query = "SELECT  DISTINCT(quanHuyen)  FROM DiaChiMau WHERE tinhThanh LIKE N'%" + tinhThanh + "%'";
+            String query = "SELECT  DISTINCT(quanHuyen)  FROM DiaChiMau WHERE tinhThanh = N'" + tinhThanh + "'";
             List<String> quanHuyens = session.createNativeQuery(query).getResultList();
 
             transaction.commit();
@@ -71,7 +71,7 @@ public class DiaChiMau_DAO implements DiaChiMauService {
         try {
             transaction.begin();
             String query = "SELECT DISTINCT(xaPhuong) FROM DiaChiMau "
-                    + " WHERE tinhThanh LIKE N'%" + tinhThanh + "%' AND quanHuyen LIKE N'%" + quanHuyen + "%'";
+                    + " WHERE tinhThanh = N'" + tinhThanh + "' AND quanHuyen = N'" + quanHuyen + "'";
             List<String> xaPhuongs = session.createNativeQuery(query).getResultList();
 
             transaction.commit();

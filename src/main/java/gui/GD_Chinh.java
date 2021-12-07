@@ -325,7 +325,7 @@ public class GD_Chinh extends JFrame {
                                                     boolean rs = (Boolean) obj;
                                                     if(rs) {
                                                         JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thành công!");
-//                                                        gD_NhanVien.loadDataNhanVien();
+                                                        gD_NhanVien.pnlPageHandle();
                                                         
                                                     } else {
                                                         JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thất bại!");

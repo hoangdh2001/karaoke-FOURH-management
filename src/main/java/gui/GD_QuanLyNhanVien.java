@@ -67,29 +67,29 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
     private DefaultComboBoxModel<LoaiNhanVien> cmbModelLNV;
     private DefaultComboBoxModel<CaLam> cmbModelCaLam;
-    
-    private String itemFirst_GT="Giới tính"; // add vào item đầu tiên của cmbGioiTinh
-    private String itemFirst_LNV="Loại nhân viên"; // add vào item đầu tiên của cmbLNV
-    private String itemFirst_CL="Ca làm"; // add vào item đầu tiên của cmbCaLam
-    private String itemFirst_ChonCot="Chọn cột"; // add vào item đầu tiên của cmbCot
+
+    private String itemFirst_GT = "Giới tính"; // add vào item đầu tiên của cmbGioiTinh
+    private String itemFirst_LNV = "Loại nhân viên"; // add vào item đầu tiên của cmbLNV
+    private String itemFirst_CL = "Ca làm"; // add vào item đầu tiên của cmbCaLam
+    private String itemFirst_ChonCot = "Chọn cột"; // add vào item đầu tiên của cmbCot
 
     public GD_QuanLyNhanVien() {
         initComponents();
         buildGD();
         setProperties();
-        
+
         nhanVien_DAO = new NhanVien_DAO();
         loaiNhanVien_DAO = new LoaiNhanVien_DAO();
         caLam_DAO = new CaLam_DAO();
         formHandler();
-        
+
         pnlPageHandle();
 
         searchHandler();
         loadDataTable(pnlPage.getCurrentIndex());
         addHandler();
         tableHandler();
-        
+
         btnLamMoiHandle();
     }
 
@@ -167,7 +167,6 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         cmbCot.addItem("Căn cước công dân");
         pnlTimKiemNV.add(cmbCot, "w 10%, h 30!");
 
-
         cmbGioiTinhTK = new JComboBox<>();
         cmbGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
         // cmbGioiTinhTK.setBorderLine(true);
@@ -176,16 +175,13 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         cmbGioiTinhTK.addItem("Nam");
         cmbGioiTinhTK.addItem("Nữ");
         pnlTimKiemNV.add(cmbGioiTinhTK, "w 10%,h 30!");
-        
-        
+
         cmbLoaiNVTK = new JComboBox<>();
         cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
         // cmbLoaiNVTK.setBorderLine(true);
         // cmbLoaiNVTK.setBorderRadius(5);
         cmbLoaiNVTK.addItem(itemFirst_LNV);
         pnlTimKiemNV.add(cmbLoaiNVTK, "w 10%,h 30!");
-
-        
 
         cmbCaLamTK = new JComboBox<>();
         cmbCaLamTK.setFont(new Font(fontName, fontPlain, font14));
@@ -194,8 +190,6 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         cmbCaLamTK.addItem(itemFirst_CL);
         pnlTimKiemNV.add(cmbCaLamTK, "w 10%,h 30!");
 
-        
-        
         // Button làm mới
         btnLamMoi = new Button("Làm mới");
         btnLamMoi.setFont(new Font(fontName, Font.PLAIN, font14));
@@ -203,7 +197,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         btnLamMoi.setBorderline(true);
         btnLamMoi.setBorderRadius(5);
         pnlTimKiemNV.add(btnLamMoi, "w 100!, h 36!");
-        
+
         // Button tìm kiếm
         btnThem = new Button("Thêm");
         btnThem.setFont(new Font(fontName, Font.PLAIN, font14));
@@ -215,14 +209,14 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
     }
 
-    
-    private void setProperties(){
+    private void setProperties() {
         tblNhanVien.getTableHeader().setFont(new Font(fontName, Font.BOLD, 14));
 
         String html2 = "<html><head><style> body{margin: 0 ; padding: 0; background-color: #303841;} h3{color: white; padding: 0 16px;} </style></head>"
                 + "<body><h3>Click chuột trái 2 lần để xem chi tiết</h3></body></html>";
         tblNhanVien.setToolTipText(html2);
     }
+
     /**
      * load dữ liệu lên các combobox của form tìm kiếm
      */
@@ -275,7 +269,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
     }
 
     private void tableHandler() {
-        
+
         tblNhanVien.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -299,9 +293,6 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 //                    i.getMatKhau()).convertToRowTable());
 //        }
 //    }
-
-    
-
     private void addHandler() {
         btnThem.addActionListener(new ActionListener() {
             @Override
@@ -309,6 +300,10 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
                 eventAddNhanVien.AddNhanVien();
             }
         });
+    }
+
+    public void loadDataOutside() {
+        loadDataTable(pnlPage.getCurrentIndex());
     }
 
     private void loadDataTable(int numPage) {
@@ -398,9 +393,9 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
             }
 
         }
-        
+
         int row = nhanVien_DAO.getSoLuongNhanVien(txtTimKiem.getText().trim(), searchOption, gioiTinh,
-                        maLoaiNV, maCaLam);
+                maLoaiNV, maCaLam);
 
         int x = row % 20 == 0 ? row / 20 : (row / 20) + 1;
         if (x == 0) {
@@ -408,7 +403,8 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         }
         pnlPage.init(x);
     }
-    private void pnlPageHandle() {
+
+    public void pnlPageHandle() {
         pnlPage.addEventPagination(new EventPagination() {
             @Override
             public void onClick(int pageClick) {
@@ -418,12 +414,12 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
         loadPage();
     }
-    
-    private void btnLamMoiHandle(){
+
+    private void btnLamMoiHandle() {
         btnLamMoi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-         clearForm();
+                clearForm();
             }
         });
     }

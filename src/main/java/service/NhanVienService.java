@@ -18,4 +18,5 @@ public interface NhanVienService {
     public List<String> getMaNhanVienQuanLy();
     public boolean checkSDT(String sdt);
     public boolean checkCCCD(String cccd);
+    public boolean checkEmail(String email);
 }

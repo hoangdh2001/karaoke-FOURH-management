@@ -210,6 +210,27 @@ public class PanelTabSuaThongTinNV1 extends javax.swing.JPanel {
             public void itemStateChanged(ItemEvent e) {
                 String tinhThanh = cmbTinhTP.getSelectedItem().toString();
 
+                // set lại combobox
+                cmbQuanHuyen.setSelectedIndex(0);
+                cmbXaPhuong.setSelectedIndex(0);
+                
+                //Khi chọn lại combobox tỉnh thì xóa  combobox quuanHuyen, xaPhuong
+                
+                int num1 = cmbQuanHuyen.getItemCount();
+                System.out.println(".itemStateChanged() Sua thong tin NV: count quan huyen: "+ num1);
+                if (num1 > 1) {
+                    for (int i = num1 - 1; i > 0; i--) {
+                        cmbQuanHuyen.removeItemAt(i);
+                    }
+                }
+
+                int num2 = cmbXaPhuong.getItemCount();
+                if (num2 > 1) {
+                    for (int i = num2 - 1; i > 0; i--) {
+                        cmbXaPhuong.removeItemAt(i);
+                    }
+                }
+                
                 diaChiMau_DAO.getQuanHuyenTheoTinhThanh(tinhThanh).forEach(i -> {
                     cmbQuanHuyen.addItem(i);
                     System.out.println("them quan huyen");
@@ -223,6 +244,13 @@ public class PanelTabSuaThongTinNV1 extends javax.swing.JPanel {
                 String quanHuyen = cmbQuanHuyen.getSelectedItem().toString();
                 String tinhThanh = cmbTinhTP.getSelectedItem().toString();
 
+                int num2 = cmbXaPhuong.getItemCount();
+                if (num2 > 1) {
+                    for (int i = num2 - 1; i > 0; i--) {
+                        cmbXaPhuong.removeItemAt(i);
+                    }
+                }
+                
                 diaChiMau_DAO.getPhuongXaTheoQHTH(quanHuyen, tinhThanh).forEach(i -> {
                     cmbXaPhuong.addItem(i);
                     System.out.println("them xa phuong");
@@ -240,7 +268,8 @@ public class PanelTabSuaThongTinNV1 extends javax.swing.JPanel {
             txtTenNV.requestFocus();
             return false;
         } else {
-            if (!hoTen.matches("^([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹễíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*\\s)+([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*)$")) {
+                       
+            if (!hoTen.matches("^([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*\\s)+([ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴA-Z]{1}[ắằẳẵặăấầẩẫậâáàãảạđếềểễệêéèẻẽẹíìỉĩịốồổỗộôớờởỡợơóòõỏọứừửữựưúùủũụýỳỷỹỵa-z]*)$")) {
                 JOptionPane.showMessageDialog(null, "Chưa nhập đầy đủ họ tên. Họ tên bắt đầu bằng chữ in hoa.");
                 txtTenNV.selectAll();
                 txtTenNV.requestFocus();
