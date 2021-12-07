@@ -132,7 +132,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         pnlTitle.setLayout(new MigLayout("fill", "", ""));
         JLabel lblTitle = new JLabel();
         lblTitle.setText("Quản lý nhân viên");
-        lblTitle.setFont(new Font("sansserif", Font.BOLD, 18));
+        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 18));
         lblTitle.setForeground(new Color(68, 68, 68));
         pnlTitle.add(lblTitle);
         return pnlTitle;
