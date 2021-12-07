@@ -342,7 +342,7 @@ public class GD_Chinh extends JFrame {
                         break;
                     case 5:
                         if (subMenuIndex == 0) {
-                            content.showForm(new GD_ThongKeDoanhThu2());
+                            content.showForm(new GD_ThongKeDoanhThu());
                         } else if (subMenuIndex == 1) {
                             content.showForm(new GD_ThongKeHangHoa());
                         }
@@ -351,7 +351,7 @@ public class GD_Chinh extends JFrame {
                         if(subMenuIndex == 0) {
                             content.showForm(new GD_XemDichVu());
                         } else if (subMenuIndex == 1) {
-                            content.showForm(new GD_QLHangHoa());
+                            content.showForm(new GD_ThemMatHang());
                         }
                         break;
                     default:

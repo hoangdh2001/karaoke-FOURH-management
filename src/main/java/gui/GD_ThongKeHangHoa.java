@@ -18,10 +18,10 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
     }
     
     private void createChart() {
-        barChart.addLegend("Income", new Color(0, 108, 247));
-        barChart.addLegend("Expense", new Color(104, 49, 200));
-        barChart.addLegend("Profit", new Color(95, 209, 69));
-        barChart.addLegend("Cost", new Color(241, 100, 120));
+        barChart.addLegend("Income", new Color(0, 108, 247), new Color(0, 108, 247));
+        barChart.addLegend("Expense", new Color(104, 49, 200), new Color(0, 108, 247));
+        barChart.addLegend("Profit", new Color(95, 209, 69), new Color(0, 108, 247));
+        barChart.addLegend("Cost", new Color(241, 100, 120), new Color(0, 108, 247));
     }
     
     private void loadDataChart() {

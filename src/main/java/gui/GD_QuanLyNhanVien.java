@@ -456,11 +456,11 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "CCCD", "Ca làm", "Loại nhân viên"
+                "", "Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số điện thoại", "CCCD", "Ca làm", "Loại nhân viên"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -475,15 +475,15 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         tblNhanVien.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tblNhanVien);
         if (tblNhanVien.getColumnModel().getColumnCount() > 0) {
-            tblNhanVien.getColumnModel().getColumn(0).setResizable(false);
             tblNhanVien.getColumnModel().getColumn(1).setResizable(false);
-            tblNhanVien.getColumnModel().getColumn(1).setPreferredWidth(150);
             tblNhanVien.getColumnModel().getColumn(2).setResizable(false);
+            tblNhanVien.getColumnModel().getColumn(2).setPreferredWidth(150);
             tblNhanVien.getColumnModel().getColumn(3).setResizable(false);
             tblNhanVien.getColumnModel().getColumn(4).setResizable(false);
             tblNhanVien.getColumnModel().getColumn(5).setResizable(false);
             tblNhanVien.getColumnModel().getColumn(6).setResizable(false);
             tblNhanVien.getColumnModel().getColumn(7).setResizable(false);
+            tblNhanVien.getColumnModel().getColumn(8).setResizable(false);
         }
 
         pnlCenter.add(jScrollPane1, java.awt.BorderLayout.CENTER);

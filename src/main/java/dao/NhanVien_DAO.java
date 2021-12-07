@@ -191,7 +191,8 @@ public class NhanVien_DAO implements NhanVienService {
     }
 
     @Override
-    public List<NhanVien> searchNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV, String maCaLam, int numPage) {
+    public List<NhanVien> searchNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV,
+            String maCaLam, int numPage) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
 
@@ -201,14 +202,14 @@ public class NhanVien_DAO implements NhanVienService {
             soLuong = Math.abs(soLuong);
         }
 
-        String gioiTinhString = " and  gioiTinh = "+gioiTinh+" ";
+        String gioiTinhString = " and  gioiTinh = " + gioiTinh + " ";
         if (gioiTinh == 2) {
             gioiTinhString = "";
         }
 
         String query = "select * from NhanVien where  "
                 + "tenNhanVien like N'%" + textSearch + "%'"
-//                + "and ( gioiTinh =" + gioiTinh0 + "  OR  gioiTinh = " + gioiTinh1 + " ) "
+                // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                 + gioiTinhString
                 + "   and maCa like '%" + maCaLam + "%'"
                 + "and maLoaiNhanVien like '%" + maLoaiNV + "%'"
@@ -217,7 +218,7 @@ public class NhanVien_DAO implements NhanVienService {
         if (searchOption == "Mã nhân viên") {
             query = "select * from NhanVien where  "
                     + "maNhanVien like '%" + textSearch + "%'"
-//                    + "and ( gioiTinh =" + gioiTinh0 + "  OR  gioiTinh = " + gioiTinh1 + " ) "
+                    // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                     + gioiTinhString
                     + "   and maCa like '%" + maCaLam + "%'"
                     + "and maLoaiNhanVien like '%" + maLoaiNV + "%'"
@@ -225,7 +226,7 @@ public class NhanVien_DAO implements NhanVienService {
         } else if (searchOption == "Căn cước công dân") {
             query = "select * from NhanVien where  "
                     + "cccd like '%" + textSearch + "%'"
-//                    + "and ( gioiTinh =" + gioiTinh0 + "  OR  gioiTinh = " + gioiTinh1 + " ) "
+                    // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                     + gioiTinhString
                     + "   and maCa like '%" + maCaLam + "%'"
                     + "and maLoaiNhanVien like '%" + maLoaiNV + "%'"
@@ -248,24 +249,26 @@ public class NhanVien_DAO implements NhanVienService {
     }
 
     @Override
-    public int getSoLuongNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV, String maCaLam) {
+    public int getSoLuongNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV,
+            String maCaLam) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
 
-        String gioiTinhString = " and  gioiTinh = "+gioiTinh+" ";
+        String gioiTinhString = " and  gioiTinh = " + gioiTinh + " ";
         if (gioiTinh == 2) {
             gioiTinhString = " ";
         }
-//        int gioiTinh0 = gioiTinh;
-//        int gioiTinh1 = gioiTinh;
-//        if (gioiTinh == 2) { // gán lại giá trị cho gioiTinh0 và gioiTinh1 để lấy dc tất cả
-//            gioiTinh0 = 0;
-//            gioiTinh1 = 1;
-//        }
+        // int gioiTinh0 = gioiTinh;
+        // int gioiTinh1 = gioiTinh;
+        // if (gioiTinh == 2) { // gán lại giá trị cho gioiTinh0 và gioiTinh1 để lấy dc
+        // tất cả
+        // gioiTinh0 = 0;
+        // gioiTinh1 = 1;
+        // }
 
         String query = "select count(*) from NhanVien where  "
                 + " tenNhanVien like N'%" + textSearch + "%' "
-//                + "and ( gioiTinh =" + gioiTinh0 + "  OR  gioiTinh = " + gioiTinh1 + " ) "
+                // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                 + gioiTinhString
                 + "   and maCa like '%" + maCaLam + "%'"
                 + " and maNhanVien like '%" + maLoaiNV + "%'";
@@ -273,7 +276,7 @@ public class NhanVien_DAO implements NhanVienService {
         if ("Mã nhân viên".equals(searchOption)) {
             query = "select count(*) from NhanVien where  "
                     + " maNhanVien like '%" + textSearch + "%'"
-//                    + "and ( gioiTinh =" + gioiTinh0 + "  OR  gioiTinh = " + gioiTinh1 + " ) "
+                    // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                     + gioiTinhString
                     + "   and maCa like '%" + maCaLam + "%'"
                     + "  and maNhanVien like '%" + maLoaiNV + "%'";
@@ -281,7 +284,7 @@ public class NhanVien_DAO implements NhanVienService {
         } else if ("Căn cước công dân".equals(searchOption)) {
             query = "select count(*) from NhanVien where  "
                     + " cccd like '%" + textSearch + "%'"
-//                    + "and ( gioiTinh =" + gioiTinh0 + "  OR  gioiTinh = " + gioiTinh1 + " ) "
+                    // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                     + gioiTinhString
                     + "   and maCa like '%" + maCaLam + "%'"
                     + " and maNhanVien like '%" + maLoaiNV + "%'";
@@ -413,7 +416,21 @@ public class NhanVien_DAO implements NhanVienService {
 
         return false;
     }
-    
-    
 
+    @Override
+    public NhanVien getNhanVienByID(String maNhanVien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+            NhanVien nhanVien = session.find(NhanVien.class, maNhanVien);
+            tr.commit();
+            return nhanVien;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+
+        return null;
+    }
 }

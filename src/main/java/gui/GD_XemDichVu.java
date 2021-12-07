@@ -4,6 +4,7 @@
  */
 package gui;
 
+import dao.MatHang_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
 import entity.MatHang;
 import gui.swing.button.Button;
@@ -36,6 +37,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import service.MatHangService;
 
 /**
  *
@@ -50,7 +52,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     private Button btnXuatFile;
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
-    
+    private MatHangService matHangDao;
     private List<MatHang> listMatHang;
     
     private String fontName = "sansserif";
@@ -109,10 +111,10 @@ public class GD_XemDichVu extends javax.swing.JPanel {
                 String text = txtNhap.getText().trim();
                 int cmbSelected = cmbLoaiTimKiem.getSelectedIndex();
                 if(!text.equals("")){
-                    listMatHang = nhaCungCapVaNhapHang_DAO.findMatHang(txtNhap.getText().trim(), cmbSelected);
+                    listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
                 }else{
-                    listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+                    listMatHang = matHangDao.getDanhSachMatHang();
                     addDataToTable();
                 }
             }
@@ -123,10 +125,10 @@ public class GD_XemDichVu extends javax.swing.JPanel {
             String text = txtNhap.getText().trim();
                 int cmbSelected = cmbLoaiTimKiem.getSelectedIndex();
                 if(!text.equals("")){
-                    listMatHang = nhaCungCapVaNhapHang_DAO.findMatHang(txtNhap.getText().trim(), cmbSelected);
+                    listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
                 }else{
-                    listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+                    listMatHang = matHangDao.getDanhSachMatHang();
                     addDataToTable();
                 }
             }
@@ -136,9 +138,9 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     public void initData(){
         cmbLoaiTimKiem.addItem("Sản phẩm");
         cmbLoaiTimKiem.addItem("Loại sản phẩm");
-        
+        matHangDao = new MatHang_DAO();
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
-        listMatHang = nhaCungCapVaNhapHang_DAO.getDanhSachMatHang();
+        listMatHang = matHangDao.getDanhSachMatHang();
         addDataToTable();
     }
     
@@ -228,7 +230,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     private void initComponents() {
 
         pnlSearch = new gui.swing.panel.PanelShadow();
-        lbldsDichVu = new gui.swing.panel.PanelShadow();
+        pnlCenter = new gui.swing.panel.PanelShadow();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new gui.swing.table2.MyTableFlatlaf();
 
@@ -248,11 +250,12 @@ public class GD_XemDichVu extends javax.swing.JPanel {
             .addGap(0, 86, Short.MAX_VALUE)
         );
 
-        lbldsDichVu.setBackground(new java.awt.Color(255, 255, 255));
-        lbldsDichVu.setShadowOpacity(0.3F);
-        lbldsDichVu.setShadowSize(2);
-        lbldsDichVu.setShadowType(gui.swing.graphics.ShadowType.TOP);
-        lbldsDichVu.setLayout(new java.awt.BorderLayout());
+        pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
+        pnlCenter.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        pnlCenter.setShadowOpacity(0.3F);
+        pnlCenter.setShadowSize(2);
+        pnlCenter.setShadowType(gui.swing.graphics.ShadowType.TOP);
+        pnlCenter.setLayout(new java.awt.BorderLayout());
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -273,6 +276,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         table.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         table.setRowHeight(40);
         table.setShowGrid(true);
+        table.setShowVerticalLines(false);
         jScrollPane1.setViewportView(table);
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setResizable(false);
@@ -281,28 +285,28 @@ public class GD_XemDichVu extends javax.swing.JPanel {
             table.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        lbldsDichVu.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        pnlCenter.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lbldsDichVu, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
+            .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbldsDichVu, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE))
+                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private gui.swing.panel.PanelShadow lbldsDichVu;
+    private gui.swing.panel.PanelShadow pnlCenter;
     private gui.swing.panel.PanelShadow pnlSearch;
     private gui.swing.table2.MyTableFlatlaf table;
     // End of variables declaration//GEN-END:variables

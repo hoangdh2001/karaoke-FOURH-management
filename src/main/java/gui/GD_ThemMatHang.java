@@ -1,6 +1,8 @@
 package gui;
 
 import dao.LoHang_DAO;
+import dao.LoaiDichVu_DAO;
+import dao.MatHang_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
 import entity.LoHang;
 import entity.LoaiDichVu;
@@ -33,8 +35,10 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import objectcombobox.ObjectComboBox;
+import service.LoaiDichVuService;
+import service.MatHangService;
 
-public class GD_QLHangHoa extends javax.swing.JPanel {
+public class GD_ThemMatHang extends javax.swing.JPanel {
 
     private JComboBox<Object> cbNhaCungCap;
     private JComboBox<Object> cbLoaiSP;
@@ -50,6 +54,8 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
     private JTextField txtGiaban;
 
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
+    private MatHangService matHang_Dao;
+    private LoaiDichVuService loaiDichVu_Dao;
     private LoHang_DAO loHangDAO;
     private PanelTenSanPham pnlSPMoi;
 
@@ -75,7 +81,7 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
     private Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
 
-    public GD_QLHangHoa() {
+    public GD_ThemMatHang() {
         nhanVien = GD_Chinh.NHAN_VIEN;
         initComponents();
         buildDisplay();
@@ -242,6 +248,8 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
     public void initDao(){
         loHang = new LoHang();
         loHangDAO = new LoHang_DAO();
+        matHang_Dao = new MatHang_DAO();
+        loaiDichVu_Dao = new LoaiDichVu_DAO();
         isNewSP = new HashMap<MatHang,Boolean>();
         df = new DecimalFormat("#,##0.00");
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
@@ -249,7 +257,7 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
         
         loadNCC();
         
-        List<LoaiDichVu> listDV = nhaCungCapVaNhapHang_DAO.getLoaiDichVu();
+        List<LoaiDichVu> listDV = loaiDichVu_Dao.getDsLoaiDichVu();
         for (int i = 0; i < listDV.size(); i++) {
             LoaiDichVu dv = listDV.get(i);
             cbLoaiSP.addItem(new ObjectComboBox(dv.getTenLoaiDichVu(),dv.getMaLoaiDichVu()));  
@@ -478,9 +486,9 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
 ////insert and update sp
                 isNewSP.forEach((sp,isInsert) ->{
                     if(isInsert){
-                        nhaCungCapVaNhapHang_DAO.insertMatHang(sp);
+                        matHang_Dao.insertMatHang(sp);
                     }else{
-                        nhaCungCapVaNhapHang_DAO.updateMatHang(sp);
+                        matHang_Dao.updateMatHang(sp);
                     }
                 });
 //insert ct nhap
@@ -501,12 +509,12 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
                 double giaNhap = convertMoneyToDouble(txtGiaNhap.getText().trim());
                 double giaBan = convertMoneyToDouble(txtGiaban.getText().trim());
                 ObjectComboBox cb = (ObjectComboBox)cbLoaiSP.getSelectedItem();
-                LoaiDichVu loaiDichVu = nhaCungCapVaNhapHang_DAO.getLoaiDichVuByMa(cb.getMa());
+                LoaiDichVu loaiDichVu = loaiDichVu_Dao.getLoaiDichVuByMa(cb.getMa());
                 String tenMatHang ="";
                 MatHang matHang;
                 
                 if(cbSpMoi.isSelected()){
-                    String maMatHang = nhaCungCapVaNhapHang_DAO.getLastMatHang();
+                    String maMatHang = matHang_Dao.getLastMatHang();
                     tenMatHang  = pnlSPMoi.getTenSanPhamMoi();
                     matHang = new MatHang(maMatHang, pnlSPMoi.getTenSanPhamMoi(), loaiDichVu, soLuong, giaBan);
                     isNewSP.put(matHang,true);
@@ -613,6 +621,8 @@ public class GD_QLHangHoa extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        table.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        table.setRowHeight(40);
         table.setShowGrid(true);
         table.setShowVerticalLines(false);
         jScrollPane2.setViewportView(table);

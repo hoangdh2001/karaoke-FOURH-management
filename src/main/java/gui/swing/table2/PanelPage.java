@@ -118,19 +118,24 @@ public class PanelPage extends javax.swing.JPanel {
     public void init(int num) {
         pnlNum.removeAll();
         cmbNumPage.removeAllItems();
+        listBtn.removeAll(listBtn);
         currentIndex = 0;
+        this.setIndex(1);
+        lblPre.setText("");
         for (int i = 0; i < num; i++) {
             if (i < 4) {
                 Item item = new Item(i, event);
-                pnlNum.add(item);
+                pnlNum.add(item, "w 45!");
                 listBtn.add(item);
-
+              
             } else {
                 lblNext.setText("...");
             }
             cmbNumPage.addItem(i + 1);
         }
+        cmbNumPage.setSelectedIndex(currentIndex);
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

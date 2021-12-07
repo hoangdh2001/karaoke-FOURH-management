@@ -92,16 +92,15 @@ public class KhachHang_DAO implements KhachHangService {
     }
 
     @Override
-    public List<KhachHang> layDSKhachHang(String tuKhoa) {
+    public List<KhachHang> getDSKhachHangByTuKhoa(String tuKhoa, int numPage){
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = "select * from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "' ";
-                   // + "order by kh.maKhachHang offset :x row fetch next 20 rows only";
+            String sql = "select * from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "%' order by kh.maKhachHang offset :x row fetch next 20 rows only";
             List<KhachHang> dsKhachHang = session
                     .createNativeQuery(sql, KhachHang.class)
-                    //.setParameter("x", numPage * 20)
+                    .setParameter("x", numPage * 20)
                     .getResultList();
             tr.commit();
             return dsKhachHang;
@@ -215,7 +214,78 @@ public class KhachHang_DAO implements KhachHangService {
         session.close();
         return false;
     }
+    
+    @Override
+    public KhachHang getKhachHangBySDT(String sdt) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "  select * from Khachhang where sdt = '"+sdt+"' ";
+        try {
+            tr.begin();
+                KhachHang kh;
+                try {
+                    kh = session.createNativeQuery(sql,KhachHang.class).getSingleResult();
+                } catch (Exception e) {
+                    tr.rollback();
+                    return null;
+                }
+            tr.commit();
+            return kh;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    }
+    
+    @Override
+    public boolean addKhachHang(KhachHang kh) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+                session.save(kh);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return false;
+    }
 
+    @Override
+    public String getlastKhachHangTang(){
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select top 1 maKhachHang from KhachHang order by maKhachHang desc";
+        
+        try {
+            tr.begin();
+            String maKhachCuoi="";
+            String maCuoiCung = "KH";
+            try {
+                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
+                int so = Integer.parseInt(maKhachCuoi.split("KH")[1]) + 1;
+                int soChuSo = String.valueOf(so).length();
+                
+                for (int i = 0; i< 7 - soChuSo; i++){
+                    maCuoiCung += "0";
+                }
+                maCuoiCung += String.valueOf(so);
+            } catch (Exception e) {
+                maCuoiCung = "KH0000001";
+            } 
+            tr.commit();
+            return maCuoiCung;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
     @Override
     public int getSoLuongKhachHang() {
         Session session = sessionFactory.getCurrentSession();
@@ -226,6 +296,25 @@ public class KhachHang_DAO implements KhachHangService {
             tr.begin();
             int rs = (int) session.
                     createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getSoLuongKhachHangByTuKhoa(String tuKhoa) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "%'";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                     createNativeQuery(sql)
                     .getSingleResult();
             tr.commit();
             return  rs;

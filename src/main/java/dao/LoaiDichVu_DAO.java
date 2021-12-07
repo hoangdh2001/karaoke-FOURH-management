@@ -66,5 +66,22 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
         }
         return null;
     }
+    
+    @Override
+    public LoaiDichVu getLoaiDichVuByMa(String ma) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                LoaiDichVu ldv = session.find(LoaiDichVu.class, ma);
+            tr.commit();
+            return ldv;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
+    }
 }
 

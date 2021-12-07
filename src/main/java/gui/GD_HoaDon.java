@@ -6,12 +6,11 @@ import dao.NhanVien_DAO;
 import entity.HoaDon;
 import gui.swing.button.Button;
 import gui.swing.event.EventSelectedRow;
-import gui.swing.graphics.ShadowType;
 import gui.swing.panel.PanelShadow;
+import gui.swing.panel.slideshow.EventPagination;
 import gui.swing.table2.EventAction;
 import gui.swing.textfield.MyTextFieldFlatlaf;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,19 +20,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.RowSorter;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
@@ -62,6 +60,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
 
     private EventSelectedRow eventOnClick;
     private NhanVien_DAO nhanVien_Dao;
+    private int soLuongHoaDon;
     
     public void addEvent(EventSelectedRow eventOnClick) {
         this.eventOnClick = eventOnClick;
@@ -71,13 +70,13 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         hoaDon_Dao = new HoaDon_DAO();
         nhanVien_Dao = new NhanVien_DAO();
         initComponents();
-        loadData();
         build_GDHoaDon();
     }
     
     private void build_GDHoaDon() {
         createForm();
         createTable();
+        createPanelBottom();
         loadThangLenCombobox(dsThang);
         loadQuyLenCombobox(dsQuy);
         loadNamLenCombobox(dsNam);
@@ -117,7 +116,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         dscBatDau.setOpaque(false);
         dscBatDau.setDateFormatString("yyyy-MM-dd");
         dscBatDau.setFont(new Font(fontName, fontPlain, font14));
-        pnlThoiGianHD.add(dscBatDau, "w 40%, h 30!");
+        pnlThoiGianHD.add(dscBatDau, "w 45%, h 30!");
         JLabel lblDen;
 
         // Chọn thời gian kết thúc
@@ -127,7 +126,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         dscKetThuc.setOpaque(false);
         dscKetThuc.setDateFormatString("yyyy-MM-dd");
         dscKetThuc.setFont(new Font(fontName, fontPlain, font14));
-        pnlThoiGianHD.add(dscKetThuc, "w 40%, h 30!");
+        pnlThoiGianHD.add(dscKetThuc, "w 45%, h 30!");
 
         JPanel pnlCmbThoiGian = new JPanel(new MigLayout("", "0[center]push[center]push[center]0", "[][]"));
         pnlCmbThoiGian.setBackground(Color.WHITE);
@@ -163,7 +162,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         cột 1, dòng 2: Chọn cột cần tìm
          */
         pnlTimKiemHD.setLayout(new MigLayout("wrap, insets 0", "[]10[]10", "[][]10[]"));
-        pnlForm.add(pnlTimKiemHD);
+        pnlForm.add(pnlTimKiemHD, " w 45%");
 
         JLabel lblTimKiem = new JLabel("Tìm kiếm cụ thể");
         lblTimKiem.setFont(new Font(fontName, fontPlain, font14));
@@ -191,7 +190,13 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         btnLamMoi.setBorderline(true);
         pnlTimKiemHD.add(btnLamMoi, "w 100!, h 36!");
 
+        
         /*Đăng ký sự kiện*/
+        cmbCot.addActionListener(this);
+        btnLamMoi.addActionListener(this);
+        cmbQuy.addActionListener(this);
+        cmbThang.addActionListener(this);
+        cmbNam.addActionListener(this);
     }
 
     private JPanel createPanelTitle() {
@@ -210,6 +215,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     private void createTable(){
         tblHoaDon.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         tblHoaDon.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
+        taiLaiDuLieu(hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex()));
         RowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) tblHoaDon.getModel());
         tblHoaDon.setRowSorter(sorter);
         xuLySuKien();
@@ -218,16 +224,25 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     public void xoaDuLieu() {
         DefaultTableModel df = (DefaultTableModel) tblHoaDon.getModel();
         df.setRowCount(0);
+        tblHoaDon.clearSelection();
     }
     
-    public void taiLaiDuLieu(List<HoaDon> dsHoaDon){
-        DecimalFormat dcf = new DecimalFormat("#,###");
-        SimpleDateFormat fm1 = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
-        List<HoaDon> dsTam = xuLyLoai(dsHoaDon);
-        for(HoaDon hoaDon: dsTam){
-            tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), fm1.format(hoaDon.getNgayLapHoaDon()), fm2.format(hoaDon.getThoiGianBatDau()), dcf.format(hoaDon.getTongTienMatHang()), dcf.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()), dcf.format(hoaDon.getTongHoaDon()), hoaDon.getNhanVien().getTenNhanVien()});
-        }
+    public void taiLaiDuLieu(List<HoaDon> dsHoaDon) {
+        ((DefaultTableModel) tblHoaDon.getModel()).setRowCount(0);
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<HoaDon> dsTam = xuLyLoai(dsHoaDon);
+                if (dsTam != null) {
+                    dsTam.forEach((hoaDon) -> {
+                        ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
+                    });
+                }
+                tblHoaDon.repaint();
+                tblHoaDon.revalidate();
+            }
+        }).start();
     }
     
     public List<HoaDon> xuLyLoai(List<HoaDon> dsHoaDon){
@@ -235,28 +250,43 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         if(nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
             return dsHoaDon;
         }else{
-            for(HoaDon hoaDon: dsHoaDon){
-                if(hoaDon.getNhanVien().getMaNhanVien().equals(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
-                    dsTam.add(hoaDon);
+          Thread th =  new Thread(new Runnable() {
+            @Override
+            public void run() {
+    
+                for(HoaDon hoaDon: dsHoaDon){
+                    if(hoaDon.getNhanVien().getMaNhanVien().equals(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
+                        dsTam.add(hoaDon);
+                    }
                 }
             }
-            return dsTam;
+           });
+          th.start();
+            try {
+                th.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GD_HoaDon.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          return dsTam;
         }
     }    
-    private void loadData() {
-        DecimalFormat dcf = new DecimalFormat("#,###");
-        SimpleDateFormat fm1 = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
-        dsHoaDon = hoaDon_Dao.getDsHoaDon();
-        if(dsHoaDon != null) {
-            List<HoaDon> dsTam = xuLyLoai(dsHoaDon);
-            for(HoaDon hoaDon: dsTam){
-                tblHoaDon.addRow(new Object[]{hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getTenKhachHang(), hoaDon.getPhong().getTenPhong(), hoaDon.getGioHat(), fm1.format(hoaDon.getNgayLapHoaDon()), fm2.format(hoaDon.getThoiGianBatDau()), dcf.format(hoaDon.getTongTienMatHang()), dcf.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()), dcf.format(hoaDon.getTongHoaDon()), hoaDon.getNhanVien().getTenNhanVien()});
+    
+    private void loadPage(int soLuongPhieu) {
+        pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
+    }
+    
+    private void createPanelBottom() {
+        pnlPage.addEventPagination(new EventPagination() {
+            @Override
+            public void onClick(int pageClick) {
+                taiLaiDuLieu(hoaDon_Dao.getDsHoaDon(pageClick));
             }
-        }
+        });
+        loadPage(hoaDon_Dao.getSoLuongHoaDon());
     }
 
     private void xuLySuKien(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         tblHoaDon.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -289,27 +319,37 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
                     String tk;
                     String s = txtTimKiem.getText().trim();
                     String tieuChi = cmbCot.getSelectedItem().toString();
+                    
                    switch(tieuChi){
                         case "Mã hóa đơn":
                             tk = "maHoaDon";
-                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTieuChiKhac(tk, s);
+                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTieuChiKhac(tk, s, pnlPage.getCurrentIndex());
+                            xoaDuLieu();
+                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByTieuChiKhac(tk, s);
                             break;
                         case "Khách hàng":
-                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTenKhachHang(s);
+                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTenKhachHang(s, pnlPage.getCurrentIndex());
+                            xoaDuLieu();
+                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByTenKhachHang(s);
                             break;
                         case "Phòng":
-                            dsHoaDon= hoaDon_Dao.getDSHoaDonByTenPhong(s);
+                            dsHoaDon= hoaDon_Dao.getDSHoaDonByTenPhong(s, pnlPage.getCurrentIndex());
+                            xoaDuLieu();
+                            soLuongHoaDon = hoaDon_Dao.getSoLuongHoaDonByTenPhong(s);
                             break;
                         default:
-                            dsHoaDon = hoaDon_Dao.getDsHoaDon();
+                            dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex());
+                            xoaDuLieu();
+                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon();
                             break;
                     }
-                   xoaDuLieu();
-                   taiLaiDuLieu(dsHoaDon);
+                    loadPage(soLuongHoaDon);
+                    taiLaiDuLieu(dsHoaDon);
                 }else{
-                    
-                    dsHoaDon = hoaDon_Dao.getDsHoaDon();
+                    dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex());
                     xoaDuLieu();
+                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon();
+                    loadPage(soLuongHoaDon);
                     taiLaiDuLieu(dsHoaDon);
                 }
             }
@@ -318,26 +358,14 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         dscBatDau.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
            public void propertyChange(PropertyChangeEvent arg0) {
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String to = kiemTraNgayKetThuc();
+                
                 if(dscBatDau.getDate()!=null){
-                    if(dscKetThuc.getDate()==null){
-                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), hoaDon_Dao.layNgayLapLonNhat());
-                        xoaDuLieu();
-                        taiLaiDuLieu(dsHoaDon);
-                    }else{
-                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), df.format(dscKetThuc.getDate()));
-                        xoaDuLieu();
-                        taiLaiDuLieu(dsHoaDon);
-                    }
-                }else{
-                    if(dscKetThuc.getDate()==null){
-                        xoaDuLieu();
-                        loadData();
-                    }else{
-                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(hoaDon_Dao.layNgayLapNhoNhat(),df.format(dscKetThuc.getDate()));
-                        xoaDuLieu();
-                        taiLaiDuLieu(dsHoaDon);
-                    }
+                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), to, pnlPage.getCurrentIndex());
+                    xoaDuLieu();
+                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonFromDateToDate(df.format(dscBatDau.getDate()), to);
+                    loadPage(soLuongHoaDon);
+                    taiLaiDuLieu(dsHoaDon);
                 }
             }
         });
@@ -345,26 +373,13 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         dscKetThuc.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent arg0) {
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                if(dscKetThuc.getDate()!=null){
-                    if(dscBatDau.getDate()==null){
-                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(hoaDon_Dao.layNgayLapNhoNhat(),df.format(dscKetThuc.getDate()));
-                        xoaDuLieu();
-                        taiLaiDuLieu(dsHoaDon);
-                    }else{
-                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), df.format(dscKetThuc.getDate()));
-                        xoaDuLieu();
-                        taiLaiDuLieu(dsHoaDon);
-                    }
-                }else{
-                    if(dscBatDau.getDate()==null){
-                        xoaDuLieu();
-                        loadData();
-                    }else{
-                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), hoaDon_Dao.layNgayLapLonNhat());
-                        xoaDuLieu();
-                        taiLaiDuLieu(dsHoaDon);
-                    }
+               String from = kiemTraNgayBatDau();
+              if(dscKetThuc.getDate()!=null){
+                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(from, df.format(dscKetThuc.getDate()), pnlPage.getCurrentIndex());
+                    xoaDuLieu();
+                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonFromDateToDate(from, df.format(dscKetThuc.getDate()));
+                    loadPage(soLuongHoaDon);
+                    taiLaiDuLieu(dsHoaDon);
                 }
             }
         });
@@ -419,12 +434,16 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
 
         pnlForm = new gui.swing.panel.PanelShadow();
         panelShadow2 = new gui.swing.panel.PanelShadow();
-        jPanel1 = new javax.swing.JPanel();
-        panelPage1 = new gui.swing.table2.PanelPage();
+        pnlBottom_Page = new javax.swing.JPanel();
+        pnlPage = new gui.swing.table2.PanelPage();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblHoaDon = new gui.swing.table2.MyTableFlatlaf();
 
+        setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        setMaximumSize(new java.awt.Dimension(32767, 32767));
+        setMinimumSize(new java.awt.Dimension(0, 0));
         setOpaque(false);
+        setPreferredSize(new java.awt.Dimension(951, 549));
         setLayout(new java.awt.BorderLayout(0, 5));
 
         pnlForm.setBackground(new java.awt.Color(255, 255, 255));
@@ -452,31 +471,31 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         panelShadow2.setShadowType(gui.swing.graphics.ShadowType.TOP);
         panelShadow2.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setOpaque(false);
+        pnlBottom_Page.setOpaque(false);
 
-        panelPage1.setOpaque(false);
+        pnlPage.setOpaque(false);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(panelPage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout pnlBottom_PageLayout = new javax.swing.GroupLayout(pnlBottom_Page);
+        pnlBottom_Page.setLayout(pnlBottom_PageLayout);
+        pnlBottom_PageLayout.setHorizontalGroup(
+            pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlBottom_PageLayout.createSequentialGroup()
+                .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 862, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelPage1, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+        pnlBottom_PageLayout.setVerticalGroup(
+            pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
         );
 
-        panelShadow2.add(jPanel1, java.awt.BorderLayout.PAGE_END);
+        panelShadow2.add(pnlBottom_Page, java.awt.BorderLayout.PAGE_END);
 
         tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Khách hàng", "Phòng", "Giờ hát", "Ngày lập", "Giờ bắt đầu", "Tổng mặt hàng", "Giá phòng", "Tổng hóa đơn", "Nhân viên"
+                "Mã", "Khách hàng", "Phòng", "Giờ hát", "Ngày lập", "Giờ bắt đầu", "Tổng mặt hàng", "Giá phòng", "Tổng hóa đơn", "Nhân viên"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -489,6 +508,8 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         });
         tblHoaDon.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblHoaDon.setRowHeight(40);
+        tblHoaDon.setSelectionBackground(new java.awt.Color(239, 244, 255));
+        tblHoaDon.setSelectionForeground(new java.awt.Color(51, 51, 51));
         tblHoaDon.setShowGrid(true);
         tblHoaDon.setShowVerticalLines(false);
         jScrollPane2.setViewportView(tblHoaDon);
@@ -518,6 +539,11 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
+        String to = kiemTraNgayKetThuc();
+        String from = kiemTraNgayBatDau();
+        String thang = cmbThang.getSelectedItem().toString();
+        String nam = cmbNam.getSelectedItem().toString();
+        String quy = cmbQuy.getSelectedItem().toString();
         if(obj.equals(btnLamMoi)){
             dscBatDau.setDate(null);
             dscKetThuc.setDate(null);
@@ -527,69 +553,69 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             cmbNam.setSelectedIndex(0);
             cmbQuy.setSelectedIndex(0);
             txtTimKiem.requestFocus();
+            dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex());
             xoaDuLieu();
-            loadData();
+            soLuongHoaDon = hoaDon_Dao.getSoLuongHoaDon();
+            loadPage(soLuongHoaDon);
+            taiLaiDuLieu(dsHoaDon);
+            
         }
         if(obj.equals(cmbNam)){
-             String to = kiemTraNgayKetThuc();
-            String from = kiemTraNgayBatDau();
-            String thang = cmbThang.getSelectedItem().toString();
-            String nam = cmbNam.getSelectedItem().toString();
-            String quy = cmbQuy.getSelectedItem().toString();
             if(cmbNam.getSelectedIndex()!=0){
               if(cmbThang.getSelectedIndex()==0)thang = "";
               if(cmbQuy.getSelectedIndex()==0)quy ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
               xoaDuLieu();
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon);
             }else{
               nam = "";
               if(cmbThang.getSelectedIndex()==0)thang = "";
               if(cmbQuy.getSelectedIndex()==0)quy ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
-              xoaDuLieu();
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon);
             }
         }
         if(obj.equals(cmbQuy)){
-           String from = kiemTraNgayBatDau();
-            String to =kiemTraNgayKetThuc();
-            String thang = cmbThang.getSelectedItem().toString();
-            String nam = cmbNam.getSelectedItem().toString();
-            String quy = cmbQuy.getSelectedItem().toString();
             if(cmbQuy.getSelectedIndex()!=0){
               if(cmbThang.getSelectedIndex()==0)thang = "";
               if(cmbNam.getSelectedIndex()==0)nam ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
               xoaDuLieu();
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon);
             }else{
               quy = "";
               if(cmbThang.getSelectedIndex()==0)thang = "";
               if(cmbNam.getSelectedIndex()==0)nam ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
               xoaDuLieu();
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon); 
             }
         }
         if(obj.equals(cmbThang)){
-             String from = kiemTraNgayBatDau();
-            String to =kiemTraNgayKetThuc();
-            String thang = cmbThang.getSelectedItem().toString();
-            String nam = cmbNam.getSelectedItem().toString();
-            String quy = cmbQuy.getSelectedItem().toString();
             if(cmbThang.getSelectedIndex()!=0){
               if(cmbQuy.getSelectedIndex()==0)quy = "";
               if(cmbNam.getSelectedIndex()==0)nam ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
               xoaDuLieu();
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon);
             }else{
               thang = "";
               if(cmbQuy.getSelectedIndex()==0)quy = "";
               if(cmbNam.getSelectedIndex()==0)nam ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam);
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
               xoaDuLieu();
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon); 
             }
         }
@@ -600,6 +626,8 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             cmbNam.setSelectedIndex(0);
             cmbQuy.setSelectedIndex(0);
             xoaDuLieu();
+            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon();
+            loadPage(soLuongHoaDon);
             taiLaiDuLieu(dsHoaDon);
             if(cmbCot.getSelectedIndex()==0){
                     txtTimKiem.setHint("Nhập thông tin tìm kiếm theo tùy chọn của bạn.");
@@ -614,11 +642,11 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private gui.swing.table2.PanelPage panelPage1;
     private gui.swing.panel.PanelShadow panelShadow2;
+    private javax.swing.JPanel pnlBottom_Page;
     private gui.swing.panel.PanelShadow pnlForm;
+    private gui.swing.table2.PanelPage pnlPage;
     private gui.swing.table2.MyTableFlatlaf tblHoaDon;
     // End of variables declaration//GEN-END:variables
 }

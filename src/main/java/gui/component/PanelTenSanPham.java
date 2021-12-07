@@ -1,13 +1,17 @@
 package gui.component;
 
+import dao.MatHang_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
 import entity.MatHang;
 import java.util.List;
 import objectcombobox.ObjectComboBox;
+import service.MatHangService;
 
 public class PanelTenSanPham extends javax.swing.JPanel {
-    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO ;
-
+    private MatHangService matHangDao ;
+    /**
+     * Creates new form PanelTenSanPham
+     */
     public PanelTenSanPham() {
         initComponents();
         config();
@@ -30,7 +34,7 @@ public class PanelTenSanPham extends javax.swing.JPanel {
         this.setOpaque(false);
         cbSPDaCo.addItem("Chọn sản phẩm");
 
-        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
+        matHangDao = new MatHang_DAO();
     }
     
     public void setTypeSP(boolean b){
@@ -47,7 +51,7 @@ public class PanelTenSanPham extends javax.swing.JPanel {
         cbSPDaCo.removeAllItems();
         cbSPDaCo.addItem("Chọn sản phẩm");
         if(!id.equalsIgnoreCase("")){
-            List<MatHang> listMH = nhaCungCapVaNhapHang_DAO.getDanhSachMatHangByLoaiDichVu(id);
+            List<MatHang> listMH = matHangDao.getDanhSachMatHangByLoaiDichVu(id);
             for (int i = 0; i < listMH.size(); i++) {
                 MatHang dv = listMH.get(i);
                 cbSPDaCo.addItem(new ObjectComboBox(dv.getTenMatHang(),dv.getMaMatHang()));  
