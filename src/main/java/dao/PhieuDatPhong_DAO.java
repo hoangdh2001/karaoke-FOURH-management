@@ -16,7 +16,6 @@ import util.HibernateUtil;
 public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     
     List<PhieuDatPhong> dsPhieu = new ArrayList<>();
-            //Collections.emptyList();
     private SessionFactory sessionFactory;
 
     public PhieuDatPhong_DAO() {
@@ -24,6 +23,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         this.sessionFactory = util.getSessionFactory();
     }
 
+    /**
+     * Lấy tất cả các phiếu đặt phòng
+     * @param numPage: số dòng dữ liệu hiển thị lên trang đầu tiên
+     * @return danh sách phiếu đặt phòng
+     */
     @Override
     public List<PhieuDatPhong> getDsPhieuDatPhong(int numPage) {
         Session session = sessionFactory.openSession();
@@ -44,6 +48,10 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return null;
     }
 
+    /**
+     * Lấy ra tất cả trạng thái của phiếu
+     * @return danh sách trạng thái phiếu
+     */
     @Override
     public List<String> getDSTrangThaiPhieu() {
         Session session = sessionFactory.openSession();
@@ -64,13 +72,18 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return null;
     }
 
+    /**
+     * Cập nhật trang phiếu thành 'DA_HUY' với những phiếu có trạng thái 'DANG_DOI' 
+     * @param maPhieuDat: mã phiếu đặt
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     */
     @Override
     public boolean capNhatTrangThaiPhieu(String maPhieuDat) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = "update PhieuDatPhong p set p.trangThai = 'DA_HUY'  where p.maPhieuDat = :maPhieuDat and trangThai =  'DANG_DOI'";
+            String sql = "update PhieuDatPhong p set p.trangThai = 'DA_HUY'  where p.maPhieuDat = :maPhieuDat and trangThai = 'DANG_DOI'";
             session.createQuery(sql)
                     .setParameter("maPhieuDat", maPhieuDat)
                     .executeUpdate();
@@ -84,6 +97,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return false;
     }
 
+    /**
+     * Cập nhật thông tin phiếu đặt phòng
+     * @param phieuDatPhong thông tin phiếu đặt phòng mới
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     */
     @Override
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -100,6 +118,15 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return false;
     }
 
+    /**
+     * Tìm những phiếu đặt phòng thỏa thông tin truyền vào dưới đây
+     * @param tenPhong: tên phòng
+     * @param tenKhachHang: tên khách hàng
+     * @param trangThai: trạng thái
+     * @param ngayDat: ngày đặt
+     * @param numPage: số dòng dữ liệu hiển thị lên trang đầu tiên
+     * @return danh sách phiếu đặt phòng
+     */
     @Override
     public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat, int numPage) {
         String sql; 

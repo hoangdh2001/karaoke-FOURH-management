@@ -12,6 +12,7 @@ import gui.swing.event.EventAddNhanVien;
 import gui.swing.event.EventSelectedRow;
 import gui.swing.graphics.ShadowType;
 import gui.swing.panel.PanelShadow;
+import gui.swing.panel.slideshow.EventPagination;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -50,7 +51,8 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
     private JComboBox<Object> cmbGioiTinhTK;
     private JComboBox<Object> cmbLoaiNVTK;
     private JComboBox<Object> cmbCaLamTK;
-    private Button btnTimKiem;
+    private Button btnThem;
+    private Button btnLamMoi;
     private final NhanVien_DAO nhanVien_DAO;
     private LoaiNhanVien_DAO loaiNhanVien_DAO;
     private CaLam_DAO caLam_DAO;
@@ -65,21 +67,32 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
     private DefaultComboBoxModel<LoaiNhanVien> cmbModelLNV;
     private DefaultComboBoxModel<CaLam> cmbModelCaLam;
-    
+
+    private String itemFirst_GT = "Giới tính"; // add vào item đầu tiên của cmbGioiTinh
+    private String itemFirst_LNV = "Loại nhân viên"; // add vào item đầu tiên của cmbLNV
+    private String itemFirst_CL = "Ca làm"; // add vào item đầu tiên của cmbCaLam
+    private String itemFirst_ChonCot = "Chọn cột"; // add vào item đầu tiên của cmbCot
+
     public GD_QuanLyNhanVien() {
         initComponents();
         buildGD();
+        setProperties();
 
         nhanVien_DAO = new NhanVien_DAO();
-        TableHandler();
         loaiNhanVien_DAO = new LoaiNhanVien_DAO();
         caLam_DAO = new CaLam_DAO();
-        FormHandler();
+        formHandler();
 
-        SearchHandler();
-        AddHandler();
+        pnlPageHandle();
+
+        searchHandler();
+        loadDataTable(pnlPage.getCurrentIndex());
+        addHandler();
+        tableHandler();
+
+        btnLamMoiHandle();
     }
-    
+
     public void addEventSelectedRow(EventSelectedRow event) {
         this.eventSelectedRow = event;
     }
@@ -90,10 +103,9 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
     private void buildGD() {
         pnlTop.setLayout(new MigLayout("fill, wrap", "0[fill]0", "[fill]"));
-//        pnlTop.setPreferredSize(new Dimension(getWidth(), 130));
+        // pnlTop.setPreferredSize(new Dimension(getWidth(), 130));
         pnlTop.add(createPanelTitle(), "h 40!");
         createPanelSearch();
-
         createPanelHidden();
         add(panelHidden);
     }
@@ -119,8 +131,8 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         pnlTitle.setOpaque(false);
         pnlTitle.setLayout(new MigLayout("fill", "", ""));
         JLabel lblTitle = new JLabel();
-        lblTitle.setText("Quản lý nhân viên");
-        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 16));
+        lblTitle.setText("Quản lý nhân viên");
+        lblTitle.setFont(new Font("sansserif", Font.PLAIN, 18));
         lblTitle.setForeground(new Color(68, 68, 68));
         pnlTitle.add(lblTitle);
         return pnlTitle;
@@ -131,137 +143,84 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
      */
     private void createPanelSearch() {
 
-        /*Begin: group tìm nhân viên*/
+        /* Begin: group tìm nhân viên */
         JPanel pnlTimKiemNV = new JPanel();
         pnlTimKiemNV.setOpaque(false);
-        pnlTimKiemNV.setLayout(new MigLayout("fill", "10[center]10", "[][]"));
+        pnlTimKiemNV.setLayout(new MigLayout("fill", "10[center]10[center]10[center]10[center]10", "[][]"));
         pnlTop.add(pnlTimKiemNV);
 
         // Tìm kiếm
         txtTimKiem = new JTextField();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
-//        txtTimKiem.setBorderLine(true);
-//        txtTimKiem.setBorderRadius(5);
+        // txtTimKiem.setBorderLine(true);
+        // txtTimKiem.setBorderRadius(5);
         pnlTimKiemNV.add(txtTimKiem, "w 20%, h 30!");
 
-        //Cột cần tìm kiếm
+        // Cột cần tìm kiếm
         cmbCot = new JComboBox<>();
         cmbCot.setFont(new Font(fontName, fontPlain, font14));
-//        cmbCot.setBorderLine(true);
-//        cmbCot.setBorderRadius(5);
-        cmbCot.addItem("Chọn cột cần tìm");
+        // cmbCot.setBorderLine(true);
+        // cmbCot.setBorderRadius(5);
+        cmbCot.addItem(itemFirst_ChonCot);
         cmbCot.addItem("Mã nhân viên");
         cmbCot.addItem("Tên nhân viên");
         cmbCot.addItem("Căn cước công dân");
         pnlTimKiemNV.add(cmbCot, "w 10%, h 30!");
 
-        //Giới tính cần tìm
-        JLabel lblGioiTinhTK = new JLabel("Giới tính:");
-        lblGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
-        pnlTimKiemNV.add(lblGioiTinhTK);
-
         cmbGioiTinhTK = new JComboBox<>();
         cmbGioiTinhTK.setFont(new Font(fontName, fontPlain, font14));
-//        cmbGioiTinhTK.setBorderLine(true);
-//        cmbGioiTinhTK.setBorderRadius(5);
-        cmbGioiTinhTK.addItem("Tất cả");
+        // cmbGioiTinhTK.setBorderLine(true);
+        // cmbGioiTinhTK.setBorderRadius(5);
+        cmbGioiTinhTK.addItem(itemFirst_GT);
         cmbGioiTinhTK.addItem("Nam");
         cmbGioiTinhTK.addItem("Nữ");
         pnlTimKiemNV.add(cmbGioiTinhTK, "w 10%,h 30!");
 
-        //Loại nhân viên cầm tìm
-        JLabel lblLoaiNVTK = new JLabel("Loại nhân viên:");
-        lblLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
-
-        pnlTimKiemNV.add(lblLoaiNVTK);
-
-//        cmbModelLNV = new DefaultComboBoxModel<>();
         cmbLoaiNVTK = new JComboBox<>();
         cmbLoaiNVTK.setFont(new Font(fontName, fontPlain, font14));
-//        cmbLoaiNVTK.setBorderLine(true);
-//        cmbLoaiNVTK.setBorderRadius(5);
-        cmbLoaiNVTK.addItem("Tất cả");
+        // cmbLoaiNVTK.setBorderLine(true);
+        // cmbLoaiNVTK.setBorderRadius(5);
+        cmbLoaiNVTK.addItem(itemFirst_LNV);
         pnlTimKiemNV.add(cmbLoaiNVTK, "w 10%,h 30!");
 
-        //Ca làm cần tìm
-        JLabel lblCaLamTK = new JLabel("Ca làm:");
-        lblCaLamTK.setFont(new Font(fontName, fontPlain, font14));
-        pnlTimKiemNV.add(lblCaLamTK, "align right");
-
-//        cmbModelCaLam = new DefaultComboBoxModel<>();
         cmbCaLamTK = new JComboBox<>();
         cmbCaLamTK.setFont(new Font(fontName, fontPlain, font14));
-//        cmbCaLamTK.setBorderLine(true);
-//        cmbCaLamTK.setBorderRadius(5);
-        cmbCaLamTK.addItem("Tất cả");
+        // cmbCaLamTK.setBorderLine(true);
+        // cmbCaLamTK.setBorderRadius(5);
+        cmbCaLamTK.addItem(itemFirst_CL);
         pnlTimKiemNV.add(cmbCaLamTK, "w 10%,h 30!");
 
-        //Button tìm kiếm
-        btnTimKiem = new Button("Thêm");
-        btnTimKiem.setFont(new Font(fontName, Font.BOLD, font16));
-        btnTimKiem.setBackground(colorBtn);
-        btnTimKiem.setBorderline(true);
-        btnTimKiem.setBorderRadius(5);
-        pnlTimKiemNV.add(btnTimKiem, "w 100!, h 36!");
-        /* End: group tìm nhân viên*/
+        // Button làm mới
+        btnLamMoi = new Button("Làm mới");
+        btnLamMoi.setFont(new Font(fontName, Font.PLAIN, font14));
+        btnLamMoi.setBackground(colorBtn);
+        btnLamMoi.setBorderline(true);
+        btnLamMoi.setBorderRadius(5);
+        pnlTimKiemNV.add(btnLamMoi, "w 100!, h 36!");
+
+        // Button tìm kiếm
+        btnThem = new Button("Thêm");
+        btnThem.setFont(new Font(fontName, Font.PLAIN, font14));
+        btnThem.setBackground(colorBtn);
+        btnThem.setBorderline(true);
+        btnThem.setBorderRadius(5);
+        pnlTimKiemNV.add(btnThem, "w 100!, h 36!");
+        /* End: group tìm nhân viên */
 
     }
 
-    /**
-     * set thuộc tính và xử lý dữ liệu của bảng
-     */
-    private void TableHandler() {
-//        tblNhanVien.fixTable(scrTable);
+    private void setProperties() {
         tblNhanVien.getTableHeader().setFont(new Font(fontName, Font.BOLD, 14));
-    
+
         String html2 = "<html><head><style> body{margin: 0 ; padding: 0; background-color: #303841;} h3{color: white; padding: 0 16px;} </style></head>"
                 + "<body><h3>Click chuột trái 2 lần để xem chi tiết</h3></body></html>";
         tblNhanVien.setToolTipText(html2);
-
-        //Thêm cột có icon xóa, sửa
-//        EventAction event = new EventAction() {
-//            @Override
-//            public void delete(Object obj) {
-//                NhanVien nhanVien = (NhanVien) obj;
-//                JOptionPane.showMessageDialog(null, "Delete" + nhanVien.getMaNhanVien());
-//            }
-//
-//            @Override
-//            public void update(ModelAction action) {
-//                NhanVien nhanVien = (NhanVien) action.getObj();
-//                action.setObj(nhanVien);
-//            }
-//
-//        };
-        loadDataNhanVien();
-        tblNhanVien.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                //Nếu click chuột trái và click 2 lần
-                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
-
-                    String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString();
-                    eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
-                }
-            }
-        });
-    }
-
-    public void loadDataNhanVien() {
-        System.out.println("load");
-        ((DefaultTableModel) tblNhanVien.getModel()).setRowCount(0);
-        listNhanVien = nhanVien_DAO.getNhanViens();
-        for (NhanVien i : listNhanVien) {
-            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
-                    i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
-                    i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
-        }
     }
 
     /**
      * load dữ liệu lên các combobox của form tìm kiếm
      */
-    private void FormHandler() {
+    private void formHandler() {
         loaiNhanViens = loaiNhanVien_DAO.getLoaiNhanViens();
         for (LoaiNhanVien lnv : loaiNhanViens) {
             cmbLoaiNVTK.addItem(lnv.getTenLoaiNV());
@@ -274,58 +233,148 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
     }
 
-    private void SearchHandler() {
-        DefaultTableModel defaultTableModel = (DefaultTableModel) tblNhanVien.getModel();
+    private void searchHandler() {
         txtTimKiem.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                defaultTableModel.setRowCount(0);
-                SearchNhanVien();
+                loadPage();
+                loadDataTable(pnlPage.getCurrentIndex());
             }
         });
 
         cmbGioiTinhTK.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                defaultTableModel.setRowCount(0);
-                SearchNhanVien();
+                loadPage();
+                loadDataTable(pnlPage.getCurrentIndex());
             }
         });
 
         cmbCaLamTK.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                defaultTableModel.setRowCount(0);
-                SearchNhanVien();
+                loadPage();
+                loadDataTable(pnlPage.getCurrentIndex());
             }
         });
 
         cmbLoaiNVTK.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                defaultTableModel.setRowCount(0);
-                SearchNhanVien();
+                loadPage();
+                loadDataTable(pnlPage.getCurrentIndex());
             }
         });
 
     }
 
-    private void SearchNhanVien() {
+    private void tableHandler() {
 
+        tblNhanVien.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // Nếu click chuột trái và click 2 lần
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+
+                    String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString();
+                    eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
+                }
+            }
+        });
+    }
+
+//    public void loadDataNhanVien() {
+//        System.out.println("load");
+//        ((DefaultTableModel) tblNhanVien.getModel()).setRowCount(0);
+//        listNhanVien = nhanVien_DAO.getNhanViens();
+//        for (NhanVien i : listNhanVien) {
+//            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(),
+//                    i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(),
+//                    i.getMatKhau()).convertToRowTable());
+//        }
+//    }
+    private void addHandler() {
+        btnThem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eventAddNhanVien.AddNhanVien();
+            }
+        });
+    }
+
+    public void loadDataOutside() {
+        loadDataTable(pnlPage.getCurrentIndex());
+    }
+
+    private void loadDataTable(int numPage) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                String searchOption = cmbCot.getSelectedItem().toString();
+                if (searchOption.equals(itemFirst_ChonCot)) {
+                    searchOption = "Tên nhân viên";
+                }
+
+                int gioiTinh = 2; // mặc định là lấy tất cả giới tính
+                if (!cmbGioiTinhTK.getSelectedItem().equals(itemFirst_GT)) {
+                    gioiTinh = cmbGioiTinhTK.getSelectedItem() == "Nam" ? 0 : 1;
+                } else {
+                    gioiTinh = 2;
+                }
+
+                String maCaLam = "";
+                if (!cmbCaLamTK.getSelectedItem().equals(itemFirst_CL)) {
+                    for (CaLam cl : caLams) {
+                        String caLam = cl.getGioBatDau() + "-" + cl.getGioKetThuc();
+                        if (caLam.equals(cmbCaLamTK.getSelectedItem())) {
+                            maCaLam = cl.getMaCa();
+                        }
+                    }
+                }
+
+                String maLoaiNV = "";
+                System.out.println(cmbLoaiNVTK.getSelectedItem());
+                if (!cmbLoaiNVTK.getSelectedItem().equals(itemFirst_LNV)) {
+                    for (LoaiNhanVien lnv : loaiNhanViens) {
+                        if (lnv.getTenLoaiNV().equals(cmbLoaiNVTK.getSelectedItem())) {
+                            maLoaiNV = lnv.getMaLoaiNV();
+                        }
+                    }
+
+                }
+
+                List<NhanVien> listRow = nhanVien_DAO.searchNhanVien(txtTimKiem.getText().trim(), searchOption, gioiTinh,
+                        maLoaiNV, maCaLam, numPage);
+                if (listRow != null) {
+                    ((DefaultTableModel) tblNhanVien.getModel()).setRowCount(0);
+                    listRow.forEach(i -> {
+                        tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(),
+                                i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(),
+                                i.getMatKhau()).convertToRowTable());
+                    });
+                    tblNhanVien.repaint();
+                    tblNhanVien.revalidate();
+                }
+            }
+        }).start();
+    }
+
+    private void loadPage() {
         String searchOption = cmbCot.getSelectedItem().toString();
-        if (searchOption.equals("Chọn cột")) {
+        if (searchOption.equals(itemFirst_ChonCot)) {
             searchOption = "Tên nhân viên";
         }
 
         int gioiTinh = 2; // mặc định là lấy tất cả giới tính
-        if (!cmbGioiTinhTK.getSelectedItem().equals("Tất cả")) {
+        if (!cmbGioiTinhTK.getSelectedItem().equals(itemFirst_GT)) {
             gioiTinh = cmbGioiTinhTK.getSelectedItem() == "Nam" ? 0 : 1;
         } else {
             gioiTinh = 2;
         }
 
         String maCaLam = "";
-        if (!cmbCaLamTK.getSelectedItem().equals("Tất cả")) {
+        if (!cmbCaLamTK.getSelectedItem().equals(itemFirst_CL)) {
             for (CaLam cl : caLams) {
                 String caLam = cl.getGioBatDau() + "-" + cl.getGioKetThuc();
                 if (caLam.equals(cmbCaLamTK.getSelectedItem())) {
@@ -336,7 +385,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
         String maLoaiNV = "";
         System.out.println(cmbLoaiNVTK.getSelectedItem());
-        if (!cmbLoaiNVTK.getSelectedItem().equals("Tất cả")) {
+        if (!cmbLoaiNVTK.getSelectedItem().equals(itemFirst_LNV)) {
             for (LoaiNhanVien lnv : loaiNhanViens) {
                 if (lnv.getTenLoaiNV().equals(cmbLoaiNVTK.getSelectedItem())) {
                     maLoaiNV = lnv.getMaLoaiNV();
@@ -345,36 +394,54 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
         }
 
-        List<NhanVien> nhanViens = nhanVien_DAO.searchNhanVien(txtTimKiem.getText().trim(), searchOption, gioiTinh, maLoaiNV, maCaLam);
-        for (NhanVien i : nhanViens) {
-            tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(),
-                    i.getCaLam(), i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(),
-                    i.getEmail(), i.getDiaChi(), i.getMatKhau()).convertToRowTable());
+        int row = nhanVien_DAO.getSoLuongNhanVien(txtTimKiem.getText().trim(), searchOption, gioiTinh,
+                maLoaiNV, maCaLam);
+
+        int x = row % 20 == 0 ? row / 20 : (row / 20) + 1;
+        if (x == 0) {
+            x = 1;
         }
+        pnlPage.init(x);
     }
 
-    private void AddHandler() {
-        btnTimKiem.addActionListener(new ActionListener() {
+    public void pnlPageHandle() {
+        pnlPage.addEventPagination(new EventPagination() {
+            @Override
+            public void onClick(int pageClick) {
+                loadDataTable(pageClick);
+            }
+        });
+
+        loadPage();
+    }
+
+    private void btnLamMoiHandle() {
+        btnLamMoi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                System.out.println("Thêm Nhân viên");
-                eventAddNhanVien.AddNhanVien();
-
-//                diaChiMau_DAO = new DiaChiMau_DAO();
-//                diaChiMau_DAO.getAllTinhThanh().forEach(i -> {
-//                    System.out.println(i);
-//                });
+                clearForm();
             }
         });
     }
 
+    private void clearForm() {
+
+        txtTimKiem.setText("");
+        cmbCot.setSelectedIndex(0);
+        cmbCaLamTK.setSelectedIndex(0);
+        cmbLoaiNVTK.setSelectedIndex(0);
+        cmbGioiTinhTK.setSelectedIndex(0);
+    }
+
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pnlCenter = new gui.swing.panel.PanelShadow();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNhanVien = new gui.swing.table2.MyTableFlatlaf();
+        pnlPage = new gui.swing.table2.PanelPage();
         pnlTop = new gui.swing.panel.PanelShadow();
 
         pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
@@ -408,8 +475,6 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         tblNhanVien.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tblNhanVien);
         if (tblNhanVien.getColumnModel().getColumnCount() > 0) {
-            tblNhanVien.getColumnModel().getColumn(0).setResizable(false);
-            tblNhanVien.getColumnModel().getColumn(0).setPreferredWidth(20);
             tblNhanVien.getColumnModel().getColumn(1).setResizable(false);
             tblNhanVien.getColumnModel().getColumn(2).setResizable(false);
             tblNhanVien.getColumnModel().getColumn(2).setPreferredWidth(150);
@@ -422,6 +487,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         }
 
         pnlCenter.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        pnlCenter.add(pnlPage, java.awt.BorderLayout.PAGE_END);
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setShadowOpacity(0.3F);
@@ -455,10 +521,10 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private gui.swing.panel.PanelShadow pnlCenter;
+    private gui.swing.table2.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
     private gui.swing.table2.MyTableFlatlaf tblNhanVien;
     // End of variables declaration//GEN-END:variables

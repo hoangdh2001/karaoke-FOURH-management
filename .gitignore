@@ -1,3 +1,7 @@
 target/
 lib/
 README.md
+nb-configuration.xml
+.settings/
+.classpath
+.project

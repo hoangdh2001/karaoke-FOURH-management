@@ -39,28 +39,29 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import net.miginfocom.swing.MigLayout;
 
+/**
+ * 
+ * @author Hao
+ */
 public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     
     private HoaDon_DAO hoaDon_Dao;
     private List<HoaDon> dsHoaDon = new ArrayList<HoaDon>();
     private EventAction event;
-
     JCheckBox chkSapXepThuTu;
     JDateChooser dscBatDau, dscKetThuc;
     JComboBox<String> cmbTuyChinh, cmbCot, cmbSapXep;
     MyTextFieldFlatlaf txtTimKiem;
-
     private PanelShadow panelHidden;
-
     private JComboBox<Object> cmbQuy;
     private JComboBox<Object> cmbThang;
     private JComboBox<Object> cmbNam;
     private Button btnLamMoi;
     private List<Integer> dsThang, dsQuy, dsNam;
-
     private EventSelectedRow eventOnClick;
     private NhanVien_DAO nhanVien_Dao;
     private int soLuongHoaDon;
+    
     
     public void addEvent(EventSelectedRow eventOnClick) {
         this.eventOnClick = eventOnClick;
@@ -215,21 +216,14 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     private void createTable(){
         tblHoaDon.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         tblHoaDon.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
+        hoaDon_Dao.capNhatTrangThaiPhieuHetHan();
          new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex());
-                    if(nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
+                    dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex(),kiemTraNhanVien());
                         dsHoaDon.forEach((hoaDon) -> {
                             ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
                         });
-                    }else{
-                        for(HoaDon hoaDon: dsHoaDon){
-                            if(hoaDon.getNhanVien().getMaNhanVien().equals(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
-                                ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
-                            }
-                        }
-                    }
                 tblHoaDon.repaint();
                 tblHoaDon.revalidate();
                 }
@@ -251,17 +245,9 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if(nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
-                        dsHoaDon.forEach((hoaDon) -> {
-                            ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
-                        });
-                    }else{
-                        for(HoaDon hoaDon: dsHoaDon){
-                            if(hoaDon.getNhanVien().getMaNhanVien().equals(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
-                                ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
-                            }
-                        }
-                    }
+                    dsHoaDon.forEach((hoaDon) -> {
+                        ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
+                    });
                 tblHoaDon.repaint();
                 tblHoaDon.revalidate();
                 }
@@ -269,6 +255,15 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         }
     }
     
+    private String kiemTraNhanVien(){
+        String maNhanVien;
+        if(nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
+            maNhanVien = "";
+        }else{
+            maNhanVien = GD_Chinh.NHAN_VIEN.getMaNhanVien();
+        }
+        return maNhanVien;
+    }
     
     private void loadPage(int soLuongPhieu) {
         pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
@@ -278,10 +273,10 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         pnlPage.addEventPagination(new EventPagination() {
             @Override
             public void onClick(int pageClick) {
-                taiLaiDuLieu(hoaDon_Dao.getDsHoaDon(pageClick));
+                taiLaiDuLieu(hoaDon_Dao.getDsHoaDon(pageClick, kiemTraNhanVien()));
             }
         });
-        loadPage(hoaDon_Dao.getSoLuongHoaDon());
+        loadPage(hoaDon_Dao.getSoLuongHoaDon(kiemTraNhanVien()));
     }
 
     private void xuLySuKien(){
@@ -322,32 +317,32 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
                    switch(tieuChi){
                         case "Mã hóa đơn":
                             tk = "maHoaDon";
-                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTieuChiKhac(tk, s, pnlPage.getCurrentIndex());
+                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTieuChiKhac(tk, s, pnlPage.getCurrentIndex(), kiemTraNhanVien());
                             xoaDuLieu();
-                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByTieuChiKhac(tk, s);
+                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByTieuChiKhac(tk, s, kiemTraNhanVien());
                             break;
                         case "Khách hàng":
-                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTenKhachHang(s, pnlPage.getCurrentIndex());
+                            dsHoaDon = hoaDon_Dao.getDSHoaDonByTenKhachHang(s, pnlPage.getCurrentIndex(), kiemTraNhanVien());
                             xoaDuLieu();
-                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByTenKhachHang(s);
+                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByTenKhachHang(s, kiemTraNhanVien());
                             break;
                         case "Phòng":
-                            dsHoaDon= hoaDon_Dao.getDSHoaDonByTenPhong(s, pnlPage.getCurrentIndex());
+                            dsHoaDon= hoaDon_Dao.getDSHoaDonByTenPhong(s, pnlPage.getCurrentIndex(), kiemTraNhanVien());
                             xoaDuLieu();
-                            soLuongHoaDon = hoaDon_Dao.getSoLuongHoaDonByTenPhong(s);
+                            soLuongHoaDon = hoaDon_Dao.getSoLuongHoaDonByTenPhong(s, kiemTraNhanVien());
                             break;
                         default:
-                            dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex());
+                            dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex(), kiemTraNhanVien());
                             xoaDuLieu();
-                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon();
+                            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon(kiemTraNhanVien());
                             break;
                     }
                     loadPage(soLuongHoaDon);
                     taiLaiDuLieu(dsHoaDon);
                 }else{
-                    dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex());
+                    dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex(), kiemTraNhanVien());
                     xoaDuLieu();
-                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon();
+                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon(kiemTraNhanVien());
                     loadPage(soLuongHoaDon);
                     taiLaiDuLieu(dsHoaDon);
                 }
@@ -360,9 +355,9 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
                 String to = kiemTraNgayKetThuc();
                 
                 if(dscBatDau.getDate()!=null){
-                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), to, pnlPage.getCurrentIndex());
+                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(df.format(dscBatDau.getDate()), to, pnlPage.getCurrentIndex(), kiemTraNhanVien());
                     xoaDuLieu();
-                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonFromDateToDate(df.format(dscBatDau.getDate()), to);
+                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonFromDateToDate(df.format(dscBatDau.getDate()), to, kiemTraNhanVien());
                     loadPage(soLuongHoaDon);
                     taiLaiDuLieu(dsHoaDon);
                 }
@@ -374,9 +369,9 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             public void propertyChange(PropertyChangeEvent arg0) {
                String from = kiemTraNgayBatDau();
               if(dscKetThuc.getDate()!=null){
-                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(from, df.format(dscKetThuc.getDate()), pnlPage.getCurrentIndex());
+                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(from, df.format(dscKetThuc.getDate()), pnlPage.getCurrentIndex(), kiemTraNhanVien());
                     xoaDuLieu();
-                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonFromDateToDate(from, df.format(dscKetThuc.getDate()));
+                    soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonFromDateToDate(from, df.format(dscKetThuc.getDate()), kiemTraNhanVien());
                     loadPage(soLuongHoaDon);
                     taiLaiDuLieu(dsHoaDon);
                 }
@@ -552,9 +547,9 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             cmbNam.setSelectedIndex(0);
             cmbQuy.setSelectedIndex(0);
             txtTimKiem.requestFocus();
-            dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex());
+            dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex(), kiemTraNhanVien());
             xoaDuLieu();
-            soLuongHoaDon = hoaDon_Dao.getSoLuongHoaDon();
+            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon(kiemTraNhanVien());
             loadPage(soLuongHoaDon);
             taiLaiDuLieu(dsHoaDon);
             
@@ -563,17 +558,17 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             if(cmbNam.getSelectedIndex()!=0){
               if(cmbThang.getSelectedIndex()==0)thang = "";
               if(cmbQuy.getSelectedIndex()==0)quy ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex(), kiemTraNhanVien());
               xoaDuLieu();
-              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam, kiemTraNhanVien());
               loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon);
             }else{
               nam = "";
               if(cmbThang.getSelectedIndex()==0)thang = "";
               if(cmbQuy.getSelectedIndex()==0)quy ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
-              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex(), kiemTraNhanVien());
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam, kiemTraNhanVien());
               loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon);
             }
@@ -582,18 +577,18 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             if(cmbQuy.getSelectedIndex()!=0){
               if(cmbThang.getSelectedIndex()==0)thang = "";
               if(cmbNam.getSelectedIndex()==0)nam ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex(), kiemTraNhanVien());
               xoaDuLieu();
-              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam, kiemTraNhanVien());
               loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon);
             }else{
               quy = "";
               if(cmbThang.getSelectedIndex()==0)thang = "";
               if(cmbNam.getSelectedIndex()==0)nam ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex(), kiemTraNhanVien());
               xoaDuLieu();
-              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam, kiemTraNhanVien());
               loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon); 
             }
@@ -602,18 +597,18 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             if(cmbThang.getSelectedIndex()!=0){
               if(cmbQuy.getSelectedIndex()==0)quy = "";
               if(cmbNam.getSelectedIndex()==0)nam ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex(), kiemTraNhanVien());
               xoaDuLieu();
-              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam, kiemTraNhanVien());
               loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon);
             }else{
               thang = "";
               if(cmbQuy.getSelectedIndex()==0)quy = "";
               if(cmbNam.getSelectedIndex()==0)nam ="";
-              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex());
+              dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(from, to, thang, quy, nam, pnlPage.getCurrentIndex(), kiemTraNhanVien());
               xoaDuLieu();
-              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam);
+              soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDonByAll(from, to, thang, quy, nam, kiemTraNhanVien());
               loadPage(soLuongHoaDon);
               taiLaiDuLieu(dsHoaDon); 
             }
@@ -625,7 +620,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             cmbNam.setSelectedIndex(0);
             cmbQuy.setSelectedIndex(0);
             xoaDuLieu();
-            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon();
+            soLuongHoaDon =hoaDon_Dao.getSoLuongHoaDon(kiemTraNhanVien());
             loadPage(soLuongHoaDon);
             taiLaiDuLieu(dsHoaDon);
             if(cmbCot.getSelectedIndex()==0){

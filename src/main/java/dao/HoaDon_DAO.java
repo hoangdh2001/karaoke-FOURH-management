@@ -30,6 +30,11 @@ public class HoaDon_DAO implements HoaDonService {
         this.sessionFactory = util.getSessionFactory();
     }
 
+    /**
+     * Thêm hóa đơn
+     * @param hoaDon
+     * @return true nếu thêm thành công, false nếu thất bại
+     */
     @Override
     public boolean addHoaDon(HoaDon hoaDon) {
         Session session = sessionFactory.getCurrentSession();
@@ -46,7 +51,11 @@ public class HoaDon_DAO implements HoaDonService {
         return false;
     }
 
-
+    /**
+     * 
+     * @param hoaDon
+     * @return 
+     */
     @Override
     public boolean finishHoaDon(HoaDon hoaDon) {
         Session session = sessionFactory.openSession();
@@ -66,11 +75,17 @@ public class HoaDon_DAO implements HoaDonService {
         return false;
     }
 
+    /**
+     * Lấy danh sách tất cả các hóa đơn theo numPage và mã nhân viên
+     * @param numPage: số dòng của trang
+     * @param maNhanVien: mã nhân viên của nhân viên lập hóa đơn
+     * @return danh sách hóa đơn phù hợp
+     */
     @Override
-    public List<HoaDon> getDsHoaDon(int numPage) {
+    public List<HoaDon> getDsHoaDon(int numPage, String maNhanVien) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select h.* from HoaDon h where ISDATE(h.ngayLapHoaDon) = 1 order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
+        String sql = "select h.* from HoaDon h where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -87,6 +102,11 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Tìm kiếm hóa đơn theo mã
+     * @param maHoaDon: mã hóa đơn
+     * @return Hóa đơn có mã là maHoaDon
+     */
     @Override
     public HoaDon getHoaDon(String maHoaDon) {
         Session session = sessionFactory.openSession();
@@ -103,12 +123,20 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Tìm kiếm danh sách hóa đơn của nhân viên, từ ngày đến ngày
+     * @param from từ ngày
+     * @param to đến ngày
+     * @param numPage số dòng lấy ra
+     * @param maNhanVien mã nhân viên
+     * @return danh sách hóa đơn phù hợp
+     */
     @Override
-    public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to,int numPage) {
+    public List<HoaDon> getDSHoaDonFromDateToDate(String from, String to,int numPage, String maNhanVien) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select h.* from [dbo].[HoaDon] h\n"
-                + "where ISDATE(h.ngayLapHoaDon) = 1 and h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')"
+                + "where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')"
                 + "order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
@@ -126,13 +154,20 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Tìm những hóa đơn của những khách hàng có tên tương đối vói tên khách hàng truyền vào
+     * @param tenKhachHang: Tên khách hàng
+     * @param numPage số dòng dữ liệu lấy ra
+     * @param maNhanVien mã nhân viên (nhân vien đang thực hiện tìm kiếm)
+     * @return danh sách hó đơn tương ứng
+     */
     @Override
-    public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang,int numPage) {
+    public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang,int numPage, String maNhanVien) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select h.*\n"
                 + "  from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang\n"
-                + "  where ISDATE(h.ngayLapHoaDon) = 1 and k.tenKhachHang like N'%" + tenKhachHang + "%'"
+                + "  where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and k.tenKhachHang like N'%" + tenKhachHang + "%'"
                 + "order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
@@ -150,13 +185,20 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Tìm những hóa đơn thuộc phòng nào đó
+     * @param tenPhong: tên phòng
+     * @param numPage: số dòng dữ liệu lấy ra trước tiên
+     * @param maNhanVien: mã nhân viên của nhân viên đang thao tác
+     * @return danh sách hóa đơn tương ứng
+     */
     @Override
-    public List<HoaDon> getDSHoaDonByTenPhong(String tenPhong,int numPage) {
+    public List<HoaDon> getDSHoaDonByTenPhong(String tenPhong,int numPage, String maNhanVien) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select h.*\n"
                 + "  from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong\n"
-                + "  where ISDATE(h.ngayLapHoaDon) = 1 and p.tenPhong like N'%" + tenPhong + "%'"
+                + "  where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and p.tenPhong like N'%" + tenPhong + "%'"
                 + "order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
@@ -174,13 +216,21 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Tìm hóa đơn theo tiêu chi nào dó
+     * @param tieuChiKhac: tiêu chí tìm ( có thể là mã hóa đơn, ....)
+     * @param duLieu: thông tin cần tìm
+     * @param numPage: số dữ liệu lấy ra trước tiên
+     * @param maNhanVien: mã nhân viên của nhân viên đang thao tác
+     * @return những hóa đơn phù hợp với yêu cầu tìm kiếm
+     */
     @Override
-    public List<HoaDon> getDSHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu,int numPage) {
+    public List<HoaDon> getDSHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu,int numPage, String maNhanVien) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         String sql = "select  h.* \n"
                 + "  from [dbo].[HoaDon] h\n"
-                + "  where ISDATE(h.ngayLapHoaDon) = 1 and h." + tieuChiKhac + " like '%" + duLieu + "%'"
+                + "  where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and h." + tieuChiKhac + " like '%" + duLieu + "%'"
                 + "order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
@@ -198,6 +248,10 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Lấy ra ngày lập hóa đơn nhỏ nhất trong tất cả các hóa đơn
+     * @return ngày lập hóa đơn nhỏ nhất
+     */
     @Override
     public String layNgayLapNhoNhat() {
         Session session = sessionFactory.openSession();
@@ -216,6 +270,10 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Lấy ra ngày lập hóa đơn lớn nhất của tất cả các hóa đơn
+     * @return ngày lập hóa đơn lớn nhất
+     */
     @Override
     public String layNgayLapLonNhat() {
         Session session = sessionFactory.openSession();
@@ -234,11 +292,22 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Lọc hóa đơn theo tháng - quý - name tùy chọn
+     * @param from: từ ngày
+     * @param to: đến ngày
+     * @param thang: tháng
+     * @param quy: quý
+     * @param nam: năm
+     * @param numPage: số  dòng dữ liệu hiện trnag đầu
+     * @param maNhanVien: mã nhân viên của nhân viên đang thao tác
+     * @return lọc hóa đon phù hợp với yêu cầu
+     */
     @Override
-    public List<HoaDon> locHoaDonByThang_Quy_Nam(String from, String to, String thang, String quy, String nam,int numPage) {
+    public List<HoaDon> locHoaDonByThang_Quy_Nam(String from, String to, String thang, String quy, String nam,int numPage, String maNhanVien) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select * from [dbo].[HoaDon] where ISDATE(ngayLapHoaDon) = 1 and (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')"
+        String sql = "select * from [dbo].[HoaDon] where ISDATE(ngayLapHoaDon) = 1 and  maNhanVien like '%"+maNhanVien+"%' and (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')"
                 + "order by ngayLapHoaDon desc offset :x row fetch next 20 rows only";
         try {
             tr.begin();
@@ -256,6 +325,10 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     * Lấy ra toàn bộ tháng trong ngày lập hóa đơn của toàn bộ hóa dơn
+     * @return 
+     */
     @Override
     public List<Integer> getDSThangTheoNgayLap() {
         Session session = sessionFactory.openSession();
@@ -276,6 +349,10 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     *  Lấy ra toàn bộ năm trong ngày lập hóa đơn của toàn bộ hóa dơn
+     * @return 
+     */
     @Override
     public List<Integer> getDSNamTheoNgayLap() {
         Session session = sessionFactory.openSession();
@@ -296,6 +373,10 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
 
+    /**
+     *  Lấy ra toàn bộ quý trong ngày lập hóa đơn của toàn bộ hóa dơn
+     * @return 
+     */
     @Override
     public List<Integer> getDSQuyTheoNgayLap() {
         Session session = sessionFactory.openSession();
@@ -316,121 +397,164 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
     
+    /**
+     * tính số lượng hóa đơn của nhân viên có mã truyền vào
+     * @param maNhanvien: mã nhân viên
+     * @return số lượng hóa đơn của nhân viên đó
+     */
+    @Override
+    public int getSoLuongHoaDon(String maNhanvien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from HoaDon where ISDATE([ngayLapHoaDon]) = 1 and  maNhanVien like '%"+maNhanvien+"%'";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    /**
+     * Tính số lượng hóa đơn của nhân viên có mã truyền vào theo tên khách hàng
+     * @param tenKhachHang: tên khách hàng
+     * @param maNhanVien: mã nhân viên
+     * @return số lượng hóa đơn
+     */
+    @Override
+    public int getSoLuongHoaDonByTenKhachHang(String tenKhachHang, String maNhanVien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang where ISDATE(h.ngayLapHoaDon) = 1 and k.tenKhachHang like N'%" + tenKhachHang + "%' and  h.maNhanVien like '%"+maNhanVien+"%'";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    /**
+     * Tính số lượng của nhân viên có mã truyền vào theo tên phòng
+     * @param tenPhong: tên phòng
+     * @param maNhanVien;l mã nhân viên
+     * @return số lượng hóa đơn
+     */
+    @Override
+    public int getSoLuongHoaDonByTenPhong(String tenPhong, String maNhanVien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong where ISDATE(h.ngayLapHoaDon) = 1 and p.tenPhong like N'%" + tenPhong + "%'and  h.maNhanVien like '%"+maNhanVien+"%'";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    /**
+     * tính số lượng hóa đơn của nhân viên có mã truyền vào theo tiêu chí nào đó
+     * @param tieuChiKhac: tiêu chí tìm kiếm
+     * @param duLieu: dữ liệu tìm kiếm theo tiêu chí
+     * @param maNhanVien: mã nhân viên
+     * @return  số lượng hóa đơn
+     */
+    @Override
+    public int getSoLuongHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu, String maNhanVien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] h where ISDATE(h.ngayLapHoaDon) = 1 and h." + tieuChiKhac + " like '%" + duLieu + "%' and  h.maNhanVien like '%"+maNhanVien+"%'";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    /**
+     * tính số lượng hóa đơn của nhân viên có mã truyền vào từ ngày nào đó đến ngày khác
+     * @param from: từ ngày
+     * @param to: đến ngày
+     * @param maNhanVien: mã nhân viên
+     * @return số lượng hóa đơn
+     */
+    @Override
+    public int getSoLuongHoaDonFromDateToDate(String from, String to, String maNhanVien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] h where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    /**
+     * Tính số lượng hóa đơn của nhân viên có mã truyền vào theo tất cả thuộc tính tìm kiếm
+     * @param from: từ ngày
+     * @param to: đến ngày
+     * @param thang: tháng
+     * @param quy: quý
+     * @param nam: năm
+     * @param maNhanVien: mã nhân viên
+     * @return  số lượng hóa đơn
+     */
+    @Override
+    public int getSoLuongHoaDonByAll(String from, String to, String thang, String quy, String nam, String maNhanVien) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from [dbo].[HoaDon] where ISDATE(ngayLapHoaDon) = 1 and  maNhanVien like '%"+maNhanVien+"%' and (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
     
-    @Override
-    public int getSoLuongHoaDon() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from HoaDon where ISDATE([ngayLapHoaDon]) = 1";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getSoLuongHoaDonByTenKhachHang(String tenKhachHang) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang where ISDATE(h.ngayLapHoaDon) = 1 and k.tenKhachHang like N'%" + tenKhachHang + "%'";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getSoLuongHoaDonByTenPhong(String tenPhong) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong where ISDATE(h.ngayLapHoaDon) = 1 and p.tenPhong like N'%" + tenPhong + "%'";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getSoLuongHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from [dbo].[HoaDon] h where ISDATE(h.ngayLapHoaDon) = 1 and h." + tieuChiKhac + " like '%" + duLieu + "%'";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getSoLuongHoaDonFromDateToDate(String from, String to) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from [dbo].[HoaDon] h where ISDATE(h.ngayLapHoaDon) = 1 and h.ngayLapHoaDon between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getSoLuongHoaDonByAll(String from, String to, String thang, String quy, String nam) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from [dbo].[HoaDon] where ISDATE(ngayLapHoaDon) = 1 and (convert(date,ngayLapHoaDon) between CONVERT(date, '" + from + "') and CONVERT(date, '" + to + "')) and (DATEPART(year, ngayLapHoaDon) like '%" + nam + "%' and DATEPART(quarter, ngayLapHoaDon) like '%" + quy + "%' and DATEPART(month, ngayLapHoaDon) like '%" + thang + "%')";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
-    
+    /**
+     * Câp nhật trạng thái phiếu là Hết Hạn cho những phiếu có trạng thái Đang Đợi đã quá hạn đặt
+     */
     @Override
     public void capNhatTrangThaiPhieuHetHan() {
         Session session = sessionFactory.getCurrentSession();

@@ -16,7 +16,7 @@ import org.hibernate.annotations.NamedQuery;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "getDSNhanVien", query = "select nv from NhanVien nv")
+        @NamedQuery(name = "getDSNhanVien", query = "select nv from NhanVien nv")
 })
 public class NhanVien {
 
@@ -56,7 +56,8 @@ public class NhanVien {
      * @param diaChi
      * @param matKhau
      */
-    public NhanVien(String maNhanVien, String tenNhanVien, LoaiNhanVien loaiNhanVien, CaLam caLam, String canCuocCD, boolean gioiTinh,
+    public NhanVien(String maNhanVien, String tenNhanVien, LoaiNhanVien loaiNhanVien, CaLam caLam, String canCuocCD,
+            boolean gioiTinh,
             Date ngaySinh, String soDienThoai, String email, DiaChi diaChi, byte[] matKhau) {
         this.maNhanVien = maNhanVien;
         this.tenNhanVien = tenNhanVien;
@@ -69,7 +70,7 @@ public class NhanVien {
         this.email = email;
         this.diaChi = diaChi;
         this.matKhau = matKhau;
-//        this.dsNhanVien = new ArrayList<NhanVien>();
+        // this.dsNhanVien = new ArrayList<NhanVien>();
     }
 
     /**
@@ -78,7 +79,8 @@ public class NhanVien {
     public NhanVien() {
     }
 
-    public NhanVien(String maNhanVien, String tenNhanVien, LoaiNhanVien loaiNhanVien, CaLam caLam, String canCuocCD, boolean gioiTinh, Date ngaySinh, String soDienThoai, String email, DiaChi diaChi) {
+    public NhanVien(String maNhanVien, String tenNhanVien, LoaiNhanVien loaiNhanVien, CaLam caLam, String canCuocCD,
+            boolean gioiTinh, Date ngaySinh, String soDienThoai, String email, DiaChi diaChi) {
         this.maNhanVien = maNhanVien;
         this.tenNhanVien = tenNhanVien;
         this.loaiNhanVien = loaiNhanVien;
@@ -89,7 +91,7 @@ public class NhanVien {
         this.soDienThoai = soDienThoai;
         this.email = email;
         this.diaChi = diaChi;
-//        this.dsNhanVien = new ArrayList<NhanVien>();
+        // this.dsNhanVien = new ArrayList<NhanVien>();
     }
 
     /**
@@ -257,7 +259,8 @@ public class NhanVien {
     public Object[] convertToRowTable() {
         String caLamString = caLam.getGioBatDau() + "-" + caLam.getGioKetThuc();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        
-        return new Object[]{new JCheckBox(), maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai, canCuocCD,caLamString, loaiNhanVien.getTenLoaiNV()};
+
+        return new Object[] {new JCheckBox() ,maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh),
+                soDienThoai, canCuocCD, caLamString, loaiNhanVien.getTenLoaiNV() };
     }
 }
