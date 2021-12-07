@@ -1,8 +1,7 @@
 package entity;
 
 import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
-import java.io.Serializable;
+import gui.swing.model.ModelAction;
 import java.text.DecimalFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,17 +10,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.swing.JCheckBox;
 import objectcombobox.ObjectComboBox;
 
 @Entity
 @Table(name = "Phong")
-@NamedQueries({
-    @NamedQuery(name = "getDsPhong", query = "select p from Phong p")
-})
 public class Phong {
 
     @Id
@@ -35,25 +29,31 @@ public class Phong {
     @JoinColumn(name = "maLoaiPhong", nullable = false)
     private LoaiPhong loaiPhong;
     private int tang;
+    @Column(columnDefinition = "image")
+    private byte[] anhPhong;
 
     /**
      * @param maPhong
      * @param tenPhong
      * @param trangThai
      * @param loaiPhong
+     * @param tang
+     * @param anhPhong
      */
-    public Phong(String maPhong, String tenPhong, TrangThaiPhong trangThai, LoaiPhong loaiPhong, int tang) {
+    public Phong(String maPhong, String tenPhong, TrangThaiPhong trangThai, LoaiPhong loaiPhong, int tang, byte[] anhPhong) {
         this.maPhong = maPhong;
         this.tenPhong = tenPhong;
         this.trangThai = trangThai;
         this.loaiPhong = loaiPhong;
         this.tang = tang;
+        this.anhPhong = anhPhong;
     }
 
     /**
      *
      */
     public Phong() {
+        this.trangThai = TrangThaiPhong.TRONG;
     }
 
     /**
@@ -125,6 +125,19 @@ public class Phong {
     public void setTang(int tang) {
         this.tang = tang;
     }
+    /**
+     * @return the anhPhong
+     */
+    public byte[] getAnhPhong() {
+        return anhPhong;
+    }
+    
+    /**
+     * @param anhPhong 
+     */
+    public void setAnhPhong(byte[] anhPhong) {
+        this.anhPhong = anhPhong;
+    }
     
     @Override
     public String toString() {
@@ -133,7 +146,7 @@ public class Phong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
-        return new Object[]{JCheckBox.class,  maPhong, tenPhong, tang, trangThai, loaiPhong.getTenLoaiPhong(), new ModelAction(this, event)};
+        return new Object[]{new JCheckBox(),  maPhong, tenPhong, tang, trangThai, loaiPhong.getTenLoaiPhong(), new ModelAction(this, event)};
     }
     
     public Object[] convertToRowTableInGDoiPhong() {

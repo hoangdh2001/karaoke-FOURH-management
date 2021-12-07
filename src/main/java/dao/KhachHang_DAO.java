@@ -10,9 +10,10 @@ import service.KhachHangService;
 import util.HibernateUtil;
 
 public class KhachHang_DAO implements KhachHangService {
-        private SessionFactory sessionFactory;
 
-        public KhachHang_DAO() {
+    private SessionFactory sessionFactory;
+
+    public KhachHang_DAO() {
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
@@ -21,6 +22,7 @@ public class KhachHang_DAO implements KhachHangService {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     public boolean themKhachHang(KhachHang khachHang) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
@@ -30,15 +32,16 @@ public class KhachHang_DAO implements KhachHangService {
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
     }
-        
+
+    @Override
     public boolean capNhatKhachHang(KhachHang khachHang) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
+        
         try {
             tr.begin();
             session.update(khachHang);
@@ -46,15 +49,12 @@ public class KhachHang_DAO implements KhachHangService {
             return true;
         } catch (Exception e) {
             tr.rollback();
-            e.printStackTrace();
         }
         return false;
     }
-
     
-
     public KhachHang getKhachHang(String maKhachHang) {
-       Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
 
         try {
@@ -70,13 +70,16 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
-    public List<KhachHang> getDSKhachHang() {
+    @Override
+    public List<KhachHang> getDSKhachHang(int numPage) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
+            String sql = "select kh.* from KhachHang kh order by kh.maKhachHang offset :x row fetch next 20 rows only";
             tr.begin();
             List<KhachHang> dsKhachHang = session
-                    .createNamedQuery("getDSKhachHang", KhachHang.class)
+                    .createNativeQuery(sql, KhachHang.class)
+                    .setParameter("x", numPage * 20)
                     .getResultList();
             tr.commit();
             return dsKhachHang;
@@ -88,40 +91,23 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
-    public List<KhachHang> layDSKhachHang(String tuKhoa) {
-            Session session = sessionFactory.openSession();
-            Transaction tr = session.getTransaction();
-            try {
-                    tr.begin();
-                    String sql = "select * from [dbo].[KhachHang] where [dbo].[ufn_removeMark]([tenKhachHang]) like N'%"+tuKhoa+"%' or [sdt] like '%"+tuKhoa+"'";
-                    List<KhachHang> dsKhachHang = session
-                                .createNativeQuery(sql, KhachHang.class)
-                                .getResultList();
-                    tr.commit();
-                    return dsKhachHang;
-            } catch (Exception e) {
-                System.err.println(e);
-                    tr.rollback();
-            }
-            session.close();
-            return null;
-    }
-
     @Override
-    public List<KhachHang> layDSKhachHang1(String tuKhoa) {
+    public List<KhachHang> layDSKhachHang(String tuKhoa) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
+            String sql = "select * from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "' ";
+                   // + "order by kh.maKhachHang offset :x row fetch next 20 rows only";
             List<KhachHang> dsKhachHang = session
-                            .createNamedQuery("getDSKhachHangByName", KhachHang.class)
-                            .setParameter(1, tuKhoa)
-                            .getResultList();
+                    .createNativeQuery(sql, KhachHang.class)
+                    //.setParameter("x", numPage * 20)
+                    .getResultList();
             tr.commit();
             return dsKhachHang;
         } catch (Exception e) {
             System.err.println(e);
-                tr.rollback();
+            tr.rollback();
         }
         session.close();
         return null;
@@ -141,5 +127,111 @@ public class KhachHang_DAO implements KhachHangService {
             System.err.println(e);
         }
         return false;
+    }
+
+    @Override
+    public List<KhachHang> getDsKhachHangLimit(String tuKhoa) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+
+        String sql = "select Top 6 * from [dbo].[KhachHang] "
+                + "where tenKhachHang like N'%" + tuKhoa + "%̀̀̀̀̀̀̀' "
+                + "or [dbo].[ufn_removeMark]([tenKhachHang]) like N'%" + tuKhoa + "%' "
+                + "or [CCCD] like '%" + tuKhoa + "%' "
+                + "or [sdt] like '%" + tuKhoa + "%' "
+                + "order by tenKhachHang";
+
+        try {
+            tr.begin();
+            List<KhachHang> rs = session
+                    .createNativeQuery(sql, KhachHang.class)
+                    .getResultList();
+            tr.commit();
+            return rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
+
+    @Override
+    public String getMaxID() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+
+        String sql = "select max(maKhachHang) from KhachHang";
+
+        try {
+            tr.begin();
+            String id = (String) session
+                    .createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return id;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean checkKhachHang(String txt) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+
+        String sql = "select * from KhachHang where soDienThoai = :x or CCCD = :y";
+
+        try {
+            tr.begin();
+            session.createNativeQuery(sql)
+                    .setParameter("x", txt)
+                    .setParameter("y", txt)
+                    .getSingleResult();
+            tr.commit();
+            return false;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean capNhatKhachHang(String maKhachHang, String soDienThoaiMoi) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        try {
+            tr.begin();
+            String sql = "  update KhachHang\n"
+                    + "  set sdt = '" + soDienThoaiMoi + "'\n"
+                    + "  where maKhachHang = '" + maKhachHang + "'";
+            session.createQuery(sql)
+                    .executeUpdate();
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            System.err.println(e);
+            tr.rollback();
+        }
+        session.close();
+        return false;
+    }
+
+    @Override
+    public int getSoLuongKhachHang() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select count(*) from KhachHang";
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
     }
 }

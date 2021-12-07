@@ -3,52 +3,34 @@ package gui.component;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
-import gui.GD_Chinh;
-import gui.GD_TiepNhanDatPhong;
-import gui.swing.event.EventMenuSelected;
 import gui.swing.panel.PanelShadow;
 import gui.swing.button.Button;
+import gui.swing.event.EventRoom;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
-/**
- *
- * @author Admin
- */
 public class Room extends PanelShadow {
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final String fontName = "sansserif";
     private final int fontStyle = Font.PLAIN;
     private HoaDon hoaDon;
     private Phong phong;
-    private double thoiGian;
+    private long thoiGian;
     private JLabel lblGioHat;
-    private Timer tm;
-    private JPanel pnlDangHat;
-    private JPanel pnlPhongTrong;
-    private JPanel pnlPhongSua;
-    private JPanel pnlPhongBan;
-    private JPanel pnlPhongDangDon;
-    private JPanel pnlPhongDatTruoc;
     private JMenuItem mniKhachVaoHat;
     private JMenuItem mniThanhToan;
     private JMenuItem mniDoiPhong;
@@ -56,7 +38,8 @@ public class Room extends PanelShadow {
     private JMenuItem mniDatPhong;
     private JMenuItem mniDonPhong;
     private JMenuItem mniSuaPhong;
-    private int index;
+    private EventRoom event;
+    private Thread thread;
     
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -78,17 +61,19 @@ public class Room extends PanelShadow {
         this.phong = phong;
         buildRoom();
     }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
     
+    public Room(Phong phong, HoaDon hoaDon) {
+        this.phong = phong;
+        this.hoaDon = hoaDon;
+        buildRoom();
+    }
+
     public Room() {
         buildRoom();
+    }
+    
+    public void addEvent(EventRoom event) {
+        this.event = event;
     }
     
     private void buildRoom() {
@@ -97,9 +82,27 @@ public class Room extends PanelShadow {
         JPopupMenu pop = new JPopupMenu();
         pop.setPreferredSize(new Dimension(150, 250));
         mniKhachVaoHat = new JMenuItem("Khách vào hát");
+        mniKhachVaoHat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnThueEvent(phong);
+            }
+        });
         mniThanhToan = new JMenuItem("Thanh toán");
+        mniThanhToan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnThanhToanEvent(hoaDon);
+            }
+        });
         mniDoiPhong = new JMenuItem("Đổi phòng");
-        mniThemDichVu = new JMenuItem("Thêm dịch vụ");
+        mniThemDichVu = new JMenuItem("Cập nhật dịch vụ");
+        mniThemDichVu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnThemDichVuEvent(hoaDon);
+            }
+        });
         mniDatPhong = new JMenuItem("Đặt phòng");
         mniDonPhong = new JMenuItem("Dọn phòng");
         mniSuaPhong = new JMenuItem("Sửa phòng");
@@ -157,7 +160,7 @@ public class Room extends PanelShadow {
         mniDatPhong.setEnabled(false);
         mniDonPhong.setEnabled(false);
         mniSuaPhong.setEnabled(false);
-        pnlDangHat = new JPanel();
+        JPanel pnlDangHat = new JPanel();
         pnlDangHat.setBackground(TrangThaiPhong.DANG_HAT.getColor());
         pnlDangHat.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]5[]5[]5[]push"));
 
@@ -182,53 +185,75 @@ public class Room extends PanelShadow {
         lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
         pnlDangHat.add(lblTrangThai);
-
-        JLabel lblKhachHang = new JLabel("Đỗ Huy Hoàng");
+        JLabel lblKhachHang = new JLabel("Khách hàng");
         lblKhachHang.setForeground(Color.WHITE);
         lblKhachHang.setFont(new Font(fontName, fontStyle, 14));
-//        lblKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
+        
+        if(hoaDon.getKhachHang() != null) {
+            lblKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
+        }
         pnlDangHat.add(lblKhachHang);
 
-        JLabel lblBatDau = new JLabel("22/10/2021 9:00");
+        JLabel lblBatDau = new JLabel();
         lblBatDau.setForeground(Color.WHITE);
         lblBatDau.setFont(new Font(fontName, fontStyle, 14));
-//        lblBatDau.setText(sdf.format(hoaDon.getThoiGianBatDau()));
+        lblBatDau.setText(sdf.format(hoaDon.getThoiGianBatDau()));
         pnlDangHat.add(lblBatDau);
-        lblGioHat = new JLabel("15 phút");
+        
+        lblGioHat = new JLabel();
         lblGioHat.setForeground(Color.WHITE);
         lblGioHat.setFont(new Font(fontName, fontStyle, 14));
+        
         pnlDangHat.add(lblGioHat);
-        tm = new Timer(1000, new ActionListener() {
+        thread = new Thread(new Runnable() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
-                thoiGian = (hoaDon.getThoiGianBatDau().getTime() - Date.valueOf(LocalDate.now()).getTime()) / 1000;
-                lblGioHat.setText(String.valueOf((int) thoiGian));
+            public void run() {
+                while (true) {
+                    thoiGian = (new Date().getTime() - hoaDon.getThoiGianBatDau().getTime()) / 1000;
+                    int diffHours = (int) (thoiGian / 3600);
+                    thoiGian = thoiGian % 3600;
+                    int mins = (int) (thoiGian / 60);
+                    lblGioHat.setText(String.format("%02d:%02d", diffHours, mins));
+                    sleep();
+                    repaint();
+                    sleep();
+                }
             }
         });
-
+        thread.start();
+        
+        
         Button btnThanhToan = new Button("Thanh toán", true);
         btnThanhToan.setForeground(Color.WHITE);
         btnThanhToan.setBackground(new Color(0, 31, 63));
         btnThanhToan.setBorderRadius(5);
+        btnThanhToan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnThanhToanEvent(hoaDon);
+            }
+        });
         pnlDangHat.add(btnThanhToan, "split 2");
 
         Button btnThemDichVu = new Button("DV", true);
         btnThemDichVu.setForeground(Color.WHITE);
         btnThemDichVu.setBackground(new Color(0, 31, 63));
         btnThemDichVu.setBorderRadius(5);
+        btnThemDichVu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnThemDichVuEvent(hoaDon);
+            }
+        });
         pnlDangHat.add(btnThemDichVu);
         return pnlDangHat;
     }
-
-    public void tinhGio() {
-        if (!tm.isRunning()) {
-            tm.start();
-        }
-    }
-
-    public void ketThuc() {
-        if (tm.isRunning()) {
-            tm.stop();
+    
+    private void sleep() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.out.println(e);
         }
     }
 
@@ -240,7 +265,22 @@ public class Room extends PanelShadow {
         mniDatPhong.setEnabled(true);
         mniDonPhong.setEnabled(true);
         mniSuaPhong.setEnabled(true);
-        pnlPhongTrong = new JPanel();
+        
+        mniSuaPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnSuaPhongEvent(phong);
+            }
+        });
+        
+        mniDonPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDonPhongEvent(phong);
+            }
+        });
+        
+        JPanel pnlPhongTrong = new JPanel();
         pnlPhongTrong.setBackground(TrangThaiPhong.TRONG.getColor());
         pnlPhongTrong.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
@@ -271,7 +311,7 @@ public class Room extends PanelShadow {
         btnDat.setBackground(new Color(0, 31, 63));
         btnDat.setBorderRadius(5);
         pnlPhongTrong.add(btnDat, "split 2");
-
+        
         Button btnThue = new Button("Thuê", true);
         btnThue.setForeground(Color.WHITE);
         btnThue.setBackground(new Color(0, 31, 63));
@@ -279,12 +319,13 @@ public class Room extends PanelShadow {
         btnThue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                new GD_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN).setVisible(true);
+                setHoaDon(event.addBtnThueEvent(phong));
             }
         });
         pnlPhongTrong.add(btnThue);
         return pnlPhongTrong;
     }
+    
 
     /**
      * Xây dựng phòng sửa
@@ -296,8 +337,17 @@ public class Room extends PanelShadow {
         mniThemDichVu.setEnabled(false);
         mniDatPhong.setEnabled(false);
         mniDonPhong.setEnabled(false);
-        mniSuaPhong.setEnabled(false);
-        pnlPhongSua = new JPanel();
+        mniSuaPhong.setEnabled(true);
+        mniSuaPhong.setText("Sửa xong");
+        
+        mniSuaPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnSuaXongEvent(phong);
+            }
+        });
+        
+        JPanel pnlPhongSua = new JPanel();
         pnlPhongSua.setBackground(TrangThaiPhong.DANG_SUA.getColor());
         pnlPhongSua.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
@@ -327,6 +377,12 @@ public class Room extends PanelShadow {
         btnSuaXong.setForeground(Color.WHITE);
         btnSuaXong.setBackground(new Color(0, 31, 63));
         btnSuaXong.setBorderRadius(5);
+        btnSuaXong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnSuaXongEvent(phong);
+            }
+        });
         pnlPhongSua.add(btnSuaXong);
 
         return pnlPhongSua;
@@ -344,7 +400,14 @@ public class Room extends PanelShadow {
         mniDonPhong.setEnabled(true);
         mniSuaPhong.setEnabled(false);
         
-        pnlPhongBan = new JPanel();
+         mniDonPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDonPhongEvent(phong);
+            }
+        });
+        
+        JPanel pnlPhongBan = new JPanel();
         pnlPhongBan.setBackground(TrangThaiPhong.BAN.getColor());
         pnlPhongBan.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
@@ -374,6 +437,12 @@ public class Room extends PanelShadow {
         btnDonPhong.setForeground(Color.WHITE);
         btnDonPhong.setBackground(new Color(0, 31, 63));
         btnDonPhong.setBorderRadius(5);
+        btnDonPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDonPhongEvent(phong);
+            }
+        });
         pnlPhongBan.add(btnDonPhong);
         
         return pnlPhongBan;
@@ -388,10 +457,18 @@ public class Room extends PanelShadow {
         mniDoiPhong.setEnabled(false);
         mniThemDichVu.setEnabled(false);
         mniDatPhong.setEnabled(false);
-        mniDonPhong.setEnabled(false);
+        mniDonPhong.setEnabled(true);
+        mniDonPhong.setText("Dọn xong");
         mniSuaPhong.setEnabled(false);
         
-        pnlPhongDangDon = new JPanel();
+        mniDonPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDonXongEvent(phong);
+            }
+        });
+        
+        JPanel pnlPhongDangDon = new JPanel();
         pnlPhongDangDon.setBackground(TrangThaiPhong.DANG_DON.getColor());
         pnlPhongDangDon.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
         
@@ -421,6 +498,12 @@ public class Room extends PanelShadow {
         btnDonXong.setForeground(Color.WHITE);
         btnDonXong.setBackground(new Color(0, 31, 63));
         btnDonXong.setBorderRadius(5);
+        btnDonXong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDonXongEvent(phong);
+            }
+        });
         pnlPhongDangDon.add(btnDonXong);
         
         return pnlPhongDangDon;
@@ -438,7 +521,7 @@ public class Room extends PanelShadow {
         mniDonPhong.setEnabled(false);
         mniSuaPhong.setEnabled(false);
         
-        pnlPhongDatTruoc = new JPanel();
+        JPanel pnlPhongDatTruoc = new JPanel();
         pnlPhongDatTruoc.setBackground(TrangThaiPhong.DAT_TRUOC.getColor());
         pnlPhongDatTruoc.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]5[]5[]50[]push"));
         

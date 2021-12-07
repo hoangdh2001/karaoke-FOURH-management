@@ -14,7 +14,7 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.swing.panel.PanelTransparent;
-import gui.swing.event.EventSelectedRow;
+import java.text.DecimalFormatSymbols;
 
 public class PanelForm extends PanelTransparent {
 
@@ -25,7 +25,8 @@ public class PanelForm extends PanelTransparent {
     private final double coverSize = 40; // 40 phần trăm
     private final double loginSize = 60; // 60 phần trăm
     private final double addSize = 30; // 30 phần trăm
-    private final DecimalFormat df = new DecimalFormat("##0.###");
+    private DecimalFormat df = new DecimalFormat("##0.###");
+    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     private Animator animator;
 
     public PanelForm() {
@@ -37,8 +38,10 @@ public class PanelForm extends PanelTransparent {
      * Xây dựng pane đăng nhập
      */
     private void buildPanelLogin() {
+        dfs.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
         layout = new MigLayout("fill, insets 0");
-        image = new PanelCover(new ImageIcon(getClass().getResource("/icon/background2.jpg")));
+        image = new PanelCover(new ImageIcon(getClass().getResource("/icon/imageCover.jpg")));
         login = new PanelLogin();
         setLayout(layout);
         TimingTarget target = new TimingTargetAdapter() {
@@ -152,6 +155,7 @@ public class PanelForm extends PanelTransparent {
             @Override
             public void end() {
                 if (ms.isShow()) {
+
                     PanelForm.this.remove(ms);
                     PanelForm.this.repaint();
                     PanelForm.this.revalidate();

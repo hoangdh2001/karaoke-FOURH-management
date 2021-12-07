@@ -24,65 +24,66 @@ import java.util.List;
  * @author 84975
  */
 public interface NhaCungCapVaNhapHangDaoService {
-//  
+//  Nha Cung Cap
     public boolean addNhaCungCap(NhaCungCap ncc);
     public boolean updateNhaCungCap(NhaCungCap ncc);
-//  
     public List<NhaCungCap> getNhaCungCap();
-    
-    public List<MatHang> getDanhSachMatHangByLoaiDichVu(String id);
-    
     public NhaCungCap getNhaCungCapById(String id);
-    
-    public List<LoaiDichVu> getLoaiDichVu();
-    public List<MatHang> getDanhSachMatHang();
-    public MatHang getMatHang(String maMatHang);
     public String getlastNhaCungCap();
-    
-    public KhachHang getKhachHangBySDT(String sdt);
-    
-    public List<PhieuDatPhong> getPhieuHomNay(String maPhong);
-    
-    public PhieuDatPhong getPhieuById(String maPhieuDatPhong);
-    
-    public NhanVien getNhanVienByID(String maNhanVien);
-    
-    public boolean addKhachHang(KhachHang kh);
-    public boolean updatePhieuDatPhong(String maPhieu);
-    public boolean updateSLMatHang(String maMH,int sl,String type);
-    public boolean updatePhong(String maPhong,TrangThaiPhong trangThai);
-    public boolean insertHoaDon(HoaDon hoasDon,double tienCoc);
-    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon);
-    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon);
-    public HoaDon getHoaDon(Phong phong);
-    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang);
-    
-    public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangThai);
-    
-    public String getlastMaHoaDonTang();
-    public String getlastKhachHangTang();
-    public String getLastPhieuDatPhong();
-    public String getLastMatHang();
-    public String getLastLoHang();
-    
-    public boolean updateHoaDonDoiPhong(HoaDon hoaDon,double tongTienPhong,String maPhongMoi);
-    
-    public List<LoaiPhong> getDSLoaiPhong();
-    
-    public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong);
-    
-    public boolean addPhieuDatPhong(PhieuDatPhong phieu,String ngayDat);
-    
-    public double getTienCoc(String maPhieuDat);
-    
-    public LoaiDichVu getLoaiDichVuByMa(String ma);
-    
-    public boolean insertMatHang(MatHang matHang);
-    public boolean updateMatHang(MatHang matHang);
-    
-    public boolean insertLohang(LoHang loHang);
-    
     public boolean insertCTNhapHang(ChiTietNhapHang ctNhaphang,String maLoHang);
     public String getLastNhaCungCap();
     public boolean insertNhaCungCap(NhaCungCap ncc);
+    
+//  Mat Hang
+    public List<MatHang> getDanhSachMatHangByLoaiDichVu(String id);
+    public List<MatHang> getDanhSachMatHang();
+    public MatHang getMatHang(String maMatHang);
+    public boolean updatePhieuDatPhong(String maPhieu);
+    public boolean updateSLMatHang(String maMH,int sl,String type);
+    public String getLastMatHang();
+    public boolean insertMatHang(MatHang matHang);
+    public boolean updateMatHang(MatHang matHang);
+    public List<MatHang> findMatHang(String textFind,int type);
+//  LoaiDichVu
+    public List<LoaiDichVu> getLoaiDichVu();
+    public LoaiDichVu getLoaiDichVuByMa(String ma);
+    
+//  KhachHang
+    public KhachHang getKhachHangBySDT(String sdt);
+    public boolean addKhachHang(KhachHang kh);
+    public String getlastKhachHangTang();
+    
+//  PhieuDatPhong
+    public List<PhieuDatPhong> getPhieuHomNay(String maPhong);
+    public String getLastPhieuDatPhong();
+    public PhieuDatPhong getPhieuById(String maPhieuDatPhong);
+    public boolean addPhieuDatPhong(PhieuDatPhong phieu,String ngayDat);
+    public double getTienCoc(String maPhieuDat);
+    public PhieuDatPhong getPhieuCuaPhong(String maKhachhang);
+//  NhanVien
+    public NhanVien getNhanVienByID(String maNhanVien);
+    
+//    Phong 
+    public boolean updatePhong(String maPhong,TrangThaiPhong trangThai);
+    public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangThai);
+    public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong);
+//    loai phong
+    public List<LoaiPhong> getDSLoaiPhong();
+//  Hoa Don
+    
+//  Lo Hang
+    
+//    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

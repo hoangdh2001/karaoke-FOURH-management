@@ -1,4 +1,7 @@
 target/
 lib/
-pom.xml
 README.md
+nb-configuration.xml
+.settings/
+.classpath
+.project

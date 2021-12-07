@@ -4,6 +4,7 @@
  */
 package gui;
 
+import dao.LoHang_DAO;
 import entity.NhaCungCap;
 import java.util.List;
 import dao.NhaCungCapVaNhapHang_DAO;
@@ -63,7 +64,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     private MyTextField txtGiaban;
     
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO ;
-    
+    private LoHang_DAO loHangDAO;
     private PanelTenSanPham pnlSPMoi;
     
     private Date ngayNhap;
@@ -92,10 +93,10 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     /**
      * Creates new form GD_ThemDichVu
      */
-    public GD_ThemSanPham(NhanVien nhanVien) {
+    public GD_ThemSanPham() {
         initComponents();
         this.setLayout(new MigLayout("","10[]10","10[]10"));
-        this.nhanVien = nhanVien;
+        this.nhanVien = GD_Chinh.NHAN_VIEN;
         initFrom();
         initTable();
         initDao();
@@ -302,6 +303,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
     
     public void initDao(){
         loHang = new LoHang();
+        loHangDAO = new LoHang_DAO();
         isNewSP = new HashMap<MatHang,Boolean>();
         df = new DecimalFormat("#,##0.00");
         nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
@@ -525,7 +527,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
             Object o = e.getSource();
             if(o.equals(btnLuu) && valiData()){
 //insert lo hang
-                String maLoHang = nhaCungCapVaNhapHang_DAO.getLastLoHang();
+                String maLoHang = loHangDAO.getLastLoHang();
                 ObjectComboBox cb = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
                 NhaCungCap ncc = nhaCungCapVaNhapHang_DAO.getNhaCungCapById(cb.getMa());
                 
@@ -533,7 +535,7 @@ public class GD_ThemSanPham extends javax.swing.JPanel {
                 loHang.setNguoiNhap(nhanVien);
                 loHang.setNhaCungCap(ncc);
 
-                nhaCungCapVaNhapHang_DAO.insertLohang(loHang);
+                loHangDAO.insertLohang(loHang);
 
 ////insert and update sp
                 isNewSP.forEach((sp,isInsert) ->{

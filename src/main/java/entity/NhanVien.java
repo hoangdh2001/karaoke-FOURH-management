@@ -42,12 +42,6 @@ public class NhanVien {
     private DiaChi diaChi;
     @Column(nullable = true)
     private byte[] matKhau;
-//    @OneToMany
-//    @Transient
-//    private List<NhanVien> dsNhanVien;
-//    @ManyToOne
-//    @JoinColumn(name = "maQuanLy")
-//    private NhanVien quanLy;
 
     /**
      * @param maNhanVien
@@ -55,6 +49,7 @@ public class NhanVien {
      * @param loaiNhanVien
      * @param caLam
      * @param canCuocCD
+     * @param gioiTinh
      * @param ngaySinh
      * @param soDienThoai
      * @param email
@@ -263,6 +258,6 @@ public class NhanVien {
         String caLamString = caLam.getGioBatDau() + "-" + caLam.getGioKetThuc();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         
-        return new Object[]{JCheckBox.class, maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai, canCuocCD,caLamString, loaiNhanVien.getTenLoaiNV()};
+        return new Object[]{maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh), soDienThoai, canCuocCD,caLamString, loaiNhanVien.getTenLoaiNV()};
     }
 }

@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 
 import gui.swing.image.BackgroundImage;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import net.miginfocom.swing.MigLayout;
 
 public class PanelCover extends BackgroundImage {
@@ -15,7 +16,8 @@ public class PanelCover extends BackgroundImage {
      *
      */
     private static final long serialVersionUID = 1L;
-    private final DecimalFormat df = new DecimalFormat("##0.###");
+    private DecimalFormat df = new DecimalFormat("##0.###");
+    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     private MigLayout layout;
     private JLabel title;
     private JLabel slogan;
@@ -36,6 +38,9 @@ public class PanelCover extends BackgroundImage {
      * Xây dựng pane cover
      */
     private void buildPanelCover() {
+        
+        dfs.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
         layout = new MigLayout("wrap", "push[center]push", "push[]10[]10[]push");
         setLayout(layout);
         title = new JLabel("KARAOKE FOURH");

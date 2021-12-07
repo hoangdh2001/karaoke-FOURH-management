@@ -3,20 +3,15 @@ package gui;
 import dao.NhanVien_DAO;
 import entity.NhanVien;
 import gui.component.Message;
-import gui.component.PanelForm;
-import gui.component.PanelLoading;
-import gui.dialog.DL_Progress;
+import gui.swing.image.WindowIcon;
 import gui.swing.event.EventLogin;
 import java.awt.Color;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
-import gui.swing.event.EventSelectedRow;
 import java.awt.Component;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLayeredPane;
-import net.miginfocom.swing.MigLayout;
 import service.NhanVienService;
 
 public class GD_DangNhap extends javax.swing.JFrame {
@@ -26,9 +21,11 @@ public class GD_DangNhap extends javax.swing.JFrame {
     private final Animator animator;
     private NhanVien nhanVien;
     private NhanVienService nhanVienService;
+    private Thread thread;
 
     public GD_DangNhap(String title) {
         super(title);
+        WindowIcon.addWindowIcon(this);
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         setOpacity(0);
@@ -47,7 +44,7 @@ public class GD_DangNhap extends javax.swing.JFrame {
                 if (!show) {
                     dispose();
                     if (!close) {
-                        new DL_Progress(GD_DangNhap.this, nhanVien).setVisible(true);
+                        new GD_Chinh(GD_DangNhap.this, "Quản lý Karaoke FourH", nhanVien).setVisible(true);
                     }
                 }
             }
@@ -59,23 +56,34 @@ public class GD_DangNhap extends javax.swing.JFrame {
         pnlLoading.setVisible(true);
         pnlForm.setVisible(false);
 
-        new Thread(() -> {
+        thread = new Thread(() -> {
             nhanVienService = new NhanVien_DAO();
             if (nhanVienService.checkConnect()) {
                 hiddenLoading();
-
             } else {
                 close();
                 System.out.println("Not connect");
             }
-        }).start();
+        });
+        
+        thread.start();
 
         pnlForm.addEventLogin(new EventLogin() {
             @Override
             public void login(String sdt, byte[] matKhau) {
+                if (sdt.equals("") || matKhau.equals("")) {
+                    pnlForm.setTextWhenBack();
+                    pnlForm.showMessage(Message.MessageType.ERROR, "Nhập tên tài khoản");
+                    return;
+                }
+                if (matKhau.length <= 0) {
+                    pnlForm.setTextWhenBack();
+                    pnlForm.showMessage(Message.MessageType.ERROR, "Nhập mật khẩu");
+                    return;
+                }
                 pnlLoading.setAlpha(0.5f);
                 pnlLoading.setVisible(true);
-                new Thread(() -> {
+                thread = new Thread(() -> {
                     try {
                         Thread.sleep(2000);
                         nhanVien = nhanVienService.getNhanVienByLogin(sdt, matKhau);
@@ -84,19 +92,22 @@ public class GD_DangNhap extends javax.swing.JFrame {
                             showDLProgress();
                         } else {
                             pnlLoading.setVisible(false);
-                            pnlForm.showMessage(Message.MessageType.ERROR, "Sai mật khẩu!");
+                            pnlForm.setTextWhenBack();
+                            pnlForm.showMessage(Message.MessageType.ERROR, "Tên tài khoản hoặc mật khẩu bạn đã nhập không chính xác");
                         }
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }).start();
+                });
+                
+                thread.start();
             }
 
             @Override
             public void searchUser(String sdtOrEmail, Component comShow, Component comHidden) {
                 pnlLoading.setAlpha(0.5f);
                 pnlLoading.setVisible(true);
-                new Thread(() -> {
+                thread = new Thread(() -> {
                     try {
                         Thread.sleep(2000);
                         nhanVien = nhanVienService.getNhanVienBySdtOrEmail(sdtOrEmail);
@@ -111,7 +122,8 @@ public class GD_DangNhap extends javax.swing.JFrame {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }).start();
+                });
+                thread.start();
             }
 
             @Override

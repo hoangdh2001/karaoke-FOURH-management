@@ -1,7 +1,8 @@
 package entity;
 
 import gui.swing.table2.EventAction;
-import gui.swing.table2.ModelAction;
+import gui.swing.model.ModelAction;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -40,6 +41,9 @@ public class PhieuDatPhong {
     private TrangThaiPhieuDat trangThai;
     @Column(columnDefinition = "money")
     private double tienCoc;
+    @ManyToOne
+    @JoinColumn(name = "maNhanVien", nullable = false)
+    private NhanVien nhanVien;
 
     /**
      * @param maPhieuDat
@@ -49,9 +53,10 @@ public class PhieuDatPhong {
      * @param ngayTao
      * @param trangThai
      * @param tienCoc
+     * @param nhanVien
      */
     public PhieuDatPhong(String maPhieuDat, KhachHang khachHang, Phong phong, Date ngayDat, Date ngayTao, TrangThaiPhieuDat trangThai,
-            double tienCoc) {
+            double tienCoc, NhanVien nhanVien) {
         this.maPhieuDat = maPhieuDat;
         this.khachHang = khachHang;
         this.phong = phong;
@@ -59,23 +64,23 @@ public class PhieuDatPhong {
         this.ngayTao = ngayTao;
         this.trangThai = trangThai;
         this.tienCoc = tienCoc;
+        this.nhanVien = nhanVien;
     }
 
     /**
      * @param maPhieuDat
      * @param khachHang
      * @param phong
-     * @param ngayDat
-     * @param trangThai
      * @param tienCoc
      */
-    public PhieuDatPhong(String maPhieuDat, KhachHang khachHang, Phong phong, TrangThaiPhieuDat trangThai, double tienCoc) {
+    public PhieuDatPhong(String maPhieuDat, KhachHang khachHang, Phong phong, double tienCoc, NhanVien nhanVien) {
         this.maPhieuDat = maPhieuDat;
         this.khachHang = khachHang;
         this.phong = phong;
         this.tienCoc = tienCoc;
-        this.trangThai = trangThai;
+        this.trangThai = TrangThaiPhieuDat.DANG_DOI;
         this.ngayTao = new Date();
+        this.nhanVien = nhanVien;
     }
 
     /**
@@ -83,10 +88,6 @@ public class PhieuDatPhong {
      */
     public PhieuDatPhong() {
     }
-
-//    public PhieuDatPhong(String string, KhachHang khachHang, Phong phong, Date valueOf, Date valueOf0, TrangThaiPhieuDat trangThaiPhieuDat, int i) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 
     /**
      * @return the maPhieuDat
@@ -184,6 +185,19 @@ public class PhieuDatPhong {
     public void setTrangThai(TrangThaiPhieuDat trangThai) {
         this.trangThai = trangThai;
     }
+    /**
+     * @return nhanVien
+     */
+    public NhanVien getNhanVien() {
+        return nhanVien;
+    }
+    /**
+     * @param nhanVien 
+     */
+    public void setNhanVien(NhanVien nhanVien) {
+        this.nhanVien = nhanVien;
+    }
+    
 
     @Override
     public String toString() {
@@ -191,8 +205,9 @@ public class PhieuDatPhong {
     }
     
     public Object[] convertToRowTable(EventAction event) {
+        DecimalFormat dcf = new DecimalFormat("#,###");
         SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-        return new Object[]{JCheckBox.class, maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, tienCoc, new ModelAction(this, event)};
+        return new Object[]{new JCheckBox(), maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, dcf.format(tienCoc), new ModelAction(this, event)};
     }
     
     public Object[] convertToRowTableInGDTiepNhanDatPhong(){

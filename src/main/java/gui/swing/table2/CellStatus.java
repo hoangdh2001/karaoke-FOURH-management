@@ -2,10 +2,15 @@ package gui.swing.table2;
 
 import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class CellStatus extends javax.swing.JPanel {
 
-    public CellStatus(Object o) {
+    private boolean selected;
+
+    public CellStatus(Object o, boolean isSelected) {
+        this.selected = isSelected;
         initComponents();
         if (o instanceof TrangThaiPhong) {
             TrangThaiPhong trangThai = (TrangThaiPhong) o;
@@ -15,6 +20,15 @@ public class CellStatus extends javax.swing.JPanel {
             TrangThaiPhieuDat trangThai = (TrangThaiPhieuDat) o;
             lblStatus.setText(trangThai.getTrangThai());
             lblStatus.setColorStatus(trangThai.getStatusColor());
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics grphcs) {
+        super.paintComponent(grphcs);
+        if (!selected) {
+            grphcs.setColor(new Color(230, 230, 230));
+            grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
         }
     }
 
@@ -31,9 +45,9 @@ public class CellStatus extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

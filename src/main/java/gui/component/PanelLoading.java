@@ -1,11 +1,15 @@
 package gui.component;
 
 import gui.swing.panel.PanelTransparent;
+import javax.swing.Icon;
 
 public class PanelLoading extends PanelTransparent {
-
     public PanelLoading() {
         initComponents();
+    }
+    
+    public void setIcon(Icon icon) {
+        jLabel1.setIcon(icon);
     }
 
     @SuppressWarnings("unchecked")

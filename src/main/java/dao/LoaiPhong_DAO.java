@@ -27,7 +27,6 @@ public class LoaiPhong_DAO implements LoaiPhongService {
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -44,7 +43,6 @@ public class LoaiPhong_DAO implements LoaiPhongService {
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -61,7 +59,6 @@ public class LoaiPhong_DAO implements LoaiPhongService {
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -78,12 +75,32 @@ public class LoaiPhong_DAO implements LoaiPhongService {
             tr.commit();
             return loaiPhong;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return null;
     }
 
+    @Override
+    public LoaiPhong getLoaiPhongByName(String name) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "select * from LoaiPhong where tenLoaiPhong = :x";
+        
+        try {
+            tr.begin();
+            LoaiPhong loaiPhong = session
+                    .createNativeQuery(sql, LoaiPhong.class)
+                    .setParameter("x", name)
+                    .getSingleResult();
+            tr.commit();
+            return loaiPhong;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
+    
     @Override
     public List<LoaiPhong> getDsLoaiPhong() {
         Session session = sessionFactory.openSession();
@@ -97,7 +114,6 @@ public class LoaiPhong_DAO implements LoaiPhongService {
             tr.commit();
             return rs;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return null;

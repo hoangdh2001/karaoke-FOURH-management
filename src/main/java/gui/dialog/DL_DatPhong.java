@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui.dialog;
 
 import dao.NhaCungCapVaNhapHang_DAO;
@@ -10,26 +5,23 @@ import dao.Phong_DAO;
 import entity.KhachHang;
 import entity.Phong;
 import entity.PhieuDatPhong;
-import entity.TrangThaiPhieuDat;
 import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,15 +33,8 @@ import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import objectcombobox.ObjectComboBox;
 
-/**
- *
- * @author Hao
- */
 public class DL_DatPhong extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DL_DatPhong
-     */
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhaphang_DAO;
     private Phong_DAO phongDAO;
     
@@ -272,7 +257,12 @@ public class DL_DatPhong extends javax.swing.JDialog {
         setSize(1000, 680);
         setTitle("CỬA SỔ PHÒNG ĐẶT");
         setResizable(false);
-        setLocationRelativeTo(null);
+        setSize(new Dimension(1200,780));
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        final Dimension screenSize = toolkit.getScreenSize();
+        final int x = (screenSize.width - this.getWidth()) / 2;
+        final int y = (screenSize.height - this.getHeight()) / 2;
+        setLocation(x, y);
     }
 
     /**
@@ -703,7 +693,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
                 Phong phong = phongDAO.getPhong(cb.getMa());
                 String maPhieuDat = nhaCungCapVaNhaphang_DAO.getLastPhieuDatPhong();
                 
-                PhieuDatPhong phieu = new PhieuDatPhong(maPhieuDat,kh, phong, TrangThaiPhieuDat.DANG_DOI, convertMoneyToDouble(txtTienCoc.getText()));
+                PhieuDatPhong phieu = new PhieuDatPhong(maPhieuDat,kh, phong, convertMoneyToDouble(txtTienCoc.getText()), null);
                 nhaCungCapVaNhaphang_DAO.addPhieuDatPhong(phieu,txtNgayGio.getText().trim());
                 
                 showMsg("Đặt thành công "+phong.getTenPhong()+" vào lúc: " +txtNgayGio.getText().trim());

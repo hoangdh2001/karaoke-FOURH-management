@@ -1,7 +1,6 @@
 package gui;
 
 import entity.HoaDon;
-import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import java.awt.Color;
@@ -11,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
@@ -20,22 +18,22 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import gui.component.Content;
 import gui.component.Header;
 import gui.component.HoaDonDetail;
-import gui.component.KhachHangDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
 import gui.component.PanelThemNhanVien;
 import gui.component.PhieuDatPhongDetail;
+import gui.component.Room;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
+import gui.swing.event.EventAdd;
 import gui.swing.event.EventAddNhanVien;
+import gui.swing.image.WindowIcon;
 import gui.swing.event.EventMenuSelected;
-import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventShowPopupMenu;
 import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
-import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -48,6 +46,8 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Frame;
 import gui.swing.event.EventSelectedRow;
+import gui.swing.event.EventShowInfoOver;
+import javax.swing.JOptionPane;
 
 public class GD_Chinh extends JFrame {
     
@@ -65,8 +65,8 @@ public class GD_Chinh extends JFrame {
     private Content content; // thành phần content chứa nội dung
     private boolean tabShow;
     private MigLayout layout;
-    private DecimalFormat df = new DecimalFormat("##0.###");
-    private DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+    private final DecimalFormat df = new DecimalFormat("##0.###");
+    private final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     private TabLayout tab;
     private JScrollPane sp;
     
@@ -75,6 +75,7 @@ public class GD_Chinh extends JFrame {
         GD_Chinh.NHAN_VIEN = nhanVien;
         GD_Chinh.FRAME = frame;
         buidGD_Chinh();
+        
     }
 
     /**
@@ -83,13 +84,13 @@ public class GD_Chinh extends JFrame {
     private void buidGD_Chinh() {
         dfs.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(dfs);
+        WindowIcon.addWindowIcon(this);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
         createBackground();
         setContentPane(background);
         setMinimumSize(new Dimension(1200, 500));
         pack();
         setLocationRelativeTo(null);
-        setState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -107,7 +108,7 @@ public class GD_Chinh extends JFrame {
 
         background.add(createNav(), "w 230!, spany 2"); // nav sẽ chiếm hai dòng
         background.add(createHeader(), "h 50!, wrap"); // header xuống dòng
-        background.add(createContent()); // content full
+        background.add(createContent(), "w 100%, h 100%"); // content full
         background.add(createTabPane(), "pos 45% 1al n n, w 100%, h 90%");
         TimingTarget target = new TimingTargetAdapter() {
             @Override
@@ -208,8 +209,8 @@ public class GD_Chinh extends JFrame {
                             soDoPhongHat.addEvent(new EventShowInfoOver() {
                                 @Override
                                 public void showInfoOver(Component com, MouseEvent e) {
-                                    //                MenuItem item = (MenuItem) com;
-                                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                                    Room item = (Room) com;
+                                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
                                     int x = 0;
                                     int y = 0;
                                     if ((e.getXOnScreen() + 400) >= 1920) {
@@ -287,7 +288,7 @@ public class GD_Chinh extends JFrame {
                         });
                         break;
                     case 4:
-                        GD_NhanVien gD_NhanVien = new GD_NhanVien();
+                        GD_QuanLyNhanVien gD_NhanVien = new GD_QuanLyNhanVien();
 
                         content.showForm(gD_NhanVien);
                         gD_NhanVien.addEventSelectedRow(new EventSelectedRow() {
@@ -315,8 +316,23 @@ public class GD_Chinh extends JFrame {
                                 if (!animator2.isRunning()) {
                                     if (!tabShow) {
                                         tab.setVisible(true);
-
+                                        
                                         PanelThemNhanVien pnlThemNhanVien = new PanelThemNhanVien();
+                                        pnlThemNhanVien.addThemEvent(new EventAdd() {
+                                            @Override
+                                            public void add(Object obj) {
+                                                if(obj instanceof Boolean) {
+                                                    boolean rs = (Boolean) obj;
+                                                    if(rs) {
+                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thành công!");
+                                                        gD_NhanVien.pnlPageHandle();
+                                                        
+                                                    } else {
+                                                        JOptionPane.showMessageDialog(GD_Chinh.this, "Thêm thất bại!");
+                                                    }
+                                                }
+                                            }
+                                        });
                                         tab.showDetail(pnlThemNhanVien);
                                         animator2.start();
                                     }
@@ -326,9 +342,16 @@ public class GD_Chinh extends JFrame {
                         break;
                     case 5:
                         if (subMenuIndex == 0) {
-                            content.showForm(new GD_ThongKeDoanhThu());
+                            content.showForm(new GD_ThongKeDoanhThu2());
                         } else if (subMenuIndex == 1) {
                             content.showForm(new GD_ThongKeHangHoa());
+                        }
+                        break;
+                    case 6:
+                        if(subMenuIndex == 0) {
+                            content.showForm(new GD_XemDichVu());
+                        } else if (subMenuIndex == 1) {
+                            content.showForm(new GD_QLHangHoa());
                         }
                         break;
                     default:
@@ -366,8 +389,8 @@ public class GD_Chinh extends JFrame {
         soDoPhongHat.addEvent(new EventShowInfoOver() {
             @Override
             public void showInfoOver(Component com, MouseEvent e) {
-//                MenuItem item = (MenuItem) com;
-                RoomDetail infoOver = new RoomDetail(GD_Chinh.this);
+                Room item = (Room) com;
+                RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
                 int x = 0;
                 int y = 0;
                 if ((e.getXOnScreen() + 400) >= 1920) {
@@ -379,6 +402,7 @@ public class GD_Chinh extends JFrame {
                 }
                 infoOver.setLocation(x, y);
                 infoOver.setVisible(true);
+                
                 sp.addMouseWheelListener(new MouseWheelListener() {
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -396,12 +420,12 @@ public class GD_Chinh extends JFrame {
         });
 
         content.showForm(soDoPhongHat);
-        sp.getViewport().setBackground(Color.WHITE);
-        sp.setVerticalScrollBar(new ScrollBarCustom());
-        JPanel p = new JPanel();
-        p.setBackground(Color.WHITE);
-        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        sp.getViewport().setBackground(Color.WHITE);
+//        sp.setVerticalScrollBar(new ScrollBarCustom());
+//        JPanel p = new JPanel();
+//        p.setBackground(Color.WHITE);
+//        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
+//        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setViewportView(content);
         sp.getVerticalScrollBar().setUnitIncrement(50);
         sp.setBorder(null);

@@ -13,7 +13,9 @@ import gui.swing.button.Button;
 import gui.swing.textfield.MyComboBox;
 import gui.swing.textfield.MyTextField;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -144,9 +146,14 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         btnThemVaSua.setBackground(colorBtn);
         pnlRight.add(btnThemVaSua, "w 100!, h 40!, align right");
         
-        setSize(800, 320);
+        setSize(800, 280);
         setResizable(false);
-        setLocationRelativeTo(null);
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        final Dimension screenSize = toolkit.getScreenSize();
+        final int x = (screenSize.width - this.getWidth()) / 2;
+        final int y = (screenSize.height - this.getHeight()) / 2;
+        setLocation(x, y);
+        
         
         initDao();
         initModel();
@@ -192,6 +199,7 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
     
     private void initModel() {
         if(model != null){
+            this.setTitle("Xem chỉnh sửa thông tin phòng");
             btnThemVaSua.setText("Sửa");
             NhaCungCap ncc = (NhaCungCap) model;
             txtSDT.setText(ncc.getSoDienThoai());

@@ -11,9 +11,12 @@ public interface NhanVienService {
     public NhanVien getNhanVien(String id);
     public List<NhanVien> getNhanViens();
     public NhanVien getLastNhanVien();
-    public  List<NhanVien> searchNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV, String maCaLam);
+    public  List<NhanVien> searchNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV, String maCaLam, int numPage);
+    public  int getSoLuongNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV, String maCaLam);
     public NhanVien getNhanVienByLogin(String sdt, byte[] matKhau);
     public NhanVien getNhanVienBySdtOrEmail(String sdtOrEmail);
+    public List<String> getMaNhanVienQuanLy();
     public boolean checkSDT(String sdt);
     public boolean checkCCCD(String cccd);
+    public boolean checkEmail(String email);
 }

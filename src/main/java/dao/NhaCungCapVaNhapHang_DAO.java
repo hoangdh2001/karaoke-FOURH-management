@@ -195,16 +195,18 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         return null;
     }
 
-    @Override
+     @Override
     public List<PhieuDatPhong> getPhieuHomNay(String maPhong) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
         Date date = new Date( System.currentTimeMillis());
-        SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         
-        String sql = "select * from PhieuDatPhong where datediff(day,NgayDat,'"+formatterNgay.format(date)+"') = 0"
-                + "and maPhong = '"+maPhong+"'" +" and trangThai = 'DANG_DOI'";
+        String sql = "select * from PhieuDatPhong where datediff(day,NgayDat,'"+formatterNgay.format(date)+"') = 0 "
+                + "and datediff(MINUTE,'"+formatterNgay.format(date)+"',NgayDat) > 0"
+                + "and maPhong = '"+maPhong+"' and trangThai = 'DANG_DOI'";
+       
         try {
             tr.begin();
                 List<PhieuDatPhong> phieuDatPhong = session.createNativeQuery(sql,PhieuDatPhong.class).getResultList();
@@ -246,7 +248,7 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "select * from MatHang";
+        String sql = "select * from MatHang order by maLoaiDichVu ";
         try {
             tr.begin();
                 List<MatHang> dsMatHang = session.createNativeQuery(sql,MatHang.class).getResultList();
@@ -351,34 +353,35 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         
     }
     
-    public boolean insertHoaDon(HoaDon hoaDon,double tienCoc){
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        SimpleDateFormat formatterGio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String date = formatterGio.format(hoaDon.getThoiGianBatDau().getTime());
-        String sql = "insert into HoaDon (maHoaDon,donGiaPhong,gioHat,ngaylapHoaDon,thoiGianBatDau,thoiGianKetThuc,tongHoaDon,tongTienMatHang,maKhachHang,maNhanVien,maPhong) "
-                + "values "
-                + "('"+ hoaDon.getMaHoaDon() +"',"+(-tienCoc)+",0,"
-                + "CAST(N'"+date+"' AS datetime),"
-                + "CAST(N'"+date+"' AS datetime),"
-                + "CAST(N'"+date+"' AS datetime),"
-                + 0 +","
-                + 0 +","
-                + "'"+ hoaDon.getKhachHang().getMaKhachHang()+ "',"
-                + "'"+hoaDon.getNhanVien().getMaNhanVien()+"',"
-                + "'"+hoaDon.getPhong().getMaPhong()+"'"
-                + ")";
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean insertHoaDon(HoaDon hoaDon){
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        SimpleDateFormat formatterGio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        String date = formatterGio.format(hoaDon.getThoiGianBatDau().getTime());
+//        String sql = "insert into HoaDon (maHoaDon,donGiaPhong,gioHat,ngaylapHoaDon,thoiGianBatDau,thoiGianKetThuc,tongHoaDon,tongTienMatHang,maKhachHang,maNhanVien,maPhong) "
+//                + "values "
+//                + "('"+ hoaDon.getMaHoaDon() +"',"+(-tienCoc)+",0,"
+//                + "CAST(N'"+date+"' AS datetime),"
+//                + "CAST(N'"+date+"' AS datetime),"
+//                + "CAST(N'"+date+"' AS datetime),"
+//                + 0 +","
+//                + 0 +","
+//                + "'"+ hoaDon.getKhachHang().getMaKhachHang()+ "',"
+//                + "'"+hoaDon.getNhanVien().getMaNhanVien()+"',"
+//                + "'"+hoaDon.getPhong().getMaPhong()+"'"
+//                + ")";
+//        try {
+//            tr.begin();
+//                session.createNativeQuery(sql).executeUpdate();
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
 
     @Override
     public MatHang getMatHang(String maMatHang) {
@@ -396,100 +399,7 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         return null;
     }
 
-    @Override
-    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "insert into ChiTietHoaDon (maHoaDon,maMatHang,chietKhau,soLuong,thanhTien) values ("
-                + "'"+ ctHoaDon.getHoaDon().getMaHoaDon()+ "',"
-                + "'"+ ctHoaDon.getMatHang().getMaMatHang()+ "',"
-                + ctHoaDon.getChietKhau() + ","
-                + ctHoaDon.getSoLuong() + ","
-                + ctHoaDon.getThanhTien()
-                + ")";
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();  
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
-    @Override
-    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql ="";
-        if(ctHoaDon.getSoLuong() >0){
-            sql = "update ChiTietHoaDon set soLuong = "+ctHoaDon.getSoLuong()+",thanhTien = "+ctHoaDon.getThanhTien()
-                +"where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
-                + "and maMatHang = '" +ctHoaDon.getMatHang().getMaMatHang()+"' ";
-        }else{
-            sql = "delete ChiTietHoaDon"
-                +" where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
-                + "and maMatHang = '"+ctHoaDon.getMatHang().getMaMatHang()+"'";
-        }
-        
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();  
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
-
-    @Override
-    public HoaDon getHoaDon(Phong phong) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select top 1 * from HoaDon where maPhong = '"+phong.getMaPhong()+"' order by maHoaDon desc";
-        try {
-            tr.begin();
-                HoaDon hoadon= session.createNativeQuery(sql,HoaDon.class).getSingleResult();
-            tr.commit();
-            return hoadon;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return null;
-    }
-
-    @Override
-    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        java.util.Date date = new java.util.Date(System.currentTimeMillis());
-        String ngayLapHoaDon = gio.format(date);
-        
-        String sql = "update HoaDon "
-                + "set donGiaPhong = "+tongTienPhong+","
-                + "gioHat = 1,"
-                + "ngayLapHoaDon = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
-                + ",thoiGianKetThuc = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
-                + ",tongHoaDon = "+tongTien
-                + ",tongTienMatHang = "+tongTienMatHang+" where maHoaDon = '"+hoaDon.getMaHoaDon()+"' ";
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();  
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        
-        return false;
-    }
+    
 
     @Override
     public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangthai) {
@@ -509,37 +419,7 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         return null;
     }
 
-    @Override
-    public String getlastMaHoaDonTang() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select top 1 maHoaDon from HoaDon order by maHoaDon desc";
-        
-        try {
-            tr.begin();
-                String maHoaDon = "";
-                String maCuoiCung = "HD";
-
-                try {
-                    maHoaDon = (String)session.createNativeQuery(sql).uniqueResult(); 
-                    int so = Integer.parseInt(maHoaDon.split("HD")[1]) + 1;
-                int soChuSo = String.valueOf(so).length();
-
-                for (int i = 0; i< 7-soChuSo; i++){
-                    maCuoiCung += "0";
-                }
-                maCuoiCung += String.valueOf(so);
-                } catch (Exception e) {
-                    maCuoiCung = "HD0000001";
-                }      
-            tr.commit();
-            return maCuoiCung;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return null;
-    }
+    
     
     public String getlastKhachHangTang(){
         Session session = sessionFactory.getCurrentSession();
@@ -571,31 +451,7 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         return null;
     }
 
-    @Override
-    public boolean updateHoaDonDoiPhong(HoaDon hoaDon, double tongTienPhong,String maPhongMoi) {
-        
-        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        java.util.Date date = new java.util.Date(System.currentTimeMillis());
-        String thoiGianBatDau = gio.format(date);
-        
-        String sql = "update HoaDon set maPhong = '"+maPhongMoi+"'"
-                + ",donGiaPhong = donGiaPhong + " +tongTienPhong
-                + ",thoiGianBatDau = CAST(N'"+thoiGianBatDau+"' AS datetime)"
-                + ",thoiGianKetThuc = CAST(N'"+thoiGianBatDau+"' AS datetime)"
-                + " where maHoaDon = '"+hoaDon.getMaHoaDon()+"'";
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+    
 
     @Override
     public List<LoaiPhong> getDSLoaiPhong() {
@@ -824,61 +680,9 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         return false;
     }
     
-    @Override
-    public String getLastLoHang() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select top 1 maLoHang from LoHang order by maLoHang desc";
-        
-        try {
-            tr.begin();
-            String maKhachCuoi="";
-            String maCuoiCung = "LH";
-            try {
-                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
-                int so = Integer.parseInt(maKhachCuoi.split("LH")[1]) + 1;
-                int soChuSo = String.valueOf(so).length();
-                
-                for (int i = 0; i< 4 - soChuSo; i++){
-                    maCuoiCung += "0";
-                }
-                maCuoiCung += String.valueOf(so);
-            } catch (Exception e) {
-                maCuoiCung = "LH0001";
-            } 
-            tr.commit();
-            return maCuoiCung;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return null;
-    }
+    
 
-    @Override
-    public boolean insertLohang(LoHang loHang) {
-    Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        
-        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        java.util.Date date = new java.util.Date(System.currentTimeMillis());
-        String ngayLap = gio.format(date);
-        String sql = "INSERT [dbo].[LoHang] ([maLoHang], [ngayNhap], [tongTien], [maNhanVien], [maNCC]) "
-                + "VALUES (N'"+loHang.getMaLoHang()+"', "
-                + "CAST(N'"+ngayLap+"' AS datetime), "+ loHang.getTongTien()+", N'"+loHang.getNguoiNhap().getMaNhanVien()+"',"
-                + " N'"+loHang.getNhaCungCap().getMaNCC()+"')";
-         try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            session.clear();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+    
 
     @Override
     public boolean insertCTNhapHang(ChiTietNhapHang ctNhaphang,String maLoHang){
@@ -953,5 +757,62 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
             tr.rollback();
         }
         return false;
+    }
+
+    @Override
+    public List<MatHang> findMatHang(String textFind, int type) {
+        String sql = "select * from MatHang order by maLoaiDichVu";
+        
+        switch (type) {
+            case 0:
+                break;
+            case 1:
+                sql = "select * from MatHang where tenMatHang like N'%"+textFind+"%' order by maLoaiDichVu";
+                break;
+            case 2:
+                sql = "select * from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu where ldv.tenLoaiDichVu like N'%"+textFind+"%' order by ldv.maLoaiDichVu";;
+                break;
+            default:
+                sql = "select * from MatHang order by maLoaiDichVu";
+	}
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                List<MatHang> dsMatHang = session.createNativeQuery(sql,MatHang.class).getResultList();
+            tr.commit();
+            return dsMatHang;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    
+    }
+
+    @Override
+    public PhieuDatPhong getPhieuCuaPhong(String maKhachhang) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        
+        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+        String ngayLap = gio.format(date);
+        String sql = "select top 1 * from PhieuDatPhong where maKhachHang = '"+maKhachhang+"' "
+                + "and datediff(DAY,ngayDat,'"+ngayLap+"') = 0"
+                + " and trangThai = 'DA_TIEP_NHAN' order by ngayDat desc";
+        try {
+            tr.begin();
+                PhieuDatPhong pdp = session.createNativeQuery(sql,PhieuDatPhong.class).getSingleResult();
+            tr.commit();
+            session.clear();
+            return pdp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return null;
     }
 }   
