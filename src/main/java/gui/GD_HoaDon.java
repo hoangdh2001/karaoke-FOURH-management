@@ -215,7 +215,25 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     private void createTable(){
         tblHoaDon.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         tblHoaDon.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
-        taiLaiDuLieu(hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex()));
+         new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex());
+                    if(nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
+                        dsHoaDon.forEach((hoaDon) -> {
+                            ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
+                        });
+                    }else{
+                        for(HoaDon hoaDon: dsHoaDon){
+                            if(hoaDon.getNhanVien().getMaNhanVien().equals(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
+                                ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
+                            }
+                        }
+                    }
+                tblHoaDon.repaint();
+                tblHoaDon.revalidate();
+                }
+            }).start();
         RowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) tblHoaDon.getModel());
         tblHoaDon.setRowSorter(sorter);
         xuLySuKien();
@@ -229,47 +247,28 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     
     public void taiLaiDuLieu(List<HoaDon> dsHoaDon) {
         ((DefaultTableModel) tblHoaDon.getModel()).setRowCount(0);
-        
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<HoaDon> dsTam = xuLyLoai(dsHoaDon);
-                if (dsTam != null) {
-                    dsTam.forEach((hoaDon) -> {
-                        ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
-                    });
-                }
+        if(dsHoaDon!=null){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if(nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
+                        dsHoaDon.forEach((hoaDon) -> {
+                            ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
+                        });
+                    }else{
+                        for(HoaDon hoaDon: dsHoaDon){
+                            if(hoaDon.getNhanVien().getMaNhanVien().equals(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
+                                ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
+                            }
+                        }
+                    }
                 tblHoaDon.repaint();
                 tblHoaDon.revalidate();
-            }
-        }).start();
+                }
+            }).start();
+        }
     }
     
-    public List<HoaDon> xuLyLoai(List<HoaDon> dsHoaDon){
-        List<HoaDon> dsTam = new ArrayList<>();
-        if(nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
-            return dsHoaDon;
-        }else{
-          Thread th =  new Thread(new Runnable() {
-            @Override
-            public void run() {
-    
-                for(HoaDon hoaDon: dsHoaDon){
-                    if(hoaDon.getNhanVien().getMaNhanVien().equals(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
-                        dsTam.add(hoaDon);
-                    }
-                }
-            }
-           });
-          th.start();
-            try {
-                th.join();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GD_HoaDon.class.getName()).log(Level.SEVERE, null, ex);
-            }
-          return dsTam;
-        }
-    }    
     
     private void loadPage(int soLuongPhieu) {
         pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
