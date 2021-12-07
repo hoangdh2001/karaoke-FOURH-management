@@ -449,7 +449,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         pnlBottomBar.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)));
 
         btnGiaoPhong.setText("Giao phòng");
-        btnGiaoPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnGiaoPhong.setBackground(new java.awt.Color(54, 88, 153));
+        btnGiaoPhong.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        btnGiaoPhong.setForeground(new java.awt.Color(255, 255, 255));
         btnGiaoPhong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGiaoPhongActionPerformed(evt);
@@ -457,7 +459,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         });
 
         btnHuy.setText("Hủy");
-        btnHuy.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnHuy.setBackground(new java.awt.Color(54, 88, 153));
+        btnHuy.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        btnHuy.setForeground(new java.awt.Color(255, 255, 255));
         btnHuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHuyActionPerformed(evt);
@@ -493,10 +497,10 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 .addComponent(lblRole)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBottomBarLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHuy)
-                    .addComponent(btnGiaoPhong))
+                .addContainerGap()
+                .addGroup(pnlBottomBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnGiaoPhong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnHuy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
 
@@ -620,7 +624,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlTGThuePhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(thoiGianBatDau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(thoiGianKetThuc, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
+                            .addComponent(thoiGianKetThuc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlTGThuePhongLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -694,6 +698,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         );
 
         btnExpand.setText("Phiếu đặt phòng");
+        btnExpand.setBackground(new java.awt.Color(54, 88, 153));
+        btnExpand.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        btnExpand.setForeground(new java.awt.Color(255, 255, 255));
         btnExpand.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 btnExpandItemStateChanged(evt);
@@ -772,7 +779,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                     .addComponent(txtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlTTKHLayout.setVerticalGroup(
             pnlTTKHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -812,8 +819,8 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         txtGiaPhong.setEnabled(false);
         txtGiaPhong.setUnit("đ/giờ");
 
-        lblGiaPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblGiaPhong.setText("Giá phòng");
+        lblGiaPhong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout pnlTTPhongLayout = new javax.swing.GroupLayout(pnlTTPhong);
         pnlTTPhong.setLayout(pnlTTPhongLayout);
@@ -1007,7 +1014,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
         );
 
         setSize(new java.awt.Dimension(1018, 632));

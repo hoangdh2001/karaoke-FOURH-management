@@ -1,4 +1,4 @@
-package gui.swing.panel.slideshow;
+package gui.swing.event;
 
 public interface EventPagination {
 

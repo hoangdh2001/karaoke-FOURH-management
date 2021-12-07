@@ -16,7 +16,6 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 import gui.component.Content;
-import gui.component.Header;
 import gui.component.HoaDonDetail;
 import gui.component.Menu;
 import gui.component.NhanVienDetail;
@@ -26,12 +25,12 @@ import gui.component.Room;
 import gui.component.TabLayout;
 import gui.dialog.DL_ThongTinNhanVien;
 import gui.component.RoomDetail;
+import gui.dialog.DL_DoiMatKhau;
 import gui.swing.event.EventAdd;
 import gui.swing.event.EventAddNhanVien;
 import gui.swing.image.WindowIcon;
 import gui.swing.event.EventMenuSelected;
 import gui.swing.event.EventShowPopupMenu;
-import gui.swing.menu.DropMenu;
 import gui.swing.menu.MenuItem;
 import gui.swing.menu.PopupMenu;
 import java.awt.event.MouseAdapter;
@@ -48,6 +47,7 @@ import java.awt.Frame;
 import gui.swing.event.EventSelectedRow;
 import gui.swing.event.EventShowInfoOver;
 import javax.swing.JOptionPane;
+import gui.component.Header;
 
 public class GD_Chinh extends JFrame {
     
@@ -164,30 +164,19 @@ public class GD_Chinh extends JFrame {
             public void menuSelected(int menuIndex, int subMenuIndex) {
                 if (subMenuIndex == 0) {
                     new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
-                }
-                if (subMenuIndex == 3) {
-                    FRAME.setVisible(true);
-                    dispose();
+                } else if(subMenuIndex == 1) {
+                    new DL_DoiMatKhau(GD_Chinh.this).setVisible(true);
+                } else if (subMenuIndex == 2) {
+                    if(JOptionPane.showConfirmDialog(rootPane, "Bạn có đồng ý đăng xuất!", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        FRAME.setVisible(true);
+                        dispose();
+                    }
+                    
                 }
             }
         };
+        header.addEventMenu(eventSelected);
 
-        header.addEvent2(new EventShowPopupMenu() {
-            @Override
-            public void showPopup(Component com) {
-                String[] menuItem = {"Hồ sơ", "Xin chào", "Chao xìn", "Đăng xuất"};
-                DropMenu dropMenu = new DropMenu(GD_Chinh.this, 0, eventSelected, menuItem);
-                int x;
-                if (menu.isShowMenu()) {
-                    x = GD_Chinh.this.getX() + com.getX() + com.getWidth() * 2 - 40;
-                } else {
-                    x = GD_Chinh.this.getX() + com.getX() + com.getWidth() - 40;
-                }
-                int y = GD_Chinh.this.getY() + 55;
-                dropMenu.setLocation(x, y);
-                dropMenu.setVisible(true);
-            }
-        });
         return header;
     }
 

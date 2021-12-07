@@ -599,7 +599,9 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         txtTong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtTong.setEnabled(false);
 
-        btnXuat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnXuat.setBackground(new java.awt.Color(54, 88, 153));
+        btnXuat.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        btnXuat.setForeground(new java.awt.Color(255, 255, 255));
         btnXuat.setText("Xuất danh sách");
 
         pnlPage.setOpaque(false);
@@ -613,22 +615,21 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(lblChenhLech)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtChenhLech, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                        .addComponent(txtChenhLech, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSoHD, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                        .addComponent(txtSoHD, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTong, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                        .addComponent(txtTong, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnXuat, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(btnXuat))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -640,13 +641,12 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtChenhLech)
                         .addComponent(lblChenhLech, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtTong)
-                            .addComponent(btnXuat))
-                        .addComponent(txtSoHD)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtTong)
+                        .addComponent(btnXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSoHD)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 

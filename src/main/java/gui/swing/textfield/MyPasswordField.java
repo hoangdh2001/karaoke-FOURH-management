@@ -13,6 +13,11 @@ import javax.swing.JPasswordField;
 
 public class MyPasswordField extends JPasswordField {
 
+    private Color backgroundColor = new Color(230, 245, 241);
+    private boolean borderLine = false;
+    private Color borderColor = new Color(0, 0, 0, 0.3f);
+    private int borderRadius = 0;
+
     public String getHint() {
         return hint;
     }
@@ -39,6 +44,48 @@ public class MyPasswordField extends JPasswordField {
         initBorder();
     }
 
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public boolean isBorderLine() {
+        return borderLine;
+    }
+
+    public void setBorderLine(boolean borderLine) {
+        this.borderLine = borderLine;
+    }
+
+    public Color getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(Color borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    public int getBorderRadius() {
+        return borderRadius;
+    }
+
+    public void setBorderRadius(int borderRadius) {
+        this.borderRadius = borderRadius;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled); //To change body of generated methods, choose Tools | Templates.
+        if(enabled) {
+            backgroundColor = Color.WHITE;
+        } else {
+            backgroundColor = new Color(242, 242, 242);
+        }
+    }
+
     private Icon prefixIcon;
     private Icon suffixIcon;
     private String hint = "";
@@ -55,8 +102,15 @@ public class MyPasswordField extends JPasswordField {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(new Color(230, 245, 241));
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);
+        if (borderLine) {
+            g2.setColor(backgroundColor);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
+            g2.setColor(borderColor);
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, borderRadius, borderRadius);
+        } else {
+            g2.setColor(backgroundColor);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
+        }
         paintIcon(g);
         super.paintComponent(g);
     }

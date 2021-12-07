@@ -147,10 +147,14 @@ public class DL_DoiPhong extends javax.swing.JDialog implements ActionListener {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Loại Phòng");
 
-        btnDoiPhong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnDoiPhong.setBackground(new java.awt.Color(54, 88, 153));
+        btnDoiPhong.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        btnDoiPhong.setForeground(new java.awt.Color(255, 255, 255));
         btnDoiPhong.setText("Đổi phòng");
 
-        btnHuy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnHuy.setBackground(new java.awt.Color(54, 88, 153));
+        btnHuy.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        btnHuy.setForeground(new java.awt.Color(255, 255, 255));
         btnHuy.setText("Hủy");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -227,10 +231,10 @@ public class DL_DoiPhong extends javax.swing.JDialog implements ActionListener {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDoiPhong)
-                    .addComponent(btnHuy))
+                    .addComponent(btnDoiPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 

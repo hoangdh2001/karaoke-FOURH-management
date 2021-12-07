@@ -1,6 +1,6 @@
 package gui.swing.table2;
 
-import gui.swing.panel.slideshow.EventPagination;
+import gui.swing.event.EventPagination;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;

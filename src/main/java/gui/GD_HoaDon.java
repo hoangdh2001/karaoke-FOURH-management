@@ -7,7 +7,7 @@ import entity.HoaDon;
 import gui.swing.button.Button;
 import gui.swing.event.EventSelectedRow;
 import gui.swing.panel.PanelShadow;
-import gui.swing.panel.slideshow.EventPagination;
+import gui.swing.event.EventPagination;
 import gui.swing.table2.EventAction;
 import gui.swing.textfield.MyTextFieldFlatlaf;
 import java.awt.Color;
@@ -185,11 +185,12 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
 
         // Nút Làm mới
         btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontPlain, font14));
-        btnLamMoi.setBackground(colorBtn);
+        btnLamMoi.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnLamMoi.setForeground(Color.WHITE);
+        btnLamMoi.setBackground(new Color(54, 88, 153));
         btnLamMoi.setBorderRadius(5);
         btnLamMoi.setBorderline(true);
-        pnlTimKiemHD.add(btnLamMoi, "w 100!, h 36!");
+        pnlTimKiemHD.add(btnLamMoi, "w 90!, h 30!");
 
         
         /*Đăng ký sự kiện*/
