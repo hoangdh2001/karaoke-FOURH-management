@@ -255,10 +255,10 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
     private void loadData(int numPage) {
         ((DefaultTableModel) tblPhieuDatPhong.getModel()).setRowCount(0);
-        dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
         new Thread(new Runnable() {
             @Override
             public void run() {
+                dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
                 if (dsPhieu != null) {
                     for (PhieuDatPhong phieu : dsPhieu) {
                         ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
