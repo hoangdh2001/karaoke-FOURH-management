@@ -215,14 +215,16 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     private void createTable(){
         tblHoaDon.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         tblHoaDon.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
-        hoaDon_Dao.capNhatTrangThaiPhieuHetHan();
          new Thread(new Runnable() {
                 @Override
-                public void run() {
+                public void run() {        
+                    hoaDon_Dao.capNhatTrangThaiPhieuHetHan();
                     dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex(),kiemTraNhanVien());
+                    if (dsHoaDon!=null) {
                         dsHoaDon.forEach((hoaDon) -> {
                             ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
                         });
+                    }
                 tblHoaDon.repaint();
                 tblHoaDon.revalidate();
                 }

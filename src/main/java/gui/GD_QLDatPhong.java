@@ -145,13 +145,11 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             @Override
             public void propertyChange(PropertyChangeEvent arg0) {
                 if (dcsNgayDatTK.getDate() != null) {
-                    Date ngayDat = dcsNgayDatTK.getDate();
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                    System.out.println(df.format(ngayDat));
+                    String ngayDat = kiemTraNgay();
                     String tenPhong = txtTimKiemPhong.getText().trim();
                     String tenKhachHang = txtTimKiemKhachHang.getText().trim();
                     String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-                    dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat), pnlPage.getCurrentIndex());
+                    dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
                     xoaDuLieu();
                     loadPage();
                     taiLaiDuLieu(dsPhieu);
@@ -199,17 +197,22 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 int row = tblPhieuDatPhong.getSelectedRow();
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
                 PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
-                if (JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    if (phieuDatPhong_Dao.capNhatTrangThaiPhieu(phieu.getMaPhieuDat())) {
-                        JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
-                        dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
-                        xoaDuLieu();
-                        loadPage();
-                        taiLaiDuLieu(dsPhieu);
-                    } else {
-                        JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể hủy.");
+                if(phieu.getTrangThai()==TrangThaiPhieuDat.DANG_DOI){
+                    if (JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        if (phieuDatPhong_Dao.capNhatTrangThaiPhieu(phieu.getMaPhieuDat())) {
+                            JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
+                            dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
+                            xoaDuLieu();
+                            loadPage();
+                            taiLaiDuLieu(dsPhieu);
+                        } else {
+                            JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " hủy thất bại.");
+                        }
                     }
+                }else{
+                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu "+ phieu.getMaPhieuDat()+" không thể hủy.");
                 }
+               
             }
 
             @Override
@@ -293,7 +296,13 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             return "";
         }
         return String.valueOf(trangThaiPhieuDat);
-
+    }
+    
+    private String kiemTraNgay(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        if(dcsNgayDatTK.getDate()==null)
+            return null;
+        return df.format(dcsNgayDatTK.getDate());
     }
 
     private void createPanelBottom() {
@@ -429,12 +438,11 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
         if (obj.equals(cmbTrangThaiTK)) {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            Date ngayDat = dcsNgayDatTK.getDate();
+            String ngayDat =kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat), pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);
@@ -464,24 +472,22 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     public void keyReleased(KeyEvent e) {
         Object obj = e.getSource();
         if (obj.equals(txtTimKiemPhong)) {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            Date ngayDat = dcsNgayDatTK.getDate();
+            String ngayDat =kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat), pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);
         }
 
         if (obj.equals(txtTimKiemKhachHang)) {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            Date ngayDat = dcsNgayDatTK.getDate();
+            String ngayDat =kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat), pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);
