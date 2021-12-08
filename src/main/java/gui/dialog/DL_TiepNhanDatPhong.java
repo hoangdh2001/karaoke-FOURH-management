@@ -1139,7 +1139,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void btnGiaoPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiaoPhongActionPerformed
         hoaDon.getPhong().setTrangThai(TrangThaiPhong.DANG_HAT);
         khachHangService.themKhachHang(hoaDon.getKhachHang());
-        System.out.println(hoaDonService.addHoaDon(hoaDon));
+        hoaDonService.addHoaDon(hoaDon);
         hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
             chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
         });

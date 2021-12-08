@@ -762,12 +762,12 @@ public class DL_DatPhong extends javax.swing.JDialog {
 
                     ObjectComboBox cb = (ObjectComboBox) tblPhieu.getValueAt(tblPhieu.getSelectedRow(), 0);
                     Phong phong = phongDAO.getPhong(cb.getMa());
-                    String maPhieuDat = phieuDatPhongDao.getLastPhieuDatPhong();
+//                    String maPhieuDat = phieuDatPhongDao.getLastPhieuDatPhong();
 
-                    PhieuDatPhong phieu = new PhieuDatPhong(maPhieuDat, kh, phong, Double.parseDouble(txtTienCoc.getText().replace(",", "")),nhanVien);
+//                    PhieuDatPhong phieu = new PhieuDatPhong(maPhieuDat, kh, phong, Double.parseDouble(txtTienCoc.getText().replace(",", "")),nhanVien);
 
                     try {
-                        phieuDatPhongDao.addPhieuDatPhong(phieu, date);
+//                        phieuDatPhongDao.addPhieuDatPhong(phieu, date);
                     } catch (Exception e2) {
                         e2.printStackTrace();
                     }

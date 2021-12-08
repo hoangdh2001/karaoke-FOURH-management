@@ -158,6 +158,6 @@ public class Phong {
     public Object[] convertToRowTableInGDDatPhong() {
         DecimalFormat df;
         df = new DecimalFormat("#,##0.00");
-        return new Object[]{new ObjectComboBox(tenPhong,maPhong),loaiPhong.getTenLoaiPhong(), df.format(loaiPhong.getGiaPhong())};
+        return new Object[]{new ObjectComboBox(tenPhong,maPhong),loaiPhong.getTenLoaiPhong(), tang, df.format(loaiPhong.getGiaPhong())};
     }
 }

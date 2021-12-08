@@ -264,24 +264,6 @@ public class Phong_DAO implements PhongService {
         return null;
     }
     
-//    @Override
-//    public boolean updatePhong(String maPhong,TrangThaiPhong trangThai) {
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        String sql = "update Phong set trangThai = '"+trangThai+"' where maPhong = '"+maPhong+"'";
-//        try {
-//            tr.begin();
-//                session.createNativeQuery(sql).executeUpdate();
-//            tr.commit();
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            tr.rollback();
-//        }
-//        return false;
-//        
-//    }
-    
     @Override
     public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong) {
         String sql = "select * from Phong where maPhong not in (\n" +

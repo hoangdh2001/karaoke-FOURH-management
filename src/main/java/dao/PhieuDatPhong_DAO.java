@@ -3,7 +3,6 @@ package dao;
 import entity.PhieuDatPhong;
 import java.text.SimpleDateFormat;
 import java.math.BigDecimal;
-import entity.TrangThaiPhieuDat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +21,24 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
+
+    @Override
+    public boolean addPhieuDatPhong(PhieuDatPhong phieuDatPhong) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr =  session.getTransaction();
+        
+        try {
+            tr.begin();
+            session.saveOrUpdate(phieuDatPhong);
+            tr.commit();
+            return true;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return  false;
+    }
+    
+    
 
     /**
      * Lấy tất cả các phiếu đặt phòng
@@ -173,31 +190,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         return null;
     }
-    @Override
-    public boolean addPhieuDatPhong(PhieuDatPhong phieu,String ngayDat) {
-        
-        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        java.util.Date date = new java.util.Date(System.currentTimeMillis());
-        String ngayLap = gio.format(date);
-        
-        String sql = "INSERT [dbo].[PhieuDatPhong] ([maPhieuDat], [ngayDat], [ngayTao], [tienCoc], [trangThai], [maKhachHang], [maPhong],[maNhanVien]) "
-                + "VALUES (N'"+phieu.getMaPhieuDat()+"', CAST(N'"+ngayDat+"' AS datetime),"
-                + " CAST(N'"+ngayLap+"' AS datetime), "+phieu.getTienCoc()+", N'DANG_DOI', N'"+phieu.getKhachHang().getMaKhachHang()+"',"
-                + " N'"+phieu.getPhong().getMaPhong()+"','"+phieu.getNhanVien().getMaNhanVien()+"')";
-        Session session = sessionFactory.getCurrentSession();
-        
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
 
     @Override
     public double getTienCoc(String maPhieuDat) {
@@ -242,31 +234,20 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
     
     @Override
-    public String getLastPhieuDatPhong() {
+    public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        String sql = "select top 1 maPhieuDat from PhieuDatPhong order by maPhieuDat desc";
-        
+
+        String sql = "select max(maPhieuDat) from PhieuDatPhong";
+
         try {
             tr.begin();
-            String maKhachCuoi="";
-            String maCuoiCung = "PD";
-            try {
-                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
-                int so = Integer.parseInt(maKhachCuoi.split("PD")[1]) + 1;
-                int soChuSo = String.valueOf(so).length();
-                
-                for (int i = 0; i< 7 - soChuSo; i++){
-                    maCuoiCung += "0";
-                }
-                maCuoiCung += String.valueOf(so);
-            } catch (Exception e) {
-                maCuoiCung = "PD0000001";
-            } 
+            String id = (String) session
+                    .createNativeQuery(sql)
+                    .getSingleResult();
             tr.commit();
-            return maCuoiCung;
+            return id;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return null;

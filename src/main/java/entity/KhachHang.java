@@ -2,14 +2,11 @@ package entity;
 
 import gui.swing.table2.EventAction;
 import gui.swing.model.ModelAction;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.swing.JCheckBox;
 
@@ -28,8 +25,6 @@ public class KhachHang {
     private String canCuocCD;
     @Column(columnDefinition = "char(10)", name = "sdt")
     private String soDienThoai;
-    @OneToMany(mappedBy = "khachHang")
-    private List<PhieuDatPhong> dsPhieuDatPhong;
 
     /**
      * @param maKhachHang
@@ -42,19 +37,13 @@ public class KhachHang {
         this.tenKhachHang = tenKhachHang;
         this.canCuocCD = canCuocCD;
         this.soDienThoai = soDienThoai;
-        this.dsPhieuDatPhong = new ArrayList<>();
-    }
-
-    public void themPhieuDatPhong(String maKhachHang, Phong phong, Double tienCoc, NhanVien nhanVien) {
-        PhieuDatPhong phieuDatPhong = new PhieuDatPhong(maKhachHang, this, phong, tienCoc, nhanVien);
-        dsPhieuDatPhong.add(phieuDatPhong);
     }
 
     /**
      *
      */
     public KhachHang() {
-        this.dsPhieuDatPhong = new ArrayList<>();
+        
     }
 
     /**
@@ -113,14 +102,6 @@ public class KhachHang {
         this.soDienThoai = soDienThoai;
     }
 
-    public List<PhieuDatPhong> getDsPhieuDatPhong() {
-        return dsPhieuDatPhong;
-    }
-
-    public void setDsPhieuDatPhong(List<PhieuDatPhong> dsPhieuDatPhong) {
-        this.dsPhieuDatPhong = dsPhieuDatPhong;
-    }
-    
     @Override
     public String toString() {
         return "KhachHang [maKhachHang=" + maKhachHang + ", tenKhachHang=" + tenKhachHang + ", canCuocCD=" + canCuocCD
