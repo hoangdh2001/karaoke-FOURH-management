@@ -75,11 +75,11 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     
     private void build_GDHoaDon() {
         createForm();
-        createTable();
-        createPanelBottom(1);
         loadNamLenCombobox();
         loadQuyLenCombobox();
         loadThangLenCombobox(0);
+        createTable();
+        createPanelBottom(1);
         setOpaque(false);
     }
     
