@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.LoaiPhong;
@@ -233,7 +228,8 @@ public class Phong_DAO implements PhongService {
 
         String sql = "select * from Phong where tang like '%" + (tang == 0 ? "" : tang) + "%' "
                 + "and maLoaiPhong like '%" + maLoaiPhong + "%' "
-                + "and tenPhong like '%" + tenPhong + "%'";
+                + "and (tenPhong like '%" + tenPhong + "%' "
+                + "or dbo.ufn_removeMark(tenPhong) like '%"+ tenPhong +"%')";
 
         try {
             tr.begin();

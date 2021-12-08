@@ -6,7 +6,12 @@ public class PanelInfoOverTop extends javax.swing.JPanel {
 
     public PanelInfoOverTop(byte [] anhPhong) {
         initComponents();
-        pictureBox1.setImage(new ImageIcon(anhPhong));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                pictureBox1.setImage(new ImageIcon(anhPhong));
+            }
+        }).start();
     }
 
     @SuppressWarnings("unchecked")
