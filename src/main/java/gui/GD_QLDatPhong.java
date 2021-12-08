@@ -33,7 +33,9 @@ import gui.swing.event.EventSelectedRow;
 import gui.swing.model.ModelAction;
 import gui.swing.event.EventPagination;
 import gui.swing.textfield.MyTextFieldFlatlaf;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.SimpleFormatter;
 import javax.swing.JComboBox;
 
 /**
@@ -114,6 +116,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         dcsNgayDatTK = new JDateChooser();
         dcsNgayDatTK.setFont(new Font(fontName, fontPlain, font14));
         dcsNgayDatTK.setOpaque(false);
+        dcsNgayDatTK.setDateFormatString("yyyy-MM-dd");
         pnlTop.add(dcsNgayDatTK, "w 15%, h 30!");
 
         // Nút Làm mới
@@ -141,11 +144,11 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         dcsNgayDatTK.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent arg0) {
-                Date ngayDat = dcsNgayDatTK.getDate();
-                String tenPhong = txtTimKiemPhong.getText().trim();
-                String tenKhachHang = txtTimKiemKhachHang.getText().trim();
-                String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
                 if (dcsNgayDatTK.getDate() != null) {
+                    String ngayDat = kiemTraNgay();
+                    String tenPhong = txtTimKiemPhong.getText().trim();
+                    String tenKhachHang = txtTimKiemKhachHang.getText().trim();
+                    String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
                     dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
                     xoaDuLieu();
                     loadPage();
@@ -194,17 +197,22 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 int row = tblPhieuDatPhong.getSelectedRow();
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
                 PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
-                if (JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    if (phieuDatPhong_Dao.capNhatTrangThaiPhieu(phieu.getMaPhieuDat())) {
-                        JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
-                        dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
-                        xoaDuLieu();
-                        loadPage();
-                        taiLaiDuLieu(dsPhieu);
-                    } else {
-                        JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể hủy.");
+                if(phieu.getTrangThai()==TrangThaiPhieuDat.DANG_DOI){
+                    if (JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        if (phieuDatPhong_Dao.capNhatTrangThaiPhieu(phieu.getMaPhieuDat())) {
+                            JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
+                            dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
+                            xoaDuLieu();
+                            loadPage();
+                            taiLaiDuLieu(dsPhieu);
+                        } else {
+                            JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " hủy thất bại.");
+                        }
                     }
+                }else{
+                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu "+ phieu.getMaPhieuDat()+" không thể hủy.");
                 }
+               
             }
 
             @Override
@@ -250,10 +258,10 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
     private void loadData(int numPage) {
         ((DefaultTableModel) tblPhieuDatPhong.getModel()).setRowCount(0);
-        dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
         new Thread(new Runnable() {
             @Override
             public void run() {
+                dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
                 if (dsPhieu != null) {
                     for (PhieuDatPhong phieu : dsPhieu) {
                         ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
@@ -266,11 +274,19 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     }
     
     private void loadPage() {
-        Date ngayDat = dcsNgayDatTK.getDate();
         String tenPhong = txtTimKiemPhong.getText().trim();
         String tenKhachHang = txtTimKiemKhachHang.getText().trim();
         String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-        int soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat);
+        int soLuongPhieu;
+        if(dcsNgayDatTK.getDate()==null){
+            soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, null);
+            pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
+        }else{
+            Date ngayDat = dcsNgayDatTK.getDate();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai,df.format(ngayDat));
+            
+        }
         pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
     }
 
@@ -280,7 +296,13 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             return "";
         }
         return String.valueOf(trangThaiPhieuDat);
-
+    }
+    
+    private String kiemTraNgay(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        if(dcsNgayDatTK.getDate()==null)
+            return null;
+        return df.format(dcsNgayDatTK.getDate());
     }
 
     private void createPanelBottom() {
@@ -416,7 +438,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
         if (obj.equals(cmbTrangThaiTK)) {
-            Date ngayDat = dcsNgayDatTK.getDate();
+            String ngayDat =kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
@@ -450,7 +472,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     public void keyReleased(KeyEvent e) {
         Object obj = e.getSource();
         if (obj.equals(txtTimKiemPhong)) {
-            Date ngayDat = dcsNgayDatTK.getDate();
+            String ngayDat =kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
@@ -461,7 +483,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         }
 
         if (obj.equals(txtTimKiemKhachHang)) {
-            Date ngayDat = dcsNgayDatTK.getDate();
+            String ngayDat =kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());

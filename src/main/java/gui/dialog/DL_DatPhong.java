@@ -727,6 +727,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
                     kh.setCanCuocCD(txtCCCD.getText().trim());
                     kh.setSoDienThoai(txtSDT.getText().trim());
                     kh.setTenKhachHang(txtTenKH.getText().trim());
+                      
                     
                     phieuDatPhong.setTienCoc(Double.parseDouble(txtTienCoc.getText().replace(",", "")));
                     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm");  

@@ -127,7 +127,7 @@ public class KhachHang_DAO implements KhachHangService {
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = "select * from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.CCCD like '%" + tuKhoa + "%'  or kh.sdt like '%" + tuKhoa + "%' order by kh.maKhachHang offset :x row fetch next 20 rows only";
+            String sql = "select * from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.cccd like '%" + tuKhoa + "%'  or kh.sdt like '%" + tuKhoa + "%' order by kh.maKhachHang offset :x row fetch next 20 rows only";
             List<KhachHang> dsKhachHang = session
                     .createNativeQuery(sql, KhachHang.class)
                     .setParameter("x", numPage * 20)
@@ -361,7 +361,7 @@ public class KhachHang_DAO implements KhachHangService {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "select count(*) from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "%'";
+        String sql = "select count(*) from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.cccd like '%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "%'";
         try {
             tr.begin();
             int rs = (int) session.

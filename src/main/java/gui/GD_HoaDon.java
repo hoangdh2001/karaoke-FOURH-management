@@ -23,8 +23,6 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -217,14 +215,16 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     private void createTable(){
         tblHoaDon.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         tblHoaDon.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
-        hoaDon_Dao.capNhatTrangThaiPhieuHetHan();
          new Thread(new Runnable() {
                 @Override
-                public void run() {
+                public void run() {        
+                    hoaDon_Dao.capNhatTrangThaiPhieuHetHan();
                     dsHoaDon = hoaDon_Dao.getDsHoaDon(pnlPage.getCurrentIndex(),kiemTraNhanVien());
+                    if (dsHoaDon!=null) {
                         dsHoaDon.forEach((hoaDon) -> {
                             ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
                         });
+                    }
                 tblHoaDon.repaint();
                 tblHoaDon.revalidate();
                 }
@@ -301,7 +301,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             }
             @Override
             public void keyPressed(KeyEvent arg0) {
-                
                 if(cmbCot.getSelectedIndex()==0){
                     JOptionPane.showMessageDialog(GD_HoaDon.this, "Hãy chọn cột mà bạn muốn tìm kiếm.");
                     txtTimKiem.setText("");
