@@ -460,7 +460,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 PhieuDatPhong pdp = new PhieuDatPhong_DAO().getPhieuById("PD0000001");
-                DL_DatPhong dialog = new DL_DatPhong(pdp);
+                DL_DatPhong dialog = new DL_DatPhong(null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -764,7 +764,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
                     String maPhieuDat = phieuDatPhongDao.getLastPhieuDatPhong();
 
                     PhieuDatPhong phieu = new PhieuDatPhong(maPhieuDat, kh, phong, Double.parseDouble(txtTienCoc.getText().replace(",", "")),nhanVien);
-
+                    phieuDatPhong.setNhanVien(nhanVien);
                     try {
                         phieuDatPhongDao.addPhieuDatPhong(phieu, date);
                     } catch (Exception e2) {

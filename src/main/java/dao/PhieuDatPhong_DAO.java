@@ -180,7 +180,8 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         String sql = "INSERT [dbo].[PhieuDatPhong] ([maPhieuDat], [ngayDat], [ngayTao], [tienCoc], [trangThai], [maKhachHang], [maPhong],[maNhanVien]) "
                 + "VALUES (N'"+phieu.getMaPhieuDat()+"', CAST(N'"+ngayDat+"' AS datetime),"
                 + " CAST(N'"+ngayLap+"' AS datetime), "+phieu.getTienCoc()+", N'DANG_DOI', N'"+phieu.getKhachHang().getMaKhachHang()+"',"
-                + " N'"+phieu.getPhong().getMaPhong()+"','"+phieu.getNhanVien().getMaNhanVien()+"')";
+                + " N'"+phieu.getPhong().getMaPhong()+"','"
+                +phieu.getNhanVien().getMaNhanVien()+"')";
         Session session = sessionFactory.getCurrentSession();
         
         Transaction tr = session.getTransaction();
