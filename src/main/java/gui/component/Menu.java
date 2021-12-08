@@ -68,12 +68,24 @@ public class Menu extends JPanel {
         return sp;
     }
 
-    public void initMenuItem() {
+    public void initMenuItemQuanLy() {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/singing_20px.png")), "Quản lý phòng hát", "Sơ đồ phòng hát", "Danh sách phòng hát"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/deposit_20px.png")), "Quản lý đặt phòng"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/customer_20px.png")), "Quản lý khách hàng"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/bill_20px.png")), "Quản lý hóa đơn"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Quản lý nhân viên"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/combo_chart_20px.png")), "Báo cáo thống kê", "Thống kê doanh thu", "Thống kê hàng hóa"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/goods_20px.png")), "Quản lý hàng hóa", "Xem mặt hàng", "Thêm mặt hàng"));
+    }
+    
+    public void initMenuItemNhanVienLT() {
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/singing_20px.png")), "Quản lý phòng hát", "Sơ đồ phòng hát"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/deposit_20px.png")), "Quản lý đặt phòng"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/customer_20px.png")), "Quản lý khách hàng"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/bill_20px.png")), "Quản lý hóa đơn"));
+    }
+    
+    public void initMenuItemNhanVienKT() {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/combo_chart_20px.png")), "Báo cáo thống kê", "Thống kê doanh thu", "Thống kê hàng hóa"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/goods_20px.png")), "Quản lý hàng hóa", "Xem mặt hàng", "Thêm mặt hàng"));
     }

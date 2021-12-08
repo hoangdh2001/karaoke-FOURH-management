@@ -187,6 +187,149 @@ public class GD_Chinh extends JFrame {
      */
     private Menu createNav() {
         menu = new Menu();
+        if(NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Quản lý")) {
+            phanQuyenQuanLy();
+            menu.initMenuItemQuanLy();
+        } else if(NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Lễ tân")) {
+            phanQuyenNhanVienLeTan();
+            menu.initMenuItemNhanVienLT();
+        } else if(NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Kế toán")) {
+            phanQuyenNhanVienKeToan();
+            menu.initMenuItemNhanVienKT();
+        }
+
+        // mở cửa sổ nhỏ khi menu đóng
+        menu.addEventShowPopup(new EventShowPopupMenu() {
+            @Override
+            public void showPopup(Component com) {
+                MenuItem item = (MenuItem) com;
+                PopupMenu popup = new PopupMenu(GD_Chinh.this, item.getIndex(), item.getEventSelected(), Color.WHITE, item.getMenu().getSubMenu());
+                int x = GD_Chinh.this.getX() + 50;
+                int y = GD_Chinh.this.getY() + com.getY() + 90;
+                popup.setLocation(x, y);
+                popup.setVisible(true);
+            }
+        });
+//        menu.initMenuItem();
+        return menu;
+    }
+
+    /**
+     * Tạo ngăn hiện lên nội dung
+     *
+     * @return JPanel content
+     */
+    private JScrollPane createContent() {
+        sp = new JScrollPane();
+        content = new Content();
+        content.setBackground(new Color(245, 245, 245));
+        if(NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Quản lý") || NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Lễ tân")) {
+            GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
+            soDoPhongHat.addEvent(new EventShowInfoOver() {
+                @Override
+                public void showInfoOver(Component com, MouseEvent e) {
+                    Room item = (Room) com;
+                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
+                    int x = 0;
+                    int y = 0;
+                    if ((e.getXOnScreen() + 400) >= 1920) {
+                        x = e.getXOnScreen() - e.getX() - 400;
+                        y = e.getYOnScreen() - e.getY() - 10;
+                    } else {
+                        x = e.getXOnScreen() + 200 - e.getX();
+                        y = e.getYOnScreen() - e.getY() - 10;
+                    }
+                    infoOver.setLocation(x, y);
+                    infoOver.setVisible(true);
+
+                    sp.addMouseWheelListener(new MouseWheelListener() {
+                        @Override
+                        public void mouseWheelMoved(MouseWheelEvent arg0) {
+                            infoOver.closeMenu();
+                        }
+                    });
+                    soDoPhongHat.addEventSp(new MouseWheelListener() {
+                        @Override
+                        public void mouseWheelMoved(MouseWheelEvent arg0) {
+                            infoOver.closeMenu();
+                        }
+                    });
+                }
+
+            });
+
+            content.showForm(soDoPhongHat);
+        } else if (NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Kế toán")) {
+            content.showForm(new GD_ThongKeDoanhThu());
+        }
+        sp.setViewportView(content);
+        sp.getVerticalScrollBar().setUnitIncrement(50);
+        sp.setBorder(null);
+        return sp;
+    }
+
+    /**
+     * tạo ngăn ts
+     */
+    private TabLayout createTabPane() {
+
+        tab = new TabLayout();
+        background.setLayer(tab, JLayeredPane.POPUP_LAYER);
+        TimingTarget target = new TimingTargetAdapter() {
+            @Override
+            public void timingEvent(float fraction) {
+                double width;
+                if (tabShow) {
+                    width = 45 * fraction;
+                } else {
+                    width = 45 * (1f - fraction);
+                }
+                width = Double.valueOf(df.format(width));
+                layout.setComponentConstraints(tab, "pos " + width + "% 1al n n, w 100%, h 100%");
+                tab.repaint();
+                tab.revalidate();
+
+                background.revalidate();
+            }
+
+            @Override
+            public void end() {
+                tabShow = !tabShow;
+                if (!tabShow) {
+                    tab.setVisible(false);
+                }
+            }
+        };
+        animator2 = new Animator(400, target);
+        animator2.setResolution(0);
+        animator2.setAcceleration(0.5f);
+        animator2.setDeceleration(0.5f);
+        tab.addAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (!animator2.isRunning()) {
+                    if (tabShow) {
+                        animator2.start();
+                    }
+                }
+            }
+        });
+        tab.addEventCloseTab(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                if (SwingUtilities.isLeftMouseButton(me)) {
+                    if (!animator2.isRunning()) {
+                        if (tabShow) {
+                            animator2.start();
+                        }
+                    }
+                }
+            }
+        });
+        return tab;
+    }
+    
+    private void phanQuyenQuanLy() {
         menu.addEvent(new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
@@ -348,137 +491,119 @@ public class GD_Chinh extends JFrame {
                 }
             }
         });
-
-        // mở cửa sổ nhỏ khi menu đóng
-        menu.addEventShowPopup(new EventShowPopupMenu() {
-            @Override
-            public void showPopup(Component com) {
-                MenuItem item = (MenuItem) com;
-                PopupMenu popup = new PopupMenu(GD_Chinh.this, item.getIndex(), item.getEventSelected(), Color.WHITE, item.getMenu().getSubMenu());
-                int x = GD_Chinh.this.getX() + 50;
-                int y = GD_Chinh.this.getY() + com.getY() + 90;
-                popup.setLocation(x, y);
-                popup.setVisible(true);
-            }
-        });
-        menu.initMenuItem();
-        return menu;
     }
-
-    /**
-     * Tạo ngăn hiện lên nội dung
-     *
-     * @return JPanel content
-     */
-    private JScrollPane createContent() {
-        sp = new JScrollPane();
-        content = new Content();
-        content.setBackground(new Color(245, 245, 245));
-        GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
-        soDoPhongHat.addEvent(new EventShowInfoOver() {
+    
+    private void phanQuyenNhanVienLeTan() {
+        menu.addEvent(new EventMenuSelected() {
             @Override
-            public void showInfoOver(Component com, MouseEvent e) {
-                Room item = (Room) com;
-                RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
-                int x = 0;
-                int y = 0;
-                if ((e.getXOnScreen() + 400) >= 1920) {
-                    x = e.getXOnScreen() - e.getX() - 400;
-                    y = e.getYOnScreen() - e.getY() - 10;
-                } else {
-                    x = e.getXOnScreen() + 200 - e.getX();
-                    y = e.getYOnScreen() - e.getY() - 10;
+            public void menuSelected(int menuIndex, int subMenuIndex) {
+                switch (menuIndex) {
+                    case 0:
+                            GD_SoDoPhongHat soDoPhongHat = new GD_SoDoPhongHat();
+                            soDoPhongHat.addEvent(new EventShowInfoOver() {
+                                @Override
+                                public void showInfoOver(Component com, MouseEvent e) {
+                                    Room item = (Room) com;
+                                    RoomDetail infoOver = new RoomDetail(GD_Chinh.this, item.getPhong());
+                                    int x = 0;
+                                    int y = 0;
+                                    if ((e.getXOnScreen() + 400) >= 1920) {
+                                        x = e.getXOnScreen() - e.getX() - 400;
+                                        y = e.getYOnScreen() - e.getY() - 10;
+                                    } else {
+                                        x = e.getXOnScreen() + 200 - e.getX();
+                                        y = e.getYOnScreen() - e.getY() - 10;
+                                    }
+                                    infoOver.setLocation(x, y);
+                                    infoOver.setVisible(true);
+                                    sp.addMouseWheelListener(new MouseWheelListener() {
+                                        @Override
+                                        public void mouseWheelMoved(MouseWheelEvent arg0) {
+                                            infoOver.closeMenu();
+                                        }
+                                    });
+                                    soDoPhongHat.addEventSp(new MouseWheelListener() {
+                                        @Override
+                                        public void mouseWheelMoved(MouseWheelEvent arg0) {
+                                            infoOver.closeMenu();
+                                        }
+                                    });
+                                }
+
+                            });
+                            content.showForm(soDoPhongHat);
+                        break;
+                    case 1:
+                        GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
+                        content.showForm(qlDatPhong);
+                        qlDatPhong.addEvent(new EventSelectedRow() {
+                            @Override
+                            public void selectedRow(Object object) {
+                                PhieuDatPhong phieuDatPhong = (PhieuDatPhong) object;
+                                    if(!animator2.isRunning()){
+                                        if(!tabShow){
+                                            tab.setVisible(true);
+                                            PhieuDatPhongDetail phieuDetail = new PhieuDatPhongDetail(phieuDatPhong);
+                                            tab.showDetail(phieuDetail);
+                                            animator2.start();
+                                        }
+                                    }
+                                }
+                        });
+                        break;
+                    case 2:
+                        GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
+                        content.showForm(giaoDienKhachHang);
+                        break;
+                    case 3:
+                        GD_HoaDon giaoDienHoaDon = new GD_HoaDon();
+                        content.showForm(giaoDienHoaDon);
+                        giaoDienHoaDon.addEvent(new EventSelectedRow() {
+                            @Override
+                            public void selectedRow(Object object) {
+                                HoaDon hoaDon = (HoaDon) object;
+                                if(!animator2.isRunning()){
+                                    if(!tabShow){
+                                        tab.setVisible(true);
+                                        
+                                        HoaDonDetail hoaDonDetail =  new HoaDonDetail(hoaDon);
+                                        tab.showDetail(hoaDonDetail);
+                                        animator2.start();
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                    default:
+                        break;
                 }
-                infoOver.setLocation(x, y);
-                infoOver.setVisible(true);
-                
-                sp.addMouseWheelListener(new MouseWheelListener() {
-                    @Override
-                    public void mouseWheelMoved(MouseWheelEvent arg0) {
-                        infoOver.closeMenu();
-                    }
-                });
-                soDoPhongHat.addEventSp(new MouseWheelListener() {
-                    @Override
-                    public void mouseWheelMoved(MouseWheelEvent arg0) {
-                        infoOver.closeMenu();
-                    }
-                });
             }
-
         });
-
-        content.showForm(soDoPhongHat);
-//        sp.getViewport().setBackground(Color.WHITE);
-//        sp.setVerticalScrollBar(new ScrollBarCustom());
-//        JPanel p = new JPanel();
-//        p.setBackground(Color.WHITE);
-//        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
-//        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(50);
-        sp.setBorder(null);
-        return sp;
     }
-
-    /**
-     * tạo ngăn ts
-     */
-    private TabLayout createTabPane() {
-
-        tab = new TabLayout();
-        background.setLayer(tab, JLayeredPane.POPUP_LAYER);
-        TimingTarget target = new TimingTargetAdapter() {
+    
+    private void phanQuyenNhanVienKeToan() {
+        menu.addEvent(new EventMenuSelected() {
             @Override
-            public void timingEvent(float fraction) {
-                double width;
-                if (tabShow) {
-                    width = 45 * fraction;
-                } else {
-                    width = 45 * (1f - fraction);
-                }
-                width = Double.valueOf(df.format(width));
-                layout.setComponentConstraints(tab, "pos " + width + "% 1al n n, w 100%, h 100%");
-                tab.repaint();
-                tab.revalidate();
-
-                background.revalidate();
-            }
-
-            @Override
-            public void end() {
-                tabShow = !tabShow;
-                if (!tabShow) {
-                    tab.setVisible(false);
-                }
-            }
-        };
-        animator2 = new Animator(400, target);
-        animator2.setResolution(0);
-        animator2.setAcceleration(0.5f);
-        animator2.setDeceleration(0.5f);
-        tab.addAction(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (!animator2.isRunning()) {
-                    if (tabShow) {
-                        animator2.start();
-                    }
-                }
-            }
-        });
-        tab.addEventCloseTab(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent me) {
-                if (SwingUtilities.isLeftMouseButton(me)) {
-                    if (!animator2.isRunning()) {
-                        if (tabShow) {
-                            animator2.start();
+            public void menuSelected(int menuIndex, int subMenuIndex) {
+                switch (menuIndex) {
+                    case 0:
+                        if (subMenuIndex == 0) {
+                            content.showForm(new GD_ThongKeDoanhThu());
+                        } else if (subMenuIndex == 1) {
+                            content.showForm(new GD_ThongKeHangHoa());
                         }
-                    }
+                        break;
+                    case 1:
+                        if(subMenuIndex == 0) {
+                            content.showForm(new GD_XemDichVu());
+                        } else if (subMenuIndex == 1) {
+                            content.showForm(new GD_ThemMatHang());
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         });
-        return tab;
     }
 }

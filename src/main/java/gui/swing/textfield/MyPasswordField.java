@@ -13,7 +13,7 @@ import javax.swing.JPasswordField;
 
 public class MyPasswordField extends JPasswordField {
 
-    private Color backgroundColor = new Color(230, 245, 241);
+    private Color backgroundColor = new Color(197, 238, 245);
     private boolean borderLine = false;
     private Color borderColor = new Color(0, 0, 0, 0.3f);
     private int borderRadius = 0;
@@ -95,7 +95,7 @@ public class MyPasswordField extends JPasswordField {
         setBackground(new Color(0, 0, 0, 0));
         setForeground(Color.decode("#7A8C8D"));
         setFont(new java.awt.Font("sansserif", 0, 13));
-        setSelectionColor(new Color(75, 175, 152));
+        setSelectionColor(new Color(54, 88, 153));
     }
 
     @Override
