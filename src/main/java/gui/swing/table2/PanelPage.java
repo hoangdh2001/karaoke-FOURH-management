@@ -122,6 +122,9 @@ public class PanelPage extends javax.swing.JPanel {
         currentIndex = 0;
         this.setIndex(1);
         lblPre.setText("");
+        if(num<=4){
+            lblNext.setText("");
+        }
         for (int i = 0; i < num; i++) {
             if (i < 4) {
                 Item item = new Item(i, event);
