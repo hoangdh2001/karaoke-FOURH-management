@@ -7,6 +7,7 @@ package dao;
 
 import entity.LoaiPhong;
 import entity.Phong;
+import entity.TrangThaiHoaDon;
 import entity.TrangThaiPhong;
 import java.util.List;
 import org.hibernate.Session;
@@ -187,9 +188,10 @@ public class Phong_DAO implements PhongService {
                 + "on p.maPhong = hd.maPhong inner join KhachHang kh "
                 + "on kh.maKhachHang = hd.maKhachHang "
                 + "where (sdt like '%" + sdtOrTen + "%' "
-                + "or tenKhachHang like N'%" + sdtOrTen + "%') "
+                + "or tenKhachHang like N'%" + sdtOrTen + "%' "
+                + "or dbo.ufn_removeMark(tenKhachHang) like N'%"+ sdtOrTen +"%') "
                 + "and tang like '%" + (tang == 0 ? "" : tang) + "%' "
-                + "and p.trangThai = '" + TrangThaiPhong.DANG_HAT + "'";
+                + "and hd.trangThai = '" + TrangThaiHoaDon.DANG_XU_LY + "'";
 
         try {
             tr.begin();

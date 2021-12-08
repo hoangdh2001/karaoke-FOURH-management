@@ -52,7 +52,7 @@ public class BillPrintable implements Printable {
         y += yShift;
         g2.drawString("DT:0368232674            So HD:" + hoaDon.getMaHoaDon(), 12, y);
         y += yShift + 5;
-        g2.drawString("              NVLT:" + hoaDon.getNhanVien().getTenNhanVien(), 12, y);
+        g2.drawString("                NV:" + hoaDon.getNhanVien().getTenNhanVien(), 12, y);
         y += yShift + 10;
         g2.setFont(new Font("Monospaced", Font.BOLD, 9));
         g2.drawString("                HOA DON                  ", 12, y);
@@ -69,7 +69,7 @@ public class BillPrintable implements Printable {
             g2.drawString(String.format("%-12s %-6s %-7s %12s",
                     "", chiTietHoaDons.get(i).getSoLuong(), df.format(chiTietHoaDons.get(i).getMatHang().getDonGia()),
                     df.format(chiTietHoaDons.get(i).getThanhTien())), 10, y);
-            y += yShift + 5;
+            y += yShift;
         }
         g2.drawString("------------------------------------------", 12, y);
         y += yShift;

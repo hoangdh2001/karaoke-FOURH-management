@@ -77,7 +77,6 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         
         pnlTop.add(createPanelForm());
 
-//        pnlTop.add(createSlideshow(), "w 500!");
         pnlTop.add(createPaneStatus(), "h 50!");
         
         add(panelMap(), BorderLayout.CENTER);
@@ -135,6 +134,10 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         open.setIcon(new ImageIcon(getClass().getResource("/icon/more_15px.png")));
         
         JPopupMenu popupMenu = new JPopupMenu();
+        
+        JMenuItem mniDatPhong = new JMenuItem("Đặt phòng");
+        popupMenu.add(mniDatPhong);
+        
         JMenuItem mniLamMoi = new JMenuItem("Làm mới");
         mniLamMoi.addActionListener(new ActionListener() {
             @Override
@@ -147,11 +150,14 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         });
         popupMenu.add(mniLamMoi);
         
+        JMenuItem mniHuongDan = new JMenuItem("Hướng dẫn");
+        popupMenu.add(mniHuongDan);
+        
         open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 popupMenu.show(open, 0, open.getHeight());
-                popupMenu.setPopupSize(popupMenu.getWidth(), 30);
+                popupMenu.setPopupSize(popupMenu.getWidth(), 90);
             }
         });
         

@@ -40,7 +40,6 @@ public class DL_ThanhToan extends javax.swing.JDialog {
 
     private final MatHangService matHangService;
     private final HoaDonService hoaDonService;
-    private final KhachHangService khachHangService;
     private final ChiTietHoaDonService chiTietHoaDonService;
     private final LoaiDichVuService loaiDichVuService;
     private final HoaDon hoaDon;
@@ -57,7 +56,6 @@ public class DL_ThanhToan extends javax.swing.JDialog {
     public DL_ThanhToan(HoaDon hoaDon, NhanVien nhanVien) {
         this.hoaDonService = new HoaDon_DAO();
         this.matHangService = new MatHang_DAO();
-        this.khachHangService = new KhachHang_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
         this.loaiDichVuService = new LoaiDichVu_DAO();
         this.hoaDon = hoaDon;
@@ -219,11 +217,11 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             });
         }
     }
-    
+
     public PageFormat getPageFormat(PrinterJob pj) {
         PageFormat pf = pj.defaultPage();
         Paper paper = pf.getPaper();
-        
+
         double bodyHeight = bHeight;
         double headerHeight = 5.0;
         double footerHeight = 5.0;
@@ -231,10 +229,10 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         double height = cm_to_pp(headerHeight + bodyHeight + footerHeight);
         paper.setSize(width, height);
         paper.setImageableArea(0, 10, width, height);
-        
+
         pf.setOrientation(PageFormat.PORTRAIT);
         pf.setPaper(paper);
-        
+
         return pf;
     }
 
@@ -822,7 +820,6 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             hoaDon.setNgayLapHoaDon(new Date());
             System.out.println(hoaDon.getTongHoaDon());
             List<ChiTietHoaDon> dsChiTietHoaDonTruocCapNhat = chiTietHoaDonService.getDsChiTietHoaDonByMaHoaDon(hoaDon.getMaHoaDon());
-            System.out.println(dsChiTietHoaDonTruocCapNhat);
             dsChiTietHoaDonTruocCapNhat.forEach(chiTietHoaDon -> {
                 if (!hoaDon.getDsChiTietHoaDon().contains(chiTietHoaDon)) {
                     chiTietHoaDonService.deleteChiTietHoaDon(chiTietHoaDon);
@@ -832,14 +829,19 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                 chiTietHoaDonService.updateChiTietHoaDon(chiTietHoaDon);
             });
             hoaDonService.finishHoaDon(hoaDon);
+
             bHeight = Double.valueOf(hoaDon.getDsChiTietHoaDon().size());
-            
+
             PrinterJob pj = PrinterJob.getPrinterJob();
+            pj.setJobName(hoaDon.getMaHoaDon());
             pj.setPrintable(new BillPrintable(hoaDon), getPageFormat(pj));
-            try {
-                pj.print();
-            } catch (Exception e) {
-//                e.printStackTrace();
+            boolean returningResult = pj.printDialog();
+            if (returningResult) {
+                try {
+                    pj.print();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Print Error: "+e.getMessage(), "Thông báo", JOptionPane.ERROR_MESSAGE);
+                }
             }
             dispose();
         }

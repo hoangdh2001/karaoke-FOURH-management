@@ -34,11 +34,11 @@ public class Menu extends JPanel {
     private boolean showMenu = true;
     private MigLayout layout;
     private PaneTitle paneTitle;
-    
+
     public Menu() {
         buidMenu();
     }
-    
+
     private void buidMenu() {
         setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "5[]5[]push[60]0"));
         setBackground(new Color(35, 35, 35));
@@ -46,13 +46,13 @@ public class Menu extends JPanel {
         add(createPaneName());
         add(createPane(), "h 680!");
     }
-    
+
     private PaneTitle createPaneName() {
         paneTitle = new PaneTitle();
         paneTitle.setAlpha(1f);
         return paneTitle;
     }
-    
+
     private JScrollPane createPane() {
         pane = new JPanel();
         pane.setOpaque(false);
@@ -67,7 +67,7 @@ public class Menu extends JPanel {
         pane.setLayout(layout);
         return sp;
     }
-    
+
     public void initMenuItem() {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/singing_20px.png")), "Quản lý phòng hát", "Sơ đồ phòng hát", "Danh sách phòng hát"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/deposit_20px.png")), "Quản lý đặt phòng"));
@@ -77,14 +77,14 @@ public class Menu extends JPanel {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/combo_chart_20px.png")), "Báo cáo thống kê", "Thống kê doanh thu", "Thống kê hàng hóa"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/goods_20px.png")), "Quản lý hàng hóa", "Xem mặt hàng", "Thêm mặt hàng"));
     }
-    
+
     private void addMenu(ModelMenu menu) {
         MenuItem menuItem = new MenuItem(menu, getEventMenu(), event, pane.getComponentCount(), 50, new Font("Segoe ui", Font.PLAIN, 15));
         menuItem.setBackground(new Color(50, 50, 50));
         menuItem.setForeground(new Color(255, 255, 255));
         pane.add(menuItem, "h 50!");
     }
-    
+
     private EventMenu getEventMenu() {
         return new EventMenu() {
             @Override
@@ -105,7 +105,7 @@ public class Menu extends JPanel {
             }
         };
     }
-    
+
     public void hideAllMenu() {
         for (Component com : pane.getComponents()) {
             MenuItem item = (MenuItem) com;
@@ -116,31 +116,31 @@ public class Menu extends JPanel {
             }
         }
     }
-    
+
     public boolean isShowMenu() {
         return showMenu;
     }
-    
+
     public void addEvent(EventMenuSelected event) {
         this.event = event;
     }
-    
+
     public void setEnableMenu(boolean enableMenu) {
         this.enableMenu = enableMenu;
     }
-    
+
     public void setShowMenu(boolean showMenu) {
         this.showMenu = showMenu;
     }
-    
+
     public void addEventShowPopup(EventShowPopupMenu eventShowPopup) {
         this.eventShowPopup = eventShowPopup;
     }
-    
+
     public void setAlpha(float alpha) {
         paneTitle.setAlpha(alpha);
     }
-    
+
     @Override
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2 = (Graphics2D) grphcs;
@@ -149,8 +149,9 @@ public class Menu extends JPanel {
 //        GradientPaint gra = new GradientPaint(0, 0, new Color(51, 51, 51), getWidth(), 0, new Color(90, 84, 84));
 //        GradientPaint gra = new GradientPaint(0, 0, new Color(0, 135, 255), getWidth(), 0, new Color(255, 255, 199));
 //        GradientPaint gra = new GradientPaint(0, 0, new Color(242, 153, 74), getWidth(), 0, new Color(242, 201, 76));
-        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#56CCF2"), 0, getHeight(), Color.decode("#2F80ED"));
+//        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#56CCF2"), 0, getHeight(), Color.decode("#2F80ED"));
 //        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#2C3B41"), 0, getHeight(), Color.decode("#222D32"));
+        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#323232"), 0, getHeight(), Color.decode("#323232"));
         g2.setPaint(gra);
         g2.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(grphcs);
