@@ -156,6 +156,12 @@ public class Room extends PanelShadow {
         mniKhachVaoHat.setEnabled(false);
         mniThanhToan.setEnabled(true);
         mniDoiPhong.setEnabled(true);
+        mniDoiPhong.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                event.addBtnDoiPhongEvent(phong, hoaDon);
+            }
+        });
         mniThemDichVu.setEnabled(true);
         mniDatPhong.setEnabled(false);
         mniDonPhong.setEnabled(false);
@@ -306,11 +312,11 @@ public class Room extends PanelShadow {
         lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongTrong.add(lblTrangThai);
         
-        Button btnDat = new Button("Đặt", true);
-        btnDat.setForeground(Color.WHITE);
-        btnDat.setBackground(new Color(0, 31, 63));
-        btnDat.setBorderRadius(5);
-        pnlPhongTrong.add(btnDat, "split 2");
+//        Button btnDat = new Button("Đặt", true);
+//        btnDat.setForeground(Color.WHITE);
+//        btnDat.setBackground(new Color(0, 31, 63));
+//        btnDat.setBorderRadius(5);
+//        pnlPhongTrong.add(btnDat, "split 2");
         
         Button btnThue = new Button("Thuê", true);
         btnThue.setForeground(Color.WHITE);

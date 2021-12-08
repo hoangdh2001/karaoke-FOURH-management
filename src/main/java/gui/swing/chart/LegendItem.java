@@ -1,18 +1,10 @@
 package gui.swing.chart;
 
 import gui.swing.model.ModelLegend;
-import gui.swing.model.ModelLegend1;
 
 public class LegendItem extends javax.swing.JPanel {
 
     public LegendItem(ModelLegend data) {
-        initComponents();
-        setOpaque(false);
-        lbColor.setBackground(data.getColor());
-        lbName.setText(data.getName());
-    }
-    
-    public LegendItem(ModelLegend1 data) {
         initComponents();
         setOpaque(false);
         lbColor.setBackground(data.getColor());

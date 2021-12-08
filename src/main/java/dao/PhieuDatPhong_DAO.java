@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.PhieuDatPhong;
-import entity.TrangThaiPhieuDat;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
+import entity.TrangThaiPhieuDat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
@@ -19,14 +13,9 @@ import org.hibernate.Transaction;
 import service.PhieuDatPhongService;
 import util.HibernateUtil;
 
-/**
- *
- * @author Hao
- */
 public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     
     List<PhieuDatPhong> dsPhieu = new ArrayList<>();
-            //Collections.emptyList();
     private SessionFactory sessionFactory;
 
     public PhieuDatPhong_DAO() {
@@ -34,6 +23,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         this.sessionFactory = util.getSessionFactory();
     }
 
+    /**
+     * Lấy tất cả các phiếu đặt phòng
+     * @param numPage: số dòng dữ liệu hiển thị lên trang đầu tiên
+     * @return danh sách phiếu đặt phòng
+     */
     @Override
     public List<PhieuDatPhong> getDsPhieuDatPhong(int numPage) {
         Session session = sessionFactory.openSession();
@@ -54,6 +48,10 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return null;
     }
 
+    /**
+     * Lấy ra tất cả trạng thái của phiếu
+     * @return danh sách trạng thái phiếu
+     */
     @Override
     public List<String> getDSTrangThaiPhieu() {
         Session session = sessionFactory.openSession();
@@ -74,18 +72,22 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return null;
     }
 
+    /**
+     * Cập nhật trang phiếu thành 'DA_HUY' với những phiếu có trạng thái 'DANG_DOI' 
+     * @param maPhieuDat: mã phiếu đặt
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     */
     @Override
     public boolean capNhatTrangThaiPhieu(String maPhieuDat) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = "update PhieuDatPhong p set p.trangThai = 'DA_HUY'  where p.maPhieuDat = :maPhieuDat";
-            session.createQuery(sql)
-                    .setParameter("maPhieuDat", maPhieuDat)
+            String sql = "update PhieuDatPhong set trangThai = 'DA_HUY'  where maPhieuDat = '"+maPhieuDat+"'";
+            int rs = session.createNativeQuery(sql)
                     .executeUpdate();
             tr.commit();
-            return true;
+            return rs > 0 ? true : false;
         } catch (Exception e) {
             tr.rollback();
             System.err.println(e);
@@ -94,6 +96,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return false;
     }
 
+    /**
+     * Cập nhật thông tin phiếu đặt phòng
+     * @param phieuDatPhong thông tin phiếu đặt phòng mới
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     */
     @Override
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -110,31 +117,26 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return false;
     }
 
+    /**
+     * Tìm những phiếu đặt phòng thỏa thông tin truyền vào dưới đây
+     * @param tenPhong: tên phòng
+     * @param tenKhachHang: tên khách hàng
+     * @param trangThai: trạng thái
+     * @param ngayDat: ngày đặt
+     * @param numPage: số dòng dữ liệu hiển thị lên trang đầu tiên
+     * @return danh sách phiếu đặt phòng
+     */
     @Override
-    public boolean xoaPhieuDatPhong(String maPhieuDat) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            session.delete(session.find(PhieuDatPhong.class, maPhieuDat));
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        return false;
-    }
-
-    @Override
-    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, Date ngayDat) {
+    public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat, int numPage) {
         String sql; 
         if(ngayDat==null){
             sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%'";
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like N'%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%'"
+                    + "order by PhieuDatPhong.maPhieuDat DESC offset :x row fetch next 20 rows only";
         }else{
             sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like '%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"')";
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like N'%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"') "
+                    + "order by PhieuDatPhong.maPhieuDat DESC offset :x row fetch next 20 rows only";
         }
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
@@ -142,6 +144,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
             tr.begin();
             dsPhieu = session
                     .createNativeQuery(sql, PhieuDatPhong.class)
+                    .setParameter("x", numPage * 20)
                     .getResultList();
             tr.commit();
             return dsPhieu.isEmpty() ? dsPhieu = new ArrayList<>() : dsPhieu;
@@ -360,6 +363,33 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
             tr.commit();
             return  rs;
         } catch (Exception e) {
+            tr.rollback();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getSoLuongPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql; 
+        if(ngayDat==null){
+            sql = "SELECT count(*) FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like N'%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%'";
+        }else{
+            sql = "SELECT count(*) FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
+                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like N'%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"')";
+        }
+        try {
+            tr.begin();
+            int rs = (int) session.
+                    createNativeQuery(sql)
+                    .getSingleResult();
+            tr.commit();
+            return  rs;
+        } catch (Exception e) {
+            System.err.println(e);
             tr.rollback();
         }
         return 0;

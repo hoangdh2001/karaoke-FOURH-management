@@ -473,7 +473,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
     }
 
     public void initData() {
-        
+        this.nhanVien = new NhanVien_DAO().getNhanVien("NV0001");
         df = new DecimalFormat("#,###");
         khachHangDao = new KhachHang_DAO();
         phieuDatPhongDao = new PhieuDatPhong_DAO();
@@ -727,6 +727,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
                     kh.setCanCuocCD(txtCCCD.getText().trim());
                     kh.setSoDienThoai(txtSDT.getText().trim());
                     kh.setTenKhachHang(txtTenKH.getText().trim());
+                      
                     
                     phieuDatPhong.setTienCoc(Double.parseDouble(txtTienCoc.getText().replace(",", "")));
                     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm");  

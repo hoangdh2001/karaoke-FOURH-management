@@ -35,11 +35,6 @@
   </Layout>
   <SubComponents>
     <Container class="gui.swing.image.PictureBox" name="pictureBox1">
-      <Properties>
-        <Property name="image" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/icon/1200px-Image_created_with_a_mobile_phone.png"/>
-        </Property>
-      </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>

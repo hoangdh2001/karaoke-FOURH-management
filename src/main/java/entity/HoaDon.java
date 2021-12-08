@@ -31,8 +31,11 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "maNhanVien", nullable = false)
     private NhanVien nhanVien;
+    @Column(columnDefinition = "datetime")
     private Date ngayLapHoaDon;
+    @Column(columnDefinition = "datetime")
     private Date thoiGianBatDau;
+    @Column(nullable = false,columnDefinition = "datetime")
     private Date thoiGianKetThuc;
     private float chietKhau;
     @Enumerated(EnumType.STRING)
@@ -50,6 +53,10 @@ public class HoaDon {
     private double tienKhachDua;
     @Column(columnDefinition = "money")
     private double tienThua;
+    @Column(columnDefinition = "money")
+    private double donGiaPhongCu;
+    @Column(columnDefinition = "money")
+    private double tienCoc;
 
     /**
      * @param maHoaDon
@@ -62,7 +69,7 @@ public class HoaDon {
         this.nhanVien = nhanVien;
         this.thoiGianBatDau = new Date();
         this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
-        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.dsChiTietHoaDon = new ArrayList<>();
         this.gioHat = getGioHat();
         this.donGiaPhong = getDonGiaPhong();
         this.tongTienMatHang = getTongTienMatHang();
@@ -282,9 +289,16 @@ public class HoaDon {
      * @return the donGiaPhongCu
      */
     public double getDonGiaPhongCu() {
-        return donGiaPhong;
+        return donGiaPhongCu;
     }
-
+    
+    /**
+     * @param donPhongCu 
+     */
+    public void setDonPhongCu(double donPhongCu) {
+        this.donGiaPhongCu = donPhongCu;
+    }
+    
     /**
      * @return the tongTienMatHang
      */
@@ -301,7 +315,7 @@ public class HoaDon {
      * @return the tongHoaDon
      */
     public double getTongHoaDon() {
-        return tongHoaDon = (getTongTienMatHang() + getDonGiaPhong()) * (1 - chietKhau);
+        return tongHoaDon = (getTongTienMatHang() + getDonGiaPhong() + getDonGiaPhongCu()) * (1 - chietKhau);
     }
 
     /**
@@ -325,6 +339,14 @@ public class HoaDon {
         return tienThua = getTienKhachDua() - getTongHoaDon();
     }
 
+    public double getTienCoc() {
+        return tienCoc;
+    }
+
+    public void setTienCoc(double tienCoc) {
+        this.tienCoc = tienCoc;
+    }
+    
     @Override
     public String toString() {
         return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong=" + phong + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", thoiGianBatDau=" + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + ", chietKhau=" + chietKhau + ", trangThai=" + trangThai + ", dsChiTietHoaDon=" + dsChiTietHoaDon + ", gioHat=" + gioHat + ", donGiaPhong=" + donGiaPhong + ", tongTienMatHang=" + tongTienMatHang + ", tongHoaDon=" + tongHoaDon + ", tienKhachDua=" + tienKhachDua + ", tienThua=" + tienThua + '}';
@@ -334,7 +356,7 @@ public class HoaDon {
         DecimalFormat dcf = new DecimalFormat("#,###");
         SimpleDateFormat fm1 = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
-        return new Object[]{maHoaDon, khachHang.getTenKhachHang(), phong.getTenPhong(), gioHat, fm1.format(ngayLapHoaDon), fm2.format(thoiGianBatDau),fm2.format(thoiGianKetThuc), dcf.format(tongTienMatHang), dcf.format(phong.getLoaiPhong().getGiaPhong()),chietKhau, dcf.format(tongHoaDon), nhanVien.getTenNhanVien()};
+        return new Object[]{maHoaDon, khachHang.getTenKhachHang(), phong.getTenPhong(), gioHat, fm1.format(ngayLapHoaDon), fm2.format(thoiGianBatDau), dcf.format(tongTienMatHang), dcf.format(phong.getLoaiPhong().getGiaPhong()), dcf.format(tongHoaDon), nhanVien.getTenNhanVien()};
     }
     
     public Object[] convertToRowTableInGDThongKeDoanhThu() {

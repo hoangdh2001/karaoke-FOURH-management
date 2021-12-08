@@ -17,7 +17,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="pnlSearch" max="32767" attributes="0"/>
-          <Component id="lbldsDichVu" alignment="0" pref="811" max="32767" attributes="0"/>
+          <Component id="pnlCenter" alignment="0" pref="811" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -25,7 +25,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="pnlSearch" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="lbldsDichVu" pref="496" max="32767" attributes="0"/>
+              <Component id="pnlCenter" pref="496" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -56,10 +56,15 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="gui.swing.panel.PanelShadow" name="lbldsDichVu">
+    <Container class="gui.swing.panel.PanelShadow" name="pnlCenter">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+            <EmptyBorder bottom="5" left="5" right="5" top="5"/>
+          </Border>
         </Property>
         <Property name="shadowOpacity" type="float" value="0.3"/>
         <Property name="shadowSize" type="int" value="2"/>
@@ -121,6 +126,7 @@
                 </Property>
                 <Property name="rowHeight" type="int" value="40"/>
                 <Property name="showGrid" type="boolean" value="true"/>
+                <Property name="showVerticalLines" type="boolean" value="false"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>

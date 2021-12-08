@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.LoaiPhong;
 import entity.Phong;
+import entity.TrangThaiHoaDon;
 import entity.TrangThaiPhong;
 import java.util.List;
 import org.hibernate.Session;
@@ -187,9 +183,10 @@ public class Phong_DAO implements PhongService {
                 + "on p.maPhong = hd.maPhong inner join KhachHang kh "
                 + "on kh.maKhachHang = hd.maKhachHang "
                 + "where (sdt like '%" + sdtOrTen + "%' "
-                + "or tenKhachHang like N'%" + sdtOrTen + "%') "
+                + "or tenKhachHang like N'%" + sdtOrTen + "%' "
+                + "or dbo.ufn_removeMark(tenKhachHang) like N'%"+ sdtOrTen +"%') "
                 + "and tang like '%" + (tang == 0 ? "" : tang) + "%' "
-                + "and p.trangThai = '" + TrangThaiPhong.DANG_HAT + "'";
+                + "and hd.trangThai = '" + TrangThaiHoaDon.DANG_XU_LY + "'";
 
         try {
             tr.begin();
@@ -231,7 +228,8 @@ public class Phong_DAO implements PhongService {
 
         String sql = "select * from Phong where tang like '%" + (tang == 0 ? "" : tang) + "%' "
                 + "and maLoaiPhong like '%" + maLoaiPhong + "%' "
-                + "and tenPhong like '%" + tenPhong + "%'";
+                + "and (tenPhong like '%" + tenPhong + "%' "
+                + "or dbo.ufn_removeMark(tenPhong) like '%"+ tenPhong +"%')";
 
         try {
             tr.begin();
@@ -266,23 +264,23 @@ public class Phong_DAO implements PhongService {
         return null;
     }
     
-    @Override
-    public boolean updatePhong(String maPhong,TrangThaiPhong trangThai) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "update Phong set trangThai = '"+trangThai+"' where maPhong = '"+maPhong+"'";
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-        
-    }
+//    @Override
+//    public boolean updatePhong(String maPhong,TrangThaiPhong trangThai) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql = "update Phong set trangThai = '"+trangThai+"' where maPhong = '"+maPhong+"'";
+//        try {
+//            tr.begin();
+//                session.createNativeQuery(sql).executeUpdate();
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//        
+//    }
     
     @Override
     public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong) {

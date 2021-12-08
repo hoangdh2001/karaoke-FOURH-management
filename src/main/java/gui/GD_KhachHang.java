@@ -3,14 +3,13 @@ package gui;
 import dao.KhachHang_DAO;
 import entity.KhachHang;
 import gui.swing.button.Button;
-import gui.swing.panel.slideshow.EventPagination;
+import gui.swing.event.EventPagination;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -54,7 +53,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlTop.setLayout(new MigLayout("", "push[center]5[center] 20[center]push", "60[center]10"));
         pnlTop.add(createPanelTitle(), "span,pos 0al 0al 100% n, h 40!");
       
-        JLabel lblKhachHang = new JLabel("Nhập tên/ số điện thoại (các số cuối)");
+        JLabel lblKhachHang = new JLabel("Nhập tên/ Căn cước/ Số điện thoại");
         lblKhachHang.setFont(new Font(fontName, fontStyle, fontSize));
         pnlTop.add(lblKhachHang);
         
@@ -64,11 +63,12 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlTop.add(txtTimKiem, "w 40%, h 36!");
         
         btnLamMoi = new Button("Làm mới");
-        btnLamMoi.setFont(new Font(fontName, fontStyle, fontSize));
-        btnLamMoi.setBackground(colorBtn);
+        btnLamMoi.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnLamMoi.setForeground(Color.WHITE);
+        btnLamMoi.setBackground(new Color(54, 88, 153));
         btnLamMoi.setBorderline(true);
         btnLamMoi.setBorderRadius(5);
-        pnlTop.add(btnLamMoi, "w 100!, h 36!");
+        pnlTop.add(btnLamMoi, "w 90!, h 30!");
         
         
         btnLamMoi.addActionListener(this);
@@ -131,7 +131,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                 return canEdit [columnIndex];
             }
         });
-        tblKhachHang.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tblKhachHang.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tblKhachHang.setRowHeight(40);
         tblKhachHang.setSelectionBackground(new java.awt.Color(239, 244, 255));
         tblKhachHang.setSelectionForeground(new java.awt.Color(51, 51, 51));
@@ -152,15 +152,16 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
 
         pnlBottom.add(srcKhachHang, java.awt.BorderLayout.CENTER);
 
+        pnlBottom_Page.setOpaque(false);
         pnlBottom_Page.setPreferredSize(new java.awt.Dimension(1022, 32));
+
+        pnlPage.setOpaque(false);
 
         javax.swing.GroupLayout pnlBottom_PageLayout = new javax.swing.GroupLayout(pnlBottom_Page);
         pnlBottom_Page.setLayout(pnlBottom_PageLayout);
         pnlBottom_PageLayout.setHorizontalGroup(
             pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBottom_PageLayout.createSequentialGroup()
-                .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 692, Short.MAX_VALUE))
+            .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, 1022, Short.MAX_VALUE)
         );
         pnlBottom_PageLayout.setVerticalGroup(
             pnlBottom_PageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,16 +212,14 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                                 if(khachHang_Dao.capNhatKhachHang(maKhachHang, soDienThoai)) {
                                     JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
                                     xoaDuLieu();
-                                    dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
-                                    taiLaiDuLieu(dsKhachHang);
+                                    loadData(pnlPage.getCurrentIndex());
                                 }else{
                                     JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng không thành công");         
                                 }
                             }else{
                                 JOptionPane.showMessageDialog(GD_KhachHang.this, "Số điện thoại khách hàng không hợp lệ"); 
                                 xoaDuLieu();
-                                dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
-                                taiLaiDuLieu(dsKhachHang);
+                                loadData(pnlPage.getCurrentIndex());
                             }
                         }
                     }catch(Exception ex){
@@ -231,10 +230,14 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     }
     private void loadData(int numPage) {
         dsKhachHang = khachHang_Dao.getDSKhachHang(numPage);
-        System.out.println(dsKhachHang.listIterator().nextIndex());
-        
         xoaDuLieu();
-        taiLaiDuLieu(dsKhachHang);
+        if (dsKhachHang != null) {
+            dsKhachHang.forEach((kh) -> {
+                ((DefaultTableModel) tblKhachHang.getModel()).addRow(new Object[] {new JCheckBox(),kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
+            });
+        }
+        tblKhachHang.repaint();
+        tblKhachHang.revalidate();
     }
     
     
@@ -243,10 +246,22 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         df.setRowCount(0);
     }
     
-    public void taiLaiDuLieu(List<KhachHang> dsKhachHang){
-        for(KhachHang kh: dsKhachHang){
-            tblKhachHang.addRow(new Object[] {new JCheckBox(),kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
-        }
+    public void taiLaiDuLieu(int numPage){
+        ((DefaultTableModel) tblKhachHang.getModel()).setRowCount(0);
+        String tuKhoa = txtTimKiem.getText().trim();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<KhachHang> dsKhachHang = khachHang_Dao.getDSKhachHangByTuKhoa(tuKhoa,numPage);
+                if (dsKhachHang != null) {
+                    dsKhachHang.forEach((kh) -> {
+                        ((DefaultTableModel) tblKhachHang.getModel()).addRow(new Object[] {new JCheckBox(),kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
+                    });
+                }
+                tblKhachHang.repaint();
+                tblKhachHang.revalidate();
+            }
+        }).start();
     }
     
     private void createTable() {
@@ -255,8 +270,10 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         xuLySuKien();
     }
     
-    private void xuLyTimKiem(int soLuong){
-        pnlPage.init(soLuong % 20 == 0 ? soLuong / 20 : (soLuong / 20) + 1);
+    private void loadPage() {
+        String tuKhoa = txtTimKiem.getText().trim();
+        int soLuongKhachHang= khachHang_Dao.getSoLuongKhachHangByTuKhoa(tuKhoa);
+        pnlPage.init(soLuongKhachHang% 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
     }
     
      private void createPanelBottom() {
@@ -266,8 +283,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                 loadData(pageClick);
             }
         });
-        int soLuongKhachHang = khachHang_Dao.getSoLuongKhachHang();
-        pnlPage.init(soLuongKhachHang % 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
+        loadPage();
     }
 
     private boolean valiDataSDT(String soDienThoai){
@@ -292,7 +308,8 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
            txtTimKiem.setText("");
            dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
            xoaDuLieu();
-           taiLaiDuLieu(dsKhachHang);
+           loadPage();
+           taiLaiDuLieu(pnlPage.getCurrentIndex());
         }
     }
 
@@ -308,9 +325,10 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     public void keyReleased(KeyEvent arg0) {
         Object obj = arg0.getSource();
         if(obj.equals(txtTimKiem)){
-            List<KhachHang> dsKhachHang = khachHang_Dao.layDSKhachHang(txtTimKiem.getText().trim());
             xoaDuLieu();
-            taiLaiDuLieu(dsKhachHang);
+            //loadData(0);
+            loadPage();
+            taiLaiDuLieu(pnlPage.getCurrentIndex());
         }
     }
 

@@ -10,8 +10,11 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import java.awt.Component;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import service.NhanVienService;
 
 public class GD_DangNhap extends javax.swing.JFrame {
@@ -71,7 +74,7 @@ public class GD_DangNhap extends javax.swing.JFrame {
         pnlForm.addEventLogin(new EventLogin() {
             @Override
             public void login(String sdt, byte[] matKhau) {
-                if (sdt.equals("") || matKhau.equals("")) {
+                if (sdt.equals("")) {
                     pnlForm.setTextWhenBack();
                     pnlForm.showMessage(Message.MessageType.ERROR, "Nhập tên tài khoản");
                     return;
@@ -127,7 +130,16 @@ public class GD_DangNhap extends javax.swing.JFrame {
             }
 
             @Override
-            public void forgotPass(byte[] rePass) {
+            public void forgotPass(byte[] pass, byte[] rePass) {
+                if(!(pass.length > 0)) {
+                    pnlForm.showMessage(Message.MessageType.ERROR, "Nhập mật khẩu mới!");
+                    return;
+                } else {
+                    if(!Arrays.equals(pass, rePass)) {
+                        pnlForm.showMessage(Message.MessageType.ERROR, "Mật khẩu nhập lại không trùng!");
+                        return;
+                    }
+                }
                 pnlLoading.setAlpha(0.5f);
                 pnlLoading.setVisible(true);
                 new Thread(() -> {
@@ -148,7 +160,7 @@ public class GD_DangNhap extends javax.swing.JFrame {
             }
         });
     }
-
+    
     private void hiddenLoading() {
 //        pnlLoading.setVisible(false);
 //        pnlForm.setVisible(true);

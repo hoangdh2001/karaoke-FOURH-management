@@ -21,8 +21,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -32,10 +34,10 @@ import net.miginfocom.swing.MigLayout;
 public class GD_ThemNhaCungCap extends javax.swing.JDialog{
     
     private static Object model;
-    private MyComboBox<String> cmbXaPhuong, cmbQuan_Huyen, cmbTinh;
-    private MyTextField txtTenNCC;
-    private MyTextField txtSDT;
-    private MyTextField txtSoNha_Duong;
+    private JComboBox<String> cmbXaPhuong, cmbQuan_Huyen, cmbTinh;
+    private JTextField txtTenNCC;
+    private JTextField txtSDT;
+    private JTextField txtSoNha_Duong;
     
     private Button btnThemVaSua;
     private Button btnHuy;
@@ -63,8 +65,8 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         Color colorBtn = new Color(184, 238, 241);
         
         pnlMain.setLayout(new MigLayout("", "10[center][center] 10 ", ""));
-        pnlLeft.setLayout(new MigLayout("", "[center]5[center]", "20[center]15[center]15[center]20[center]20"));
-        pnlRight.setLayout(new MigLayout("", "[center]5[center]", "20[center]15[center]15[center]20[center]20"));
+        pnlLeft.setLayout(new MigLayout("", "[]5[]", "20[]15[]15[]20[]20"));
+        pnlRight.setLayout(new MigLayout("", "[]5[]", "20[]15[]15[]20[]20"));
         pnlMain.add(pnlLeft, " w 380!, h 100%");
         pnlMain.add(pnlRight, " w 380!,h 100%");
         
@@ -73,9 +75,8 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         lblTenNCC.setFont(new Font(fontName, fontStyle, fontSize));
         pnlLeft.add(lblTenNCC, "align right");
         
-        txtTenNCC = new MyTextField();
+        txtTenNCC = new JTextField();
         txtTenNCC.setFont(new Font(fontName, fontStyle, fontSize));
-        txtTenNCC.setBorderLine(true);
         pnlLeft.add(txtTenNCC, "w 90%, h 36!, wrap");
         
          //Số điện thoại
@@ -83,9 +84,8 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         lblSDT.setFont(new Font(fontName, fontStyle, fontSize));
         pnlLeft.add(lblSDT, "align right");
         
-        txtSDT = new MyTextField();
+        txtSDT = new JTextField();
         txtSDT.setFont(new Font(fontName, fontStyle, fontSize));
-        txtSDT.setBorderLine(true);
         pnlLeft.add(txtSDT, "w 90%, h 36!, wrap");
         
         //Số nhà số đường
@@ -93,9 +93,8 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         lblSoNha_Duong.setFont(new Font(fontName, fontStyle, fontSize));
         pnlLeft.add(lblSoNha_Duong, "align right");
         
-        txtSoNha_Duong = new MyTextField();
+        txtSoNha_Duong = new JTextField();
         txtSoNha_Duong.setFont(new Font(fontName, fontStyle, fontSize));
-        txtSoNha_Duong.setBorderLine(true);
         pnlLeft.add(txtSoNha_Duong, "w 90%, h 36!, wrap");
         
         //Tỉnh thành
@@ -103,11 +102,9 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         lblTinh.setFont(new Font(fontName, fontStyle, fontSize));
         pnlRight.add(lblTinh, "align right");
         
-        cmbTinh = new MyComboBox<String>();
+        cmbTinh = new JComboBox<String>();
         cmbTinh.addItem("--chọn--");
         cmbTinh.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbTinh.setBorderLine(true);
-        cmbTinh.setBorderRadius(10);
         pnlRight.add(cmbTinh, "w 250!,h 36!, wrap");
         
         //Quận huyện
@@ -115,11 +112,9 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         lblQuan_Huyen.setFont(new Font(fontName, fontStyle, fontSize));
         pnlRight.add(lblQuan_Huyen, "align right");
         
-        cmbQuan_Huyen = new MyComboBox<String>();
+        cmbQuan_Huyen = new JComboBox<String>();
         cmbQuan_Huyen.addItem("--chọn--");
         cmbQuan_Huyen.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbQuan_Huyen.setBorderLine(true);
-        cmbQuan_Huyen.setBorderRadius(10);
         pnlRight.add(cmbQuan_Huyen, "w 250!,h 36!, wrap");
         
         //Xã phường
@@ -127,24 +122,22 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         lblXaPhuong.setFont(new Font(fontName, fontStyle, fontSize));
         pnlRight.add(lblXaPhuong, "align right");
         
-        cmbXaPhuong = new MyComboBox<String>();
+        cmbXaPhuong = new JComboBox<String>();
         cmbXaPhuong.addItem("--Chọn--");
         cmbXaPhuong.setFont(new Font(fontName, fontStyle, fontSize));
-        cmbXaPhuong.setBorderLine(true);
-        cmbXaPhuong.setBorderRadius(10);
         pnlRight.add(cmbXaPhuong, "w 250!, h 36!, wrap");
         
         //Nút hủy
         btnHuy = new Button("Hủy");
         btnHuy.setFont(new Font(fontName, fontStyle, fontSize));
         btnHuy.setBackground(colorBtn);
-        pnlRight.add(btnHuy, "w 100!, h 40!");
+        pnlRight.add(btnHuy, "w 100!, h 36!, skip 1, split 2, align right");
 
         // Nút Thêm
         btnThemVaSua = new Button("Thêm");
         btnThemVaSua.setFont(new Font(fontName, fontStyle, fontSize));
         btnThemVaSua.setBackground(colorBtn);
-        pnlRight.add(btnThemVaSua, "w 100!, h 40!, align right");
+        pnlRight.add(btnThemVaSua, "w 100!, h 36!");
         
         setSize(800, 280);
         setResizable(false);
@@ -363,43 +356,34 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlMain = new gui.swing.panel.PanelShadow();
-        pnlLeft = new gui.swing.panel.PanelShadow();
-        pnlRight = new gui.swing.panel.PanelShadow();
+        pnlMain = new javax.swing.JPanel();
+        pnlLeft = new javax.swing.JPanel();
+        pnlRight = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnlMain.setBackground(new java.awt.Color(255, 255, 255));
-        pnlMain.setShadowOpacity(0.3F);
-        pnlMain.setShadowSize(3);
-        pnlMain.setShadowType(gui.swing.graphics.ShadowType.TOP);
 
-        pnlLeft.setBackground(new java.awt.Color(255, 255, 255));
-        pnlLeft.setShadowColor(new java.awt.Color(255, 255, 255));
-        pnlLeft.setShadowOpacity(0.0F);
-        pnlLeft.setShadowSize(1);
+        pnlLeft.setOpaque(false);
 
         javax.swing.GroupLayout pnlLeftLayout = new javax.swing.GroupLayout(pnlLeft);
         pnlLeft.setLayout(pnlLeftLayout);
         pnlLeftLayout.setHorizontalGroup(
             pnlLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 203, Short.MAX_VALUE)
+            .addGap(0, 210, Short.MAX_VALUE)
         );
         pnlLeftLayout.setVerticalGroup(
             pnlLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 243, Short.MAX_VALUE)
         );
 
-        pnlRight.setBackground(new java.awt.Color(255, 255, 255));
-        pnlRight.setShadowColor(new java.awt.Color(255, 255, 255));
-        pnlRight.setShadowOpacity(0.0F);
-        pnlRight.setShadowSize(1);
+        pnlRight.setOpaque(false);
 
         javax.swing.GroupLayout pnlRightLayout = new javax.swing.GroupLayout(pnlRight);
         pnlRight.setLayout(pnlRightLayout);
         pnlRightLayout.setHorizontalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
+            .addGap(0, 218, Short.MAX_VALUE)
         );
         pnlRightLayout.setVerticalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -418,7 +402,7 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlRight, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -429,57 +413,16 @@ public class GD_ThemNhaCungCap extends javax.swing.JDialog{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GD_ThemNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GD_ThemNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GD_ThemNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GD_ThemNhaCungCap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                GD_ThemNhaCungCap dialog = new GD_ThemNhaCungCap(model);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.swing.panel.PanelShadow pnlLeft;
-    private gui.swing.panel.PanelShadow pnlMain;
-    private gui.swing.panel.PanelShadow pnlRight;
+    private javax.swing.JPanel pnlLeft;
+    private javax.swing.JPanel pnlMain;
+    private javax.swing.JPanel pnlRight;
     // End of variables declaration//GEN-END:variables
 
    
