@@ -281,6 +281,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
 
     }
 
+    @Override
     public int getSoLuongPhieuDatPhong() {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
@@ -375,20 +376,4 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         }
         return null;
     }
-
-    @Override
-    public void capNhatTrangThaiHuy() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "  update [dbo].[PhieuDatPhong] set trangThai = 'HET_HAN' where ngayDat < GETDATE() and trangThai = 'DANG_DOI'";
-        try {
-            tr.begin();
-            session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-        } catch (Exception e) {
-            tr.rollback();
-        }
-    }
-
 }

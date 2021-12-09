@@ -2,6 +2,7 @@ package gui;
 
 import com.toedter.calendar.JDateChooser;
 import dao.PhieuDatPhong_DAO;
+import dao.Phong_DAO;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
 import gui.dialog.DL_DatPhong;
@@ -262,7 +263,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println(".run()");phieuDatPhong_Dao.capNhatTrangThaiHuy();
+                System.out.println(".run()");new Phong_DAO().updatePhongByPhieu();
                 dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
                 if (dsPhieu != null) {
                     for (PhieuDatPhong phieu : dsPhieu) {

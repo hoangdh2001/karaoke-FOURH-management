@@ -184,6 +184,7 @@ public class GD_DanhSachPhong extends JPanel {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                phong_DAO.updatePhongByPhieu();
                 List<Phong> dsPhong = phong_DAO.getDsPhong(numPage, tenPhong, loaiPhong);
                 if (dsPhong != null) {
                     dsPhong.forEach((phong) -> {

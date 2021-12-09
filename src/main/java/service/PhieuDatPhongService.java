@@ -22,6 +22,7 @@ public interface PhieuDatPhongService {
     public String getMaxID();
     public PhieuDatPhong getPhieuDatPhongByIDPhong(String maPhong);
     public List<PhieuDatPhong> getDsPhieuDatByPhong(String maPhong);
+//    public void capNhatTrangThaiHuy();
     
 //    Huu
     public List<PhieuDatPhong> getPhieuHomNay(String maPhong);
