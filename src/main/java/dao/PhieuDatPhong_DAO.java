@@ -38,8 +38,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return  false;
     }
     
-    
-
     /**
      * Lấy tất cả các phiếu đặt phòng
      * @param numPage: số dòng dữ liệu hiển thị lên trang đầu tiên
@@ -90,7 +88,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     /**
-     * Cập nhật trang phiếu thành 'DA_HUY' với những phiếu có trạng thái 'DANG_DOI' 
+     * Cập nhật trang phiếu thành 'DA_HUY' 
      * @param maPhieuDat: mã phiếu đặt
      * @return true nếu cập nhật thành công, false nếu thất bại
      */
@@ -193,7 +191,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
 
     @Override
     public double getTienCoc(String maPhieuDat) {
-    Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         String sql = "select tienCoc from PhieuDatPhong where maPhieuDat = '"+maPhieuDat+"'";
         try {
@@ -348,6 +346,14 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         return 0;
     }
 
+    /**
+     * Trả về số lượng của phiếu bởi nhiều thuộc tinh truyền vào
+     * @param tenPhong
+     * @param tenKhachHang
+     * @param trangThai
+     * @param ngayDat
+     * @return 
+     */
     @Override
     public int getSoLuongPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat) {
         Session session = sessionFactory.getCurrentSession();
@@ -373,6 +379,21 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
             tr.rollback();
         }
         return 0;
+    }
+
+    @Override
+    public void capNhatTrangThaiHuy() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "  update [dbo].[PhieuDatPhong] set trangThai = 'HET_HAN' where ngayDat < GETDATE() and trangThai = 'DANG_DOI'";
+        try {
+            tr.begin();
+            session.createNativeQuery(sql).executeUpdate();
+            tr.commit();
+        } catch (Exception e) {
+            tr.rollback();
+        }
     }
 
 }

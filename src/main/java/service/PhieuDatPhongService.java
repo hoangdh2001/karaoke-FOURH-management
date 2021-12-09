@@ -19,6 +19,7 @@ public interface PhieuDatPhongService {
     public PhieuDatPhong getPhieuDatPhong(String maPhieuDat);
     public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat, int numPage);
     public boolean capNhatTrangThaiPhieu(String maPhieu);
+    public void capNhatTrangThaiHuy();
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong);
     public String getMaxID();
     
