@@ -55,6 +55,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private MyTextField txtSearch;
     private MyTextFieldFlatlaf txtTenPhong;
     private JComboBox<Object> cbLoaiPhong;
+    private List<LoaiPhong> dsLoaiPhong;
 
     public void addEvent(EventShowInfoOver event) {
         panelMap.addEvent(event);
@@ -124,7 +125,10 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     }
 
     private void loadDataForm() {
-        cbLoaiPhongModel.addAll(loaiPhongService.getDsLoaiPhong());
+        dsLoaiPhong = loaiPhongService.getDsLoaiPhong();
+        for (LoaiPhong loaiPhong : dsLoaiPhong) {
+            cbLoaiPhongModel.addElement(loaiPhong.getTenLoaiPhong());
+        }
     }
 
     private JPanel createPanelTitle() {
@@ -357,10 +361,9 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 String tenPhong = txtTenPhong.getText().trim();
                 LoaiPhong loaiPhong = null;
                 if (!cbLoaiPhongModel.getSelectedItem().toString().equals("--Tất cả--")) {
-                    loaiPhong = (LoaiPhong) cbLoaiPhongModel.getSelectedItem();
+                    loaiPhong = dsLoaiPhong.get(cbLoaiPhong.getSelectedIndex() - 1);
                 }
                 List<Phong> dsPhong = phongService.getDsPhongByTang(index, tenPhong, loaiPhong);
-                System.out.println(dsPhong);
                 panelMap.loadMap(dsPhong, index);
             }
         }).start();

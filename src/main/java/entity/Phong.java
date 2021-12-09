@@ -1,6 +1,6 @@
 package entity;
 
-import gui.swing.table2.EventAction;
+import gui.swing.table.EventAction;
 import gui.swing.model.ModelAction;
 import java.text.DecimalFormat;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.swing.JCheckBox;
-import objectcombobox.ObjectComboBox;
+import gui.swing.model.ModelObjectComboBox;
 
 @Entity
 @Table(name = "Phong")
@@ -143,21 +143,5 @@ public class Phong {
     public String toString() {
         return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", trangThai=" + trangThai + ", loaiPhong="
                 + loaiPhong + "]";
-    }
-    
-    public Object[] convertToRowTable(EventAction event) {
-        return new Object[]{new JCheckBox(),  maPhong, tenPhong, tang, trangThai, loaiPhong.getTenLoaiPhong(), new ModelAction(this, event)};
-    }
-    
-    public Object[] convertToRowTableInGDoiPhong() {
-        DecimalFormat df;
-            df = new DecimalFormat("#,##0.00");
-        return new Object[]{new ObjectComboBox(tenPhong,maPhong),loaiPhong.getTenLoaiPhong(), tang, df.format(loaiPhong.getGiaPhong())};
-    }
-
-    public Object[] convertToRowTableInGDDatPhong() {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
-        return new Object[]{new ObjectComboBox(tenPhong,maPhong),loaiPhong.getTenLoaiPhong(), tang, df.format(loaiPhong.getGiaPhong())};
     }
 }

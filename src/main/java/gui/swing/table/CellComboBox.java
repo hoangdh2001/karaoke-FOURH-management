@@ -1,4 +1,4 @@
-package gui.swing.table2;
+package gui.swing.table;
 
 public class CellComboBox extends javax.swing.JPanel {
 

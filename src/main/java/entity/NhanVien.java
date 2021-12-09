@@ -255,12 +255,4 @@ public class NhanVien {
                 + soDienThoai + ", email=" + email + ", diaChi=" + diaChi + ", matKhau=" + Arrays.toString(matKhau)
                 + "]";
     }
-
-    public Object[] convertToRowTable() {
-        String caLamString = caLam.getGioBatDau() + "-" + caLam.getGioKetThuc();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-
-        return new Object[] {new JCheckBox() ,maNhanVien, tenNhanVien, gioiTinh == true ? "Nữ" : "Nam", df.format(ngaySinh),
-                soDienThoai, canCuocCD, caLamString, loaiNhanVien.getTenLoaiNV() };
-    }
 }

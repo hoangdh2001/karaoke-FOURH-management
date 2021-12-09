@@ -9,7 +9,7 @@ import gui.dialog.DL_DatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
-import gui.swing.table2.EventAction;
+import gui.swing.table.EventAction;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -34,17 +34,20 @@ import gui.swing.event.EventSelectedRow;
 import gui.swing.model.ModelAction;
 import gui.swing.event.EventPagination;
 import gui.swing.textfield.MyTextFieldFlatlaf;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 /**
  *
  * @author Hao
  */
-
 public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener, KeyListener {
 
+    private final DecimalFormat dcf = new DecimalFormat("#,##0 VND");
+    private final SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
     private PhieuDatPhong_DAO phieuDatPhong_Dao;
     private List<PhieuDatPhong> dsPhieu = new ArrayList<PhieuDatPhong>();
     private MyTextFieldFlatlaf txtTimKiemKhachHang, txtTimKiemPhong;
@@ -197,7 +200,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 int row = tblPhieuDatPhong.getSelectedRow();
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
                 PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
-                if(phieu.getTrangThai()==TrangThaiPhieuDat.DANG_DOI){
+                if (phieu.getTrangThai() == TrangThaiPhieuDat.DANG_DOI) {
                     if (JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         phieu.setTrangThai(TrangThaiPhieuDat.DA_HUY);
                         if (phieuDatPhong_Dao.capNhatPhieuDatPhong(phieu)) {
@@ -210,10 +213,10 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                             JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " hủy thất bại.");
                         }
                     }
-                }else{
-                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu "+ phieu.getMaPhieuDat()+" không thể hủy.");
+                } else {
+                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể hủy.");
                 }
-               
+
             }
 
             @Override
@@ -221,15 +224,15 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 int row = tblPhieuDatPhong.getSelectedRow();
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
                 PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
-                if(phieu.getTrangThai()==TrangThaiPhieuDat.DANG_DOI){
+                if (phieu.getTrangThai() == TrangThaiPhieuDat.DANG_DOI) {
                     DL_DatPhong dldatPhong = new DL_DatPhong(Application.login);
                     dldatPhong.setPhieuDatPhong(phieu);
                     dldatPhong.setVisible(true);
                     xoaDuLieu();
                     loadPage();
                     taiLaiDuLieu(dsPhieu);
-                }else{
-                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu "+ phieu.getMaPhieuDat()+" không thể sửa.");
+                } else {
+                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể sửa.");
                 }
             }
         };
@@ -248,9 +251,17 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             @Override
             public void run() {
                 if (dsPhieu != null) {
-                    dsPhieu.forEach((phieu) -> {
-                        ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
-                    });
+                    for (PhieuDatPhong phieuDatPhong : dsPhieu) {
+                        ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(new Object[]{new JCheckBox(),
+                            phieuDatPhong.getMaPhieuDat(),
+                            fm.format(phieuDatPhong.getNgayTao()),
+                            phieuDatPhong.getKhachHang().getTenKhachHang(),
+                            phieuDatPhong.getPhong().getTenPhong(),
+                            fm.format(phieuDatPhong.getNgayDat()),
+                            phieuDatPhong.getTrangThai(),
+                            dcf.format(phieuDatPhong.getTienCoc()),
+                            new ModelAction(phieuDatPhong, event)});
+                    }
                 }
                 tblPhieuDatPhong.repaint();
                 tblPhieuDatPhong.revalidate();
@@ -263,48 +274,63 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println(".run()");new Phong_DAO().updatePhongByPhieu();
+                System.out.println(".run()");
+                new Phong_DAO().updatePhongByPhieu();
                 dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
                 if (dsPhieu != null) {
-                    for (PhieuDatPhong phieu : dsPhieu) {
-                        ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(phieu.convertToRowTable(event));
+                    for (PhieuDatPhong phieuDatPhong : dsPhieu) {
+                        ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(new Object[]{new JCheckBox(),
+                            phieuDatPhong.getMaPhieuDat(),
+                            fm.format(phieuDatPhong.getNgayTao()),
+                            phieuDatPhong.getKhachHang().getTenKhachHang(),
+                            phieuDatPhong.getPhong().getTenPhong(),
+                            fm.format(phieuDatPhong.getNgayDat()),
+                            phieuDatPhong.getTrangThai(),
+                            dcf.format(phieuDatPhong.getTienCoc()),
+                            new ModelAction(phieuDatPhong, event)});
                     }
                 }
                 tblPhieuDatPhong.repaint();
                 tblPhieuDatPhong.revalidate();
-         }
+            }
         }).start();
     }
-    
+
     private void loadPage() {
         String tenPhong = txtTimKiemPhong.getText().trim();
         String tenKhachHang = txtTimKiemKhachHang.getText().trim();
         String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
         int soLuongPhieu;
-        if(dcsNgayDatTK.getDate()==null){
-            soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, null);
-            pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
-        }else{
+        if (dcsNgayDatTK.getDate() == null) {
+            soLuongPhieu = phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, null);
+            pnlPage.init(soLuongPhieu % 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
+        } else {
             Date ngayDat = dcsNgayDatTK.getDate();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            soLuongPhieu= phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai,df.format(ngayDat));
-            
+            soLuongPhieu = phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat));
+
         }
-        pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
+        pnlPage.init(soLuongPhieu % 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
     }
 
     private String kiemTraTrangThai(String trangThaiPhieu) {
-        TrangThaiPhieuDat trangThaiPhieuDat = TrangThaiPhieuDat.getTrangThaiPhieuDatByTrangThai(trangThaiPhieu);
+        TrangThaiPhieuDat trangThaiPhieuDat = null;
+        for (TrangThaiPhieuDat tr : TrangThaiPhieuDat.values()) {
+            if (tr.getTrangThai().equals(trangThaiPhieu)) {
+                trangThaiPhieuDat = tr;
+            }
+        }
         if (trangThaiPhieuDat == null) {
             return "";
         }
         return String.valueOf(trangThaiPhieuDat);
     }
-    
-    private String kiemTraNgay(){
+
+    private String kiemTraNgay() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        if(dcsNgayDatTK.getDate()==null)
+        if (dcsNgayDatTK.getDate() == null) {
             return null;
+        }
         return df.format(dcsNgayDatTK.getDate());
     }
 
@@ -325,9 +351,9 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
         srcPhieuDatPhong = new javax.swing.JScrollPane();
-        tblPhieuDatPhong = new gui.swing.table2.MyTableFlatlaf();
+        tblPhieuDatPhong = new gui.swing.table.MyTableFlatlaf();
         pnlBottom_Page = new javax.swing.JPanel();
-        pnlPage = new gui.swing.table2.PanelPage();
+        pnlPage = new gui.swing.table.PanelPage();
 
         setOpaque(false);
 
@@ -431,17 +457,17 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.swing.panel.PanelShadow pnlBottom;
     private javax.swing.JPanel pnlBottom_Page;
-    private gui.swing.table2.PanelPage pnlPage;
+    private gui.swing.table.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
     private javax.swing.JScrollPane srcPhieuDatPhong;
-    private gui.swing.table2.MyTableFlatlaf tblPhieuDatPhong;
+    private gui.swing.table.MyTableFlatlaf tblPhieuDatPhong;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
         if (obj.equals(cmbTrangThaiTK)) {
-            String ngayDat =kiemTraNgay();
+            String ngayDat = kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
@@ -474,7 +500,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     public void keyReleased(KeyEvent e) {
         Object obj = e.getSource();
         if (obj.equals(txtTimKiemPhong)) {
-            String ngayDat =kiemTraNgay();
+            String ngayDat = kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
@@ -485,7 +511,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         }
 
         if (obj.equals(txtTimKiemKhachHang)) {
-            String ngayDat =kiemTraNgay();
+            String ngayDat = kiemTraNgay();
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());

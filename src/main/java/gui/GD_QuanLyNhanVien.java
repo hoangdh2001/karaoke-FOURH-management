@@ -24,9 +24,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,6 +48,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
     private PanelShadow panelHidden;
     private final DecimalFormat df = new DecimalFormat("##0.000");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private JTextField txtTimKiem;
     private JComboBox<Object> cmbCot;
     private JComboBox<Object> cmbGioiTinhTK;
@@ -350,11 +353,17 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
                         maLoaiNV, maCaLam, numPage);
                 if (listRow != null) {
                     ((DefaultTableModel) tblNhanVien.getModel()).setRowCount(0);
-                    listRow.forEach(i -> {
-                        tblNhanVien.addRow(new NhanVien(i.getMaNhanVien(), i.getTenNhanVien(), i.getLoaiNhanVien(), i.getCaLam(),
-                                i.getCanCuocCD(), i.isGioiTinh(), i.getNgaySinh(), i.getSoDienThoai(), i.getEmail(), i.getDiaChi(),
-                                i.getMatKhau()).convertToRowTable());
-                    });
+                    for (NhanVien nhanVien : listRow) {
+                        String caLamString = nhanVien.getCaLam().getGioBatDau() + "-" + nhanVien.getCaLam().getGioKetThuc();
+                        tblNhanVien.addRow(new Object[]{new JCheckBox(), nhanVien.getMaNhanVien(),
+                            nhanVien.getTenNhanVien(),
+                            nhanVien.isGioiTinh() == true ? "Nữ" : "Nam",
+                            sdf.format(nhanVien.getNgaySinh()),
+                            nhanVien.getSoDienThoai(),
+                            nhanVien.getCanCuocCD(),
+                            caLamString,
+                            nhanVien.getLoaiNhanVien().getTenLoaiNV()});
+                    }
                     tblNhanVien.repaint();
                     tblNhanVien.revalidate();
                 }
@@ -442,8 +451,8 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
 
         pnlCenter = new gui.swing.panel.PanelShadow();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblNhanVien = new gui.swing.table2.MyTableFlatlaf();
-        pnlPage = new gui.swing.table2.PanelPage();
+        tblNhanVien = new gui.swing.table.MyTableFlatlaf();
+        pnlPage = new gui.swing.table.PanelPage();
         pnlTop = new gui.swing.panel.PanelShadow();
 
         pnlCenter.setBackground(new java.awt.Color(255, 255, 255));
@@ -526,8 +535,8 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private gui.swing.panel.PanelShadow pnlCenter;
-    private gui.swing.table2.PanelPage pnlPage;
+    private gui.swing.table.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
-    private gui.swing.table2.MyTableFlatlaf tblNhanVien;
+    private gui.swing.table.MyTableFlatlaf tblNhanVien;
     // End of variables declaration//GEN-END:variables
 }

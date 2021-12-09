@@ -1,4 +1,4 @@
-package gui.swing.table2;
+package gui.swing.table;
 
 import gui.swing.event.EventPagination;
 import java.awt.event.ActionEvent;
@@ -136,7 +136,6 @@ public class PanelPage extends javax.swing.JPanel {
             }
             cmbNumPage.addItem(i + 1);
         }
-        cmbNumPage.setSelectedIndex(currentIndex);
     }
     
 

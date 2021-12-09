@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package objectcombobox;
+package gui.swing.model;
 
 import java.util.Objects;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  * @author 84975
  */
-public class ObjectComboBox {
+public class ModelObjectComboBox {
     private String ten;
     private String ma;
 
@@ -28,7 +28,7 @@ public class ObjectComboBox {
         return ten;
     }
 
-    public ObjectComboBox(String ten, String ma) {
+    public ModelObjectComboBox(String ten, String ma) {
         this.ten = ten;
         this.ma = ma;
     }
@@ -50,7 +50,7 @@ public class ObjectComboBox {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ObjectComboBox other = (ObjectComboBox) obj;
+        final ModelObjectComboBox other = (ModelObjectComboBox) obj;
         if (!Objects.equals(this.ten, other.ten)) {
             return false;
         }

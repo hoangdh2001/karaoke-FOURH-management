@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
-import objectcombobox.ObjectComboBox;
+import gui.swing.model.ModelObjectComboBox;
 import service.LoaiDichVuService;
 import service.MatHangService;
 
@@ -251,7 +251,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
         List<NhaCungCap> listNCC = nhaCungCapVaNhapHang_DAO.getNhaCungCap();
         for (int i = 0; i < listNCC.size(); i++) {
             NhaCungCap ncc = listNCC.get(i);
-            cbNhaCungCap.addItem(new ObjectComboBox(ncc.getTenNCC(),ncc.getMaNCC()));  
+            cbNhaCungCap.addItem(new ModelObjectComboBox(ncc.getTenNCC(),ncc.getMaNCC()));  
         }
     }
     
@@ -270,7 +270,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
         List<LoaiDichVu> listDV = loaiDichVu_Dao.getDsLoaiDichVu();
         for (int i = 0; i < listDV.size(); i++) {
             LoaiDichVu dv = listDV.get(i);
-            cbLoaiSP.addItem(new ObjectComboBox(dv.getTenLoaiDichVu(),dv.getMaLoaiDichVu()));  
+            cbLoaiSP.addItem(new ModelObjectComboBox(dv.getTenLoaiDichVu(),dv.getMaLoaiDichVu()));  
         }
         
         
@@ -282,7 +282,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
         cbNhaCungCap.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
                     if(cbNhaCungCap.getSelectedIndex() != 0){
-                    ObjectComboBox ncc = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
+                    ModelObjectComboBox ncc = (ModelObjectComboBox)cbNhaCungCap.getSelectedItem();
                     System.out.println(ncc.getMa());
                 }
             }
@@ -291,7 +291,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
         cbLoaiSP.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
                 if(cbLoaiSP.getSelectedIndex() != 0){
-                    ObjectComboBox dv = (ObjectComboBox)cbLoaiSP.getSelectedItem();
+                    ModelObjectComboBox dv = (ModelObjectComboBox)cbLoaiSP.getSelectedItem();
                     pnlSPMoi.setComboboxItem(dv.getMa());
                 }else{
                     pnlSPMoi.setComboboxItem("");
@@ -484,7 +484,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
             if(o.equals(btnLuu) && valiData()){
 //insert lo hang
                 String maLoHang = loHangDAO.getLastLoHang();
-                ObjectComboBox cb = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
+                ModelObjectComboBox cb = (ModelObjectComboBox)cbNhaCungCap.getSelectedItem();
                 NhaCungCap ncc = nhaCungCapVaNhapHang_DAO.getNhaCungCapById(cb.getMa());
                 
                 loHang.setMaLoHang(maLoHang);
@@ -510,7 +510,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
                 showMsg("Lưu thành công");
             }else if(o.equals(btnXemThongTin)){
                 if(cbNhaCungCap.getSelectedIndex() !=0){
-                    ObjectComboBox maNCC = (ObjectComboBox)cbNhaCungCap.getSelectedItem();
+                    ModelObjectComboBox maNCC = (ModelObjectComboBox)cbNhaCungCap.getSelectedItem();
                     NhaCungCap ncc = nhaCungCapVaNhapHang_DAO.getNhaCungCapById(maNCC.getMa());
                     new GD_ThemNhaCungCap(ncc).setVisible(true);
                 }
@@ -518,7 +518,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
                 int soLuong = Integer.parseInt(txtSoLuong.getText().trim());
                 double giaNhap = convertMoneyToDouble(txtGiaNhap.getText().trim());
                 double giaBan = convertMoneyToDouble(txtGiaban.getText().trim());
-                ObjectComboBox cb = (ObjectComboBox)cbLoaiSP.getSelectedItem();
+                ModelObjectComboBox cb = (ModelObjectComboBox)cbLoaiSP.getSelectedItem();
                 LoaiDichVu loaiDichVu = loaiDichVu_Dao.getLoaiDichVuByMa(cb.getMa());
                 String tenMatHang ="";
                 MatHang matHang;
@@ -537,7 +537,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
                 
                 loHang.themCT_NhapHang(matHang, soLuong, giaNhap);
                 
-                table.addRow(new Object[]{ new ObjectComboBox(matHang.getTenMatHang(),matHang.getMaMatHang()),
+                table.addRow(new Object[]{ new ModelObjectComboBox(matHang.getTenMatHang(),matHang.getMaMatHang()),
                         cb.toString(),soLuong,
                         df.format(giaNhap), df.format(giaBan),df.format(giaNhap*soLuong)});
                 xoaRong();
@@ -585,7 +585,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
         pnlForm = new gui.swing.panel.PanelShadow();
         pnlCenter = new gui.swing.panel.PanelShadow();
         jScrollPane2 = new javax.swing.JScrollPane();
-        table = new gui.swing.table2.MyTableFlatlaf();
+        table = new gui.swing.table.MyTableFlatlaf();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout(0, 5));
@@ -655,6 +655,6 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private gui.swing.panel.PanelShadow pnlCenter;
     private gui.swing.panel.PanelShadow pnlForm;
-    private gui.swing.table2.MyTableFlatlaf table;
+    private gui.swing.table.MyTableFlatlaf table;
     // End of variables declaration//GEN-END:variables
 }

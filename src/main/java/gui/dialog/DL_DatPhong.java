@@ -8,6 +8,7 @@ import dao.PhieuDatPhong_DAO;
 import dao.Phong_DAO;
 import entity.KhachHang;
 import entity.PhieuDatPhong;
+import entity.Phong;
 import entity.TrangThaiPhong;
 import gui.GD_Chinh;
 import gui.swing.model.AutoID;
@@ -33,7 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import objectcombobox.ObjectComboBox;
+import gui.swing.model.ModelObjectComboBox;
 import service.KhachHangService;
 import service.LoaiPhongService;
 import service.PhieuDatPhongService;
@@ -87,7 +88,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
     private void initData() {
         txtMaPhieu.setText(phieuDatPhong.getMaPhieuDat());
         loaiPhongService.getDsLoaiPhong().forEach(doc -> {
-            cmbLoaiPhong.addItem(new ObjectComboBox(doc.getTenLoaiPhong(), doc.getMaLoaiPhong()));
+            cmbLoaiPhong.addItem(new ModelObjectComboBox(doc.getTenLoaiPhong(), doc.getMaLoaiPhong()));
         });
     }
 
@@ -104,7 +105,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
             txtTienCoc.setText(df.format(phieuDatPhong.getTienCoc()));
             thoiGianBatDau.setDateTimePermissive(convertToLocalDateTimeViaMilisecond(phieuDatPhong.getNgayDat()));
             thoiGianBatDau.getDatePicker().setDate(phieuDatPhong.getNgayDat().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            cmbLoaiPhong.setSelectedItem(new ObjectComboBox(phieuDatPhong.getPhong().getLoaiPhong().getTenLoaiPhong(), phieuDatPhong.getPhong().getLoaiPhong().getMaLoaiPhong()));
+            cmbLoaiPhong.setSelectedItem(new ModelObjectComboBox(phieuDatPhong.getPhong().getLoaiPhong().getTenLoaiPhong(), phieuDatPhong.getPhong().getLoaiPhong().getMaLoaiPhong()));
             addDataToTable(thoiGianBatDau.getDatePicker().getText(), phieuDatPhong.getPhong().getLoaiPhong().getMaLoaiPhong());
         }
     }
@@ -231,9 +232,13 @@ public class DL_DatPhong extends javax.swing.JDialog {
 
     public void addDataToTable(String date, String maLoaiPhong) {
         deleteTableData();
-        phongService.getDSPhongChuaDat(date, maLoaiPhong).forEach(doc -> {
-            tblPhong.addRow(doc.convertToRowTableInGDDatPhong());
-        });
+        List<Phong> dsPhong = phongService.getDSPhongChuaDat(date, maLoaiPhong);
+        for (Phong phong : dsPhong) {
+            tblPhong.addRow(new Object[]{new ModelObjectComboBox(phong.getTenPhong(), phong.getMaPhong()),
+                phong.getLoaiPhong().getTenLoaiPhong(),
+                phong.getTang(),
+                df.format(phong.getLoaiPhong().getGiaPhong())});
+        }
     }
 
     private void showMsg(String msg) {
@@ -317,7 +322,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
         if (!date.equals("")) {
             String maLoaiPhong = "";
             if (cmbLoaiPhong.getSelectedIndex() != 0) {
-                ObjectComboBox cb = (ObjectComboBox) cmbLoaiPhong.getSelectedItem();
+                ModelObjectComboBox cb = (ModelObjectComboBox) cmbLoaiPhong.getSelectedItem();
                 maLoaiPhong = cb.getMa();
             }
             addDataToTable(date, maLoaiPhong);
@@ -331,7 +336,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         srcBang = new javax.swing.JScrollPane();
-        tblPhong = new gui.swing.table2.MyTableFlatlaf();
+        tblPhong = new gui.swing.table.MyTableFlatlaf();
         thoiGianBatDau = new com.github.lgooddatepicker.components.DateTimePicker();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -737,7 +742,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
     private void tblPhongMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhongMousePressed
         int row = tblPhong.getSelectedRow();
         if (row != -1) {
-            ObjectComboBox cb = (ObjectComboBox) tblPhong.getValueAt(row, 0);
+            ModelObjectComboBox cb = (ModelObjectComboBox) tblPhong.getValueAt(row, 0);
             txtTenPhong.setText(cb.toString());
             txtLoaiPhongTT.setText(tblPhong.getValueAt(row, 1).toString());
             txtGia.setText(tblPhong.getValueAt(row, 3).toString());
@@ -768,7 +773,7 @@ public class DL_DatPhong extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JScrollPane srcBang;
-    private gui.swing.table2.MyTableFlatlaf tblPhong;
+    private gui.swing.table.MyTableFlatlaf tblPhong;
     private com.github.lgooddatepicker.components.DateTimePicker thoiGianBatDau;
     private javax.swing.JTextField txtCCCD;
     private gui.swing.textfield.MyTextFieldPerUnit txtGia;

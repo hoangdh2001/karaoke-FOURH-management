@@ -1,4 +1,4 @@
-package gui.swing.table2;
+package gui.swing.table;
 
 import java.awt.Color;
 import java.awt.Graphics;

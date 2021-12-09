@@ -1,4 +1,4 @@
-package gui.swing.table2;
+package gui.swing.table;
 
 import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
@@ -36,7 +36,7 @@ public class CellStatus extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblStatus = new gui.swing.table2.LabelStatus();
+        lblStatus = new gui.swing.table.LabelStatus();
 
         lblStatus.setText("Status");
 
@@ -59,6 +59,6 @@ public class CellStatus extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.swing.table2.LabelStatus lblStatus;
+    private gui.swing.table.LabelStatus lblStatus;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,23 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.Phong;
-import java.util.Date;
-import entity.TrangThaiHoaDon;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author Hao
- */
 public interface HoaDonService {
     public boolean addHoaDon(HoaDon hoaDon);
     public boolean finishHoaDon(HoaDon hoaDon);

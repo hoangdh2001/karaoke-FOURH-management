@@ -8,10 +8,6 @@ import dao.MatHang_DAO;
 import dao.NhaCungCapVaNhapHang_DAO;
 import entity.MatHang;
 import gui.swing.button.Button;
-import gui.swing.panel.PanelShadow;
-import gui.swing.table2.MyTable;
-import gui.swing.textfield.MyComboBox;
-import gui.swing.textfield.MyTextField;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -21,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,17 +41,17 @@ import service.MatHangService;
  * @author 84975
  */
 public class GD_XemDichVu extends javax.swing.JPanel {
-    
+
     private JTextField txtNhap;
-    
+
     private JComboBox<String> cmbLoaiTimKiem;
-    
+
     private Button btnXuatFile;
-    
+
     private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
     private MatHangService matHangDao;
     private List<MatHang> listMatHang;
-    
+
     private String fontName = "sansserif";
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
@@ -62,7 +59,8 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     private int font12 = 12;
     private Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
-    
+    private final DecimalFormat df = new DecimalFormat("#,##0.00");
+
     /**
      * Creates new form GD_XemDichVu
      */
@@ -73,17 +71,17 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         initData();
         addAction();
     }
-    
-    public void initSearch(){
-     
-        pnlSearch.setLayout(new MigLayout("fillx, insets 0","20[]5[][]push[]20","20[]20"));
+
+    public void initSearch() {
+
+        pnlSearch.setLayout(new MigLayout("fillx, insets 0", "20[]5[][]push[]20", "20[]20"));
         JLabel lblTimKiem = new JLabel("Tìm Kiếm :");
         lblTimKiem.setFont(new Font(fontName, fontPlain, font14));
-        
+
         txtNhap = new JTextField();
         txtNhap.setFont(new Font(fontName, fontPlain, font14));
-        
-        cmbLoaiTimKiem = new JComboBox<>(new String[] {"--Tất cả--"});
+
+        cmbLoaiTimKiem = new JComboBox<>(new String[]{"--Tất cả--"});
         cmbLoaiTimKiem.setFont(new Font("sansserif", Font.PLAIN, 12));
 
         btnXuatFile = new Button("Xuất file");
@@ -91,52 +89,52 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         btnXuatFile.setForeground(Color.WHITE);
         btnXuatFile.setBackground(new Color(54, 88, 153));
         btnXuatFile.setBorderRadius(5);
-        
+
         pnlSearch.add(lblTimKiem);
-        pnlSearch.add(txtNhap,"w 100:300:500, h 30!");
-        pnlSearch.add(cmbLoaiTimKiem,"w 200,h 30!");
-        pnlSearch.add(btnXuatFile,"w 90! ,h 30!");
-        
-        this.add(pnlSearch,"wrap");
+        pnlSearch.add(txtNhap, "w 100:300:500, h 30!");
+        pnlSearch.add(cmbLoaiTimKiem, "w 200,h 30!");
+        pnlSearch.add(btnXuatFile, "w 90! ,h 30!");
+
+        this.add(pnlSearch, "wrap");
     }
-    
-    public void initTable(){
+
+    public void initTable() {
         table.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
     }
-    
-    public void addAction(){
+
+    public void addAction() {
         btnXuatFile.addActionListener(new createActionListener());
-        txtNhap.addKeyListener(new KeyAdapter(){
+        txtNhap.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 String text = txtNhap.getText().trim();
                 int cmbSelected = cmbLoaiTimKiem.getSelectedIndex();
-                if(!text.equals("")){
+                if (!text.equals("")) {
                     listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
-                }else{
+                } else {
                     listMatHang = matHangDao.getDanhSachMatHang();
                     addDataToTable();
                 }
             }
         });
-        cmbLoaiTimKiem.addActionListener(new ActionListener(){
+        cmbLoaiTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            String text = txtNhap.getText().trim();
+                String text = txtNhap.getText().trim();
                 int cmbSelected = cmbLoaiTimKiem.getSelectedIndex();
-                if(!text.equals("")){
+                if (!text.equals("")) {
                     listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
-                }else{
+                } else {
                     listMatHang = matHangDao.getDanhSachMatHang();
                     addDataToTable();
                 }
             }
         });
     }
-    
-    public void initData(){
+
+    public void initData() {
         cmbLoaiTimKiem.addItem("Sản phẩm");
         cmbLoaiTimKiem.addItem("Loại sản phẩm");
         matHangDao = new MatHang_DAO();
@@ -144,48 +142,51 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         listMatHang = matHangDao.getDanhSachMatHang();
         addDataToTable();
     }
-    
-    public void addDataToTable(){
-        DefaultTableModel df =(DefaultTableModel) table.getModel();
-        df.setRowCount(0);
-        listMatHang.forEach(doc -> {
-            table.addRow(doc.convertToRowTableInGDXemDichVu());
-        });
+
+    public void addDataToTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        for (MatHang matHang : listMatHang) {
+            table.addRow(new Object[]{matHang.getTenMatHang(),
+                matHang.getLoaiDichVu().getTenLoaiDichVu(),
+                matHang.getsLTonKho(),
+                df.format(matHang.getDonGia())});
+        }
     }
-    
-    public void exportTableToExcel() throws FileNotFoundException{
-        
+
+    public void exportTableToExcel() throws FileNotFoundException {
+
         FileOutputStream excelFos = null;
         Workbook excelJTableExport = null;
         try {
-            
+
             JFileChooser excelFileChooser = new JFileChooser("D:\\");
             excelFileChooser.setDialogTitle("Save As ..");
             FileNameExtensionFilter fnef = new FileNameExtensionFilter("Files", "xls", "xlsx", "xlsm");
             excelFileChooser.setFileFilter(fnef);
             int chooser = excelFileChooser.showSaveDialog(null);
-            
+
             Workbook wb = new XSSFWorkbook(); //Excell workbook
             Sheet sheet = wb.createSheet(); //WorkSheet
             Row row = sheet.createRow(2); //Row created at line 3
             TableModel model = table.getModel(); //Table model
-            
+
             if (chooser == JFileChooser.APPROVE_OPTION) {
                 Row headerRow = sheet.createRow(0);
-                for(int headings = 0; headings < model.getColumnCount(); headings++){ 
+                for (int headings = 0; headings < model.getColumnCount(); headings++) {
                     headerRow.createCell(headings).setCellValue(model.getColumnName(headings));
                 }
 
-                for(int rows = 0; rows < model.getRowCount(); rows++){ 
-                    for(int cols = 0; cols < table.getColumnCount(); cols++){ 
-                        row.createCell(cols).setCellValue(model.getValueAt(rows, cols).toString()); 
+                for (int rows = 0; rows < model.getRowCount(); rows++) {
+                    for (int cols = 0; cols < table.getColumnCount(); cols++) {
+                        row.createCell(cols).setCellValue(model.getValueAt(rows, cols).toString());
                     }
 
-                    row = sheet.createRow((rows + 3)); 
+                    row = sheet.createRow((rows + 3));
                 }
-                wb.write(new FileOutputStream(excelFileChooser.getSelectedFile()+ ".xlsx")); 
+                wb.write(new FileOutputStream(excelFileChooser.getSelectedFile() + ".xlsx"));
             }
- 
+
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, ex);
         } catch (IOException ex) {
@@ -202,25 +203,25 @@ public class GD_XemDichVu extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, ex);
             }
         }
-    } 
-    
-    private class createActionListener implements ActionListener{
+    }
+
+    private class createActionListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
-            if(obj.equals(btnXuatFile)){
+            if (obj.equals(btnXuatFile)) {
                 try {
                     exportTableToExcel();
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(GD_XemDichVu.class.getName()).log(Level.SEVERE, null, ex);
                 }
-               
+
             }
         }
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -233,7 +234,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         pnlSearch = new gui.swing.panel.PanelShadow();
         pnlCenter = new gui.swing.panel.PanelShadow();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new gui.swing.table2.MyTableFlatlaf();
+        table = new gui.swing.table.MyTableFlatlaf();
 
         pnlSearch.setBackground(new java.awt.Color(255, 255, 255));
         pnlSearch.setShadowOpacity(0.3F);
@@ -309,6 +310,6 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private gui.swing.panel.PanelShadow pnlCenter;
     private gui.swing.panel.PanelShadow pnlSearch;
-    private gui.swing.table2.MyTableFlatlaf table;
+    private gui.swing.table.MyTableFlatlaf table;
     // End of variables declaration//GEN-END:variables
 }

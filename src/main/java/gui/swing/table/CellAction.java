@@ -1,4 +1,4 @@
-package gui.swing.table2;
+package gui.swing.table;
 
 import gui.swing.button.Button;
 import gui.swing.model.ModelAction;

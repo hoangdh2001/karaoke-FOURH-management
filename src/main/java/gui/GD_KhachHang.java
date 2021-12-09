@@ -87,9 +87,9 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
         srcKhachHang = new javax.swing.JScrollPane();
-        tblKhachHang = new gui.swing.table2.MyTableFlatlaf();
+        tblKhachHang = new gui.swing.table.MyTableFlatlaf();
         pnlBottom_Page = new javax.swing.JPanel();
-        pnlPage = new gui.swing.table2.PanelPage();
+        pnlPage = new gui.swing.table.PanelPage();
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
@@ -295,10 +295,10 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.swing.panel.PanelShadow pnlBottom;
     private javax.swing.JPanel pnlBottom_Page;
-    private gui.swing.table2.PanelPage pnlPage;
+    private gui.swing.table.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
     private javax.swing.JScrollPane srcKhachHang;
-    private gui.swing.table2.MyTableFlatlaf tblKhachHang;
+    private gui.swing.table.MyTableFlatlaf tblKhachHang;
     // End of variables declaration//GEN-END:variables
 
     @Override

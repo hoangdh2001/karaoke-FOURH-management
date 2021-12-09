@@ -1,4 +1,4 @@
-package gui.swing.table2;
+package gui.swing.table;
 
 import entity.LoaiPhong;
 import entity.TrangThaiPhieuDat;

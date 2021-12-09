@@ -34,7 +34,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="gui.swing.table2.LabelStatus" name="lblStatus">
+    <Component class="gui.swing.table.LabelStatus" name="lblStatus">
       <Properties>
         <Property name="text" type="java.lang.String" value="Status"/>
       </Properties>

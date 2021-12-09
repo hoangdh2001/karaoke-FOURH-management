@@ -1,6 +1,6 @@
 package entity;
 
-import gui.swing.table2.EventAction;
+import gui.swing.table.EventAction;
 import gui.swing.model.ModelAction;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -106,9 +106,5 @@ public class KhachHang {
     public String toString() {
         return "KhachHang [maKhachHang=" + maKhachHang + ", tenKhachHang=" + tenKhachHang + ", canCuocCD=" + canCuocCD
                 + ", soDienThoai=" + soDienThoai + "]";
-    }
-
-    public Object[] convertToRowTable(EventAction eventAction) {
-        return new Object[]{JCheckBox.class, maKhachHang, tenKhachHang, canCuocCD, soDienThoai, new ModelAction(this, eventAction)};
     }
 }

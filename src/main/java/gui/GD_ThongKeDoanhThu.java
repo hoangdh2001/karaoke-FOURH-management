@@ -42,6 +42,8 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     private LoaiPhongService loaiPhongService;
     private final DecimalFormat df = new DecimalFormat("#,##0.00");
     private final SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private List<LoaiPhong> dsLoaiPhong;
 
     public GD_ThongKeDoanhThu() {
         this.hoaDonService = new HoaDon_DAO();
@@ -67,11 +69,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     }
 
     private void init() {
-        List<LoaiPhong> dsLoaiPhong = loaiPhongService.getDsLoaiPhong();
+        dsLoaiPhong = loaiPhongService.getDsLoaiPhong();
         DefaultComboBoxModel<Object> cmbLoaiPhongModel = new DefaultComboBoxModel<>();
         cmbLoaiPhongModel.addElement("--Tất cả--");
         for (LoaiPhong loaiPhong : dsLoaiPhong) {
-            cmbLoaiPhongModel.addElement(loaiPhong);
+            cmbLoaiPhongModel.addElement(loaiPhong.getTenLoaiPhong());
         }
         cmbKhac.setModel(cmbLoaiPhongModel);
     }
@@ -112,7 +114,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         }
 
         for (HoaDon hoaDon : dsHoaDon) {
-            tblThongKe.addRow(hoaDon.convertToRowTableInGDThongKeDoanhThu());
+            tblThongKe.addRow(new Object[]{hoaDon.getMaHoaDon(),
+                sdf.format(hoaDon.getNgayLapHoaDon()),
+                hoaDon.getKhachHang() == null ? "Trống" : hoaDon.getKhachHang().getTenKhachHang(),
+                hoaDon.getNhanVien().getTenNhanVien(),
+                df.format(hoaDon.getTongHoaDon())});
         }
 
         txtSoHD.setText(String.valueOf(tblThongKe.getRowCount()));
@@ -162,8 +168,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                 if (cmbKhac.getSelectedIndex() == 0) {
                     ma = null;
                 } else {
-                    LoaiPhong cb = (LoaiPhong) cmbKhac.getSelectedItem();
-                    ma = cb.getMaLoaiPhong();
+                    LoaiPhong loaiPhong = null;
+                    if (!cmbKhac.getSelectedItem().toString().equals("--Tất cả--")) {
+                        loaiPhong = dsLoaiPhong.get(cmbKhac.getSelectedIndex() - 1);
+                    }
+                    ma = loaiPhong.getMaLoaiPhong();
                 }
                 System.out.println(ma);
 
@@ -404,7 +413,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblThongKe = new gui.swing.table2.MyTableFlatlaf();
+        tblThongKe = new gui.swing.table.MyTableFlatlaf();
         jPanel6 = new javax.swing.JPanel();
         lblChenhLech = new javax.swing.JLabel();
         txtChenhLech = new javax.swing.JTextField();
@@ -413,7 +422,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         txtTong = new javax.swing.JTextField();
         btnXuat = new javax.swing.JButton();
-        pnlPage = new gui.swing.table2.PanelPage();
+        pnlPage = new gui.swing.table.PanelPage();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         chart = new gui.swing.chart.Chart();
@@ -703,9 +712,9 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblChenhLech;
     private gui.swing.panel.PanelShadow pnlCenter;
-    private gui.swing.table2.PanelPage pnlPage;
+    private gui.swing.table.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
-    private gui.swing.table2.MyTableFlatlaf tblThongKe;
+    private gui.swing.table.MyTableFlatlaf tblThongKe;
     private javax.swing.JTextField txtChenhLech;
     private javax.swing.JTextField txtSoHD;
     private javax.swing.JTextField txtTong;

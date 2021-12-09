@@ -8,7 +8,7 @@ import gui.swing.button.Button;
 import gui.swing.event.EventSelectedRow;
 import gui.swing.panel.PanelShadow;
 import gui.swing.event.EventPagination;
-import gui.swing.table2.EventAction;
+import gui.swing.table.EventAction;
 import gui.swing.textfield.MyTextFieldFlatlaf;
 import java.awt.Color;
 import java.awt.Font;
@@ -20,11 +20,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -40,11 +39,11 @@ import javax.swing.table.TableRowSorter;
 import net.miginfocom.swing.MigLayout;
 
 /**
- * 
+ *
  * @author Hao
  */
 public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
-    
+
     private HoaDon_DAO hoaDon_Dao;
     private List<HoaDon> dsHoaDon = new ArrayList<HoaDon>();
     private EventAction event;
@@ -60,8 +59,10 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     private List<Integer> dsThang, dsQuy, dsNam;
     private EventSelectedRow eventOnClick;
     private NhanVien_DAO nhanVien_Dao;
-    
-    
+    private final DecimalFormat dcf = new DecimalFormat("#,###");
+    private final SimpleDateFormat fm1 = new SimpleDateFormat("dd-MM-yyyy");
+    private final SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
+
     public void addEvent(EventSelectedRow eventOnClick) {
         this.eventOnClick = eventOnClick;
     }
@@ -72,7 +73,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         initComponents();
         build_GDHoaDon();
     }
-    
+
     private void build_GDHoaDon() {
         createForm();
         loadNamLenCombobox();
@@ -82,7 +83,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         createPanelBottom(1);
         setOpaque(false);
     }
-    
+
     private void createForm() {
         String fontName = "sansserif";
         int fontPlain = Font.PLAIN;
@@ -90,7 +91,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         int font14 = 14;
         Color colorBtn = new Color(184, 238, 241);
         Color colorLabel = new Color(47, 72, 210);
-       
+
         pnlForm.setLayout(new MigLayout("fillx, insets 0, wrap", "[fill][fill]", "40[][]"));
         pnlForm.add(createPanelTitle(), "pos 0al 0al 100% n, h 40!");
         /*
@@ -131,17 +132,17 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         JPanel pnlCmbThoiGian = new JPanel(new MigLayout("", "0[center]push[center]push[center]0", "[][]"));
         pnlCmbThoiGian.setBackground(Color.WHITE);
         pnlThoiGianHD.add(pnlCmbThoiGian, "span 4, w 100%");
-        
+
         cmbNam = new JComboBox<>();
         cmbNam.setFont(new Font(fontName, fontPlain, font14));
         cmbNam.addItem("Lọc theo năm");
         pnlCmbThoiGian.add(cmbNam, "w 32%, h 30!");
-        
+
         cmbQuy = new JComboBox<>();
         cmbQuy.setFont(new Font(fontName, fontPlain, font14));
         cmbQuy.addItem("Lọc theo quý");
         pnlCmbThoiGian.add(cmbQuy, "w 32%, h 30!");
-        
+
         cmbThang = new JComboBox<>();
         cmbThang.setFont(new Font(fontName, fontPlain, font14));
         cmbThang.addItem("Lọc theo tháng");
@@ -150,7 +151,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
          * End: group Chọn thời gian bắt đầu
          */
 
-        /* 
+ /* 
          * Begin: group Tìm kiếm
          */
         JPanel pnlTimKiemHD = new JPanel();
@@ -169,10 +170,10 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         pnlTimKiemHD.add(lblTimKiem, "span 2");
 
         //Chọn cột cần tìm
-        cmbCot = new JComboBox<>(new String[]{"Chọn cột cần tìm","Mã hóa đơn","Khách hàng","Phòng"});
+        cmbCot = new JComboBox<>(new String[]{"Chọn cột cần tìm", "Mã hóa đơn", "Khách hàng", "Phòng"});
         cmbCot.setFont(new Font(fontName, fontPlain, font14));
         pnlTimKiemHD.add(cmbCot, "span 2, h 30!, w 100%");
-        
+
         // Tìm kiếm  
         txtTimKiem = new MyTextFieldFlatlaf();
         txtTimKiem.setFont(new Font(fontName, fontPlain, font14));
@@ -188,7 +189,6 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         btnLamMoi.setBorderline(true);
         pnlTimKiemHD.add(btnLamMoi, "w 90!, h 30!");
 
-        
         /*Đăng ký sự kiện*/
         cmbCot.addActionListener(this);
         btnLamMoi.addActionListener(this);
@@ -209,93 +209,107 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         pnlTitle.add(lblTitle);
         return pnlTitle;
     }
-    
-    private void createTable(){
+
+    private void createTable() {
         tblHoaDon.getTableHeader().setFont(new Font("Sansserif", Font.BOLD, 14));
         tblHoaDon.getTableHeader().setFont(new Font("sansserif", Font.BOLD, 14));
         RowSorter<TableModel> sorter = new TableRowSorter<>((DefaultTableModel) tblHoaDon.getModel());
         tblHoaDon.setRowSorter(sorter);
         xuLySuKien();
     }
-    
+
     public void xoaDuLieu() {
         DefaultTableModel df = (DefaultTableModel) tblHoaDon.getModel();
         df.setRowCount(0);
         tblHoaDon.clearSelection();
     }
-    
+
     public void taiLaiDuLieu(int dem, int numPage) {
         ((DefaultTableModel) tblHoaDon.getModel()).setRowCount(0);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                     if(dem==1){
-                        dsHoaDon = hoaDon_Dao.getDsHoaDon(numPage, kiemTraNhanVien());
-                    }else if(dem==2){
-                        dsHoaDon = hoaDon_Dao.getDSHoaDonByTieuChiKhac(cmbCot.getSelectedIndex(),txtTimKiem.getText().trim(), numPage, kiemTraNhanVien());
-                    }else if(dem==3){
-                        dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(kiemTraNgayBatDau(), kiemTraNgayKetThuc(), numPage, kiemTraNhanVien());
-                    }else if(dem==4){
-                        dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(kiemTraNgayBatDau(), kiemTraNgayKetThuc(),kiemTraThang(), kiemTraQuy(), kiemTraNam(), numPage, kiemTraNhanVien());
-                    }else{
-                        dsHoaDon = hoaDon_Dao.getDsHoaDon(numPage, kiemTraNhanVien());
-                    }
-                    if(dsHoaDon!=null){
-                        dsHoaDon.forEach((hoaDon) -> {
-                            ((DefaultTableModel) tblHoaDon.getModel()).addRow(hoaDon.convertToRowTable());
-                        });
-                        tblHoaDon.repaint();
-                        tblHoaDon.revalidate();
-                    }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (dem == 1) {
+                    dsHoaDon = hoaDon_Dao.getDsHoaDon(numPage, kiemTraNhanVien());
+                } else if (dem == 2) {
+                    dsHoaDon = hoaDon_Dao.getDSHoaDonByTieuChiKhac(cmbCot.getSelectedIndex(), txtTimKiem.getText().trim(), numPage, kiemTraNhanVien());
+                } else if (dem == 3) {
+                    dsHoaDon = hoaDon_Dao.getDSHoaDonFromDateToDate(kiemTraNgayBatDau(), kiemTraNgayKetThuc(), numPage, kiemTraNhanVien());
+                } else if (dem == 4) {
+                    dsHoaDon = hoaDon_Dao.locHoaDonByThang_Quy_Nam(kiemTraNgayBatDau(), kiemTraNgayKetThuc(), kiemTraThang(), kiemTraQuy(), kiemTraNam(), numPage, kiemTraNhanVien());
+                } else {
+                    dsHoaDon = hoaDon_Dao.getDsHoaDon(numPage, kiemTraNhanVien());
                 }
-            }).start();
+                if (dsHoaDon != null) {
+                    for (HoaDon hoaDon : dsHoaDon) {
+                        ((DefaultTableModel) tblHoaDon.getModel()).addRow(new Object[]{hoaDon.getMaHoaDon(),
+                            hoaDon.getKhachHang().getTenKhachHang(),
+                            hoaDon.getPhong().getTenPhong(),
+                            hoaDon.getGioHat(),
+                            fm1.format(hoaDon.getNgayLapHoaDon()),
+                            fm2.format(hoaDon.getThoiGianBatDau()),
+                            dcf.format(hoaDon.getTongTienMatHang()),
+                            dcf.format(hoaDon.getPhong().getLoaiPhong().getGiaPhong()),
+                            dcf.format(hoaDon.getTongHoaDon()),
+                            hoaDon.getNhanVien().getTenNhanVien()});
+                    }
+                    tblHoaDon.repaint();
+                    tblHoaDon.revalidate();
+                }
+            }
+        }).start();
     }
-    
-    private String kiemTraNhanVien(){
+
+    private String kiemTraNhanVien() {
         String maNhanVien;
-        if(nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())){
+        if (nhanVien_Dao.getMaNhanVienQuanLy().contains(GD_Chinh.NHAN_VIEN.getMaNhanVien())) {
             maNhanVien = "";
-        }else{
+        } else {
             maNhanVien = GD_Chinh.NHAN_VIEN.getMaNhanVien();
         }
         return maNhanVien;
     }
-    
-    private String kiemTraThang(){
-        if(cmbThang.getSelectedIndex()==0)
+
+    private String kiemTraThang() {
+        if (cmbThang.getSelectedIndex() == 0) {
             return "";
+        }
         return cmbThang.getSelectedItem().toString();
     }
-    private String kiemTraQuy(){
-        if(cmbQuy.getSelectedIndex()==0)
+
+    private String kiemTraQuy() {
+        if (cmbQuy.getSelectedIndex() == 0) {
             return "";
+        }
         return cmbQuy.getSelectedItem().toString();
     }
-    private String kiemTraNam(){
-        if(cmbNam.getSelectedIndex()==0)
+
+    private String kiemTraNam() {
+        if (cmbNam.getSelectedIndex() == 0) {
             return "";
+        }
         return cmbNam.getSelectedItem().toString();
     }
-    
+
     private void loadPage(int soLuongPhieu) {
-        pnlPage.init(soLuongPhieu% 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
+        pnlPage.init(soLuongPhieu % 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
     }
-    
-     private void createPanelBottom(int kiemTraDuLieu) {
-        if(kiemTraDuLieu==1){
-            taiLaiDuLieu(1,0);
+
+    private void createPanelBottom(int kiemTraDuLieu) {
+        if (kiemTraDuLieu == 1) {
+            taiLaiDuLieu(1, 0);
             pnlPage.addEventPagination(new EventPagination() {
                 @Override
                 public void onClick(int pageClick) {
-                    taiLaiDuLieu(1,pageClick);
+                    taiLaiDuLieu(1, pageClick);
                 }
             });
             pnlPage.repaint();
             pnlPage.revalidate();
             loadPage(hoaDon_Dao.getSoLuongHoaDon(kiemTraNhanVien()));
-        }else if(kiemTraDuLieu==2){
-            taiLaiDuLieu(2,0);
-             pnlPage.addEventPagination(new EventPagination() {
+        } else if (kiemTraDuLieu == 2) {
+            taiLaiDuLieu(2, 0);
+            pnlPage.addEventPagination(new EventPagination() {
                 @Override
                 public void onClick(int pageClick) {
                     taiLaiDuLieu(2, pageClick);
@@ -303,20 +317,20 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             });
             pnlPage.repaint();
             pnlPage.revalidate();
-            loadPage(hoaDon_Dao.getSoLuongHoaDonByTieuChiKhac(cmbCot.getSelectedIndex(),txtTimKiem.getText().trim(), kiemTraNhanVien()));
-        }else if(kiemTraDuLieu==3){
-            taiLaiDuLieu(3,0);
+            loadPage(hoaDon_Dao.getSoLuongHoaDonByTieuChiKhac(cmbCot.getSelectedIndex(), txtTimKiem.getText().trim(), kiemTraNhanVien()));
+        } else if (kiemTraDuLieu == 3) {
+            taiLaiDuLieu(3, 0);
             pnlPage.addEventPagination(new EventPagination() {
                 @Override
                 public void onClick(int pageClick) {
-                   taiLaiDuLieu(3, pageClick);
+                    taiLaiDuLieu(3, pageClick);
                 }
             });
             pnlPage.repaint();
             pnlPage.revalidate();
             loadPage(hoaDon_Dao.getSoLuongHoaDonFromDateToDate(kiemTraNgayBatDau(), kiemTraNgayKetThuc(), kiemTraNhanVien()));
-        }else if(kiemTraDuLieu==4){
-            taiLaiDuLieu(4,0);
+        } else if (kiemTraDuLieu == 4) {
+            taiLaiDuLieu(4, 0);
             pnlPage.addEventPagination(new EventPagination() {
                 @Override
                 public void onClick(int pageClick) {
@@ -325,9 +339,9 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             });
             pnlPage.repaint();
             pnlPage.revalidate();
-            loadPage(hoaDon_Dao.getSoLuongHoaDonByAll(kiemTraNgayBatDau(), kiemTraNgayKetThuc(),kiemTraThang(), kiemTraQuy(), kiemTraNam(), kiemTraNhanVien()));
-        }else{
-            taiLaiDuLieu(1,0);
+            loadPage(hoaDon_Dao.getSoLuongHoaDonByAll(kiemTraNgayBatDau(), kiemTraNgayKetThuc(), kiemTraThang(), kiemTraQuy(), kiemTraNam(), kiemTraNhanVien()));
+        } else {
+            taiLaiDuLieu(1, 0);
             pnlPage.addEventPagination(new EventPagination() {
                 @Override
                 public void onClick(int pageClick) {
@@ -340,7 +354,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         }
     }
 
-    private void xuLySuKien(){
+    private void xuLySuKien() {
         tblHoaDon.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -353,44 +367,46 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
                 }
             }
         });
-        
+
         txtTimKiem.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent arg0) {
             }
+
             @Override
             public void keyPressed(KeyEvent arg0) {
-                if(cmbCot.getSelectedIndex()==0){
+                if (cmbCot.getSelectedIndex() == 0) {
                     JOptionPane.showMessageDialog(GD_HoaDon.this, "Hãy chọn cột mà bạn muốn tìm kiếm.");
                     txtTimKiem.setText("");
                     txtTimKiem.requestFocus();
                 }
             }
+
             @Override
             public void keyReleased(KeyEvent arg0) {
-                if(cmbCot.getSelectedIndex()!=0){
+                if (cmbCot.getSelectedIndex() != 0) {
                     xoaDuLieu();
                     createPanelBottom(2);
-                }else{
-                   xoaDuLieu();
-                   createPanelBottom(1);
+                } else {
+                    xoaDuLieu();
+                    createPanelBottom(1);
                 }
             }
         });
-                      
+
         dscBatDau.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
-           public void propertyChange(PropertyChangeEvent arg0) {
-                if(dscBatDau.getDate()!=null){
-                    if(dscKetThuc.getDate()==null){
+            public void propertyChange(PropertyChangeEvent arg0) {
+                if (dscBatDau.getDate() != null) {
+                    if (dscKetThuc.getDate() == null) {
                         xoaDuLieu();
                         createPanelBottom(3);
-                    }else{
-                        if(dscBatDau.getDate().compareTo(dscKetThuc.getDate())>0){
+                    } else {
+                        if (dscBatDau.getDate().compareTo(dscKetThuc.getDate()) > 0) {
                             JOptionPane.showMessageDialog(GD_HoaDon.this, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
                             dscBatDau.setDate(null);
                             dscKetThuc.setDate(null);
-                        }else{
+                        } else {
                             xoaDuLieu();
                             createPanelBottom(3);
                         }
@@ -398,20 +414,20 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
                 }
             }
         });
-        
+
         dscKetThuc.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent arg0) {
-              if(dscKetThuc.getDate()!=null){
-                   if(dscBatDau.getDate()==null){
+                if (dscKetThuc.getDate() != null) {
+                    if (dscBatDau.getDate() == null) {
                         xoaDuLieu();
                         createPanelBottom(3);
-                    }else{
-                        if(dscBatDau.getDate().compareTo(dscKetThuc.getDate())>0){
+                    } else {
+                        if (dscBatDau.getDate().compareTo(dscKetThuc.getDate()) > 0) {
                             JOptionPane.showMessageDialog(GD_HoaDon.this, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
                             dscBatDau.setDate(null);
                             dscKetThuc.setDate(null);
-                        }else{
+                        } else {
                             xoaDuLieu();
                             createPanelBottom(3);
                         }
@@ -420,45 +436,45 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             }
         });
     }
-    
-    public void loadThangLenCombobox(int quy){
+
+    public void loadThangLenCombobox(int quy) {
         dsThang = hoaDon_Dao.getDSThangTheoNgayLap(quy);
-        dsThang.forEach(t->{
+        dsThang.forEach(t -> {
             cmbThang.addItem(t);
         });
     }
-    
-    public void loadQuyLenCombobox(){
+
+    public void loadQuyLenCombobox() {
         dsQuy = hoaDon_Dao.getDSQuyTheoNgayLap();
-        dsQuy.forEach(t->{
+        dsQuy.forEach(t -> {
             cmbQuy.addItem(t);
         });
     }
-    
-    public void loadNamLenCombobox(){
+
+    public void loadNamLenCombobox() {
         dsNam = hoaDon_Dao.getDSNamTheoNgayLap();
-        dsNam.forEach(t->{
+        dsNam.forEach(t -> {
             cmbNam.addItem(t);
         });
     }
-    
-    public String kiemTraNgayBatDau(){
+
+    public String kiemTraNgayBatDau() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String from;
-        if(dscBatDau.getDate()==null){
+        if (dscBatDau.getDate() == null) {
             from = hoaDon_Dao.layNgayLapNhoNhat();
-        }else{
+        } else {
             from = df.format(dscBatDau.getDate());
         }
         return from;
     }
-    
-    public String kiemTraNgayKetThuc(){
+
+    public String kiemTraNgayKetThuc() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String to;
-        if(dscKetThuc.getDate()==null){
+        if (dscKetThuc.getDate() == null) {
             to = hoaDon_Dao.layNgayLapLonNhat();
-        }else{
+        } else {
             to = df.format(dscKetThuc.getDate());
         }
         return to;
@@ -471,9 +487,9 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         pnlForm = new gui.swing.panel.PanelShadow();
         panelShadow2 = new gui.swing.panel.PanelShadow();
         pnlBottom_Page = new javax.swing.JPanel();
-        pnlPage = new gui.swing.table2.PanelPage();
+        pnlPage = new gui.swing.table.PanelPage();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblHoaDon = new gui.swing.table2.MyTableFlatlaf();
+        tblHoaDon = new gui.swing.table.MyTableFlatlaf();
 
         setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         setMinimumSize(new java.awt.Dimension(0, 0));
@@ -571,11 +587,11 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
 
         add(panelShadow2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object obj = e.getSource();
-        if(obj.equals(btnLamMoi)){
+        if (obj.equals(btnLamMoi)) {
             dscBatDau.setDate(null);
             dscKetThuc.setDate(null);
             txtTimKiem.setText("");
@@ -587,36 +603,36 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             xoaDuLieu();
             createPanelBottom(1);
         }
-        if(obj.equals(cmbNam)){
+        if (obj.equals(cmbNam)) {
             xoaDuLieu();
             createPanelBottom(4);
         }
-        if(obj.equals(cmbQuy)){
+        if (obj.equals(cmbQuy)) {
             cmbThang.removeAllItems();
             cmbThang.addItem("Lọc theo tháng");
-            hoaDon_Dao.getDSThangTheoNgayLap(cmbQuy.getSelectedIndex()).forEach(thang ->{
+            hoaDon_Dao.getDSThangTheoNgayLap(cmbQuy.getSelectedIndex()).forEach(thang -> {
                 cmbThang.addItem(thang);
             });
             xoaDuLieu();
             createPanelBottom(4);
         }
-        if(obj.equals(cmbThang)){
+        if (obj.equals(cmbThang)) {
             xoaDuLieu();
             createPanelBottom(4);
         }
-        if(obj.equals(cmbCot)){
+        if (obj.equals(cmbCot)) {
             dscBatDau.setDate(null);
             dscKetThuc.setDate(null);
             cmbThang.setSelectedIndex(0);
             cmbNam.setSelectedIndex(0);
             cmbQuy.setSelectedIndex(0);
-            if(cmbCot.getSelectedIndex()==0){
+            if (cmbCot.getSelectedIndex() == 0) {
                 txtTimKiem.setHint("Nhập thông tin tìm kiếm theo tùy chọn của bạn.");
-            }else if(cmbCot.getSelectedItem().toString().equals("Mã hóa đơn")){
+            } else if (cmbCot.getSelectedItem().toString().equals("Mã hóa đơn")) {
                 txtTimKiem.setHint("Nhập mã hóa đơn muốn tìm.");
-            }else if(cmbCot.getSelectedItem().toString().equals("Khách hàng")){
+            } else if (cmbCot.getSelectedItem().toString().equals("Khách hàng")) {
                 txtTimKiem.setHint("Nhập tên khách hàng muốn tìm.");
-            }else{
+            } else {
                 txtTimKiem.setHint("Nhập tên phòng hát muốn tìm.");
             }
         }
@@ -627,7 +643,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
     private gui.swing.panel.PanelShadow panelShadow2;
     private javax.swing.JPanel pnlBottom_Page;
     private gui.swing.panel.PanelShadow pnlForm;
-    private gui.swing.table2.PanelPage pnlPage;
-    private gui.swing.table2.MyTableFlatlaf tblHoaDon;
+    private gui.swing.table.PanelPage pnlPage;
+    private gui.swing.table.MyTableFlatlaf tblHoaDon;
     // End of variables declaration//GEN-END:variables
 }

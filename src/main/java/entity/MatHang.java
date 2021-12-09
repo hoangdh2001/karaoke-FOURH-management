@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import objectcombobox.ObjectComboBox;
+import gui.swing.model.ModelObjectComboBox;
 
 @Entity
 @Table(name = "MatHang")
@@ -131,24 +131,6 @@ public class MatHang {
     public String toString() {
         return "MatHang [maMatHang=" + maMatHang + ", tenMatHang=" + tenMatHang + ", loaiDichVu=" + loaiDichVu
                 + ", sLTonKho=" + sLTonKho + ", donGia=" + donGia + "]";
-    }
-
-    public Object[] convertToRowTableInGDTiepNhanDatPhong(EventAdd event) {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0 VND");
-        return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), new ModelAdd(this, event)};
-    }
-    
-    public Object[] convertToRowTableInGDTiepNhanDatPhong() {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
-        return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), false};
-    }
-
-    public Object[] convertToRowTableInGDXemDichVu() {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
-        return new Object[]{tenMatHang, loaiDichVu.getTenLoaiDichVu(), sLTonKho, df.format(donGia)};
     }
 
     @Override
