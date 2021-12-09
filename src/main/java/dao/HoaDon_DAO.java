@@ -457,23 +457,6 @@ public class HoaDon_DAO implements HoaDonService {
         return 0;
     }
     
-    /**
-     * Câp nhật trạng thái phiếu là Hết Hạn cho những phiếu có trạng thái Đang Đợi đã quá hạn đặt
-     */
-    @Override
-    public void capNhatTrangThaiPhieuHetHan() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "update PhieuDatPhong set trangThai = 'HET_HAN' where ngayDat > GETDATE()  and trangThai =  'DANG_DOI'";
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();  
-            tr.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-    }
     
 //    Huu
     @Override
