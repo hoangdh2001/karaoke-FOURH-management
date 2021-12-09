@@ -9,7 +9,7 @@ import entity.TrangThaiPhong;
 import gui.component.PanelMap;
 import gui.component.PanelStatus;
 import gui.dialog.DL_CapNhatDichVu;
-import gui.dialog.DL_DatPhong2;
+import gui.dialog.DL_DatPhong;
 import gui.dialog.DL_DoiPhong;
 import gui.dialog.DL_ThanhToan;
 import gui.dialog.DL_TiepNhanDatPhong;
@@ -140,7 +140,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         mniDatPhong.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                new DL_DatPhong2(Application.login).setVisible(true);
+                new DL_DatPhong(Application.login).setVisible(true);
                 loadMap(panelMap.getIndexShowing());
             }
         });

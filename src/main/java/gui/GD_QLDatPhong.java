@@ -4,7 +4,7 @@ import com.toedter.calendar.JDateChooser;
 import dao.PhieuDatPhong_DAO;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
-import gui.dialog.DL_DatPhong2;
+import gui.dialog.DL_DatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
@@ -220,7 +220,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
                 PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
                 if(phieu.getTrangThai()==TrangThaiPhieuDat.DANG_DOI){
-                    DL_DatPhong2 dldatPhong = new DL_DatPhong2(Application.login);
+                    DL_DatPhong dldatPhong = new DL_DatPhong(Application.login);
                     dldatPhong.setPhieuDatPhong(phieu);
                     dldatPhong.setVisible(true);
                     xoaDuLieu();
