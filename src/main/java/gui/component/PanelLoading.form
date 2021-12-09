@@ -35,7 +35,7 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/icon/Rolling-1s-78px.gif"/>
+          <Image iconType="3" name="/icon/Pulse-1s-104px.gif"/>
         </Property>
       </Properties>
     </Component>

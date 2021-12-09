@@ -18,6 +18,7 @@ import entity.MatHang;
 import entity.Phong;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
+import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
 import gui.swing.event.EventAdd;
 import gui.swing.event.EventMinus;
@@ -69,6 +70,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private List<MatHang> dsMatHang;
     private EventAdd event;
+    private List<PhieuDatPhong> dsPhieuDat;
 
     public HoaDon getHoaDon() {
         return hoaDon;
@@ -269,7 +271,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     }
     
     private void loadDataTablePhieuDatPhong() {
-        List<PhieuDatPhong> dsPhieuDat = phieuDatPhongService.getPhieuHomNay(hoaDon.getPhong().getMaPhong());
+        dsPhieuDat = phieuDatPhongService.getPhieuHomNay(hoaDon.getPhong().getMaPhong());
         if(dsPhieuDat != null) {
             for (PhieuDatPhong phieuDatPhong : dsPhieuDat) {
                 ((DefaultTableModel) tablePhieuDatPhong.getModel()).addRow(phieuDatPhong.convertToRowTableInGDTiepNhanDatPhong());
@@ -326,10 +328,15 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void loadDataTTKH() {
         KhachHang khachHang = (KhachHang) search.getSelectedRow();
         hoaDon.setKhachHang(khachHang);
-        txtTenKhachHang.setText(khachHang.getTenKhachHang());
-        txtCCCD.setText(khachHang.getCanCuocCD());
-        txtSdt.setText(khachHang.getSoDienThoai());
+        setData();
+        hoaDon.setTienCoc(0);
         menu.setVisible(false);
+    }
+    
+    private void setData() {
+        txtTenKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
+        txtCCCD.setText(hoaDon.getKhachHang().getCanCuocCD());
+        txtSdt.setText(hoaDon.getKhachHang().getSoDienThoai());
     }
 
     private void thoiGianDateOrTimeChanged(DateTimeChangeEvent event) {
@@ -982,6 +989,11 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             }
         });
         tablePhieuDatPhong.setFillsViewportHeight(true);
+        tablePhieuDatPhong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablePhieuDatPhongMousePressed(evt);
+            }
+        });
         spPhieuDatPhong.setViewportView(tablePhieuDatPhong);
         if (tablePhieuDatPhong.getColumnModel().getColumnCount() > 0) {
             tablePhieuDatPhong.getColumnModel().getColumn(0).setResizable(false);
@@ -1154,6 +1166,22 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void cbLoaiDichVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLoaiDichVuActionPerformed
         searchMatHang();
     }//GEN-LAST:event_cbLoaiDichVuActionPerformed
+
+    private void tablePhieuDatPhongMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePhieuDatPhongMousePressed
+        int row = tablePhieuDatPhong.getSelectedRow();
+        if(row != -1) {
+            PhieuDatPhong phieuDatPhong = dsPhieuDat.get(row);
+            phieuDatPhong.setTrangThai(TrangThaiPhieuDat.DA_TIEP_NHAN);
+            phieuDatPhongService.updatePhieuDatPhong(phieuDatPhong);
+            hoaDon.setKhachHang(phieuDatPhong.getKhachHang());
+            hoaDon.setTienCoc(phieuDatPhong.getTienCoc());
+            setData();
+            txtDaCoc.setText(df.format(hoaDon.getTienCoc()));
+            txtTenKhachHang.setEnabled(false);
+            txtSdt.setEnabled(false);
+            txtCCCD.setEnabled(false);
+        }
+    }//GEN-LAST:event_tablePhieuDatPhongMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;

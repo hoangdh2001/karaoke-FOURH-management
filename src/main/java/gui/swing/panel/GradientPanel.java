@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 class GradientPanel extends JPanel {
+
     GradientPanel() {
         super(new BorderLayout());
     }
@@ -21,10 +22,9 @@ class GradientPanel extends JPanel {
         Paint paint = g2.getPaint();
 
         g2.setPaint(new GradientPaint(0.0f, getHeight() * 0.22f, new Color(0x202737),
-                                      0.0f, getHeight() * 0.9f, Color.BLACK));
+                0.0f, getHeight() * 0.9f, Color.BLACK));
         g2.fillRect(clip.x, clip.y, clip.width, clip.height);
 
         g2.setPaint(paint);
     }
 }
-

@@ -2,7 +2,6 @@ package gui.dialog;
 
 import dao.ChiTietHoaDon_DAO;
 import dao.HoaDon_DAO;
-import dao.KhachHang_DAO;
 import dao.LoaiDichVu_DAO;
 import dao.MatHang_DAO;
 import entity.ChiTietHoaDon;
@@ -32,7 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import service.ChiTietHoaDonService;
 import service.HoaDonService;
-import service.KhachHangService;
 import service.LoaiDichVuService;
 import service.MatHangService;
 
@@ -96,7 +94,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             thoiGianNhanPhong.setValue(hoaDon.getThoiGianBatDau());
             txtThoiLai.setText(df.format(hoaDon.getTienThua()));
             txtTienPhongCu.setText(df.format(hoaDon.getDonGiaPhongCu()));
-
+            txtDaCoc.setText(df.format(hoaDon.getTienCoc()));
         }
         if (hoaDon.getNhanVien() != null) {
             lblNhanVien.setText(hoaDon.getNhanVien().getTenNhanVien());
@@ -224,7 +222,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
 
         double bodyHeight = bHeight;
         double headerHeight = 5.0;
-        double footerHeight = 5.0;
+        double footerHeight = 6.0;
         double width = cm_to_pp(8);
         double height = cm_to_pp(headerHeight + bodyHeight + footerHeight);
         paper.setSize(width, height);

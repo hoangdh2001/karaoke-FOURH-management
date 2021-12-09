@@ -1,4 +1,4 @@
-package gui.swing.image;
+package gui.swing.panel;
 
 import java.awt.AlphaComposite;
 import java.awt.Composite;
@@ -9,16 +9,19 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
-public class PictureBox extends JLayeredPane {
-    private Icon image;
-    private float alpha = 1f;
+public class PanelEmpty extends JPanel {
+
+    private Icon image = new ImageIcon(getClass().getResource("/icon/empty.png"));
+    private float alpha = 0.6f;
     private int borderRadius = 0;
-    
+
     public Icon getImage() {
         return image;
     }
@@ -43,15 +46,37 @@ public class PictureBox extends JLayeredPane {
     public void setBorderRadius(int borderRadius) {
         this.borderRadius = borderRadius;
     }
-    
-    public PictureBox() {
-        
+
+    public PanelEmpty() {
+        setOpaque(false);
+        addAction();
     }
 
-    public PictureBox(Icon image) {
+    public PanelEmpty(Icon image) {
         this.image = image;
+        setOpaque(false);
+        addAction();
     }
-    
+
+    private void addAction() {
+        addContainerListener(new ContainerAdapter() {
+            @Override
+            public void componentAdded(ContainerEvent e) {
+                if (getComponentCount() > 0) {
+                    setAlpha(0);
+                }
+            }
+
+            @Override
+            public void componentRemoved(ContainerEvent e) {
+                if (!(getComponentCount() > 0)) {
+                    setAlpha(0.6f);
+                }
+            }
+            
+        });
+    }
+
     @Override
     protected void paintComponent(Graphics grphcs) {
         if (image != null) {
