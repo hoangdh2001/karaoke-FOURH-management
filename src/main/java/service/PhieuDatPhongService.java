@@ -18,16 +18,14 @@ public interface PhieuDatPhongService {
     public List<String> getDSTrangThaiPhieu();
     public PhieuDatPhong getPhieuDatPhong(String maPhieuDat);
     public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat, int numPage);
-    public boolean capNhatTrangThaiPhieu(String maPhieu);
     public boolean capNhatPhieuDatPhong(PhieuDatPhong phieuDatPhong);
     public String getMaxID();
+    public PhieuDatPhong getPhieuDatPhongByIDPhong(String maPhong);
+    public List<PhieuDatPhong> getDsPhieuDatByPhong(String maPhong);
     
 //    Huu
-    public boolean updatePhieuDatPhong(String maPhieu);
-    public boolean updatePhieuDatPhong(PhieuDatPhong maPhieu);
     public List<PhieuDatPhong> getPhieuHomNay(String maPhong);
     public PhieuDatPhong getPhieuById(String maPhieuDatPhong);
-//    public boolean addPhieuDatPhong(PhieuDatPhong phieu,String ngayDat);
     public double getTienCoc(String maPhieuDat);
     public PhieuDatPhong getPhieuCuaPhong(String maKhachhang);
     public int getSoLuongPhieuDatPhong();

@@ -1,9 +1,10 @@
 package gui.component;
 
 import dao.HoaDon_DAO;
+import dao.PhieuDatPhong_DAO;
 import entity.HoaDon;
+import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.TrangThaiHoaDon;
 import entity.TrangThaiPhong;
 import gui.swing.event.EventRoom;
 import gui.swing.event.EventTabSelected;
@@ -148,9 +149,13 @@ public class PanelMap extends PanelShadow {
         panels.get(tang).removeAll();
         for (Phong phong : dsPhong) {
             if(phong.getTrangThai() == TrangThaiPhong.DANG_HAT) {
-                HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong(), TrangThaiHoaDon.DANG_XU_LY);
+                HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong());
                 addRoom(panels.get(tang), new Room(phong, hoaDon));
-            } else {
+            } else if(phong.getTrangThai() == TrangThaiPhong.DAT_TRUOC) {
+                PhieuDatPhong phieuDatPhong = new PhieuDatPhong_DAO().getPhieuDatPhongByIDPhong(phong.getMaPhong());
+                addRoom(panels.get(tang), new Room(phong, phieuDatPhong));
+            }
+                else {
                 addRoom(panels.get(tang), new Room(phong));
             }
             panels.get(tang).repaint();

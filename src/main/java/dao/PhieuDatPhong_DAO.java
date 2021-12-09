@@ -12,8 +12,8 @@ import org.hibernate.Transaction;
 import service.PhieuDatPhongService;
 import util.HibernateUtil;
 
-public class PhieuDatPhong_DAO implements PhieuDatPhongService{
-    
+public class PhieuDatPhong_DAO implements PhieuDatPhongService {
+
     List<PhieuDatPhong> dsPhieu = new ArrayList<>();
     private SessionFactory sessionFactory;
 
@@ -25,8 +25,8 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     @Override
     public boolean addPhieuDatPhong(PhieuDatPhong phieuDatPhong) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction tr =  session.getTransaction();
-        
+        Transaction tr = session.getTransaction();
+
         try {
             tr.begin();
             session.saveOrUpdate(phieuDatPhong);
@@ -35,13 +35,12 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         } catch (Exception e) {
             tr.rollback();
         }
-        return  false;
+        return false;
     }
-    
-    
 
     /**
      * Lấy tất cả các phiếu đặt phòng
+     *
      * @param numPage: số dòng dữ liệu hiển thị lên trang đầu tiên
      * @return danh sách phiếu đặt phòng
      */
@@ -67,6 +66,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
 
     /**
      * Lấy ra tất cả trạng thái của phiếu
+     *
      * @return danh sách trạng thái phiếu
      */
     @Override
@@ -90,31 +90,8 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     }
 
     /**
-     * Cập nhật trang phiếu thành 'DA_HUY' với những phiếu có trạng thái 'DANG_DOI' 
-     * @param maPhieuDat: mã phiếu đặt
-     * @return true nếu cập nhật thành công, false nếu thất bại
-     */
-    @Override
-    public boolean capNhatTrangThaiPhieu(String maPhieuDat) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            String sql = "update PhieuDatPhong set trangThai = 'DA_HUY'  where maPhieuDat = '"+maPhieuDat+"'";
-            int rs = session.createNativeQuery(sql)
-                    .executeUpdate();
-            tr.commit();
-            return rs > 0 ? true : false;
-        } catch (Exception e) {
-            tr.rollback();
-            System.err.println(e);
-        }
-        session.close();
-        return false;
-    }
-
-    /**
      * Cập nhật thông tin phiếu đặt phòng
+     *
      * @param phieuDatPhong thông tin phiếu đặt phòng mới
      * @return true nếu cập nhật thành công, false nếu thất bại
      */
@@ -136,6 +113,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
 
     /**
      * Tìm những phiếu đặt phòng thỏa thông tin truyền vào dưới đây
+     *
      * @param tenPhong: tên phòng
      * @param tenKhachHang: tên khách hàng
      * @param trangThai: trạng thái
@@ -145,14 +123,14 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
      */
     @Override
     public List<PhieuDatPhong> timDSPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat, int numPage) {
-        String sql; 
-        if(ngayDat==null){
-            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like N'%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%'"
+        String sql;
+        if (ngayDat == null) {
+            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n"
+                    + "where Phong.tenPhong like '%" + tenPhong + "%' and KhachHang.tenKhachHang like N'%" + tenKhachHang + "%' and PhieuDatPhong.trangThai like '%" + trangThai + "%'"
                     + "order by PhieuDatPhong.maPhieuDat DESC offset :x row fetch next 20 rows only";
-        }else{
-            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like N'%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"') "
+        } else {
+            sql = "SELECT PhieuDatPhong.* FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n"
+                    + "where Phong.tenPhong like '%" + tenPhong + "%' and KhachHang.tenKhachHang like N'%" + tenKhachHang + "%' and PhieuDatPhong.trangThai like '%" + trangThai + "%' and CONVERT(date, ngayDat) = CONVERT(date, '" + ngayDat + "') "
                     + "order by PhieuDatPhong.maPhieuDat DESC offset :x row fetch next 20 rows only";
         }
         Session session = sessionFactory.openSession();
@@ -193,13 +171,13 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
 
     @Override
     public double getTienCoc(String maPhieuDat) {
-    Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        String sql = "select tienCoc from PhieuDatPhong where maPhieuDat = '"+maPhieuDat+"'";
+        String sql = "select tienCoc from PhieuDatPhong where maPhieuDat = '" + maPhieuDat + "'";
         try {
             tr.begin();
-                BigDecimal obj = (BigDecimal)session.createNativeQuery(sql).getSingleResult();
-                double tien = obj.doubleValue();
+            BigDecimal obj = (BigDecimal) session.createNativeQuery(sql).getSingleResult();
+            double tien = obj.doubleValue();
             tr.commit();
             return tien;
         } catch (Exception e) {
@@ -208,21 +186,21 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         return 0;
     }
-    
+
     @Override
     public PhieuDatPhong getPhieuCuaPhong(String maKhachhang) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        
+
         SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         java.util.Date date = new java.util.Date(System.currentTimeMillis());
         String ngayLap = gio.format(date);
-        String sql = "select top 1 * from PhieuDatPhong where maKhachHang = '"+maKhachhang+"' "
-                + "and datediff(DAY,ngayDat,'"+ngayLap+"') = 0"
+        String sql = "select top 1 * from PhieuDatPhong where maKhachHang = '" + maKhachhang + "' "
+                + "and datediff(DAY,ngayDat,'" + ngayLap + "') = 0"
                 + " and trangThai = 'DA_TIEP_NHAN' order by ngayDat desc";
         try {
             tr.begin();
-                PhieuDatPhong pdp = session.createNativeQuery(sql,PhieuDatPhong.class).getSingleResult();
+            PhieuDatPhong pdp = session.createNativeQuery(sql, PhieuDatPhong.class).getSingleResult();
             tr.commit();
             session.clear();
             return pdp;
@@ -232,7 +210,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         return null;
     }
-    
+
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
@@ -252,88 +230,59 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
         }
         return null;
     }
-    
-    @Override
-    public boolean updatePhieuDatPhong(String maPhieu) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "update PhieuDatPhong set trangThai = 'DA_TIEP_NHAN' where maPhieuDat = '"+maPhieu+"'";
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+
     @Override
     public PhieuDatPhong getPhieuById(String maPhieuDatPhong) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        
-        Date date = new Date( System.currentTimeMillis());
+
+        Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd");
-        
-        String sql = "select * from PhieuDatPhong where maPhieuDat = '"+maPhieuDatPhong+"'";
+
+        String sql = "select * from PhieuDatPhong where maPhieuDat = '" + maPhieuDatPhong + "'";
         try {
             tr.begin();
-                PhieuDatPhong phieuDatPhong = session.createNativeQuery(sql,PhieuDatPhong.class).getSingleResult();
+            PhieuDatPhong phieuDatPhong = session.createNativeQuery(sql, PhieuDatPhong.class).getSingleResult();
             tr.commit();
             return phieuDatPhong;
         } catch (Exception e) {
             e.printStackTrace();
             tr.rollback();
         }
-        
+
         return null;
     }
-     @Override
+
+    @Override
     public List<PhieuDatPhong> getPhieuHomNay(String maPhong) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        
-        Date date = new Date( System.currentTimeMillis());
+
+        Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        
-        String sql = "select * from PhieuDatPhong where datediff(day,NgayDat,'"+formatterNgay.format(date)+"') = 0 "
-                + "and datediff(MINUTE,'"+formatterNgay.format(date)+"',NgayDat) > 0"
-                + "and maPhong = '"+maPhong+"' and trangThai = 'DANG_DOI'";
-       
+
+        String sql = "select * from PhieuDatPhong where datediff(day,NgayDat,'" + formatterNgay.format(date) + "') = 0 "
+                + "and datediff(MINUTE,'" + formatterNgay.format(date) + "',NgayDat) > 0"
+                + "and maPhong = '" + maPhong + "' and trangThai = 'DANG_DOI'";
+
         try {
             tr.begin();
-                List<PhieuDatPhong> phieuDatPhong = session.createNativeQuery(sql,PhieuDatPhong.class).getResultList();
+            List<PhieuDatPhong> phieuDatPhong = session.createNativeQuery(sql, PhieuDatPhong.class).getResultList();
             tr.commit();
             return phieuDatPhong;
         } catch (Exception e) {
             e.printStackTrace();
             tr.rollback();
         }
-        
+
         return null;
-        
+
     }
 
-     @Override
-    public boolean updatePhieuDatPhong(PhieuDatPhong maPhieu) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            session.update(maPhieu);
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return false;
-    }
     public int getSoLuongPhieuDatPhong() {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        
+
         String sql = "select count(*) from PhieuDatPhong";
         try {
             tr.begin();
@@ -341,7 +290,7 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
                     createNativeQuery(sql)
                     .getSingleResult();
             tr.commit();
-            return  rs;
+            return rs;
         } catch (Exception e) {
             tr.rollback();
         }
@@ -352,14 +301,14 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
     public int getSoLuongPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        
-        String sql; 
-        if(ngayDat==null){
-            sql = "SELECT count(*) FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like N'%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%'";
-        }else{
-            sql = "SELECT count(*) FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n" +
-                    "where Phong.tenPhong like '%"+tenPhong+"%' and KhachHang.tenKhachHang like N'%"+tenKhachHang+"%' and PhieuDatPhong.trangThai like '%"+trangThai+"%' and CONVERT(date, ngayDat) = CONVERT(date, '"+ngayDat+"')";
+
+        String sql;
+        if (ngayDat == null) {
+            sql = "SELECT count(*) FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n"
+                    + "where Phong.tenPhong like '%" + tenPhong + "%' and KhachHang.tenKhachHang like N'%" + tenKhachHang + "%' and PhieuDatPhong.trangThai like '%" + trangThai + "%'";
+        } else {
+            sql = "SELECT count(*) FROM KhachHang JOIN PhieuDatPhong ON KhachHang.maKhachHang = PhieuDatPhong.maKhachHang JOIN Phong ON PhieuDatPhong.maPhong = Phong.maPhong \n"
+                    + "where Phong.tenPhong like '%" + tenPhong + "%' and KhachHang.tenKhachHang like N'%" + tenKhachHang + "%' and PhieuDatPhong.trangThai like '%" + trangThai + "%' and CONVERT(date, ngayDat) = CONVERT(date, '" + ngayDat + "')";
         }
         try {
             tr.begin();
@@ -367,12 +316,54 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService{
                     createNativeQuery(sql)
                     .getSingleResult();
             tr.commit();
-            return  rs;
+            return rs;
         } catch (Exception e) {
             System.err.println(e);
             tr.rollback();
         }
         return 0;
+    }
+
+    @Override
+    public PhieuDatPhong getPhieuDatPhongByIDPhong(String maPhong) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+
+        String sql = "select pdp.* from PhieuDatPhong pdp inner join Phong p on pdp.maPhong = p.maPhong where p.maPhong = :x and pdp.trangThai = 'DANG_DOI'";
+
+        try {
+            tr.begin();
+            PhieuDatPhong phieuDatPhong = session.createNativeQuery(sql, PhieuDatPhong.class)
+                    .setParameter("x", maPhong)
+                    .getSingleResult();
+            tr.commit();
+            return phieuDatPhong;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
+    }
+
+    @Override
+    public List<PhieuDatPhong> getDsPhieuDatByPhong(String maPhong) {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+
+        String sql = "select * from PhieuDatPhong\n"
+                + "where maPhong = :x and trangThai = 'DANG_DOI' and DATEDIFF(MINUTE, GETDATE(), ngayDat) < 130";
+
+        try {
+            tr.begin();
+            List<PhieuDatPhong> rs = session
+                    .createNativeQuery(sql, PhieuDatPhong.class)
+                    .setParameter("x", maPhong)
+                    .getResultList();
+            tr.commit();
+            return rs;
+        } catch (Exception e) {
+            tr.rollback();
+        }
+        return null;
     }
 
 }

@@ -198,7 +198,8 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
                 if(phieu.getTrangThai()==TrangThaiPhieuDat.DANG_DOI){
                     if (JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        if (phieuDatPhong_Dao.capNhatTrangThaiPhieu(phieu.getMaPhieuDat())) {
+                        phieu.setTrangThai(TrangThaiPhieuDat.DA_HUY);
+                        if (phieuDatPhong_Dao.capNhatPhieuDatPhong(phieu)) {
                             JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
                             dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
                             xoaDuLieu();

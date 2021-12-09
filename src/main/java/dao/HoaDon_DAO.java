@@ -725,11 +725,11 @@ public class HoaDon_DAO implements HoaDonService {
         return false;
     }
     @Override
-    public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai) {
+    public HoaDon getHoaDonByIdPhong(String id) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
 
-        String sql = "select * from HoaDon where maPhong = '" + id + "' and trangThai = '" + trangThai + "'";
+        String sql = "select * from HoaDon where maPhong = '" + id + "' and trangThai = 'DANG_XU_LY'";
 
         try {
             tr.begin();

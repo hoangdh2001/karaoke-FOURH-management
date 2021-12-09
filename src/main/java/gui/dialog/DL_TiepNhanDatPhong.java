@@ -71,7 +71,17 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private List<MatHang> dsMatHang;
     private EventAdd event;
     private List<PhieuDatPhong> dsPhieuDat;
+    private PhieuDatPhong phieuDatPhong;
 
+    public PhieuDatPhong getPhieuDatPhong() {
+        return phieuDatPhong;
+    }
+
+    public void setPhieuDatPhong(PhieuDatPhong phieuDatPhong) {
+        this.phieuDatPhong = phieuDatPhong;
+        loadDataForm();
+    }
+    
     public HoaDon getHoaDon() {
         return hoaDon;
     }
@@ -190,6 +200,19 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         if (hoaDon.getNhanVien() != null) {
             lblNhanVien.setText(hoaDon.getNhanVien().getTenNhanVien());
             lblRole.setText(hoaDon.getNhanVien().getLoaiNhanVien().getTenLoaiNV());
+        }
+        if(phieuDatPhong != null) {
+            txtTenKhachHang.setText(phieuDatPhong.getKhachHang().getTenKhachHang());
+            txtSdt.setText(phieuDatPhong.getKhachHang().getSoDienThoai());
+            txtCCCD.setText(phieuDatPhong.getKhachHang().getCanCuocCD());
+            txtDaCoc.setText(df.format(phieuDatPhong.getTienCoc()));
+            txtTenKhachHang.setEnabled(false);
+            txtSdt.setEnabled(false);
+            txtCCCD.setEnabled(false);
+            btnExpand.setEnabled(false);
+            phieuDatPhong.setTrangThai(TrangThaiPhieuDat.DA_TIEP_NHAN);
+            hoaDon.setTienCoc(phieuDatPhong.getTienCoc());
+            hoaDon.setKhachHang(phieuDatPhong.getKhachHang());
         }
     }
     
@@ -1155,6 +1178,9 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
             chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
         });
+        if(phieuDatPhong != null) {
+            phieuDatPhongService.capNhatPhieuDatPhong(phieuDatPhong);
+        }
         start = false;
         dispose();
     }//GEN-LAST:event_btnGiaoPhongActionPerformed
@@ -1170,9 +1196,8 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void tablePhieuDatPhongMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePhieuDatPhongMousePressed
         int row = tablePhieuDatPhong.getSelectedRow();
         if(row != -1) {
-            PhieuDatPhong phieuDatPhong = dsPhieuDat.get(row);
+            phieuDatPhong = dsPhieuDat.get(row);
             phieuDatPhong.setTrangThai(TrangThaiPhieuDat.DA_TIEP_NHAN);
-            phieuDatPhongService.updatePhieuDatPhong(phieuDatPhong);
             hoaDon.setKhachHang(phieuDatPhong.getKhachHang());
             hoaDon.setTienCoc(phieuDatPhong.getTienCoc());
             setData();

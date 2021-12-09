@@ -1,6 +1,7 @@
 package gui.swing.event;
 
 import entity.HoaDon;
+import entity.PhieuDatPhong;
 import entity.Phong;
 
 public interface EventRoom {
@@ -12,4 +13,6 @@ public interface EventRoom {
     public void addBtnDonPhongEvent(Phong phong);
     public void addBtnSuaXongEvent(Phong phong);
     public void addBtnDoiPhongEvent(Phong phong, HoaDon hoaDon);
+    public void addBtnHuyEvent(Phong phong, PhieuDatPhong phieuDatPhong);
+    public HoaDon addBtnThueEvent(Phong phong, PhieuDatPhong phieuDatPhong);
 }
