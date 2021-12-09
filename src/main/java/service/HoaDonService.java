@@ -35,7 +35,7 @@ public interface HoaDonService {
     public List<Integer> getDSThangTheoNgayLap(int quy);
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();
-    public void capNhatTrangThaiPhieuHetHan();
+
 //    Huu
     public boolean insertHoaDon(HoaDon hoaDon);
     public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma);

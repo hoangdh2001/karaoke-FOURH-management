@@ -262,6 +262,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         new Thread(new Runnable() {
             @Override
             public void run() {
+                System.out.println(".run()");phieuDatPhong_Dao.capNhatTrangThaiHuy();
                 dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
                 if (dsPhieu != null) {
                     for (PhieuDatPhong phieu : dsPhieu) {
@@ -449,11 +450,10 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             taiLaiDuLieu(dsPhieu);
         }
         if (obj.equals(btnLamMoi)) {
+            dcsNgayDatTK.setDate(null);
             txtTimKiemPhong.setText("");
             txtTimKiemKhachHang.setText("");
-            String tk = (String) cmbTrangThaiTK.getItemAt(0);
-            cmbTrangThaiTK.setSelectedItem(tk);
-            dcsNgayDatTK.setDate(null);
+            cmbTrangThaiTK.setSelectedIndex(0);
             dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();

@@ -37,6 +37,8 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         }
         return false;
     }
+    
+    
 
     /**
      * Lấy tất cả các phiếu đặt phòng
@@ -297,6 +299,14 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         return 0;
     }
 
+    /**
+     * Trả về số lượng của phiếu bởi nhiều thuộc tinh truyền vào
+     * @param tenPhong
+     * @param tenKhachHang
+     * @param trangThai
+     * @param ngayDat
+     * @return 
+     */
     @Override
     public int getSoLuongPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat) {
         Session session = sessionFactory.getCurrentSession();
@@ -364,6 +374,21 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
             tr.rollback();
         }
         return null;
+    }
+
+    @Override
+    public void capNhatTrangThaiHuy() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        String sql = "  update [dbo].[PhieuDatPhong] set trangThai = 'HET_HAN' where ngayDat < GETDATE() and trangThai = 'DANG_DOI'";
+        try {
+            tr.begin();
+            session.createNativeQuery(sql).executeUpdate();
+            tr.commit();
+        } catch (Exception e) {
+            tr.rollback();
+        }
     }
 
 }
