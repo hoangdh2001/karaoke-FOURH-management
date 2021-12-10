@@ -147,7 +147,6 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
             return dsPhieu.isEmpty() ? dsPhieu = new ArrayList<>() : dsPhieu;
         } catch (Exception e) {
             tr.rollback();
-            System.err.println(e);
         }
         session.close();
         return null;
@@ -165,53 +164,50 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
 
             return phieu;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         return null;
     }
 
-    @Override
-    public double getTienCoc(String maPhieuDat) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select tienCoc from PhieuDatPhong where maPhieuDat = '" + maPhieuDat + "'";
-        try {
-            tr.begin();
-            BigDecimal obj = (BigDecimal) session.createNativeQuery(sql).getSingleResult();
-            double tien = obj.doubleValue();
-            tr.commit();
-            return tien;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return 0;
-    }
+//    @Override
+//    public double getTienCoc(String maPhieuDat) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql = "select tienCoc from PhieuDatPhong where maPhieuDat = '" + maPhieuDat + "'";
+//        try {
+//            tr.begin();
+//            BigDecimal obj = (BigDecimal) session.createNativeQuery(sql).getSingleResult();
+//            double tien = obj.doubleValue();
+//            tr.commit();
+//            return tien;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return 0;
+//    }
 
-    @Override
-    public PhieuDatPhong getPhieuCuaPhong(String maKhachhang) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-
-        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        java.util.Date date = new java.util.Date(System.currentTimeMillis());
-        String ngayLap = gio.format(date);
-        String sql = "select top 1 * from PhieuDatPhong where maKhachHang = '" + maKhachhang + "' "
-                + "and datediff(DAY,ngayDat,'" + ngayLap + "') = 0"
-                + " and trangThai = 'DA_TIEP_NHAN' order by ngayDat desc";
-        try {
-            tr.begin();
-            PhieuDatPhong pdp = session.createNativeQuery(sql, PhieuDatPhong.class).getSingleResult();
-            tr.commit();
-            session.clear();
-            return pdp;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return null;
-    }
+//    @Override
+//    public PhieuDatPhong getPhieuCuaPhong(String maKhachhang) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tr = session.getTransaction();
+//
+//        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+//        String ngayLap = gio.format(date);
+//        String sql = "select top 1 * from PhieuDatPhong where maKhachHang = '" + maKhachhang + "' "
+//                + "and datediff(DAY,ngayDat,'" + ngayLap + "') = 0"
+//                + " and trangThai = 'DA_TIEP_NHAN' order by ngayDat desc";
+//        try {
+//            tr.begin();
+//            PhieuDatPhong pdp = session.createNativeQuery(sql, PhieuDatPhong.class).getSingleResult();
+//            tr.commit();
+//            session.clear();
+//            return pdp;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return null;
+//    }
 
     @Override
     public String getMaxID() {
@@ -233,27 +229,24 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         return null;
     }
 
-    @Override
-    public PhieuDatPhong getPhieuById(String maPhieuDatPhong) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-
-        Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat formatterNgay = new SimpleDateFormat("yyyy-MM-dd");
-
-        String sql = "select * from PhieuDatPhong where maPhieuDat = '" + maPhieuDatPhong + "'";
-        try {
-            tr.begin();
-            PhieuDatPhong phieuDatPhong = session.createNativeQuery(sql, PhieuDatPhong.class).getSingleResult();
-            tr.commit();
-            return phieuDatPhong;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-
-        return null;
-    }
+//    @Override
+//    public PhieuDatPhong getPhieuById(String maPhieuDatPhong) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//
+//        String sql = "select * from PhieuDatPhong where maPhieuDat = '" + maPhieuDatPhong + "'";
+//        try {
+//            tr.begin();
+//            PhieuDatPhong phieuDatPhong = session.createNativeQuery(sql, PhieuDatPhong.class).getSingleResult();
+//            tr.commit();
+//            return phieuDatPhong;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//
+//        return null;
+//    }
 
     @Override
     public List<PhieuDatPhong> getPhieuHomNay(String maPhong) {
@@ -281,24 +274,24 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
 
     }
 
-    @Override
-    public int getSoLuongPhieuDatPhong() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-
-        String sql = "select count(*) from PhieuDatPhong";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
+//    @Override
+//    public int getSoLuongPhieuDatPhong() {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//
+//        String sql = "select count(*) from PhieuDatPhong";
+//        try {
+//            tr.begin();
+//            int rs = (int) session.
+//                    createNativeQuery(sql)
+//                    .getSingleResult();
+//            tr.commit();
+//            return rs;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return 0;
+//    }
 
     /**
      * Trả về số lượng của phiếu bởi nhiều thuộc tinh truyền vào

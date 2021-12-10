@@ -25,15 +25,15 @@ public interface HoaDonService {
     public List<Integer> getDSQuyTheoNgayLap();
 
 //    Huu
-    public boolean insertHoaDon(HoaDon hoaDon);
+//    public boolean insertHoaDon(HoaDon hoaDon);
     public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma);
     public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year);
-    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon);
-    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon);
-    public HoaDon getHoaDon(Phong phong);
-    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang);
-    public String getlastMaHoaDonTang();
-    public boolean updateHoaDonDoiPhong(HoaDon hoaDon);
+//    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon);
+//    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon);
+//    public HoaDon getHoaDon(Phong phong);
+//    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang);
+//    public String getlastMaHoaDonTang();
+//    public boolean updateHoaDonDoiPhong(HoaDon hoaDon);
     public String getMaxID();
     public HoaDon getHoaDonByIdPhong(String id);
     public Map<Integer, Double> getDoanhThuHoaDonTheoNam(int nam);

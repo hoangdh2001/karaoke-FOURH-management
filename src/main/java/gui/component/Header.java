@@ -1,7 +1,7 @@
 package gui.component;
 
 import gui.GD_Chinh;
-import gui.swing.button.MenuButton;
+import gui.swing.button.ButtonMenu;
 import gui.swing.button.PopupMenu;
 import gui.swing.event.EventMenuSelected;
 import gui.swing.graphics.ShadowType;
@@ -62,12 +62,12 @@ public class Header extends PanelShadow {
     }
     
     private void addItem(String text, int index) {
-        MenuButton item = new MenuButton();
+        ButtonMenu item = new ButtonMenu();
         item.setText(text);
         item.setBackground(Color.WHITE);
         item.setOverColor(new Color(230, 230, 230));
         item.setBorderRadius(5);
-        item.setHorizontalAlignment(MenuButton.LEADING);
+        item.setHorizontalAlignment(ButtonMenu.LEADING);
         item.addActionListener((ActionEvent arg0) -> {
             popupMenu.setVisible(false);
             item.setBackground(item.getBackgroundColor());

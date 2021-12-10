@@ -1,9 +1,12 @@
 package gui;
 
+import gui.dialog.DL_ThemNhaCungCap;
+import dao.ChiTietNhapHang_DAO;
 import dao.LoHang_DAO;
 import dao.LoaiDichVu_DAO;
 import dao.MatHang_DAO;
-import dao.NhaCungCapVaNhapHang_DAO;
+import dao.NhaCungCap_DAO;
+import entity.ChiTietNhapHang;
 import entity.LoHang;
 import entity.LoaiDichVu;
 import entity.MatHang;
@@ -11,6 +14,7 @@ import entity.NhaCungCap;
 import entity.NhanVien;
 import gui.component.PanelTenSanPham;
 import gui.swing.button.Button;
+import gui.swing.model.AutoID;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -35,8 +39,11 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.model.ModelObjectComboBox;
+import service.ChiTietNhapHangService;
+import service.LoHangService;
 import service.LoaiDichVuService;
 import service.MatHangService;
+import service.NhaCungCapService;
 
 public class GD_ThemMatHang extends javax.swing.JPanel {
 
@@ -53,17 +60,15 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
     private JTextField txtGiaNhap;
     private JTextField txtGiaban;
 
-    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
-    private MatHangService matHang_Dao;
-    private LoaiDichVuService loaiDichVu_Dao;
-    private LoHang_DAO loHangDAO;
+    private NhaCungCapService nhaCungCapDaoService;
+    private ChiTietNhapHangService chiTietNhapHangService;
+    private MatHangService matHangService;
+    private LoaiDichVuService loaiDichVuService;
+    private LoHangService loHangService;
     private PanelTenSanPham pnlSPMoi;
-
-    private Date ngayNhap;
 
     private JCheckBox cbSpMoi;
 
-    private NhanVien nhanVien;
 
     private List<Boolean> isNew;
 
@@ -71,9 +76,9 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
 
     private LoHang loHang;
 
-    private DecimalFormat df;
+    private final DecimalFormat df = new DecimalFormat("#,##0.00");
 
-    private String fontName = "sansserif";
+    private final String fontName = "sansserif";
     private int fontPlain = Font.PLAIN;
     private int font16 = 16;
     private int font14 = 14;
@@ -82,7 +87,19 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
     private Color colorLabel = new Color(47, 72, 210);
 
     public GD_ThemMatHang() {
-        nhanVien = GD_Chinh.NHAN_VIEN;
+        loHangService = new LoHang_DAO();
+        matHangService = new MatHang_DAO();
+        loaiDichVuService = new LoaiDichVu_DAO();
+        nhaCungCapDaoService = new NhaCungCap_DAO();
+        chiTietNhapHangService = new ChiTietNhapHang_DAO();
+        String maxID = loHangService.getMaxID();
+        String maLoHang;
+        if (maxID == null) {
+            maLoHang = "LH0001";
+        } else {
+            maLoHang = AutoID.generateId(maxID, "LH");
+        }
+        loHang = new LoHang(maLoHang, GD_Chinh.NHAN_VIEN);
         initComponents();
         buildDisplay();
     }
@@ -147,8 +164,6 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
 
         cbLoaiSP = new JComboBox<>(new String[]{"Chọn loại sản phẩm"});
         cbLoaiSP.setFont(new Font(fontName, fontPlain, font12));
-//        cbLoaiSP.setBorderLine(true);
-//        cbLoaiSP.setBorderRadius(10);
         pnlSanPham.add(cbLoaiSP, "w 100%, h 30!");
 
         JLabel lblTenSP = new JLabel("Tên sản phẩm :");
@@ -248,7 +263,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
     }
     
     public void loadNCC(){
-        List<NhaCungCap> listNCC = nhaCungCapVaNhapHang_DAO.getNhaCungCap();
+        List<NhaCungCap> listNCC = nhaCungCapDaoService.getNhaCungCap();
         for (int i = 0; i < listNCC.size(); i++) {
             NhaCungCap ncc = listNCC.get(i);
             cbNhaCungCap.addItem(new ModelObjectComboBox(ncc.getTenNCC(),ncc.getMaNCC()));  
@@ -256,18 +271,13 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
     }
     
     public void initDao(){
-        loHang = new LoHang();
-        loHangDAO = new LoHang_DAO();
-        matHang_Dao = new MatHang_DAO();
-        loaiDichVu_Dao = new LoaiDichVu_DAO();
-        isNewSP = new HashMap<MatHang,Boolean>();
-        df = new DecimalFormat("#,##0.00");
-        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
-        isNew = new ArrayList<Boolean>();
+        isNewSP = new HashMap<>();
+        
+        isNew = new ArrayList<>();
         
         loadNCC();
         
-        List<LoaiDichVu> listDV = loaiDichVu_Dao.getDsLoaiDichVu();
+        List<LoaiDichVu> listDV = loaiDichVuService.getDsLoaiDichVu();
         for (int i = 0; i < listDV.size(); i++) {
             LoaiDichVu dv = listDV.get(i);
             cbLoaiSP.addItem(new ModelObjectComboBox(dv.getTenLoaiDichVu(),dv.getMaLoaiDichVu()));  
@@ -280,6 +290,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
         btnThemNCC.addActionListener(new createActionListenner());
         
         cbNhaCungCap.addActionListener (new ActionListener () {
+            @Override
             public void actionPerformed(ActionEvent e) {
                     if(cbNhaCungCap.getSelectedIndex() != 0){
                     ModelObjectComboBox ncc = (ModelObjectComboBox)cbNhaCungCap.getSelectedItem();
@@ -483,27 +494,23 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
             Object o = e.getSource();
             if(o.equals(btnLuu) && valiData()){
 //insert lo hang
-                String maLoHang = loHangDAO.getLastLoHang();
                 ModelObjectComboBox cb = (ModelObjectComboBox)cbNhaCungCap.getSelectedItem();
-                NhaCungCap ncc = nhaCungCapVaNhapHang_DAO.getNhaCungCapById(cb.getMa());
-                
-                loHang.setMaLoHang(maLoHang);
-                loHang.setNguoiNhap(nhanVien);
+                NhaCungCap ncc = nhaCungCapDaoService.getNhaCungCapById(cb.getMa());
                 loHang.setNhaCungCap(ncc);
 
-                loHangDAO.insertLohang(loHang);
+                loHangService.insertLohang(loHang);
 
 ////insert and update sp
                 isNewSP.forEach((sp,isInsert) ->{
                     if(isInsert){
-                        matHang_Dao.insertMatHang(sp);
+                        matHangService.addMatHang(sp);
                     }else{
-                        matHang_Dao.updateMatHang(sp);
+                        matHangService.updateMatHang(sp);
                     }
                 });
 //insert ct nhap
                 loHang.getDsChiTietNhapHang().forEach(ct -> {
-                    nhaCungCapVaNhapHang_DAO.insertCTNhapHang(ct,loHang.getMaLoHang());
+                    chiTietNhapHangService.addChiTietNhapHang(ct);
                 });
            
                 resetData();
@@ -511,20 +518,20 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
             }else if(o.equals(btnXemThongTin)){
                 if(cbNhaCungCap.getSelectedIndex() !=0){
                     ModelObjectComboBox maNCC = (ModelObjectComboBox)cbNhaCungCap.getSelectedItem();
-                    NhaCungCap ncc = nhaCungCapVaNhapHang_DAO.getNhaCungCapById(maNCC.getMa());
-                    new GD_ThemNhaCungCap(ncc).setVisible(true);
+                    NhaCungCap ncc = nhaCungCapDaoService.getNhaCungCapById(maNCC.getMa());
+                    new DL_ThemNhaCungCap(Application.login, ncc).setVisible(true);
                 }
             }else if(o.equals(btnThem) && valiSP()){
                 int soLuong = Integer.parseInt(txtSoLuong.getText().trim());
                 double giaNhap = convertMoneyToDouble(txtGiaNhap.getText().trim());
                 double giaBan = convertMoneyToDouble(txtGiaban.getText().trim());
                 ModelObjectComboBox cb = (ModelObjectComboBox)cbLoaiSP.getSelectedItem();
-                LoaiDichVu loaiDichVu = loaiDichVu_Dao.getLoaiDichVuByMa(cb.getMa());
+                LoaiDichVu loaiDichVu = loaiDichVuService.getLoaiDichVuByMa(cb.getMa());
                 String tenMatHang ="";
                 MatHang matHang;
                 
                 if(cbSpMoi.isSelected()){
-                    String maMatHang = matHang_Dao.getLastMatHang();
+                    String maMatHang = matHangService.getLastMatHang();
                     tenMatHang  = pnlSPMoi.getTenSanPhamMoi();
                     matHang = new MatHang(maMatHang, pnlSPMoi.getTenSanPhamMoi(), loaiDichVu, soLuong, giaBan);
                     isNewSP.put(matHang,true);
@@ -544,7 +551,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
             }else if(o.equals(btnXoa)){
                 xoaRong();
             }else if(o.equals(btnThemNCC)){
-                new GD_ThemNhaCungCap(null).setVisible(true);
+                new DL_ThemNhaCungCap(Application.login, null).setVisible(true);
                 loadNCC();
             }
         }

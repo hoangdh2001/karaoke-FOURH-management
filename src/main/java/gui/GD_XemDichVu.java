@@ -5,7 +5,7 @@
 package gui;
 
 import dao.MatHang_DAO;
-import dao.NhaCungCapVaNhapHang_DAO;
+import dao.NhaCungCap_DAO;
 import entity.MatHang;
 import gui.swing.button.Button;
 import java.awt.Color;
@@ -48,7 +48,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
 
     private Button btnXuatFile;
 
-    private NhaCungCapVaNhapHang_DAO nhaCungCapVaNhapHang_DAO;
+    private NhaCungCap_DAO nhaCungCapVaNhapHang_DAO;
     private MatHangService matHangDao;
     private List<MatHang> listMatHang;
 
@@ -113,7 +113,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
                     listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
                 } else {
-                    listMatHang = matHangDao.getDanhSachMatHang();
+                    listMatHang = matHangDao.getDsMatHang();
                     addDataToTable();
                 }
             }
@@ -127,7 +127,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
                     listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
                 } else {
-                    listMatHang = matHangDao.getDanhSachMatHang();
+                    listMatHang = matHangDao.getDsMatHang();
                     addDataToTable();
                 }
             }
@@ -138,8 +138,8 @@ public class GD_XemDichVu extends javax.swing.JPanel {
         cmbLoaiTimKiem.addItem("Sản phẩm");
         cmbLoaiTimKiem.addItem("Loại sản phẩm");
         matHangDao = new MatHang_DAO();
-        nhaCungCapVaNhapHang_DAO = new NhaCungCapVaNhapHang_DAO();
-        listMatHang = matHangDao.getDanhSachMatHang();
+        nhaCungCapVaNhapHang_DAO = new NhaCungCap_DAO();
+        listMatHang = matHangDao.getDsMatHang();
         addDataToTable();
     }
 

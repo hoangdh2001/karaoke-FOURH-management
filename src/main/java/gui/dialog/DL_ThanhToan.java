@@ -30,6 +30,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import gui.swing.model.ModelObjectComboBox;
+import java.awt.Frame;
 import service.ChiTietHoaDonService;
 import service.HoaDonService;
 import service.LoaiDichVuService;
@@ -52,7 +53,8 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         return hoaDon;
     }
 
-    public DL_ThanhToan(HoaDon hoaDon, NhanVien nhanVien) {
+    public DL_ThanhToan(Frame frame, HoaDon hoaDon, NhanVien nhanVien) {
+        super(frame, true);
         this.hoaDonService = new HoaDon_DAO();
         this.matHangService = new MatHang_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
@@ -60,7 +62,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         this.hoaDon = hoaDon;
         hoaDon.setNhanVien(nhanVien);
         hoaDon.setThoiGianKetThuc(new Date());
-        WindowIcon.addWindowIcon(this);
+//        WindowIcon.addWindowIcon(this);
         initComponents();
         buildDisplay();
     }

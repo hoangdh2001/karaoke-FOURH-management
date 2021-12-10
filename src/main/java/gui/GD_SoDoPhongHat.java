@@ -240,13 +240,13 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 List<PhieuDatPhong> dsPhieuDatPhong = new PhieuDatPhong_DAO().getDsPhieuDatByPhong(phong.getMaPhong());
                 System.out.println(dsPhieuDatPhong.size());
                 if (dsPhieuDatPhong.isEmpty()) {
-                    DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
+                    DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
                     dlDialog.setVisible(true);
                     loadMap(panelMap.getIndexShowing());
                     return dlDialog.getHoaDon();
                 } else {
                     if (JOptionPane.showConfirmDialog(null, "Còn khoảng hơn 2 tiếng sẽ có người đặt bạn có đồng ý cho thuê?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
+                        DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
                         dlDialog.setVisible(true);
                         loadMap(panelMap.getIndexShowing());
                         return dlDialog.getHoaDon();
@@ -258,14 +258,14 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
             @Override
             public void addBtnThemDichVuEvent(HoaDon hoaDon) {
-                DL_CapNhatDichVu dialog = new DL_CapNhatDichVu(hoaDon, GD_Chinh.NHAN_VIEN);
+                DL_CapNhatDichVu dialog = new DL_CapNhatDichVu(Application.login, hoaDon, GD_Chinh.NHAN_VIEN);
                 dialog.setVisible(true);
                 loadMap(panelMap.getIndexShowing());
             }
 
             @Override
             public void addBtnThanhToanEvent(HoaDon hoaDon) {
-                DL_ThanhToan dialog = new DL_ThanhToan(hoaDon, GD_Chinh.NHAN_VIEN);
+                DL_ThanhToan dialog = new DL_ThanhToan(Application.login, hoaDon, GD_Chinh.NHAN_VIEN);
                 dialog.setVisible(true);
                 loadMap(panelMap.getIndexShowing());
             }
@@ -302,7 +302,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
             @Override
             public void addBtnDoiPhongEvent(Phong phong, HoaDon hoaDon) {
-                new DL_DoiPhong(hoaDon).setVisible(true);
+                new DL_DoiPhong(Application.login, hoaDon).setVisible(true);
                 loadMap(panelMap.getIndexShowing());
             }
 
@@ -322,7 +322,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
             @Override
             public HoaDon addBtnThueEvent(Phong phong, PhieuDatPhong phieuDatPhong) {
-                DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(phong, GD_Chinh.NHAN_VIEN);
+                DL_TiepNhanDatPhong dlDialog = new DL_TiepNhanDatPhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
                 dlDialog.setPhieuDatPhong(phieuDatPhong);
                 dlDialog.setVisible(true);
                 loadMap(panelMap.getIndexShowing());

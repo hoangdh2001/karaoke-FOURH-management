@@ -24,6 +24,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import gui.swing.model.ModelObjectComboBox;
+import java.awt.Frame;
 import service.ChiTietHoaDonService;
 import service.LoaiDichVuService;
 import service.MatHangService;
@@ -42,12 +43,13 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
         return hoaDon;
     }
 
-    public DL_CapNhatDichVu(HoaDon hoaDon, NhanVien nv) {
+    public DL_CapNhatDichVu(Frame frame, HoaDon hoaDon, NhanVien nv) {
+        super(frame, true);
         this.matHangService = new MatHang_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
         this.loaiDichVuService = new LoaiDichVu_DAO();
         this.hoaDon = hoaDon;
-        WindowIcon.addWindowIcon(this);
+//        WindowIcon.addWindowIcon(this);
         initComponents();
         buildDisplay();
     }

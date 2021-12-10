@@ -1,7 +1,7 @@
 package gui.component;
 
 import dao.MatHang_DAO;
-import dao.NhaCungCapVaNhapHang_DAO;
+import dao.NhaCungCap_DAO;
 import entity.MatHang;
 import java.util.List;
 import gui.swing.model.ModelObjectComboBox;

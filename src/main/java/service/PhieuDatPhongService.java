@@ -26,9 +26,9 @@ public interface PhieuDatPhongService {
     
 //    Huu
     public List<PhieuDatPhong> getPhieuHomNay(String maPhong);
-    public PhieuDatPhong getPhieuById(String maPhieuDatPhong);
-    public double getTienCoc(String maPhieuDat);
-    public PhieuDatPhong getPhieuCuaPhong(String maKhachhang);
-    public int getSoLuongPhieuDatPhong();
+//    public PhieuDatPhong getPhieuById(String maPhieuDatPhong);
+//    public double getTienCoc(String maPhieuDat);
+//    public PhieuDatPhong getPhieuByIDKhachHang(String maKhachhang);
+//    public int getSoLuongPhieuDatPhong();
     public int getSoLuongPhieuDatPhongByAllProperty(String tenPhong, String tenKhachHang, String trangThai, String ngayDat);
 }

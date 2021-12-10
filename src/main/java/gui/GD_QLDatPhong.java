@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import service.PhieuDatPhongService;
 
 /**
  *
@@ -48,7 +49,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
 
     private final DecimalFormat dcf = new DecimalFormat("#,##0 VND");
     private final SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-    private PhieuDatPhong_DAO phieuDatPhong_Dao;
+    private PhieuDatPhongService phieuDatPhongService;
     private List<PhieuDatPhong> dsPhieu = new ArrayList<PhieuDatPhong>();
     private MyTextFieldFlatlaf txtTimKiemKhachHang, txtTimKiemPhong;
     private Button btnLamMoi;
@@ -65,7 +66,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     public GD_QLDatPhong() {
 
         initComponents();
-        phieuDatPhong_Dao = new PhieuDatPhong_DAO();
+        phieuDatPhongService = new PhieuDatPhong_DAO();
         buildGD_QLDatPhong();
 
     }
@@ -152,7 +153,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                     String tenPhong = txtTimKiemPhong.getText().trim();
                     String tenKhachHang = txtTimKiemKhachHang.getText().trim();
                     String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-                    dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
+                    dsPhieu = phieuDatPhongService.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
                     xoaDuLieu();
                     loadPage();
                     taiLaiDuLieu(dsPhieu);
@@ -167,7 +168,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
                     int row = tblPhieuDatPhong.getSelectedRow();
                     String maPhieu = tblPhieuDatPhong.getValueAt(row, 1).toString();
-                    eventSelectedRow.selectedRow(phieuDatPhong_Dao.getPhieuDatPhong(maPhieu));
+                    eventSelectedRow.selectedRow(phieuDatPhongService.getPhieuDatPhong(maPhieu));
                 }
             }
         });
@@ -199,13 +200,13 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             public void delete(Object obj) {
                 int row = tblPhieuDatPhong.getSelectedRow();
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
-                PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
+                PhieuDatPhong phieu = phieuDatPhongService.getPhieuDatPhong(maPhieu);
                 if (phieu.getTrangThai() == TrangThaiPhieuDat.DANG_DOI) {
                     if (JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         phieu.setTrangThai(TrangThaiPhieuDat.DA_HUY);
-                        if (phieuDatPhong_Dao.capNhatPhieuDatPhong(phieu)) {
+                        if (phieuDatPhongService.capNhatPhieuDatPhong(phieu)) {
                             JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
-                            dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
+                            dsPhieu = phieuDatPhongService.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
                             xoaDuLieu();
                             loadPage();
                             taiLaiDuLieu(dsPhieu);
@@ -223,7 +224,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             public void update(ModelAction action) {
                 int row = tblPhieuDatPhong.getSelectedRow();
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
-                PhieuDatPhong phieu = phieuDatPhong_Dao.getPhieuDatPhong(maPhieu);
+                PhieuDatPhong phieu = phieuDatPhongService.getPhieuDatPhong(maPhieu);
                 if (phieu.getTrangThai() == TrangThaiPhieuDat.DANG_DOI) {
                     DL_DatPhong dldatPhong = new DL_DatPhong(Application.login);
                     dldatPhong.setPhieuDatPhong(phieu);
@@ -276,7 +277,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             public void run() {
                 System.out.println(".run()");
                 new Phong_DAO().updatePhongByPhieu();
-                dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(numPage);
+                dsPhieu = phieuDatPhongService.getDsPhieuDatPhong(numPage);
                 if (dsPhieu != null) {
                     for (PhieuDatPhong phieuDatPhong : dsPhieu) {
                         ((DefaultTableModel) tblPhieuDatPhong.getModel()).addRow(new Object[]{new JCheckBox(),
@@ -302,12 +303,12 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
         String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
         int soLuongPhieu;
         if (dcsNgayDatTK.getDate() == null) {
-            soLuongPhieu = phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, null);
+            soLuongPhieu = phieuDatPhongService.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, null);
             pnlPage.init(soLuongPhieu % 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
         } else {
             Date ngayDat = dcsNgayDatTK.getDate();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            soLuongPhieu = phieuDatPhong_Dao.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat));
+            soLuongPhieu = phieuDatPhongService.getSoLuongPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, df.format(ngayDat));
 
         }
         pnlPage.init(soLuongPhieu % 20 == 0 ? soLuongPhieu / 20 : (soLuongPhieu / 20) + 1);
@@ -471,7 +472,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhongService.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);
@@ -481,7 +482,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             txtTimKiemPhong.setText("");
             txtTimKiemKhachHang.setText("");
             cmbTrangThaiTK.setSelectedIndex(0);
-            dsPhieu = phieuDatPhong_Dao.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhongService.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);
@@ -504,7 +505,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhongService.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);
@@ -515,7 +516,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
             String tenPhong = txtTimKiemPhong.getText().trim();
             String tenKhachHang = txtTimKiemKhachHang.getText().trim();
             String trangThai = kiemTraTrangThai(cmbTrangThaiTK.getSelectedItem().toString());
-            dsPhieu = phieuDatPhong_Dao.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
+            dsPhieu = phieuDatPhongService.timDSPhieuDatPhongByAllProperty(tenPhong, tenKhachHang, trangThai, ngayDat, pnlPage.getCurrentIndex());
             xoaDuLieu();
             loadPage();
             taiLaiDuLieu(dsPhieu);

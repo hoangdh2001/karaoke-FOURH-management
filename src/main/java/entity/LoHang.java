@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class LoHang {
+public final class LoHang {
 
     @Id
     private String maLoHang;
@@ -30,40 +30,43 @@ public class LoHang {
     private double tongTien;
 
     /**
+     */
+    public LoHang() {
+        this.ngayNhap = Date.valueOf(LocalDate.now());
+        this.dsChiTietNhapHang = new ArrayList<>();
+    }
+    /**
      * @param maLoHang
      * @param nhaCungCap
      * @param ngayNhap
-     * @param nguoiNhap
+     * @param nguoiNhap 
      */
-    public LoHang() {
-        this.dsChiTietNhapHang = new ArrayList<ChiTietNhapHang>();
-    }
-
     public LoHang(String maLoHang, NhaCungCap nhaCungCap, Date ngayNhap, NhanVien nguoiNhap) {
         this.maLoHang = maLoHang;
         this.nhaCungCap = nhaCungCap;
         this.ngayNhap = ngayNhap;
         this.nguoiNhap = nguoiNhap;
-        this.dsChiTietNhapHang = new ArrayList<ChiTietNhapHang>();
+        this.dsChiTietNhapHang = new ArrayList<>();
         this.tongTien = getTongTien();
     }
 
     /**
      * @param maLoHang
-     * @param nhaCungCap
      * @param nguoiNhap
      */
-    public LoHang(String maLoHang, NhaCungCap nhaCungCap, NhanVien nguoiNhap) {
+    public LoHang(String maLoHang, NhanVien nguoiNhap) {
         this.maLoHang = maLoHang;
-        this.nhaCungCap = nhaCungCap;
         this.nguoiNhap = nguoiNhap;
         this.ngayNhap = Date.valueOf(LocalDate.now());
-        this.dsChiTietNhapHang = new ArrayList<ChiTietNhapHang>();
+        this.dsChiTietNhapHang = new ArrayList<>();
         this.tongTien = getTongTien();
     }
 
     /**
      *
+     * @param matHang
+     * @param soLuongNhap
+     * @param giaNhap
      */
     public void themCT_NhapHang(MatHang matHang, int soLuongNhap, double giaNhap) {
         ChiTietNhapHang chiTietNhapHang = new ChiTietNhapHang(this, matHang, soLuongNhap, giaNhap);

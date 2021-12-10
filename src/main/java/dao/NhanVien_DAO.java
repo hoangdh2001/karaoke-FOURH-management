@@ -416,21 +416,4 @@ public class NhanVien_DAO implements NhanVienService {
 
         return false;
     }
-
-    @Override
-    public NhanVien getNhanVienByID(String maNhanVien) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            NhanVien nhanVien = session.find(NhanVien.class, maNhanVien);
-            tr.commit();
-            return nhanVien;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-
-        return null;
-    }
 }

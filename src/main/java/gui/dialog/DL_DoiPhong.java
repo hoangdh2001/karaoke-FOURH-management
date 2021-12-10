@@ -5,6 +5,7 @@ import dao.Phong_DAO;
 import entity.HoaDon;
 import entity.Phong;
 import entity.TrangThaiPhong;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -23,12 +24,12 @@ public class DL_DoiPhong extends javax.swing.JDialog implements ActionListener {
     private final DecimalFormat df = new DecimalFormat("#,##0.#");
     private List<Phong> dsPhong;
 
-    public DL_DoiPhong(HoaDon hoaDon) {
+    public DL_DoiPhong(Frame frame, HoaDon hoaDon) {
+        super(frame, true);
         this.phongService = new Phong_DAO();
         this.hoaDonService = new HoaDon_DAO();
         this.hoaDon = hoaDon;
         hoaDon.setThoiGianKetThuc(new Date());
-        setModal(true);
         initComponents();
         buildDisplay();
     }

@@ -48,6 +48,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import gui.swing.model.ModelObjectComboBox;
+import java.awt.Frame;
 import service.ChiTietHoaDonService;
 import service.HoaDonService;
 import service.KhachHangService;
@@ -89,7 +90,8 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         return hoaDon;
     }
 
-    public DL_TiepNhanDatPhong(Phong phong, NhanVien nv) {
+    public DL_TiepNhanDatPhong(Frame frame, Phong phong, NhanVien nv) {
+        super(frame, true);
         this.hoaDonService = new HoaDon_DAO();
         this.matHangService = new MatHang_DAO();
         this.khachHangService = new KhachHang_DAO();
@@ -104,7 +106,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
             maHoaDon = AutoID.generateId(maxID, "HD");
         }
         this.hoaDon = new HoaDon(maHoaDon, phong, nv);
-        WindowIcon.addWindowIcon(this);
+//        WindowIcon.addWindowIcon(this);
         initComponents();
         buildDisplay();
     }

@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 
-public class MenuButton extends JButton {
+public class ButtonMenu extends JButton {
     private Color overColor = new Color(93, 93, 93);
     private Color backgroundColor = new Color(19, 19, 19);
     private int borderRadius = 0;
@@ -45,7 +45,7 @@ public class MenuButton extends JButton {
         repaint();
     }
     
-    public MenuButton() {
+    public ButtonMenu() {
         setContentAreaFilled(false);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         addMouseListener(new MouseAdapter() {

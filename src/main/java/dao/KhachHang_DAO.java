@@ -208,26 +208,26 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
-    @Override
-    public boolean checkKhachHang(String txt) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-
-        String sql = "select * from KhachHang where soDienThoai = :x or CCCD = :y";
-
-        try {
-            tr.begin();
-            session.createNativeQuery(sql)
-                    .setParameter("x", txt)
-                    .setParameter("y", txt)
-                    .getSingleResult();
-            tr.commit();
-            return false;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return true;
-    }
+//    @Override
+//    public boolean checkKhachHang(String txt) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//
+//        String sql = "select * from KhachHang where soDienThoai = :x or CCCD = :y";
+//
+//        try {
+//            tr.begin();
+//            session.createNativeQuery(sql)
+//                    .setParameter("x", txt)
+//                    .setParameter("y", txt)
+//                    .getSingleResult();
+//            tr.commit();
+//            return false;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return true;
+//    }
 
     /**
      * Cập nhật số điện thoại cho khách hàng
@@ -256,100 +256,100 @@ public class KhachHang_DAO implements KhachHangService {
         return false;
     }
     
-    @Override
-    public KhachHang getKhachHangBySDT(String sdt) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "  select * from Khachhang where sdt = '"+sdt+"' ";
-        try {
-            tr.begin();
-                KhachHang kh;
-                try {
-                    kh = session.createNativeQuery(sql,KhachHang.class).getSingleResult();
-                } catch (Exception e) {
-                    tr.rollback();
-                    return null;
-                }
-            tr.commit();
-            return kh;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        
-        return null;
-    }
+//    @Override
+//    public KhachHang getKhachHangBySDT(String sdt) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        String sql = "  select * from Khachhang where sdt = '"+sdt+"' ";
+//        try {
+//            tr.begin();
+//                KhachHang kh;
+//                try {
+//                    kh = session.createNativeQuery(sql,KhachHang.class).getSingleResult();
+//                } catch (Exception e) {
+//                    tr.rollback();
+//                    return null;
+//                }
+//            tr.commit();
+//            return kh;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        
+//        return null;
+//    }
     
-    @Override
-    public boolean addKhachHang(KhachHang kh) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-                session.save(kh);
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean addKhachHang(KhachHang kh) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        try {
+//            tr.begin();
+//                session.save(kh);
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
 
-    @Override
-    public String getlastKhachHangTang(){
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select top 1 maKhachHang from KhachHang order by maKhachHang desc";
-        
-        try {
-            tr.begin();
-            String maKhachCuoi="";
-            String maCuoiCung = "KH";
-            try {
-                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
-                int so = Integer.parseInt(maKhachCuoi.split("KH")[1]) + 1;
-                int soChuSo = String.valueOf(so).length();
-                
-                for (int i = 0; i< 7 - soChuSo; i++){
-                    maCuoiCung += "0";
-                }
-                maCuoiCung += String.valueOf(so);
-            } catch (Exception e) {
-                maCuoiCung = "KH0000001";
-            } 
-            tr.commit();
-            return maCuoiCung;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return null;
-    }
+//    @Override
+//    public String getlastKhachHangTang(){
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql = "select top 1 maKhachHang from KhachHang order by maKhachHang desc";
+//        
+//        try {
+//            tr.begin();
+//            String maKhachCuoi="";
+//            String maCuoiCung = "KH";
+//            try {
+//                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
+//                int so = Integer.parseInt(maKhachCuoi.split("KH")[1]) + 1;
+//                int soChuSo = String.valueOf(so).length();
+//                
+//                for (int i = 0; i< 7 - soChuSo; i++){
+//                    maCuoiCung += "0";
+//                }
+//                maCuoiCung += String.valueOf(so);
+//            } catch (Exception e) {
+//                maCuoiCung = "KH0000001";
+//            } 
+//            tr.commit();
+//            return maCuoiCung;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return null;
+//    }
     
     /**
-     * tính số lượng khách hàng
-     * @return số lượng khách hàng
-     */
-    @Override
-    public int getSoLuongKhachHang() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from KhachHang";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
+//     * tính số lượng khách hàng
+//     * @return số lượng khách hàng
+//     */
+//    @Override
+//    public int getSoLuongKhachHang() {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        String sql = "select count(*) from KhachHang";
+//        try {
+//            tr.begin();
+//            int rs = (int) session.
+//                    createNativeQuery(sql)
+//                    .getSingleResult();
+//            tr.commit();
+//            return  rs;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return 0;
+//    }
 
     /**
      * tính số lượng khách hàng thoe từ khóa
