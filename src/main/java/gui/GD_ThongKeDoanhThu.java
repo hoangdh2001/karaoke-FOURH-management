@@ -4,6 +4,7 @@ import dao.HoaDon_DAO;
 import dao.LoaiPhong_DAO;
 import entity.HoaDon;
 import entity.LoaiPhong;
+import gui.swing.event.EventPagination;
 import gui.swing.model.ModelChart;
 import java.awt.Color;
 import java.awt.Font;
@@ -16,6 +17,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -26,7 +30,9 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import org.apache.poi.ss.usermodel.Row;
@@ -40,8 +46,9 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 
     private HoaDonService hoaDonService;
     private LoaiPhongService loaiPhongService;
-    private final DecimalFormat df = new DecimalFormat("#,##0.00");
+    private final DecimalFormat df = new DecimalFormat("#,###");
     private final SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd");
+    private List<HoaDon> dsHoaDon;
 
     public GD_ThongKeDoanhThu() {
         this.hoaDonService = new HoaDon_DAO();
@@ -55,6 +62,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         createForm();
         createTable();
         createChart();
+        createPanelBottom();
     }
 
     private void createForm() {
@@ -111,19 +119,9 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
             return;
         }
 
-        for (HoaDon hoaDon : dsHoaDon) {
+        dsHoaDon.forEach(hoaDon -> {
             tblThongKe.addRow(hoaDon.convertToRowTableInGDThongKeDoanhThu());
-        }
-
-        txtSoHD.setText(String.valueOf(tblThongKe.getRowCount()));
-    }
-
-    private double tinhTong(List<HoaDon> dsHoaDon) {
-        double tong = 0;
-        for (int i = 0; i < dsHoaDon.size(); i++) {
-            tong += dsHoaDon.get(i).getTongHoaDon();
-        }
-        return tong;
+        });
     }
 
     private void showMsg(String msg) {
@@ -137,15 +135,128 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         return true;
     }
 
-    private void filter() {
+    private void filter(int page) {
+        String ma = getMaLoaiPhong();
+        int thangOrNam = 0;
+            boolean theothang = true;
+            int year = 0;
+
+            if (cmbTKTheo.getSelectedIndex() == 1) {
+                thangOrNam = cmbTKChiTiet.getSelectedIndex();
+                theothang = true;
+                Date date = new Date();
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(date);
+                year = calendar.get(Calendar.YEAR);
+
+            } else {
+                thangOrNam = Integer.parseInt(cmbTKChiTiet.getSelectedItem().toString());
+                theothang = false;
+            }
+        List<HoaDon> dsHoaDonPage = hoaDonService.findHoaDonByThangNam(thangOrNam, ma, theothang, year,page);
         new Thread(new Runnable() {
             @Override
             public void run() {
+                loadData(dsHoaDonPage);
+            }
+        }).start();
+    }
+    
+    private String getMaLoaiPhong(){
+        if (cmbKhac.getSelectedIndex() == 0) {
+            return null;
+        } else {
+            LoaiPhong cb = (LoaiPhong) cmbKhac.getSelectedItem();
+            return cb.getMaLoaiPhong();
+        }
+    }
+    
+    private void loadAllPage(){
+        String ma = getMaLoaiPhong();
+        int page = 0;
+        if (cmbTKTheo.getSelectedIndex() != 0) {
+            int thangOrNam = 0;
+            boolean theothang = true;
+            int year = 0;
+            if (cmbTKTheo.getSelectedIndex() == 1) {
+                thangOrNam = cmbTKChiTiet.getSelectedIndex();
+                theothang = true;
+                Date date = new Date();
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(date);
+                year = calendar.get(Calendar.YEAR);
+
+            } else {
+                thangOrNam = Integer.parseInt(cmbTKChiTiet.getSelectedItem().toString());
+                theothang = false;
+            }
+            double tongCu = 0;
+            double tongMoi = hoaDonService.getTotalOfRecord(thangOrNam, ma, theothang, year);
+            if(thangOrNam == 1){
+                tongCu = hoaDonService.getTotalOfRecord(12, ma, theothang, year -1);
+            }else{
+                tongCu = hoaDonService.getTotalOfRecord(thangOrNam - 1, ma, theothang, year);
+            }
+            
+            page = hoaDonService.getNumOfRecord(thangOrNam, ma, theothang, year);
+            txtChenhLech.setText(df.format(tongMoi - tongCu));
+            txtTong.setText(df.format(hoaDonService.getTotalOfRecord(thangOrNam, ma, theothang, year)));
+            
+        }else{
+            String batDau = gio.format(dscBatDau.getDate());
+            String ketThuc = gio.format(dscKetThuc.getDate());
+            page = hoaDonService.getNumOfRecordByDate(batDau, ketThuc, ma);   
+            txtTong.setText(df.format(hoaDonService.getTotalOfRecordByDate(batDau, ketThuc, ma)));
+        }
+        loadPageInt(page);
+        txtSoHD.setText(String.valueOf(page));
+    }
+
+    private void filterDateChooser(int page) {
+        String ma = null;
+        if (cmbKhac.getSelectedIndex() == 0) {
+            ma = null;
+        } else {
+            LoaiPhong cb = (LoaiPhong) cmbKhac.getSelectedItem();
+            ma = cb.getMaLoaiPhong();
+        }
+        
+        String batDau = gio.format(dscBatDau.getDate());
+        String ketThuc = gio.format(dscKetThuc.getDate());
+        
+        List<HoaDon> dsHoaDonPage = hoaDonService.findHoaDon(batDau, ketThuc, ma,page);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                loadData(dsHoaDonPage);
+            }
+        }).start();
+    }
+
+    public void exportTableToExcel() throws FileNotFoundException {
+
+        FileOutputStream excelFos = null;
+        Workbook excelJTableExport = null;
+        try {
+
+            JFileChooser excelFileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory().toPath().toString());
+            excelFileChooser.setDialogTitle("Save As ..");
+            FileNameExtensionFilter fnef = new FileNameExtensionFilter("Files", "xls", "xlsx", "xlsm");
+            excelFileChooser.setFileFilter(fnef);
+            int chooser = excelFileChooser.showSaveDialog(null);
+
+            Workbook wb = new XSSFWorkbook(); //Excell workbook
+            Sheet sheet = wb.createSheet(); //WorkSheet
+            Row row = sheet.createRow(2); //Row created at line 3
+            TableModel model = tblThongKe.getModel(); //Table model
+            
+            List<HoaDon> hoaDons = null;
+            String ma = getMaLoaiPhong();
+            String fileName = " Thống kê ";
+            if(cmbTKTheo.getSelectedIndex() != 0){
                 int thangOrNam = 0;
                 boolean theothang = true;
-                String ma = null;
                 int year = 0;
-
                 if (cmbTKTheo.getSelectedIndex() == 1) {
                     thangOrNam = cmbTKChiTiet.getSelectedIndex();
                     theothang = true;
@@ -158,80 +269,37 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                     thangOrNam = Integer.parseInt(cmbTKChiTiet.getSelectedItem().toString());
                     theothang = false;
                 }
-
-                if (cmbKhac.getSelectedIndex() == 0) {
-                    ma = null;
-                } else {
-                    LoaiPhong cb = (LoaiPhong) cmbKhac.getSelectedItem();
-                    ma = cb.getMaLoaiPhong();
+                
+                if(cmbTKTheo.getSelectedIndex() == 1){
+                    fileName += "Tháng " + cmbTKChiTiet.getSelectedItem().toString() +" "+ cmbKhac.getSelectedItem().toString();
+                }else if(cmbTKTheo.getSelectedIndex() == 2){
+                    fileName += "Năm " + cmbTKChiTiet.getSelectedItem().toString() +" "+ cmbKhac.getSelectedItem().toString();
                 }
-                System.out.println(ma);
-
-                double tongCu = 0;
-                List<HoaDon> dsHoaDon = hoaDonService.findHoaDonByThangNam(thangOrNam, ma, theothang, year);
-                List<HoaDon> dsHoaDonCu = hoaDonService.findHoaDonByThangNam(thangOrNam - 1, ma, theothang, year);
-//                    for (int i = 0; i < dsHoaDon.size(); i++) {
-//                        tongCu += dsHoaDon.get(i).getTongHoaDon();
-//                        tblThongKe.addRow(dsHoaDon.get(i).convertToRowTableInGDThongKeDoanhThu());
-//                    }
-                loadData(dsHoaDon);
-                txtSoHD.setText(String.valueOf(tblThongKe.getRowCount()));
-                txtTong.setText(df.format(tinhTong(dsHoaDon)));
-                txtChenhLech.setText(df.format(tinhTong(dsHoaDon) - tinhTong(dsHoaDonCu)));
+                hoaDons = hoaDonService.findHoaDonByThangNam(thangOrNam,ma, theothang, year, -1);
+            }else if(checkDate()){
+                    String batDau = gio.format(dscBatDau.getDate());
+                    String ketThuc = gio.format(dscKetThuc.getDate());
+                    fileName += "Từ " + batDau + " đến " + ketThuc;
+                hoaDons = hoaDonService.findHoaDon(batDau, ketThuc, ma, -1);
             }
-        }).start();
-    }
-
-    private void filterDateChooser() {
-        String ma = null;
-        if (cmbKhac.getSelectedIndex() == 0) {
-            ma = null;
-        } else {
-            LoaiPhong cb = (LoaiPhong) cmbKhac.getSelectedItem();
-            ma = cb.getMaLoaiPhong();
-        }
-
-        String batDau = gio.format(dscBatDau.getDate());
-        String ketThuc = gio.format(dscKetThuc.getDate());
-        List<HoaDon> dsHoaDon = hoaDonService.findHoaDon(batDau, ketThuc, ma);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                loadData(dsHoaDon);
-            }
-        }).start();
-    }
-
-    public void exportTableToExcel() throws FileNotFoundException {
-
-        FileOutputStream excelFos = null;
-        Workbook excelJTableExport = null;
-        try {
-
-            JFileChooser excelFileChooser = new JFileChooser("D:\\");
-            excelFileChooser.setDialogTitle("Save As ..");
-            FileNameExtensionFilter fnef = new FileNameExtensionFilter("Files", "xls", "xlsx", "xlsm");
-            excelFileChooser.setFileFilter(fnef);
-            int chooser = excelFileChooser.showSaveDialog(null);
-
-            Workbook wb = new XSSFWorkbook(); //Excell workbook
-            Sheet sheet = wb.createSheet(); //WorkSheet
-            Row row = sheet.createRow(2); //Row created at line 3
-            TableModel model = tblThongKe.getModel(); //Table model
-
+            
             if (chooser == JFileChooser.APPROVE_OPTION) {
                 Row headerRow = sheet.createRow(0);
                 for (int headings = 0; headings < model.getColumnCount(); headings++) {
                     headerRow.createCell(headings).setCellValue(model.getColumnName(headings));
                 }
-                for (int rows = 0; rows < model.getRowCount(); rows++) {
-                    for (int cols = 0; cols < tblThongKe.getColumnCount(); cols++) {
-                        row.createCell(cols).setCellValue(model.getValueAt(rows, cols).toString());
-                    }
+                for (int rows = 0; rows < hoaDons.size(); rows++) {
+                    HoaDon hd = hoaDons.get(rows);
+                    row.createCell(0).setCellValue(hd.getMaHoaDon());
+                    row.createCell(1).setCellValue(hd.getNgayLapHoaDon().toString());
+                    row.createCell(2).setCellValue(hd.getKhachHang().getTenKhachHang());
+                    row.createCell(3).setCellValue(hd.getNhanVien().getTenNhanVien());
+                    row.createCell(4).setCellValue(hd.getTongHoaDon());
 
                     row = sheet.createRow((rows + 3));
                 }
-                wb.write(new FileOutputStream(excelFileChooser.getSelectedFile() + ".xlsx"));
+                System.out.println(fileName);
+                wb.write(new FileOutputStream(excelFileChooser.getSelectedFile()+ fileName +".xlsx"));
             }
 
         } catch (FileNotFoundException ex) {
@@ -253,7 +321,6 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     }
 
     private class createActionListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
@@ -262,6 +329,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                     cmbTKChiTiet.removeAllItems();
                     lblChenhLech.setText("Chênh lệch so với tháng trước:");
                     resetCalendar();
+                    jLabel8.setText("Tháng");
                     cmbTKChiTiet.addItem("--Chọn tháng--");
                     for (int i = 0; i < 12; i++) {
                         cmbTKChiTiet.addItem(i + 1);
@@ -270,23 +338,26 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                     resetCalendar();
                     lblChenhLech.setText("Chênh lệch so với năm trước  :");
                     cmbTKChiTiet.removeAllItems();
-                    cmbTKChiTiet.addItem("--Chọn năm--");
-
+                    cmbTKChiTiet.addItem("--Chọn năm--  ");
+                    jLabel8.setText("Năm");
                     hoaDonService.getDSNamTheoNgayLap().forEach(doc -> cmbTKChiTiet.addItem(doc));
                 } else if (cmbTKTheo.getSelectedIndex() == 0) {
                     cmbTKChiTiet.removeAllItems();
-                    cmbTKChiTiet.addItem("--Chọn--");
+                    cmbTKChiTiet.addItem("--Chọn--       ");
                 }
             } else if (obj.equals(cmbTKChiTiet)) {
                 if (cmbTKChiTiet.getSelectedIndex() != -1 && cmbTKChiTiet.getSelectedIndex() != 0) {
-                    filter();
+                    loadAllPage();
+                    filter(0);
                     loadDataChart();
                 }
             } else if (obj.equals(cmbKhac)) {
                 if (cmbTKChiTiet.getSelectedIndex() != -1 && cmbTKChiTiet.getSelectedIndex() != 0) {
-                    filter();
+                    loadAllPage();
+                    filter(0);
                 } else {
-                    filterDateChooser();
+                    loadAllPage();
+                    filterDateChooser(0);
                 }
             } else if (obj.equals(btnXuat)) {
                 try {
@@ -313,14 +384,36 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     }
 
     private class createPropertyChangeListener implements PropertyChangeListener {
-
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (checkDate()) {
                 resetCombobox();
-                filterDateChooser();
+                loadAllPage();
+                filterDateChooser(0);
             }
         }
+    }
+    
+    private void loadPage(List<HoaDon> dsHoaDon) {
+        int soLuong = dsHoaDon.size();
+        pnlPage.init(soLuong% 20 == 0 ? soLuong / 20 : (soLuong / 20) + 1);
+    }
+    
+    private void loadPageInt(int soLuong) {
+        pnlPage.init(soLuong% 20 == 0 ? soLuong / 20 : (soLuong / 20) + 1);
+    }
+    
+    private void createPanelBottom() {
+        pnlPage.addEventPagination(new EventPagination() {
+            @Override
+            public void onClick(int pageClick) {
+                if(cmbTKTheo.getSelectedIndex() != 0){
+                    filter(pageClick);
+                }else{
+                    filterDateChooser(pageClick);
+                }
+            }
+        });
     }
 
     private void createChart() {
@@ -383,6 +476,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
             Logger.getLogger(GD_ThongKeDoanhThu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -447,7 +541,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_advance_20px_3.png"))); // NOI18N
@@ -469,6 +563,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 
         cmbTKChiTiet.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cmbTKChiTiet.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Chọn--" }));
+        cmbTKChiTiet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTKChiTietActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Phòng:");
@@ -613,21 +712,19 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(pnlPage, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnlPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(lblChenhLech)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtChenhLech, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                        .addComponent(txtChenhLech, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSoHD, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                        .addComponent(txtSoHD, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTong, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                        .addComponent(txtTong, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnXuat))))
         );
@@ -677,6 +774,10 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 //
 //        }
     }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void cmbTKChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTKChiTietActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTKChiTietActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -42,8 +42,8 @@ public interface HoaDonService {
     public void capNhatTrangThaiPhieuHetHan();
 //    Huu
     public boolean insertHoaDon(HoaDon hoaDon);
-    public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma);
-    public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year);
+    public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma,int page);
+    public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year,int page);
     public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon);
     public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon);
     public HoaDon getHoaDon(Phong phong);
@@ -54,4 +54,8 @@ public interface HoaDonService {
     public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai );
     public Map<Integer, Double> getDoanhThuHoaDonTheoNam(int nam);
     public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang, int nam);
+    public int getNumOfRecord(int thangOrNam,String loaiPhong,Boolean thang,int year);
+    public int getNumOfRecordByDate(String batDau, String ketThuc,String ma);
+    public double getTotalOfRecord(int thangOrNam,String loaiPhong,Boolean thang,int year);
+    public double getTotalOfRecordByDate(String batDau, String ketThuc,String ma);
 }

@@ -20,4 +20,11 @@ public interface MatHangService {
     public boolean insertMatHang(MatHang matHang);
     public boolean updateDonGiaMatHang(MatHang matHang);
     public List<MatHang> findMatHang(String textFind,int type);
+    
+    public List<String> getListTKByDate(String batDau, String ketThuc,int page);
+    public List<String> getListTK(int thangOrNam,Boolean thang,int year,int page);
+    public int getPageByDate(String batDau, String ketThuc);
+    public int getPage(int thangOrNam,Boolean thang,int year);
+    public double getTotalBydate(String batDau, String ketThuc);
+    public double getTotal(int thangOrNam,Boolean thang,int year);
 }

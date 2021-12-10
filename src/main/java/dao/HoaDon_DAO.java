@@ -5,6 +5,7 @@ import entity.HoaDon;
 import entity.Phong;
 import java.text.SimpleDateFormat;
 import entity.TrangThaiHoaDon;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -733,41 +734,8 @@ public class HoaDon_DAO implements HoaDonService {
     }
     
     @Override
-    public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma) {
-        String sql= "";
-        if(ma != null){
-            sql = "select * from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"' and p.maLoaiPhong = '"+ma+"'";
-        }else{
-            sql = "select * from HoaDon WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'";
-        }
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        try {
-            tr.begin();
-                List<HoaDon> dsHoaDon = null;
-                try {
-                    dsHoaDon = session.createNativeQuery(sql,HoaDon.class).getResultList();
-                } catch (Exception e) {
-                    return null;
-                }
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        
-        return null;
-    }
-    
-//    select *  from HoaDon where DATEPART(DAY, ngayLapHoaDon) = 9
-
-    @Override
-    public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year) {
-        
+    public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year,int page) {
         String sql ="";
-        
         if(loaiPhong !=null){
             if(thang == true){
                 sql = "select *  from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong  where DATEPART(MONTH, ngayLapHoaDon)= "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year+" and p.maLoaiPhong = '"+loaiPhong+"'";
@@ -783,6 +751,9 @@ public class HoaDon_DAO implements HoaDonService {
             }
         }
         
+        if(page != -1){
+            sql += "order by ngayLapHoaDon OFFSET "+page*20+" ROWS FETCH NEXT 20 ROWS ONLY";
+        }
         
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
@@ -803,7 +774,154 @@ public class HoaDon_DAO implements HoaDonService {
         
         return null;
     }
-
+    
+    @Override
+    public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma,int page) {
+        String sql= "";
+        if(ma != null){
+            sql = "select * from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"' and p.maLoaiPhong = '"+ma+"'";
+        }else{
+            sql = "select * from HoaDon WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'";
+        }
+        
+        if(page != -1){
+            sql += " order by ngayLapHoaDon OFFSET "+page*20+" ROWS FETCH NEXT 20 ROWS ONLY";
+        }
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                List<HoaDon> dsHoaDon = null;
+                try {
+                    dsHoaDon = session.createNativeQuery(sql,HoaDon.class).getResultList();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            tr.commit();
+            return dsHoaDon;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return null;
+    }
+    
+    @Override
+    public int getNumOfRecord(int thangOrNam,String loaiPhong,Boolean thang,int year) {
+        int num = 0;
+        int thangBit = thang ? 1:0;
+        String sql = "";
+        if(loaiPhong == null){
+            sql ="SELECT dbo.getpage("+thangOrNam+",'',"+thangBit+",0);";
+        }else{
+            sql ="SELECT dbo.getpage("+thangOrNam+",'"+loaiPhong+"',"+thangBit+","+year+");";
+        }
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                num =(int) session.createNativeQuery(sql).uniqueResult();
+            tr.commit();
+            return num;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return num;
+    }
+    
+    @Override
+    public int getNumOfRecordByDate(String batDau, String ketThuc,String ma) {
+        int num = 0;
+        String sql = "";
+        if(ma == null){
+            sql ="SELECT dbo.getpagebydate('"+batDau+"','"+ketThuc+"','')";
+        }else{
+            sql ="SELECT dbo.getpagebydate('"+batDau+"','"+ketThuc+"','"+ma+"')";
+        }
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                num =(int) session.createNativeQuery(sql).uniqueResult();
+            tr.commit();
+            return num;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return num;
+    }
+    
+    @Override
+    public double getTotalOfRecord(int thangOrNam,String loaiPhong,Boolean thang,int year){
+        double num = 0;
+        String sql = "";
+        if(loaiPhong !=null){
+            if(thang == true){
+                sql = "select sum(tongHoaDon) from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong  where DATEPART(MONTH, ngayLapHoaDon)= "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year+" and p.maLoaiPhong = '"+loaiPhong+"'";
+            }else{
+                sql = "select sum(tongHoaDon) from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong  where DATEPART(YEAR, ngayLapHoaDon)= "+thangOrNam+" and p.maLoaiPhong = '"+loaiPhong+"'";
+                
+            }
+        }else{
+            if(thang == true){
+                sql= "select sum(tongHoaDon) from HoaDon where DATEPART(MONTH, ngayLapHoaDon) = "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year;
+            }else{
+                sql= "select sum(tongHoaDon) from HoaDon where DATEPART(YEAR, ngayLapHoaDon) = "+thangOrNam;
+            }
+        }
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                BigDecimal bd =(BigDecimal)session.createNativeQuery(sql).uniqueResult();
+                num =bd.doubleValue();
+            tr.commit();
+            return num;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return num;
+    }
+    @Override
+    public double getTotalOfRecordByDate(String batDau, String ketThuc,String ma){
+        double num = 0;
+        String sql= "";
+        if(ma != null){
+            sql = "select sum(tongHoaDon) from HoaDon as hd join Phong as p on hd.maPhong = p.maPhong WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"' and p.maLoaiPhong = '"+ma+"'";
+        }else{
+            sql = "select sum(tongHoaDon) from HoaDon WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'";
+        }
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+        try {
+            tr.begin();
+                BigDecimal bd =(BigDecimal) session.createNativeQuery(sql).uniqueResult();
+                num = bd.doubleValue();
+            tr.commit();
+            return num;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        return num;
+    }
+    
     @Override
     public boolean insertHoaDon(HoaDon hoaDon) {
         Session session = sessionFactory.openSession();

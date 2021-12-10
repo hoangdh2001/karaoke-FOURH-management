@@ -55,7 +55,7 @@ public class HoaDon {
     private double tienThua;
     @Column(columnDefinition = "money")
     private double donGiaPhongCu;
-    @Column(columnDefinition = "money")
+    @Column(columnDefinition = "money",nullable = true)
     private double tienCoc;
 
     /**
@@ -361,7 +361,7 @@ public class HoaDon {
     
     public Object[] convertToRowTableInGDThongKeDoanhThu() {
         DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
+        df = new DecimalFormat("#,###");
         SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String ngayLap = gio.format(ngayLapHoaDon);
         return new Object[]{maHoaDon, ngayLap, khachHang == null ? "Trống":khachHang.getTenKhachHang(), nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};

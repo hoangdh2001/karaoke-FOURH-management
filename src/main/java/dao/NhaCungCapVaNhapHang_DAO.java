@@ -4,29 +4,15 @@
  */
 package dao;
 
-import entity.ChiTietHoaDon;
 import entity.ChiTietNhapHang;
-import entity.HoaDon;
-import entity.KhachHang;
-import entity.LoHang;
-import entity.LoaiDichVu;
-import entity.LoaiPhong;
-import entity.MatHang;
 import entity.NhaCungCap;
-import entity.NhanVien;
-import entity.Phong;
-import entity.PhieuDatPhong;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import service.NhaCungCapVaNhapHangDaoService;
 import util.HibernateUtil;
-import entity.TrangThaiPhong;
-import java.math.BigDecimal;
 
 /**
  *
@@ -238,5 +224,77 @@ public class NhaCungCapVaNhapHang_DAO implements NhaCungCapVaNhapHangDaoService{
         }
         return false;
     }
+
+    @Override
+    public int getSLNhapByDate(String maMatHang,String batDau, String ketThuc) {
+        int sl = 0;
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select sum(soLuongNhap) from LoHang as lh \n" +
+        "join ChiTietNhapHang as nh on lh.maLoHang = nh.maLoHang \n" +
+        "WHERE ngayNhap BETWEEN  '"+batDau+"' and '"+ketThuc+"' and maMatHang = '"+maMatHang+"'\n" +
+        "group by nh.maMatHang ";
+        try {
+            tr.begin();
+                sl = (int)session.createNativeQuery(sql).getSingleResult();
+            tr.commit();
+            session.clear();
+            return sl;
+        } catch (Exception e) {
+            tr.rollback();
+            return 0;
+        }
+    }
+    
+    @Override
+    public int getSLNhap(String maMatHang,int thangOrNam,Boolean thang, int year) {
+        int sl = 0;
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "";
+        if(thang == true){
+            sql = "select sum(soLuongNhap) from LoHang as lh \n" +
+        "join ChiTietNhapHang as nh on lh.maLoHang = nh.maLoHang \n" +
+        "where DATEPART(MONTH, ngayLapHoaDon) = "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year +
+        " group by nh.maMatHang ";
+        }else{
+            sql= "select sum(soLuongNhap) from LoHang as lh \n" +
+        "join ChiTietNhapHang as nh on lh.maLoHang = nh.maLoHang \n" +
+        "where DATEPART(YEAR, ngayLapHoaDon) = "+thangOrNam +
+        " group by nh.maMatHang ";
+        }
+        
+        try {
+            tr.begin();
+                sl = (int)session.createNativeQuery(sql).getSingleResult();
+            tr.commit();
+            session.clear();
+            return sl;
+        } catch (Exception e) {
+            tr.rollback();
+            return 0;
+        }
+    }
+    
+    @Override
+    public List<Integer> getAllYearExist() {
+        Session session = sessionFactory.openSession();
+        Transaction tr = session.getTransaction();
+        String sql = "select DISTINCT(DATEPART(year, ngayNhap)) from LoHang";
+        try {
+            tr.begin();
+            List<Integer> dsThang = session
+                    .createNativeQuery(sql)
+                    .getResultList();
+            tr.commit();
+            return dsThang;
+        } catch (Exception e) {
+            System.err.println(e);
+            tr.rollback();
+        }
+        session.close();
+        return null;
+    }
+
 
 }   

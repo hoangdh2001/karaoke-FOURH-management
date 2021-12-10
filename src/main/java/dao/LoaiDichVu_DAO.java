@@ -1,6 +1,8 @@
 package dao;
 
 import entity.LoaiDichVu;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -82,6 +84,77 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
             tr.rollback();
         }
         return null;
+    }
+
+    @Override
+    public List<String> getPercent(String batDau, String ketThuc) {
+        List<String> list = new ArrayList<String>();
+        String sql = "select ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(thanhTien) from LoaiDichVu as ldv join MatHang as mh on ldv.maLoaiDichVu = mh.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'\n" +
+        "group by ldv.tenLoaiDichVu";
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                List<?> listAs = session.createNativeQuery(sql).getResultList();
+		Iterator<?> i = listAs.iterator();
+		while (i.hasNext()) {
+                    Object[] row = (Object[]) i.next();
+                    String chuoiData = row[0]+";"+row[1]+";"+row[2];
+                    list.add(chuoiData);
+                }
+            tr.commit();
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return list;
+    }
+
+    @Override
+    public List<String> getPercent(int thangOrNam, Boolean thang, int year) {
+        List<String> list = new ArrayList<String>();
+        String sql = "";
+        if(thang == true){
+            sql = "select ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(thanhTien) from LoaiDichVu as ldv join MatHang as mh on ldv.maLoaiDichVu = mh.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "where DATEPART(MONTH, ngayLapHoaDon) = "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year+
+        "group by ldv.tenLoaiDichVu";
+        }else{
+            sql = "select ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(thanhTien) from LoaiDichVu as ldv join MatHang as mh on ldv.maLoaiDichVu = mh.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "where DATEPART(YEAR, ngayLapHoaDon) = "+thangOrNam+
+        " group by ldv.tenLoaiDichVu";
+        }
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                List<?> listAs = session.createNativeQuery(sql).getResultList();
+		Iterator<?> i = listAs.iterator();
+		while (i.hasNext()) {
+                    Object[] row = (Object[]) i.next();
+                    String chuoiData = row[0]+";"+row[1]+";"+row[2];
+                    list.add(chuoiData);
+                }
+            tr.commit();
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return list;
     }
 }
 
