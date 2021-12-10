@@ -21,6 +21,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import service.KhachHangService;
 
 /**
  *
@@ -28,7 +29,7 @@ import javax.swing.event.TableModelListener;
  */
 public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, KeyListener{
     List<KhachHang> dsKhachHang ;
-    private KhachHang_DAO khachHang_Dao;
+    private KhachHangService khachHangService;
     private JTextField txtTimKiem;
     private Button btnLamMoi;
 
@@ -43,7 +44,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     }
     
     private void buildGD(){
-        khachHang_Dao = new KhachHang_DAO();
+        khachHangService = new KhachHang_DAO();
 
         String fontName = "sansserif";
         int fontStyle = Font.PLAIN;
@@ -87,9 +88,9 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         pnlTop = new gui.swing.panel.PanelShadow();
         pnlBottom = new gui.swing.panel.PanelShadow();
         srcKhachHang = new javax.swing.JScrollPane();
-        tblKhachHang = new gui.swing.table2.MyTableFlatlaf();
+        tblKhachHang = new gui.swing.table.MyTableFlatlaf();
         pnlBottom_Page = new javax.swing.JPanel();
-        pnlPage = new gui.swing.table2.PanelPage();
+        pnlPage = new gui.swing.table.PanelPage();
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
         pnlTop.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
@@ -209,7 +210,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                             if(valiDataSDT(tblKhachHang.getValueAt(row, 4).toString())){
                                 String soDienThoai = tblKhachHang.getValueAt(row, 4).toString().trim();
                                 String maKhachHang = tblKhachHang.getValueAt(row, 1).toString().trim();
-                                if(khachHang_Dao.capNhatKhachHang(maKhachHang, soDienThoai)) {
+                                if(khachHangService.capNhatKhachHang(maKhachHang, soDienThoai)) {
                                     JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
                                     xoaDuLieu();
                                     loadData(pnlPage.getCurrentIndex());
@@ -229,7 +230,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
             });
     }
     private void loadData(int numPage) {
-        dsKhachHang = khachHang_Dao.getDSKhachHang(numPage);
+        dsKhachHang = khachHangService.getDSKhachHang(numPage);
         xoaDuLieu();
         if (dsKhachHang != null) {
             dsKhachHang.forEach((kh) -> {
@@ -252,7 +253,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<KhachHang> dsKhachHang = khachHang_Dao.getDSKhachHangByTuKhoa(tuKhoa,numPage);
+                List<KhachHang> dsKhachHang = khachHangService.getDSKhachHangByTuKhoa(tuKhoa,numPage);
                 if (dsKhachHang != null) {
                     dsKhachHang.forEach((kh) -> {
                         ((DefaultTableModel) tblKhachHang.getModel()).addRow(new Object[] {new JCheckBox(),kh.getMaKhachHang(), kh.getTenKhachHang(), kh.getCanCuocCD(), kh.getSoDienThoai()});
@@ -272,7 +273,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     
     private void loadPage() {
         String tuKhoa = txtTimKiem.getText().trim();
-        int soLuongKhachHang= khachHang_Dao.getSoLuongKhachHangByTuKhoa(tuKhoa);
+        int soLuongKhachHang= khachHangService.getSoLuongKhachHangByTuKhoa(tuKhoa);
         pnlPage.init(soLuongKhachHang% 20 == 0 ? soLuongKhachHang / 20 : (soLuongKhachHang / 20) + 1);
     }
     
@@ -295,10 +296,10 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.swing.panel.PanelShadow pnlBottom;
     private javax.swing.JPanel pnlBottom_Page;
-    private gui.swing.table2.PanelPage pnlPage;
+    private gui.swing.table.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
     private javax.swing.JScrollPane srcKhachHang;
-    private gui.swing.table2.MyTableFlatlaf tblKhachHang;
+    private gui.swing.table.MyTableFlatlaf tblKhachHang;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -306,7 +307,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
         Object obj = e.getSource();
         if(obj.equals(btnLamMoi)){
            txtTimKiem.setText("");
-           dsKhachHang = khachHang_Dao.getDSKhachHang(pnlPage.getCurrentIndex());
+           dsKhachHang = khachHangService.getDSKhachHang(pnlPage.getCurrentIndex());
            xoaDuLieu();
            loadPage();
            taiLaiDuLieu(pnlPage.getCurrentIndex());

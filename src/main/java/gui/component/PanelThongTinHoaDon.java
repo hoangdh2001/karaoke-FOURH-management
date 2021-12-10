@@ -102,7 +102,7 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
         lblTTTienMatHang = new javax.swing.JLabel();
         pictureBox2 = new gui.swing.image.PictureBox();
         scrChiTiet = new javax.swing.JScrollPane();
-        tblChiTiet = new gui.swing.table2.MyTableFlatlaf();
+        tblChiTiet = new gui.swing.table.MyTableFlatlaf();
         lblChietKhau = new javax.swing.JLabel();
         lblTTChieuKhau = new javax.swing.JLabel();
         lblTienKhachDua = new javax.swing.JLabel();
@@ -460,7 +460,7 @@ public class PanelThongTinHoaDon extends javax.swing.JPanel {
     private javax.swing.JLabel lblTongHoaDon;
     private gui.swing.image.PictureBox pictureBox2;
     private javax.swing.JScrollPane scrChiTiet;
-    private gui.swing.table2.MyTableFlatlaf tblChiTiet;
+    private gui.swing.table.MyTableFlatlaf tblChiTiet;
     // End of variables declaration//GEN-END:variables
     
 

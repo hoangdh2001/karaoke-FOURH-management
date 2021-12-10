@@ -11,7 +11,7 @@ import gui.swing.event.EventAdd;
 import gui.swing.event.EventMinus;
 import gui.swing.image.WindowIcon;
 import gui.swing.model.ModelAdd;
-import gui.swing.table2.SpinnerEditor;
+import gui.swing.table.SpinnerEditor;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import gui.swing.model.ModelObjectComboBox;
+import java.awt.Frame;
 import service.ChiTietHoaDonService;
 import service.LoaiDichVuService;
 import service.MatHangService;
@@ -41,12 +43,13 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
         return hoaDon;
     }
 
-    public DL_CapNhatDichVu(HoaDon hoaDon, NhanVien nv) {
+    public DL_CapNhatDichVu(Frame frame, HoaDon hoaDon, NhanVien nv) {
+        super(frame, true);
         this.matHangService = new MatHang_DAO();
         this.chiTietHoaDonService = new ChiTietHoaDon_DAO();
         this.loaiDichVuService = new LoaiDichVu_DAO();
         this.hoaDon = hoaDon;
-        WindowIcon.addWindowIcon(this);
+//        WindowIcon.addWindowIcon(this);
         initComponents();
         buildDisplay();
     }
@@ -74,7 +77,7 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
     }
 
     private void loadDataForm() {
-        
+
         if (hoaDon.getPhong() != null) {
             ((DefaultComboBoxModel) cbLoaiDichVu.getModel()).addAll(loaiDichVuService.getDsTenLoaiDichVu());
             txtTenPhong.setText(hoaDon.getPhong().getTenPhong());
@@ -85,7 +88,7 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
             lblNhanVien.setText(hoaDon.getNhanVien().getTenNhanVien());
             lblRole.setText(hoaDon.getNhanVien().getLoaiNhanVien().getTenLoaiNV());
         }
-        
+
     }
 
     private void loadDataTableMatHang() {
@@ -104,9 +107,12 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
                 }
             };
 
-            dsMatHang.forEach(matHang -> {
-                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
-            });
+            for (MatHang matHang : dsMatHang) {
+                ((DefaultTableModel) tableMatHang.getModel()).addRow(new Object[]{new ModelObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()),
+                    matHang.getsLTonKho(),
+                    df.format(matHang.getDonGia()),
+                    new ModelAdd(matHang, event)});
+            }
         }
     }
 
@@ -164,9 +170,13 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
                 }
             }
         };
-        dsChiTietHoaDon.forEach(chiTietHoaDon -> {
-            ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(chiTietHoaDon.convertToRowTableInTiepNhanHoaDon(eventMinus));
-        });
+        for (ChiTietHoaDon chiTietHoaDon : dsChiTietHoaDon) {
+            ((DefaultTableModel) tableCTHoaDon.getModel()).addRow(new Object[]{chiTietHoaDon.getMatHang().getMaMatHang(),
+                chiTietHoaDon.getMatHang().getTenMatHang(),
+                chiTietHoaDon.getSoLuong(),
+                df.format(chiTietHoaDon.getMatHang().getDonGia()),
+                df.format(chiTietHoaDon.getThanhTien()), eventMinus});
+        }
     }
 
     private void searchMatHang() {
@@ -175,23 +185,34 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
         String tenLoaiDichVu = String.valueOf(cbLoaiDichVu.getSelectedItem());
         if (!tenLoaiDichVu.equals("Tất cả") && tenMatHang.length() > 0) {
             dsMatHang.stream().filter(matHang -> ((matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) && (matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)))).forEachOrdered(matHang -> {
-                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+                ((DefaultTableModel) tableMatHang.getModel()).addRow(new Object[]{new ModelObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()),
+                    matHang.getsLTonKho(),
+                    df.format(matHang.getDonGia()),
+                    new ModelAdd(matHang, event)});
             });
         } else if (!tenLoaiDichVu.equals("Tất cả") || tenMatHang.length() > 0) {
             dsMatHang.forEach(matHang -> {
                 if (!tenLoaiDichVu.equals("Tất cả")) {
                     System.out.println("ComboBox");
                     if (matHang.getLoaiDichVu().getTenLoaiDichVu().equals(tenLoaiDichVu)) {
-                        ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+                        ((DefaultTableModel) tableMatHang.getModel()).addRow(new Object[]{new ModelObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()),
+                            matHang.getsLTonKho(),
+                            df.format(matHang.getDonGia()),
+                            new ModelAdd(matHang, event)});
                     }
                 } else if (matHang.getTenMatHang().toLowerCase().contains(tenMatHang.toLowerCase())) {
-                    System.out.println("text");
-                    ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+                    ((DefaultTableModel) tableMatHang.getModel()).addRow(new Object[]{new ModelObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()),
+                        matHang.getsLTonKho(),
+                        df.format(matHang.getDonGia()),
+                        new ModelAdd(matHang, event)});
                 }
             });
         } else {
             dsMatHang.forEach(matHang -> {
-                ((DefaultTableModel) tableMatHang.getModel()).addRow(matHang.convertToRowTableInGDTiepNhanDatPhong(event));
+                ((DefaultTableModel) tableMatHang.getModel()).addRow(new Object[]{new ModelObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()),
+                    matHang.getsLTonKho(),
+                    df.format(matHang.getDonGia()),
+                    new ModelAdd(matHang, event)});
             });
         }
     }
@@ -213,7 +234,7 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
         cbLoaiDichVu = new javax.swing.JComboBox<>();
         lblLoaiDichVu = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableMatHang = new gui.swing.table2.MyTableFlatlaf();
+        tableMatHang = new gui.swing.table.MyTableFlatlaf();
         pnlCenter = new javax.swing.JPanel();
         lblTenPhong = new javax.swing.JLabel();
         txtTenPhong = new javax.swing.JTextField();
@@ -221,7 +242,7 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
         txtLoaiPhong = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableCTHoaDon = new gui.swing.table2.MyTableFlatlaf();
+        tableCTHoaDon = new gui.swing.table.MyTableFlatlaf();
         txtTongTienMatHang = new gui.swing.textfield.MyTextFieldPerUnit();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -578,8 +599,8 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnlMatHang;
-    private gui.swing.table2.MyTableFlatlaf tableCTHoaDon;
-    private gui.swing.table2.MyTableFlatlaf tableMatHang;
+    private gui.swing.table.MyTableFlatlaf tableCTHoaDon;
+    private gui.swing.table.MyTableFlatlaf tableMatHang;
     private javax.swing.JTextField txtLoaiPhong;
     private gui.swing.textfield.MyTextField txtSearch;
     private javax.swing.JTextField txtTenPhong;

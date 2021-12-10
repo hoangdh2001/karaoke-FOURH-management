@@ -49,6 +49,8 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     private final DecimalFormat df = new DecimalFormat("#,###");
     private final SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd");
     private List<HoaDon> dsHoaDon;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private List<LoaiPhong> dsLoaiPhong;
 
     public GD_ThongKeDoanhThu() {
         this.hoaDonService = new HoaDon_DAO();
@@ -75,11 +77,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     }
 
     private void init() {
-        List<LoaiPhong> dsLoaiPhong = loaiPhongService.getDsLoaiPhong();
+        dsLoaiPhong = loaiPhongService.getDsLoaiPhong();
         DefaultComboBoxModel<Object> cmbLoaiPhongModel = new DefaultComboBoxModel<>();
         cmbLoaiPhongModel.addElement("--Tất cả--");
         for (LoaiPhong loaiPhong : dsLoaiPhong) {
-            cmbLoaiPhongModel.addElement(loaiPhong);
+            cmbLoaiPhongModel.addElement(loaiPhong.getTenLoaiPhong());
         }
         cmbKhac.setModel(cmbLoaiPhongModel);
     }
@@ -498,7 +500,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblThongKe = new gui.swing.table2.MyTableFlatlaf();
+        tblThongKe = new gui.swing.table.MyTableFlatlaf();
         jPanel6 = new javax.swing.JPanel();
         lblChenhLech = new javax.swing.JLabel();
         txtChenhLech = new javax.swing.JTextField();
@@ -507,7 +509,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         txtTong = new javax.swing.JTextField();
         btnXuat = new javax.swing.JButton();
-        pnlPage = new gui.swing.table2.PanelPage();
+        pnlPage = new gui.swing.table.PanelPage();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         chart = new gui.swing.chart.Chart();
@@ -804,9 +806,9 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblChenhLech;
     private gui.swing.panel.PanelShadow pnlCenter;
-    private gui.swing.table2.PanelPage pnlPage;
+    private gui.swing.table.PanelPage pnlPage;
     private gui.swing.panel.PanelShadow pnlTop;
-    private gui.swing.table2.MyTableFlatlaf tblThongKe;
+    private gui.swing.table.MyTableFlatlaf tblThongKe;
     private javax.swing.JTextField txtChenhLech;
     private javax.swing.JTextField txtSoHD;
     private javax.swing.JTextField txtTong;

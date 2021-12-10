@@ -1,7 +1,7 @@
 package gui.component;
 
 import entity.Phong;
-import gui.swing.table2.CellStatus;
+import gui.swing.table.CellStatus;
 import java.awt.Font;
 import java.text.DecimalFormat;
 import javax.swing.JLabel;

@@ -3,7 +3,7 @@ package gui.swing.model;
 import entity.HoaDon;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
-import gui.swing.table2.EventAction;
+import gui.swing.table.EventAction;
 
 public class ModelAction {
     private EventAction event;

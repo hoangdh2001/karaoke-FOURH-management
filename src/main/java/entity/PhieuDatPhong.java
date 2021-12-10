@@ -1,6 +1,6 @@
 package entity;
 
-import gui.swing.table2.EventAction;
+import gui.swing.table.EventAction;
 import gui.swing.model.ModelAction;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -69,15 +69,10 @@ public class PhieuDatPhong {
 
     /**
      * @param maPhieuDat
-     * @param khachHang
-     * @param phong
-     * @param tienCoc
+     * @param nhanVien
      */
-    public PhieuDatPhong(String maPhieuDat, KhachHang khachHang, Phong phong, double tienCoc, NhanVien nhanVien) {
+    public PhieuDatPhong(String maPhieuDat, NhanVien nhanVien) {
         this.maPhieuDat = maPhieuDat;
-        this.khachHang = khachHang;
-        this.phong = phong;
-        this.tienCoc = tienCoc;
         this.trangThai = TrangThaiPhieuDat.DANG_DOI;
         this.ngayTao = new Date();
         this.nhanVien = nhanVien;
@@ -202,17 +197,5 @@ public class PhieuDatPhong {
     @Override
     public String toString() {
         return "PhieuDatPhong{" + "maPhieuDat=" + maPhieuDat + ", khachHang=" + khachHang + ", phong=" + phong + ", ngayDat=" + ngayDat + ", ngayTao=" + ngayTao + ", trangThai=" + trangThai + ", tienCoc=" + tienCoc + '}';
-    }
-    
-    public Object[] convertToRowTable(EventAction event) {
-        DecimalFormat dcf = new DecimalFormat("#,###");
-        SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-        return new Object[]{new JCheckBox(), maPhieuDat, fm.format(ngayTao), khachHang.getTenKhachHang(), phong.getTenPhong(), fm.format(ngayDat), trangThai, dcf.format(tienCoc), new ModelAction(this, event)};
-    }
-    
-    public Object[] convertToRowTableInGDTiepNhanDatPhong(){
-        SimpleDateFormat formatterGio = new SimpleDateFormat("HH:mm");
-        System.out.println(formatterGio.format(ngayDat.getTime()));
-        return new Object[]{maPhieuDat,khachHang.getTenKhachHang(),formatterGio.format(ngayDat.getTime())};
     }
 }

@@ -36,6 +36,4 @@ public interface NhanVienService {
 
     public boolean checkEmail(String email);
 
-    // Huu
-    public NhanVien getNhanVienByID(String maNhanVien);
 }

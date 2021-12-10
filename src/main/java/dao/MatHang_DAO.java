@@ -101,48 +101,48 @@ public class MatHang_DAO implements MatHangService {
         return null;
     }
     
-    @Override
-    public List<MatHang> layDsMatHangTheoTen(String tenMatHang) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select * from MatHang where tenMatHang = :x";
-        
-        try {
-            tr.begin();
-            List<MatHang> rs = session
-                    .createNativeQuery(sql, MatHang.class)
-                    .getResultList();
-            tr.commit();
-            return rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return null;
-    }
+//    @Override
+//    public List<MatHang> layDsMatHangTheoTen(String tenMatHang) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        String sql = "select * from MatHang where tenMatHang = :x";
+//        
+//        try {
+//            tr.begin();
+//            List<MatHang> rs = session
+//                    .createNativeQuery(sql, MatHang.class)
+//                    .getResultList();
+//            tr.commit();
+//            return rs;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return null;
+//    }
     
-    @Override
-    public boolean updateSLMatHang(String maMH,int sl,String type) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql ="";
-        if(type.trim().equalsIgnoreCase("increase")){
-            sql = "update MatHang set sLTonKho = sLTonKho + "+ sl +" where maMatHang = '"+maMH+"'";
-        }else{
-            sql = "update MatHang set sLTonKho = sLTonKho - "+ sl +" where maMatHang = '"+maMH+"'";
-        }
-            
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean updateSLMatHang(String maMH,int sl,String type) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql ="";
+//        if(type.trim().equalsIgnoreCase("increase")){
+//            sql = "update MatHang set sLTonKho = sLTonKho + "+ sl +" where maMatHang = '"+maMH+"'";
+//        }else{
+//            sql = "update MatHang set sLTonKho = sLTonKho - "+ sl +" where maMatHang = '"+maMH+"'";
+//        }
+//            
+//        try {
+//            tr.begin();
+//                session.createNativeQuery(sql).executeUpdate();
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
     
     @Override
     public String getLastMatHang() {
@@ -175,63 +175,63 @@ public class MatHang_DAO implements MatHangService {
         return null;
     }
     
-    @Override
-    public boolean insertMatHang(MatHang matHang) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        matHang.setMaMatHang(getLastMatHang());
-         try {
-            tr.begin();
-                session.save(matHang);
-            tr.commit();
-            session.clear();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean insertMatHang(MatHang matHang) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tr = session.getTransaction();
+//        matHang.setMaMatHang(getLastMatHang());
+//         try {
+//            tr.begin();
+//                session.save(matHang);
+//            tr.commit();
+//            session.clear();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
     
-    @Override
-    public boolean updateDonGiaMatHang(MatHang matHang) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        
-        String matHangQuery = "select donGia from MatHang where maMatHang = '"+matHang.getMaMatHang()+"'";
-        double donGiaCu = 0;
-        try {
-            tr.begin();
-                BigDecimal obj = (BigDecimal)session.createNativeQuery(matHangQuery).getSingleResult();
-                donGiaCu = obj.doubleValue();
-            tr.commit();
-            session.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        String sql = "";
-        if(matHang.getDonGia() > donGiaCu){
-            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()+""
-                + ",donGia = "+matHang.getDonGia()+" "
-                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
-        }else{
-            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()
-                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
-        }
-         try {
-             
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            session.clear();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean updateDonGiaMatHang(MatHang matHang) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        String matHangQuery = "select donGia from MatHang where maMatHang = '"+matHang.getMaMatHang()+"'";
+//        double donGiaCu = 0;
+//        try {
+//            tr.begin();
+//                BigDecimal obj = (BigDecimal)session.createNativeQuery(matHangQuery).getSingleResult();
+//                donGiaCu = obj.doubleValue();
+//            tr.commit();
+//            session.clear();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        String sql = "";
+//        if(matHang.getDonGia() > donGiaCu){
+//            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()+""
+//                + ",donGia = "+matHang.getDonGia()+" "
+//                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
+//        }else{
+//            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()
+//                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
+//        }
+//         try {
+//             
+//            tr.begin();
+//                session.createNativeQuery(sql).executeUpdate();
+//            tr.commit();
+//            session.clear();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
     
     @Override
     public List<MatHang> findMatHang(String textFind, int type) {
@@ -264,25 +264,6 @@ public class MatHang_DAO implements MatHangService {
         
         return null;
     
-    }
-    
-    @Override
-    public List<MatHang> getDanhSachMatHang() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select * from MatHang order by maLoaiDichVu ";
-        try {
-            tr.begin();
-                List<MatHang> dsMatHang = session.createNativeQuery(sql,MatHang.class).getResultList();
-            tr.commit();
-            return dsMatHang;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        
-        return null;
     }
     
     @Override
@@ -326,7 +307,7 @@ public class MatHang_DAO implements MatHangService {
 		Iterator<?> i = listAs.iterator();
 		while (i.hasNext()) {
                     Object[] row = (Object[]) i.next();
-                    long sl = new NhaCungCapVaNhapHang_DAO().getSLNhapByDate(row[0].toString(), batDau, ketThuc);
+                    long sl = new NhaCungCap_DAO().getSLNhapByDate(row[0].toString(), batDau, ketThuc);
                     String chuoiData = row[1]+";"+row[2]+";"+row[3]+";"+sl+";"+row[4];
                     list.add(chuoiData);
                 }
@@ -433,7 +414,7 @@ public class MatHang_DAO implements MatHangService {
 		Iterator<?> i = listAs.iterator();
 		while (i.hasNext()) {
                     Object[] row = (Object[]) i.next();
-                    long sl = new NhaCungCapVaNhapHang_DAO().getSLNhap(row[0].toString(), thangOrNam,thang, year);
+                    long sl = new NhaCungCap_DAO().getSLNhap(row[0].toString(), thangOrNam,thang, year);
                     String chuoiData = row[1]+";"+row[2]+";"+row[3]+";"+sl+";"+row[4];
                     list.add(chuoiData);
                 }

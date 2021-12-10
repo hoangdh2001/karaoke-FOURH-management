@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import objectcombobox.ObjectComboBox;
+import gui.swing.model.ModelObjectComboBox;
 
 @Entity
 @IdClass(ChiTietHoaDon_PK.class)
@@ -105,18 +105,6 @@ public class ChiTietHoaDon {
     public String toString() {
         return "ChiTietHoaDon [matHang=" + matHang + ", soLuong=" + soLuong
                 + ", thanhTien=" + thanhTien + "]";
-    }
-
-    public Object[] convertToRowTableInGDLapHoaDon() {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
-        return new Object[]{new ObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()), soLuong, df.format(matHang.getDonGia()), getThanhTien()};
-    }
-    
-    public Object[] convertToRowTableInTiepNhanHoaDon(EventMinus event) {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0 VND");
-        return new Object[] {matHang.getMaMatHang(), matHang.getTenMatHang(), soLuong, df.format(matHang.getDonGia()), df.format(getThanhTien()), event};
     }
 
     @Override

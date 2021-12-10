@@ -156,83 +156,25 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     /**
-     * Tìm những hóa đơn của những khách hàng có tên tương đối vói tên khách hàng truyền vào
-     * @param tenKhachHang: Tên khách hàng
-     * @param numPage số dòng dữ liệu lấy ra
-     * @param maNhanVien mã nhân viên (nhân vien đang thực hiện tìm kiếm)
-     * @return danh sách hó đơn tương ứng
-     */
-    @Override
-    public List<HoaDon> getDSHoaDonByTenKhachHang(String tenKhachHang,int numPage, String maNhanVien) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select h.*\n"
-                + "  from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang\n"
-                + "  where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and k.tenKhachHang like N'%" + tenKhachHang + "%'"
-                + "order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .setParameter("x", numPage*20)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    /**
-     * Tìm những hóa đơn thuộc phòng nào đó
-     * @param tenPhong: tên phòng
-     * @param numPage: số dòng dữ liệu lấy ra trước tiên
-     * @param maNhanVien: mã nhân viên của nhân viên đang thao tác
-     * @return danh sách hóa đơn tương ứng
-     */
-    @Override
-    public List<HoaDon> getDSHoaDonByTenPhong(String tenPhong,int numPage, String maNhanVien) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select h.*\n"
-                + "  from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong\n"
-                + "  where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and p.tenPhong like N'%" + tenPhong + "%'"
-                + "order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
-        try {
-            tr.begin();
-            List<HoaDon> dsHoaDon = session
-                    .createNativeQuery(sql, HoaDon.class)
-                    .setParameter("x", numPage*20)
-                    .getResultList();
-            tr.commit();
-            return dsHoaDon;
-        } catch (Exception e) {
-            System.err.println(e);
-            tr.rollback();
-        }
-        session.close();
-        return null;
-    }
-
-    /**
      * Tìm hóa đơn theo tiêu chi nào dó
-     * @param tieuChiKhac: tiêu chí tìm ( có thể là mã hóa đơn, ....)
+     * @param cot: tiêu chí tìm ( có thể là mã hóa đơn, ....)
      * @param duLieu: thông tin cần tìm
      * @param numPage: số dữ liệu lấy ra trước tiên
      * @param maNhanVien: mã nhân viên của nhân viên đang thao tác
      * @return những hóa đơn phù hợp với yêu cầu tìm kiếm
      */
     @Override
-    public List<HoaDon> getDSHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu,int numPage, String maNhanVien) {
+    public List<HoaDon> getDSHoaDonByTieuChiKhac(int cot, String duLieu,int numPage, String maNhanVien) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select  h.* \n"
-                + "  from [dbo].[HoaDon] h\n"
-                + "  where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and h." + tieuChiKhac + " like '%" + duLieu + "%'"
-                + "order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
+        String sql = null;
+        if (cot==1){
+            sql = "select  h.* from [dbo].[HoaDon] h where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and h.maHoaDon like '%" + duLieu + "%' order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
+        }else if(cot==2){
+            sql = "select h.* from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and k.tenKhachHang like N'%" + duLieu + "%' order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
+        }else if(cot==3){
+            sql = "select h.* from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong where ISDATE(h.ngayLapHoaDon) = 1 and  h.maNhanVien like '%"+maNhanVien+"%' and p.tenPhong like N'%" + duLieu + "%' order by h.ngayLapHoaDon desc offset :x row fetch next 20 rows only";
+        }
         try {
             tr.begin();
             List<HoaDon> dsHoaDon = session
@@ -331,10 +273,16 @@ public class HoaDon_DAO implements HoaDonService {
      * @return 
      */
     @Override
-    public List<Integer> getDSThangTheoNgayLap() {
+    public List<Integer> getDSThangTheoNgayLap(int quy) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select DISTINCT(DATEPART(month, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1 order by DATEPART(month, ngayLapHoaDon)";
+        String sql =null;
+        if(quy==0){
+            sql = "select DISTINCT(DATEPART(month, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1 order by DATEPART(month, ngayLapHoaDon)";
+        }else{
+            sql = "select DISTINCT(DATEPART(month, ngayLapHoaDon)) from [dbo].[HoaDon] where ISDATE([ngayLapHoaDon]) = 1 and DATEPART(QUARTER, ngayLapHoaDon)= "+quy+" order by DATEPART(month, ngayLapHoaDon)";
+        }
+        
         try {
             tr.begin();
             List<Integer> dsThang = session
@@ -423,68 +371,25 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     /**
-     * Tính số lượng hóa đơn của nhân viên có mã truyền vào theo tên khách hàng
-     * @param tenKhachHang: tên khách hàng
-     * @param maNhanVien: mã nhân viên
-     * @return số lượng hóa đơn
-     */
-    @Override
-    public int getSoLuongHoaDonByTenKhachHang(String tenKhachHang, String maNhanVien) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang where ISDATE(h.ngayLapHoaDon) = 1 and k.tenKhachHang like N'%" + tenKhachHang + "%' and  h.maNhanVien like '%"+maNhanVien+"%'";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
-
-    /**
-     * Tính số lượng của nhân viên có mã truyền vào theo tên phòng
-     * @param tenPhong: tên phòng
-     * @param maNhanVien;l mã nhân viên
-     * @return số lượng hóa đơn
-     */
-    @Override
-    public int getSoLuongHoaDonByTenPhong(String tenPhong, String maNhanVien) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong where ISDATE(h.ngayLapHoaDon) = 1 and p.tenPhong like N'%" + tenPhong + "%'and  h.maNhanVien like '%"+maNhanVien+"%'";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
-
-    /**
      * tính số lượng hóa đơn của nhân viên có mã truyền vào theo tiêu chí nào đó
-     * @param tieuChiKhac: tiêu chí tìm kiếm
+     * @param cot: tiêu chí tìm kiếm
      * @param duLieu: dữ liệu tìm kiếm theo tiêu chí
      * @param maNhanVien: mã nhân viên
      * @return  số lượng hóa đơn
      */
     @Override
-    public int getSoLuongHoaDonByTieuChiKhac(String tieuChiKhac, String duLieu, String maNhanVien) {
+    public int getSoLuongHoaDonByTieuChiKhac(int cot, String duLieu, String maNhanVien) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "select count(*) from [dbo].[HoaDon] h where ISDATE(h.ngayLapHoaDon) = 1 and h." + tieuChiKhac + " like '%" + duLieu + "%' and  h.maNhanVien like '%"+maNhanVien+"%'";
+        String sql = null;
+        if(cot==1){
+            sql ="select count(*) from [dbo].[HoaDon] h where ISDATE(h.ngayLapHoaDon) = 1 and h.maHoaDon like '%" + duLieu + "%' and  h.maNhanVien like '%"+maNhanVien+"%'";
+        }else if(cot==2){
+            sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[KhachHang] k on k.maKhachHang=h.maKhachHang where ISDATE(h.ngayLapHoaDon) = 1 and k.tenKhachHang like N'%" + duLieu + "%' and  h.maNhanVien like '%"+maNhanVien+"%'";
+        }else if(cot==3){
+            sql = "select count(*) from [dbo].[HoaDon] h join [dbo].[Phong] p on p.maPhong=h.maPhong where ISDATE(h.ngayLapHoaDon) = 1 and p.tenPhong like N'%" + duLieu + "%'and  h.maNhanVien like '%"+maNhanVien+"%'";
+        }
         try {
             tr.begin();
             int rs = (int) session.
@@ -553,144 +458,127 @@ public class HoaDon_DAO implements HoaDonService {
         return 0;
     }
     
-    /**
-     * Câp nhật trạng thái phiếu là Hết Hạn cho những phiếu có trạng thái Đang Đợi đã quá hạn đặt
-     */
-    @Override
-    public void capNhatTrangThaiPhieuHetHan() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "update PhieuDatPhong set trangThai = 'HET_HAN' where ngayDat > GETDATE()  and trangThai =  'DANG_DOI'";
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();  
-            tr.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-    }
     
 //    Huu
-    @Override
-    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-                session.save(ctHoaDon);  
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
-    @Override
-    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql ="";
-        if(ctHoaDon.getSoLuong() >0){
-            sql = "update ChiTietHoaDon set soLuong = "+ctHoaDon.getSoLuong()+",thanhTien = "+ctHoaDon.getThanhTien()
-                +"where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
-                + "and maMatHang = '" +ctHoaDon.getMatHang().getMaMatHang()+"' ";
-        }else{
-            sql = "delete ChiTietHoaDon"
-                +" where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
-                + "and maMatHang = '"+ctHoaDon.getMatHang().getMaMatHang()+"'";
-        }
-        
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();  
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        try {
+//            tr.begin();
+//                session.save(ctHoaDon);  
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
+//    @Override
+//    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql ="";
+//        if(ctHoaDon.getSoLuong() >0){
+//            sql = "update ChiTietHoaDon set soLuong = "+ctHoaDon.getSoLuong()+",thanhTien = "+ctHoaDon.getThanhTien()
+//                +"where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
+//                + "and maMatHang = '" +ctHoaDon.getMatHang().getMaMatHang()+"' ";
+//        }else{
+//            sql = "delete ChiTietHoaDon"
+//                +" where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
+//                + "and maMatHang = '"+ctHoaDon.getMatHang().getMaMatHang()+"'";
+//        }
+//        
+//        try {
+//            tr.begin();
+//                session.createNativeQuery(sql).executeUpdate();  
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
 
-    @Override
-    public HoaDon getHoaDon(Phong phong) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select top 1 * from HoaDon where maPhong = '"+phong.getMaPhong()+"' order by maHoaDon desc";
-        try {
-            tr.begin();
-                HoaDon hoadon= session.createNativeQuery(sql,HoaDon.class).getSingleResult();
-            tr.commit();
-            return hoadon;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return null;
-    }
+//    @Override
+//    public HoaDon getHoaDon(Phong phong) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql = "select top 1 * from HoaDon where maPhong = '"+phong.getMaPhong()+"' order by maHoaDon desc";
+//        try {
+//            tr.begin();
+//                HoaDon hoadon= session.createNativeQuery(sql,HoaDon.class).getSingleResult();
+//            tr.commit();
+//            return hoadon;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return null;
+//    }
 
-    @Override
-    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        java.util.Date date = new java.util.Date(System.currentTimeMillis());
-        String ngayLapHoaDon = gio.format(date);
-        
-        String sql = "update HoaDon "
-                + "set donGiaPhong = "+tongTienPhong+","
-                + "gioHat = '"+gioHat+"',"
-                + "ngayLapHoaDon = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
-                + ",thoiGianKetThuc = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
-                + ",tongHoaDon = "+tongTien
-                + ",tongTienMatHang = "+tongTienMatHang+" where maHoaDon = '"+hoaDon.getMaHoaDon()+"' ";
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();  
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        
-        return false;
-    }
+//    @Override
+//    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+//        String ngayLapHoaDon = gio.format(date);
+//        
+//        String sql = "update HoaDon "
+//                + "set donGiaPhong = "+tongTienPhong+","
+//                + "gioHat = '"+gioHat+"',"
+//                + "ngayLapHoaDon = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
+//                + ",thoiGianKetThuc = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
+//                + ",tongHoaDon = "+tongTien
+//                + ",tongTienMatHang = "+tongTienMatHang+" where maHoaDon = '"+hoaDon.getMaHoaDon()+"' ";
+//        try {
+//            tr.begin();
+//                session.createNativeQuery(sql).executeUpdate();  
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        
+//        return false;
+//    }
     
-    @Override
-    public String getlastMaHoaDonTang() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select top 1 maHoaDon from HoaDon order by maHoaDon desc";
-        
-        try {
-            tr.begin();
-                String maHoaDon = "";
-                String maCuoiCung = "HD";
-
-                try {
-                    maHoaDon = (String)session.createNativeQuery(sql).uniqueResult(); 
-                    int so = Integer.parseInt(maHoaDon.split("HD")[1]) + 1;
-                int soChuSo = String.valueOf(so).length();
-
-                for (int i = 0; i< 7-soChuSo; i++){
-                    maCuoiCung += "0";
-                }
-                maCuoiCung += String.valueOf(so);
-                } catch (Exception e) {
-                    maCuoiCung = "HD0000001";
-                }      
-            tr.commit();
-            return maCuoiCung;
-        } catch (Exception e) {
-            e.printStackTrace();
-             tr.rollback();
-        }
-        return null;
-    }
+//    @Override
+//    public String getlastMaHoaDonTang() {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql = "select top 1 maHoaDon from HoaDon order by maHoaDon desc";
+//        
+//        try {
+//            tr.begin();
+//                String maHoaDon = "";
+//                String maCuoiCung = "HD";
+//
+//                try {
+//                    maHoaDon = (String)session.createNativeQuery(sql).uniqueResult(); 
+//                    int so = Integer.parseInt(maHoaDon.split("HD")[1]) + 1;
+//                int soChuSo = String.valueOf(so).length();
+//
+//                for (int i = 0; i< 7-soChuSo; i++){
+//                    maCuoiCung += "0";
+//                }
+//                maCuoiCung += String.valueOf(so);
+//                } catch (Exception e) {
+//                    maCuoiCung = "HD0000001";
+//                }      
+//            tr.commit();
+//            return maCuoiCung;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//             tr.rollback();
+//        }
+//        return null;
+//    }
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
@@ -711,28 +599,28 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
     
-    @Override
-    public boolean updateHoaDonDoiPhong(HoaDon hoaDon) {
-//        String sql = "update HoaDon set maPhong = :x"
-//                +",gioHat = '00:00', "
-//                + ",donGiaPhongCu = :y"
-//                + ",thoiGianBatDau = :z"
-//                + ",thoiGianKetThuc = :a"
-//                + " where maHoaDon = :b";
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        try {
-            tr.begin();
-                session.update(hoaDon);
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return false;
-    }
-    
+//    @Override
+//    public boolean updateHoaDonDoiPhong(HoaDon hoaDon) {
+////        String sql = "update HoaDon set maPhong = :x"
+////                +",gioHat = '00:00', "
+////                + ",donGiaPhongCu = :y"
+////                + ",thoiGianBatDau = :z"
+////                + ",thoiGianKetThuc = :a"
+////                + " where maHoaDon = :b";
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        try {
+//            tr.begin();
+//                session.update(hoaDon);
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return false;
+//    }
+//    
     @Override
     public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year,int page) {
         String sql ="";
@@ -921,28 +809,28 @@ public class HoaDon_DAO implements HoaDonService {
         }
         return num;
     }
-    
+
+//    @Override
+//    public boolean insertHoaDon(HoaDon hoaDon) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tr = session.getTransaction();
+//        try {
+//            tr.begin();
+//                session.save(hoaDon);
+//            tr.commit();
+//            session.clear();
+//            return true;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return false;
+//    }
     @Override
-    public boolean insertHoaDon(HoaDon hoaDon) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-                session.save(hoaDon);
-            tr.commit();
-            session.clear();
-            return true;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return false;
-    }
-    @Override
-    public HoaDon getHoaDonByIdPhong(String id, TrangThaiHoaDon trangThai) {
+    public HoaDon getHoaDonByIdPhong(String id) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
 
-        String sql = "select * from HoaDon where maPhong = '" + id + "' and trangThai = '" + trangThai + "'";
+        String sql = "select * from HoaDon where maPhong = '" + id + "' and trangThai = 'DANG_XU_LY'";
 
         try {
             tr.begin();
