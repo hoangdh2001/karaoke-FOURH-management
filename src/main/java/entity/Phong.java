@@ -1,8 +1,5 @@
 package entity;
 
-import gui.swing.table.EventAction;
-import gui.swing.model.ModelAction;
-import java.text.DecimalFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.swing.JCheckBox;
-import gui.swing.model.ModelObjectComboBox;
 
 @Entity
 @Table(name = "Phong")

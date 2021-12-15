@@ -37,7 +37,6 @@ public class ChiTietHoaDon {
      * @param hoaDon
      * @param matHang
      * @param soLuong
-     * @param chietKhau 
      */
     public ChiTietHoaDon(HoaDon hoaDon, MatHang matHang, int soLuong) {
         this.hoaDon = hoaDon;

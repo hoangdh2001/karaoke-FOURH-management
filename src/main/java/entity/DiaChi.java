@@ -5,7 +5,6 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class DiaChi {
-
     private String soNha;
     @Column(columnDefinition = "nvarchar(255)")
     private String tenDuong;

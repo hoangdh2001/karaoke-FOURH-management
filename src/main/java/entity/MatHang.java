@@ -1,8 +1,5 @@
 package entity;
 
-import gui.swing.event.EventAdd;
-import gui.swing.model.ModelAdd;
-import java.text.DecimalFormat;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import gui.swing.model.ModelObjectComboBox;
 
 @Entity
 @Table(name = "MatHang")
