@@ -1,14 +1,11 @@
 package entity;
 
-import gui.swing.table.EventAction;
-import gui.swing.model.ModelAction;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.swing.JCheckBox;
 
 @Entity
 @Table(name = "KhachHang")
