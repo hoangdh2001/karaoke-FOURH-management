@@ -45,7 +45,7 @@ import service.LoaiDichVuService;
 import service.MatHangService;
 import service.NhaCungCapService;
 
-public class GD_ThemMatHang extends javax.swing.JPanel {
+public class NhapHangHoa extends javax.swing.JPanel {
 
     private JComboBox<Object> cbNhaCungCap;
     private JComboBox<Object> cbLoaiSP;
@@ -86,7 +86,7 @@ public class GD_ThemMatHang extends javax.swing.JPanel {
     private Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
 
-    public GD_ThemMatHang() {
+    public NhapHangHoa() {
         loHangService = new LoHang_DAO();
         matHangService = new MatHang_DAO();
         loaiDichVuService = new LoaiDichVu_DAO();

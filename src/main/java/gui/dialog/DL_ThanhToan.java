@@ -155,7 +155,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
                     txtTongHoaDon.setText(df.format(hoaDon.getTongHoaDon()));
                 } catch (Exception ex) {
-                    Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 

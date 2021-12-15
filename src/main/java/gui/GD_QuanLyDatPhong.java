@@ -5,7 +5,7 @@ import dao.PhieuDatPhong_DAO;
 import dao.Phong_DAO;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
-import gui.dialog.DL_DatPhong;
+import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
 import gui.swing.panel.PanelShadow;
@@ -45,7 +45,7 @@ import service.PhieuDatPhongService;
  *
  * @author Hao
  */
-public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener, KeyListener {
+public class GD_QuanLyDatPhong extends javax.swing.JPanel implements ActionListener, KeyListener {
 
     private final DecimalFormat dcf = new DecimalFormat("#,##0 VND");
     private final SimpleDateFormat fm = new SimpleDateFormat("dd-MM-yyyy hh:mm");
@@ -63,7 +63,7 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
     /**
      * Creates new form GD_QLDatPhong
      */
-    public GD_QLDatPhong() {
+    public GD_QuanLyDatPhong() {
 
         initComponents();
         phieuDatPhongService = new PhieuDatPhong_DAO();
@@ -202,20 +202,20 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
                 PhieuDatPhong phieu = phieuDatPhongService.getPhieuDatPhong(maPhieu);
                 if (phieu.getTrangThai() == TrangThaiPhieuDat.DANG_DOI) {
-                    if (JOptionPane.showConfirmDialog(GD_QLDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    if (JOptionPane.showConfirmDialog(GD_QuanLyDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         phieu.setTrangThai(TrangThaiPhieuDat.DA_HUY);
                         if (phieuDatPhongService.capNhatPhieuDatPhong(phieu)) {
-                            JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
+                            JOptionPane.showMessageDialog(GD_QuanLyDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
                             dsPhieu = phieuDatPhongService.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
                             xoaDuLieu();
                             loadPage();
                             taiLaiDuLieu(dsPhieu);
                         } else {
-                            JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " hủy thất bại.");
+                            JOptionPane.showMessageDialog(GD_QuanLyDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " hủy thất bại.");
                         }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể hủy.");
+                    JOptionPane.showMessageDialog(GD_QuanLyDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể hủy.");
                 }
 
             }
@@ -226,14 +226,14 @@ public class GD_QLDatPhong extends javax.swing.JPanel implements ActionListener,
                 String maPhieu = String.valueOf(((DefaultTableModel) tblPhieuDatPhong.getModel()).getValueAt(row, 1));
                 PhieuDatPhong phieu = phieuDatPhongService.getPhieuDatPhong(maPhieu);
                 if (phieu.getTrangThai() == TrangThaiPhieuDat.DANG_DOI) {
-                    DL_DatPhong dldatPhong = new DL_DatPhong(Application.login);
+                    DL_TiepNhanDatPhong dldatPhong = new DL_TiepNhanDatPhong(Application.login);
                     dldatPhong.setPhieuDatPhong(phieu);
                     dldatPhong.setVisible(true);
                     xoaDuLieu();
                     loadPage();
                     taiLaiDuLieu(dsPhieu);
                 } else {
-                    JOptionPane.showMessageDialog(GD_QLDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể sửa.");
+                    JOptionPane.showMessageDialog(GD_QuanLyDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " không thể sửa.");
                 }
             }
         };

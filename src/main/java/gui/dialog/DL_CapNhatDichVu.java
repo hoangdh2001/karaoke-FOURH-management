@@ -139,7 +139,7 @@ public class DL_CapNhatDichVu extends javax.swing.JDialog {
                     }
                     txtTongTienMatHang.setText(df.format(hoaDon.getTongTienMatHang()));
                 } catch (Exception ex) {
-                    Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 

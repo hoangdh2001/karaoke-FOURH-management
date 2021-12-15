@@ -365,7 +365,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                 try {
                     exportTableToExcel();
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(GD_XemDichVu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(GD_XemMatHang.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 

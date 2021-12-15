@@ -40,7 +40,7 @@ import service.MatHangService;
  *
  * @author 84975
  */
-public class GD_XemDichVu extends javax.swing.JPanel {
+public class GD_XemMatHang extends javax.swing.JPanel {
 
     private JTextField txtNhap;
 
@@ -64,7 +64,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
     /**
      * Creates new form GD_XemDichVu
      */
-    public GD_XemDichVu() {
+    public GD_XemMatHang() {
         initComponents();
         initSearch();
         initTable();
@@ -214,7 +214,7 @@ public class GD_XemDichVu extends javax.swing.JPanel {
                 try {
                     exportTableToExcel();
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(GD_XemDichVu.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(GD_XemMatHang.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }

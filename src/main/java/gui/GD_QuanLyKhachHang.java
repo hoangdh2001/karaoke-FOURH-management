@@ -27,7 +27,7 @@ import service.KhachHangService;
  *
  * @author Hao
  */
-public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, KeyListener{
+public class GD_QuanLyKhachHang extends javax.swing.JPanel implements ActionListener, KeyListener{
     List<KhachHang> dsKhachHang ;
     private KhachHangService khachHangService;
     private JTextField txtTimKiem;
@@ -37,7 +37,7 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
     /**
      * Creates new form GD_KhachHang
      */
-    public GD_KhachHang() {
+    public GD_QuanLyKhachHang() {
         initComponents();
         buildGD();
         
@@ -211,20 +211,20 @@ public class GD_KhachHang extends javax.swing.JPanel implements ActionListener, 
                                 String soDienThoai = tblKhachHang.getValueAt(row, 4).toString().trim();
                                 String maKhachHang = tblKhachHang.getValueAt(row, 1).toString().trim();
                                 if(khachHangService.capNhatKhachHang(maKhachHang, soDienThoai)) {
-                                    JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
+                                    JOptionPane.showMessageDialog(GD_QuanLyKhachHang.this, "Cập nhật số điện thoại khách hàng thành công.");
                                     xoaDuLieu();
                                     loadData(pnlPage.getCurrentIndex());
                                 }else{
-                                    JOptionPane.showMessageDialog(GD_KhachHang.this, "Cập nhật số điện thoại khách hàng không thành công");         
+                                    JOptionPane.showMessageDialog(GD_QuanLyKhachHang.this, "Cập nhật số điện thoại khách hàng không thành công");         
                                 }
                             }else{
-                                JOptionPane.showMessageDialog(GD_KhachHang.this, "Số điện thoại khách hàng không hợp lệ"); 
+                                JOptionPane.showMessageDialog(GD_QuanLyKhachHang.this, "Số điện thoại khách hàng không hợp lệ"); 
                                 xoaDuLieu();
                                 loadData(pnlPage.getCurrentIndex());
                             }
                         }
                     }catch(Exception ex){
-                        JOptionPane.showMessageDialog(GD_KhachHang.this, "Lựa chọn không phù hợp"); 
+                        JOptionPane.showMessageDialog(GD_QuanLyKhachHang.this, "Lựa chọn không phù hợp"); 
                     }
                 }
             });

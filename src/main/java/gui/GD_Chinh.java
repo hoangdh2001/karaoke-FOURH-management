@@ -376,7 +376,7 @@ public class GD_Chinh extends JFrame {
                         }
                         break;
                     case 1:
-                        GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
+                        GD_QuanLyDatPhong qlDatPhong = new GD_QuanLyDatPhong();
                         content.showForm(qlDatPhong);
                         qlDatPhong.addEvent(new EventSelectedRow() {
                             @Override
@@ -395,12 +395,12 @@ public class GD_Chinh extends JFrame {
                         
                         break;
                     case 2:
-                        GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
+                        GD_QuanLyKhachHang giaoDienKhachHang = new GD_QuanLyKhachHang();
                         content.showForm(giaoDienKhachHang);
 
                         break;
                     case 3:
-                        GD_HoaDon giaoDienHoaDon = new GD_HoaDon();
+                        GD_QuanLyHoaDon giaoDienHoaDon = new GD_QuanLyHoaDon();
                         content.showForm(giaoDienHoaDon);
                         
                         giaoDienHoaDon.addEvent(new EventSelectedRow() {
@@ -481,9 +481,9 @@ public class GD_Chinh extends JFrame {
                         break;
                     case 6:
                         if(subMenuIndex == 0) {
-                            content.showForm(new GD_XemDichVu());
+                            content.showForm(new GD_XemMatHang());
                         } else if (subMenuIndex == 1) {
-                            content.showForm(new GD_ThemMatHang());
+                            content.showForm(new NhapHangHoa());
                         }
                         break;
                     default:
@@ -534,7 +534,7 @@ public class GD_Chinh extends JFrame {
                             content.showForm(soDoPhongHat);
                         break;
                     case 1:
-                        GD_QLDatPhong qlDatPhong = new GD_QLDatPhong();
+                        GD_QuanLyDatPhong qlDatPhong = new GD_QuanLyDatPhong();
                         content.showForm(qlDatPhong);
                         qlDatPhong.addEvent(new EventSelectedRow() {
                             @Override
@@ -552,11 +552,11 @@ public class GD_Chinh extends JFrame {
                         });
                         break;
                     case 2:
-                        GD_KhachHang giaoDienKhachHang = new GD_KhachHang();
+                        GD_QuanLyKhachHang giaoDienKhachHang = new GD_QuanLyKhachHang();
                         content.showForm(giaoDienKhachHang);
                         break;
                     case 3:
-                        GD_HoaDon giaoDienHoaDon = new GD_HoaDon();
+                        GD_QuanLyHoaDon giaoDienHoaDon = new GD_QuanLyHoaDon();
                         content.showForm(giaoDienHoaDon);
                         giaoDienHoaDon.addEvent(new EventSelectedRow() {
                             @Override
@@ -595,9 +595,9 @@ public class GD_Chinh extends JFrame {
                         break;
                     case 1:
                         if(subMenuIndex == 0) {
-                            content.showForm(new GD_XemDichVu());
+                            content.showForm(new GD_XemMatHang());
                         } else if (subMenuIndex == 1) {
-                            content.showForm(new GD_ThemMatHang());
+                            content.showForm(new NhapHangHoa());
                         }
                         break;
                     default:

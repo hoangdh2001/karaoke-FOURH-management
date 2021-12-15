@@ -43,7 +43,7 @@ import service.HoaDonService;
  *
  * @author Hao
  */
-public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
+public class GD_QuanLyHoaDon extends javax.swing.JPanel implements ActionListener {
 
     private HoaDonService hoaDonService;
     private List<HoaDon> dsHoaDon = new ArrayList<HoaDon>();
@@ -68,7 +68,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
         this.eventOnClick = eventOnClick;
     }
 
-    public GD_HoaDon() {
+    public GD_QuanLyHoaDon() {
         hoaDonService = new HoaDon_DAO();
         nhanVien_Dao = new NhanVien_DAO();
         initComponents();
@@ -377,7 +377,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
             @Override
             public void keyPressed(KeyEvent arg0) {
                 if (cmbCot.getSelectedIndex() == 0) {
-                    JOptionPane.showMessageDialog(GD_HoaDon.this, "Hãy chọn cột mà bạn muốn tìm kiếm.");
+                    JOptionPane.showMessageDialog(GD_QuanLyHoaDon.this, "Hãy chọn cột mà bạn muốn tìm kiếm.");
                     txtTimKiem.setText("");
                     txtTimKiem.requestFocus();
                 }
@@ -404,7 +404,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
                         createPanelBottom(3);
                     } else {
                         if (dscBatDau.getDate().compareTo(dscKetThuc.getDate()) > 0) {
-                            JOptionPane.showMessageDialog(GD_HoaDon.this, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
+                            JOptionPane.showMessageDialog(GD_QuanLyHoaDon.this, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
                             dscBatDau.setDate(null);
                             dscKetThuc.setDate(null);
                         } else {
@@ -425,7 +425,7 @@ public class GD_HoaDon extends javax.swing.JPanel implements ActionListener {
                         createPanelBottom(3);
                     } else {
                         if (dscBatDau.getDate().compareTo(dscKetThuc.getDate()) > 0) {
-                            JOptionPane.showMessageDialog(GD_HoaDon.this, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
+                            JOptionPane.showMessageDialog(GD_QuanLyHoaDon.this, "Ngày kết thúc phải lớn hơn ngày bắt đầu");
                             dscBatDau.setDate(null);
                             dscKetThuc.setDate(null);
                         } else {
