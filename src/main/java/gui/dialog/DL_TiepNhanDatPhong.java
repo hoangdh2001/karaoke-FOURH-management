@@ -61,6 +61,13 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         initUpdate();
     }
 
+    public void setPhong(Phong phong) {
+        phieuDatPhong.setPhong(phong);
+        txtTenPhong.setText(phieuDatPhong.getPhong().getTenPhong());
+        txtLoaiPhongTT.setText(phieuDatPhong.getPhong().getLoaiPhong().getTenLoaiPhong());
+        txtGia.setText(df.format(phieuDatPhong.getPhong().getLoaiPhong().getGiaPhong()));
+    }
+
     public DL_TiepNhanDatPhong(java.awt.Frame parent) {
         super(parent, true);
         khachHangService = new KhachHang_DAO();
@@ -321,7 +328,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         String date = thoiGianBatDau.getDatePicker().getText() + " " + thoiGianBatDau.getTimePicker().getText();
         if (!date.equals("")) {
             String maLoaiPhong = "";
-            if (cmbLoaiPhong.getSelectedIndex() != 0) {
+            if (cmbLoaiPhong.getSelectedIndex() != -1) {
                 ModelObjectComboBox cb = (ModelObjectComboBox) cmbLoaiPhong.getSelectedItem();
                 maLoaiPhong = cb.getMa();
             }
@@ -728,7 +735,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 showMsg("Đặt thành công " + phieuDatPhong.getPhong().getTenPhong() + " vào lúc: " + sdf.format(phieuDatPhong.getNgayDat()));
                 long diff = (phieuDatPhong.getNgayDat().getTime() - new Date().getTime()) / 1000;
                 int diffHours = (int) (diff / 3600);
-                if(diffHours < 2)  {
+                if (diffHours < 2) {
                     phieuDatPhong.getPhong().setTrangThai(TrangThaiPhong.DAT_TRUOC);
                     phongService.updatePhong(phieuDatPhong.getPhong());
                 }

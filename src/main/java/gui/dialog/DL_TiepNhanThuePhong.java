@@ -106,7 +106,6 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
             maHoaDon = AutoID.generateId(maxID, "HD");
         }
         this.hoaDon = new HoaDon(maHoaDon, phong, nv);
-//        WindowIcon.addWindowIcon(this);
         initComponents();
         buildDisplay();
     }
