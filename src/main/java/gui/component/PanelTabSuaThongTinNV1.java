@@ -499,7 +499,7 @@ public class PanelTabSuaThongTinNV1 extends javax.swing.JPanel {
 
         jDateChooser1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        btnSua.setText("Sửa");
+        btnSua.setText("Lưu");
         btnSua.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
 
         txtMaNV.setEditable(false);
