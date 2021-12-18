@@ -7,10 +7,6 @@ import org.hibernate.Transaction;
 import service.DiaChiMauService;
 import util.HibernateUtil;
 
-/**
- *
- * @author NGUYE
- */
 public class DiaChiMau_DAO implements DiaChiMauService {
 
     private SessionFactory sessionFactory;
@@ -55,7 +51,6 @@ public class DiaChiMau_DAO implements DiaChiMauService {
 
             return quanHuyens;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
 
@@ -77,7 +72,6 @@ public class DiaChiMau_DAO implements DiaChiMauService {
             transaction.commit();
             return xaPhuongs;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
 

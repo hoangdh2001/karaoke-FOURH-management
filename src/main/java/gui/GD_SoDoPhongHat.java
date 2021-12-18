@@ -36,6 +36,13 @@ import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventTabSelected;
 import gui.swing.textfield.MyTextFieldFlatlaf;
+import java.awt.Desktop;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -169,6 +176,16 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         popupMenu.add(mniLamMoi);
 
         JMenuItem mniHuongDan = new JMenuItem("Hướng dẫn");
+        mniHuongDan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    openWebpage(new URL("https://www.youtube.com/"));
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         popupMenu.add(mniHuongDan);
 
         open.addActionListener(new ActionListener() {
@@ -367,6 +384,28 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 panelMap.loadMap(dsPhong, index);
             }
         }).start();
+    }
+
+    public static boolean openWebpage(URI uri) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public static boolean openWebpage(URL url) {
+        try {
+            return openWebpage(url.toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @SuppressWarnings("unchecked")

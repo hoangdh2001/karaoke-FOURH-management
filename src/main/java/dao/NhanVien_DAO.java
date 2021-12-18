@@ -8,10 +8,6 @@ import org.hibernate.Transaction;
 import service.NhanVienService;
 import util.HibernateUtil;
 
-/**
- *
- * @author NGUYE
- */
 public class NhanVien_DAO implements NhanVienService {
 
     private SessionFactory sessionFactory;
@@ -51,7 +47,6 @@ public class NhanVien_DAO implements NhanVienService {
             transaction.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
 
         }
@@ -75,7 +70,6 @@ public class NhanVien_DAO implements NhanVienService {
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -98,7 +92,6 @@ public class NhanVien_DAO implements NhanVienService {
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;
@@ -121,7 +114,6 @@ public class NhanVien_DAO implements NhanVienService {
 
             return nhanVien;
         } catch (Exception e) {
-            System.err.println(e);
             transaction.rollback();
         }
         return null;
@@ -140,7 +132,6 @@ public class NhanVien_DAO implements NhanVienService {
 
             return nhanViens;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
         return null;
@@ -160,7 +151,6 @@ public class NhanVien_DAO implements NhanVienService {
 
             return nhanVien;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
         return null;
@@ -241,7 +231,6 @@ public class NhanVien_DAO implements NhanVienService {
 
             return nhanViens;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
         return null;
@@ -298,7 +287,6 @@ public class NhanVien_DAO implements NhanVienService {
 
             return rs;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
         return 0;
@@ -341,7 +329,6 @@ public class NhanVien_DAO implements NhanVienService {
             tr.commit();
             return dsMa;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import entity.LoHang;
@@ -12,10 +8,6 @@ import org.hibernate.Transaction;
 import service.LoHangService;
 import util.HibernateUtil;
 
-/**
- *
- * @author 84975
- */
 public class LoHang_DAO implements LoHangService{
     private SessionFactory sessionFactory;  
     
@@ -24,37 +16,6 @@ public class LoHang_DAO implements LoHangService{
         this.sessionFactory = util.getSessionFactory();
     }
     
-//    @Override
-//    public String getLastLoHang() {
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        String sql = "select top 1 maLoHang from LoHang order by maLoHang desc";
-//        
-//        try {
-//            tr.begin();
-//            String maKhachCuoi="";
-//            String maCuoiCung = "LH";
-//            try {
-//                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
-//                int so = Integer.parseInt(maKhachCuoi.split("LH")[1]) + 1;
-//                int soChuSo = String.valueOf(so).length();
-//                
-//                for (int i = 0; i< 4 - soChuSo; i++){
-//                    maCuoiCung += "0";
-//                }
-//                maCuoiCung += String.valueOf(so);
-//            } catch (Exception e) {
-//                maCuoiCung = "LH0001";
-//            } 
-//            tr.commit();
-//            return maCuoiCung;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            tr.rollback();
-//        }
-//        return null;
-//    }
-
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
@@ -94,7 +55,6 @@ public class LoHang_DAO implements LoHangService{
             session.clear();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return false;

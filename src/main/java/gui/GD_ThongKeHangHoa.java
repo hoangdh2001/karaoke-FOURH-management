@@ -29,7 +29,6 @@ import service.HoaDonService;
 import service.LoaiDichVuService;
 import service.MatHangService;
 import service.NhaCungCapService;
-import service.NhaCungCapVaNhapHangDaoService;
 
 public class GD_ThongKeHangHoa extends javax.swing.JPanel {
     private final DecimalFormat df = new DecimalFormat("#,###");

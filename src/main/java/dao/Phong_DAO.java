@@ -106,7 +106,6 @@ public class Phong_DAO implements PhongService {
             return dsPhong;
 
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         session.close();
@@ -258,7 +257,6 @@ public class Phong_DAO implements PhongService {
             tr.commit();
             return dsPhong;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return null;
@@ -286,7 +284,7 @@ public class Phong_DAO implements PhongService {
             tr.commit();
             return dsPhong;
         } catch (Exception e) {
-            e.printStackTrace();
+            tr.rollback();
         }
         return null;
     }

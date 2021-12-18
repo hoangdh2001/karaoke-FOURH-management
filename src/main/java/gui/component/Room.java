@@ -236,6 +236,9 @@ public class Room extends PanelShadow {
         });
         thread.start();
         
+        JLabel lblSing = new JLabel();
+        lblSing.setIcon(new ImageIcon(getClass().getResource("/icon/microphone.png")));
+        pnlDangHat.add(lblSing, "pos 0.5al 0.6al n n");
         
         Button btnThanhToan = new Button("Thanh toán", true);
         btnThanhToan.setForeground(Color.WHITE);
@@ -248,7 +251,7 @@ public class Room extends PanelShadow {
             }
         });
         pnlDangHat.add(btnThanhToan, "split 2");
-
+        
         Button btnThemDichVu = new Button("DV", true);
         btnThemDichVu.setForeground(Color.WHITE);
         btnThemDichVu.setBackground(new Color(0, 31, 63));
@@ -363,7 +366,7 @@ public class Room extends PanelShadow {
         
         JPanel pnlPhongSua = new JPanel();
         pnlPhongSua.setBackground(TrangThaiPhong.DANG_SUA.getColor());
-        pnlPhongSua.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
+        pnlPhongSua.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]10[]18[]push"));
         
         JLabel lblIcon = new JLabel();
         lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
@@ -386,6 +389,10 @@ public class Room extends PanelShadow {
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
         lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongSua.add(lblTrangThai);
+        
+        JLabel lblFix = new JLabel();
+        lblFix.setIcon(new ImageIcon(getClass().getResource("/icon/fix_room.png")));
+        pnlPhongSua.add(lblFix);
         
         Button btnSuaXong = new Button("Sửa xong", true);
         btnSuaXong.setForeground(Color.WHITE);
@@ -484,7 +491,7 @@ public class Room extends PanelShadow {
         
         JPanel pnlPhongDangDon = new JPanel();
         pnlPhongDangDon.setBackground(TrangThaiPhong.DANG_DON.getColor());
-        pnlPhongDangDon.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]90[]push"));
+        pnlPhongDangDon.setLayout(new MigLayout("wrap", "push[center]push", "0[]5[]5[]5[]10[]18[]push"));
         
         JLabel lblIcon = new JLabel();
         lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/users_20px.png")));
@@ -507,6 +514,10 @@ public class Room extends PanelShadow {
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
         lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongDangDon.add(lblTrangThai);
+        
+        JLabel lblCleaning = new JLabel();
+        lblCleaning.setIcon(new ImageIcon(getClass().getResource("/icon/cleaning.png")));
+        pnlPhongDangDon.add(lblCleaning);
         
         Button btnDonXong = new Button("Dọn xong", true);
         btnDonXong.setForeground(Color.WHITE);
@@ -572,6 +583,10 @@ public class Room extends PanelShadow {
         lblBatDau.setFont(new Font(fontName, fontStyle, 14));
         lblBatDau.setText(sdf.format(phieuDatPhong.getNgayDat()));
         pnlPhongDatTruoc.add(lblBatDau);
+        
+        JLabel lblDeposit = new JLabel();
+        lblDeposit.setIcon(new ImageIcon(getClass().getResource("/icon/deposit.png")));
+        pnlPhongDatTruoc.add(lblDeposit, "pos 0.5al 0.6al n n");
         
         Button btnThue = new Button("Thuê", true);
         btnThue.setForeground(Color.WHITE);
