@@ -9,6 +9,10 @@ import org.hibernate.Transaction;
 import service.KhachHangService;
 import util.HibernateUtil;
 
+/**
+ * 
+ * @author Hao
+ */
 public class KhachHang_DAO implements KhachHangService {
 
     private SessionFactory sessionFactory;
@@ -22,6 +26,11 @@ public class KhachHang_DAO implements KhachHangService {
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * Thêm khách hàng
+     * @param khachHang: khách hàng muốn thêm
+     * @return true nếu thêm thành công, false nếu thất bại
+     */
     @Override
     public boolean themKhachHang(KhachHang khachHang) {
         Session session = sessionFactory.getCurrentSession();
@@ -37,6 +46,11 @@ public class KhachHang_DAO implements KhachHangService {
         return false;
     }
 
+    /**
+     * Cập nhật thông tin của khách hàng
+     * @param khachHang: thông tin cần cập nhật
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     */
     @Override
     public boolean capNhatKhachHang(KhachHang khachHang) {
         Session session = sessionFactory.getCurrentSession();
@@ -53,6 +67,11 @@ public class KhachHang_DAO implements KhachHangService {
         return false;
     }
     
+    /**
+     * Tìm khách hàng khi biết mã
+     * @param maKhachHang mã khách hàng cần tìm
+     * @return khách hàng có mã là mã truyền vào
+     */
     public KhachHang getKhachHang(String maKhachHang) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
@@ -70,6 +89,11 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
+    /**
+     * Lấy danh sách tất cả các khách hàng
+     * @param numPage: số dòng dữ liệu của trang đầu tiên
+     * @return danh sách khách hàng
+     */
     @Override
     public List<KhachHang> getDSKhachHang(int numPage) {
         Session session = sessionFactory.openSession();
@@ -91,13 +115,19 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
+    /**
+     * Tìm khách hàng theo số điện thoại hoặc tên, hoặc cccd 
+     * @param tuKhoa: số điện thoại hoặc tên,hoặc cccd 
+     * @param numPage: số dòng dữ liệu hiện thị lên trang đầu tiên
+     * @return những khách hàng phù hợp với dữ liệu tìm kiếm
+     */
     @Override
     public List<KhachHang> getDSKhachHangByTuKhoa(String tuKhoa, int numPage){
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
-            String sql = "select * from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "%' order by kh.maKhachHang offset :x row fetch next 20 rows only";
+            String sql = "select * from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.cccd like '%" + tuKhoa + "%'  or kh.sdt like '%" + tuKhoa + "%' order by kh.maKhachHang offset :x row fetch next 20 rows only";
             List<KhachHang> dsKhachHang = session
                     .createNativeQuery(sql, KhachHang.class)
                     .setParameter("x", numPage * 20)
@@ -112,6 +142,11 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
+    /**
+     * Xóa 1 khách hàng khi biết mã
+     * @param maKhachHang: mã khách hàng
+     * @return true nếu xóa thành công, false nếu xóa thất bại
+     */
     @Override
     public boolean xoaKhachHang(String maKhachHang) {
         Session session = sessionFactory.getCurrentSession();
@@ -173,27 +208,33 @@ public class KhachHang_DAO implements KhachHangService {
         return null;
     }
 
-    @Override
-    public boolean checkKhachHang(String txt) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
+//    @Override
+//    public boolean checkKhachHang(String txt) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//
+//        String sql = "select * from KhachHang where soDienThoai = :x or CCCD = :y";
+//
+//        try {
+//            tr.begin();
+//            session.createNativeQuery(sql)
+//                    .setParameter("x", txt)
+//                    .setParameter("y", txt)
+//                    .getSingleResult();
+//            tr.commit();
+//            return false;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return true;
+//    }
 
-        String sql = "select * from KhachHang where soDienThoai = :x or CCCD = :y";
-
-        try {
-            tr.begin();
-            session.createNativeQuery(sql)
-                    .setParameter("x", txt)
-                    .setParameter("y", txt)
-                    .getSingleResult();
-            tr.commit();
-            return false;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return true;
-    }
-
+    /**
+     * Cập nhật số điện thoại cho khách hàng
+     * @param maKhachHang: mã khách hàng
+     * @param soDienThoaiMoi: số điện thoại mới
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     */
     @Override
     public boolean capNhatKhachHang(String maKhachHang, String soDienThoaiMoi) {
         Session session = sessionFactory.openSession();
@@ -215,102 +256,112 @@ public class KhachHang_DAO implements KhachHangService {
         return false;
     }
     
-    @Override
-    public KhachHang getKhachHangBySDT(String sdt) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "  select * from Khachhang where sdt = '"+sdt+"' ";
-        try {
-            tr.begin();
-                KhachHang kh;
-                try {
-                    kh = session.createNativeQuery(sql,KhachHang.class).getSingleResult();
-                } catch (Exception e) {
-                    tr.rollback();
-                    return null;
-                }
-            tr.commit();
-            return kh;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        
-        return null;
-    }
+//    @Override
+//    public KhachHang getKhachHangBySDT(String sdt) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        String sql = "  select * from Khachhang where sdt = '"+sdt+"' ";
+//        try {
+//            tr.begin();
+//                KhachHang kh;
+//                try {
+//                    kh = session.createNativeQuery(sql,KhachHang.class).getSingleResult();
+//                } catch (Exception e) {
+//                    tr.rollback();
+//                    return null;
+//                }
+//            tr.commit();
+//            return kh;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        
+//        return null;
+//    }
     
-    @Override
-    public boolean addKhachHang(KhachHang kh) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-                session.save(kh);
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean addKhachHang(KhachHang kh) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        try {
+//            tr.begin();
+//                session.save(kh);
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
 
-    @Override
-    public String getlastKhachHangTang(){
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql = "select top 1 maKhachHang from KhachHang order by maKhachHang desc";
-        
-        try {
-            tr.begin();
-            String maKhachCuoi="";
-            String maCuoiCung = "KH";
-            try {
-                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
-                int so = Integer.parseInt(maKhachCuoi.split("KH")[1]) + 1;
-                int soChuSo = String.valueOf(so).length();
-                
-                for (int i = 0; i< 7 - soChuSo; i++){
-                    maCuoiCung += "0";
-                }
-                maCuoiCung += String.valueOf(so);
-            } catch (Exception e) {
-                maCuoiCung = "KH0000001";
-            } 
-            tr.commit();
-            return maCuoiCung;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return null;
-    }
-    @Override
-    public int getSoLuongKhachHang() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from KhachHang";
-        try {
-            tr.begin();
-            int rs = (int) session.
-                    createNativeQuery(sql)
-                    .getSingleResult();
-            tr.commit();
-            return  rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return 0;
-    }
+//    @Override
+//    public String getlastKhachHangTang(){
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql = "select top 1 maKhachHang from KhachHang order by maKhachHang desc";
+//        
+//        try {
+//            tr.begin();
+//            String maKhachCuoi="";
+//            String maCuoiCung = "KH";
+//            try {
+//                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
+//                int so = Integer.parseInt(maKhachCuoi.split("KH")[1]) + 1;
+//                int soChuSo = String.valueOf(so).length();
+//                
+//                for (int i = 0; i< 7 - soChuSo; i++){
+//                    maCuoiCung += "0";
+//                }
+//                maCuoiCung += String.valueOf(so);
+//            } catch (Exception e) {
+//                maCuoiCung = "KH0000001";
+//            } 
+//            tr.commit();
+//            return maCuoiCung;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return null;
+//    }
+    
+    /**
+//     * tính số lượng khách hàng
+//     * @return số lượng khách hàng
+//     */
+//    @Override
+//    public int getSoLuongKhachHang() {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        String sql = "select count(*) from KhachHang";
+//        try {
+//            tr.begin();
+//            int rs = (int) session.
+//                    createNativeQuery(sql)
+//                    .getSingleResult();
+//            tr.commit();
+//            return  rs;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return 0;
+//    }
 
+    /**
+     * tính số lượng khách hàng thoe từ khóa
+     * @param tuKhoa: từ khóa
+     * @return : số lượng khách hàng phù hợp
+     */
     @Override
     public int getSoLuongKhachHangByTuKhoa(String tuKhoa) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         
-        String sql = "select count(*) from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "%'";
+        String sql = "select count(*) from [dbo].[KhachHang] kh where kh.tenKhachHang like N'%" + tuKhoa + "%' or kh.cccd like '%" + tuKhoa + "%' or kh.sdt like '%" + tuKhoa + "%'";
         try {
             tr.begin();
             int rs = (int) session.

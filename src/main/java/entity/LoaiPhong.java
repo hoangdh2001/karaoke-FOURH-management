@@ -82,6 +82,7 @@ public class LoaiPhong {
 
     @Override
     public String toString() {
-        return tenLoaiPhong;
+        return "LoaiPhong{" + "maLoaiPhong=" + maLoaiPhong + ", tenLoaiPhong=" + tenLoaiPhong + ", giaPhong=" + giaPhong + '}';
     }
+
 }

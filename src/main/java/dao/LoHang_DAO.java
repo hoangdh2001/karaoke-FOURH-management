@@ -24,32 +24,52 @@ public class LoHang_DAO implements LoHangService{
         this.sessionFactory = util.getSessionFactory();
     }
     
+//    @Override
+//    public String getLastLoHang() {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql = "select top 1 maLoHang from LoHang order by maLoHang desc";
+//        
+//        try {
+//            tr.begin();
+//            String maKhachCuoi="";
+//            String maCuoiCung = "LH";
+//            try {
+//                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
+//                int so = Integer.parseInt(maKhachCuoi.split("LH")[1]) + 1;
+//                int soChuSo = String.valueOf(so).length();
+//                
+//                for (int i = 0; i< 4 - soChuSo; i++){
+//                    maCuoiCung += "0";
+//                }
+//                maCuoiCung += String.valueOf(so);
+//            } catch (Exception e) {
+//                maCuoiCung = "LH0001";
+//            } 
+//            tr.commit();
+//            return maCuoiCung;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return null;
+//    }
+
     @Override
-    public String getLastLoHang() {
+    public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        String sql = "select top 1 maLoHang from LoHang order by maLoHang desc";
-        
+
+        String sql = "select max(maLoHang) from LoHang";
+
         try {
             tr.begin();
-            String maKhachCuoi="";
-            String maCuoiCung = "LH";
-            try {
-                maKhachCuoi = (String)session.createNativeQuery(sql).uniqueResult();
-                int so = Integer.parseInt(maKhachCuoi.split("LH")[1]) + 1;
-                int soChuSo = String.valueOf(so).length();
-                
-                for (int i = 0; i< 4 - soChuSo; i++){
-                    maCuoiCung += "0";
-                }
-                maCuoiCung += String.valueOf(so);
-            } catch (Exception e) {
-                maCuoiCung = "LH0001";
-            } 
+            String id = (String) session
+                    .createNativeQuery(sql)
+                    .getSingleResult();
             tr.commit();
-            return maCuoiCung;
+            return id;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return null;

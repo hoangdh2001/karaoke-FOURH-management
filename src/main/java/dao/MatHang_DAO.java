@@ -2,6 +2,8 @@ package dao;
 
 import entity.MatHang;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -99,48 +101,48 @@ public class MatHang_DAO implements MatHangService {
         return null;
     }
     
-    @Override
-    public List<MatHang> layDsMatHangTheoTen(String tenMatHang) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select * from MatHang where tenMatHang = :x";
-        
-        try {
-            tr.begin();
-            List<MatHang> rs = session
-                    .createNativeQuery(sql, MatHang.class)
-                    .getResultList();
-            tr.commit();
-            return rs;
-        } catch (Exception e) {
-            tr.rollback();
-        }
-        return null;
-    }
+//    @Override
+//    public List<MatHang> layDsMatHangTheoTen(String tenMatHang) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        String sql = "select * from MatHang where tenMatHang = :x";
+//        
+//        try {
+//            tr.begin();
+//            List<MatHang> rs = session
+//                    .createNativeQuery(sql, MatHang.class)
+//                    .getResultList();
+//            tr.commit();
+//            return rs;
+//        } catch (Exception e) {
+//            tr.rollback();
+//        }
+//        return null;
+//    }
     
-    @Override
-    public boolean updateSLMatHang(String maMH,int sl,String type) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        String sql ="";
-        if(type.trim().equalsIgnoreCase("increase")){
-            sql = "update MatHang set sLTonKho = sLTonKho + "+ sl +" where maMatHang = '"+maMH+"'";
-        }else{
-            sql = "update MatHang set sLTonKho = sLTonKho - "+ sl +" where maMatHang = '"+maMH+"'";
-        }
-            
-        try {
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean updateSLMatHang(String maMH,int sl,String type) {
+//        Session session = sessionFactory.getCurrentSession();
+//        Transaction tr = session.getTransaction();
+//        String sql ="";
+//        if(type.trim().equalsIgnoreCase("increase")){
+//            sql = "update MatHang set sLTonKho = sLTonKho + "+ sl +" where maMatHang = '"+maMH+"'";
+//        }else{
+//            sql = "update MatHang set sLTonKho = sLTonKho - "+ sl +" where maMatHang = '"+maMH+"'";
+//        }
+//            
+//        try {
+//            tr.begin();
+//                session.createNativeQuery(sql).executeUpdate();
+//            tr.commit();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
     
     @Override
     public String getLastMatHang() {
@@ -173,63 +175,63 @@ public class MatHang_DAO implements MatHangService {
         return null;
     }
     
-    @Override
-    public boolean insertMatHang(MatHang matHang) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        matHang.setMaMatHang(getLastMatHang());
-         try {
-            tr.begin();
-                session.save(matHang);
-            tr.commit();
-            session.clear();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean insertMatHang(MatHang matHang) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tr = session.getTransaction();
+//        matHang.setMaMatHang(getLastMatHang());
+//         try {
+//            tr.begin();
+//                session.save(matHang);
+//            tr.commit();
+//            session.clear();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
     
-    @Override
-    public boolean updateDonGiaMatHang(MatHang matHang) {
-        Session session = sessionFactory.openSession();
-        Transaction tr = session.getTransaction();
-        
-        String matHangQuery = "select donGia from MatHang where maMatHang = '"+matHang.getMaMatHang()+"'";
-        double donGiaCu = 0;
-        try {
-            tr.begin();
-                BigDecimal obj = (BigDecimal)session.createNativeQuery(matHangQuery).getSingleResult();
-                donGiaCu = obj.doubleValue();
-            tr.commit();
-            session.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        String sql = "";
-        if(matHang.getDonGia() > donGiaCu){
-            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()+""
-                + ",donGia = "+matHang.getDonGia()+" "
-                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
-        }else{
-            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()
-                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
-        }
-         try {
-             
-            tr.begin();
-                session.createNativeQuery(sql).executeUpdate();
-            tr.commit();
-            session.clear();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean updateDonGiaMatHang(MatHang matHang) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tr = session.getTransaction();
+//        
+//        String matHangQuery = "select donGia from MatHang where maMatHang = '"+matHang.getMaMatHang()+"'";
+//        double donGiaCu = 0;
+//        try {
+//            tr.begin();
+//                BigDecimal obj = (BigDecimal)session.createNativeQuery(matHangQuery).getSingleResult();
+//                donGiaCu = obj.doubleValue();
+//            tr.commit();
+//            session.clear();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        String sql = "";
+//        if(matHang.getDonGia() > donGiaCu){
+//            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()+""
+//                + ",donGia = "+matHang.getDonGia()+" "
+//                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
+//        }else{
+//            sql = "update MatHang set sLTonKho = sLTonKho + "+matHang.getsLTonKho()
+//                + "where maMatHang = '"+matHang.getMaMatHang()+"'";
+//        }
+//         try {
+//             
+//            tr.begin();
+//                session.createNativeQuery(sql).executeUpdate();
+//            tr.commit();
+//            session.clear();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            tr.rollback();
+//        }
+//        return false;
+//    }
     
     @Override
     public List<MatHang> findMatHang(String textFind, int type) {
@@ -265,25 +267,6 @@ public class MatHang_DAO implements MatHangService {
     }
     
     @Override
-    public List<MatHang> getDanhSachMatHang() {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        
-        String sql = "select * from MatHang order by maLoaiDichVu ";
-        try {
-            tr.begin();
-                List<MatHang> dsMatHang = session.createNativeQuery(sql,MatHang.class).getResultList();
-            tr.commit();
-            return dsMatHang;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-        
-        return null;
-    }
-    
-    @Override
     public List<MatHang> getDanhSachMatHangByLoaiDichVu(String id){
         
         Session session = sessionFactory.getCurrentSession();
@@ -302,5 +285,210 @@ public class MatHang_DAO implements MatHangService {
             tr.rollback();
         }
         return null;
+    }
+
+    @Override
+    public List<String> getListTKByDate(String batDau, String ketThuc,int page) {
+        List<String> list = new ArrayList<String>();
+        String sql = "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'\n" +
+        "group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu\n" +
+        "order by ldv.tenLoaiDichVu OFFSET "+page*5+" ROWS\n" +
+        "FETCH NEXT 5 ROWS ONLY";
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                List<?> listAs = session.createNativeQuery(sql).getResultList();
+		Iterator<?> i = listAs.iterator();
+		while (i.hasNext()) {
+                    Object[] row = (Object[]) i.next();
+                    long sl = new NhaCungCap_DAO().getSLNhapByDate(row[0].toString(), batDau, ketThuc);
+                    String chuoiData = row[1]+";"+row[2]+";"+row[3]+";"+sl+";"+row[4];
+                    list.add(chuoiData);
+                }
+            tr.commit();
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return list;
+    }
+
+    @Override
+    public int getPageByDate(String batDau, String ketThuc) {
+        int page = 0;
+        String sql = "select COUNT(*) from ("+
+        "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'\n" +
+        "group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu ) As Z";
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                page = (int)session.createNativeQuery(sql).uniqueResult();
+            tr.commit();
+            return page;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return page;
+    }
+    
+    @Override
+    public int getPage(int thangOrNam,Boolean thang,int year) {
+        int page = 0;
+        String sql = "";
+        if(thang == true){
+            sql = "select COUNT(*) from ("+
+        "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "where DATEPART(MONTH, ngayLapHoaDon) = "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year+
+        " group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu ) As Z";
+        }else{
+            sql = "select COUNT(*) from ("+
+        "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "where DATEPART(YEAR, ngayLapHoaDon) = "+thangOrNam+
+        " group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu ) As Z";
+        }
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                page = (int)session.createNativeQuery(sql).uniqueResult();
+            tr.commit();
+            return page;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return page;
+    }
+    
+    @Override
+    public List<String> getListTK(int thangOrNam,Boolean thang,int year,int page) {
+        List<String> list = new ArrayList<String>();
+        String sql = "";
+        if(thang == true){
+            sql = "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "where DATEPART(MONTH, ngayLapHoaDon) = "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year +
+        " group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu\n" +
+        "order by ldv.tenLoaiDichVu OFFSET "+page*5+" ROWS\n" +
+        "FETCH NEXT 5 ROWS ONLY";
+        }else{
+            sql = "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "where DATEPART(YEAR, ngayLapHoaDon) = "+thangOrNam +
+        " group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu\n" +
+        "order by ldv.tenLoaiDichVu OFFSET "+page*5+" ROWS\n" +
+        "FETCH NEXT 5 ROWS ONLY";
+        }
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                List<?> listAs = session.createNativeQuery(sql).getResultList();
+		Iterator<?> i = listAs.iterator();
+		while (i.hasNext()) {
+                    Object[] row = (Object[]) i.next();
+                    long sl = new NhaCungCap_DAO().getSLNhap(row[0].toString(), thangOrNam,thang, year);
+                    String chuoiData = row[1]+";"+row[2]+";"+row[3]+";"+sl+";"+row[4];
+                    list.add(chuoiData);
+                }
+            tr.commit();
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return list;
+    }
+
+    @Override
+    public double getTotalBydate(String batDau, String ketThuc) {
+        double total = 0;
+        String sql = "select sum(TongTien) from ("+
+        "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "WHERE ngayLapHoaDon BETWEEN  '"+batDau+"' and '"+ketThuc+"'\n" +
+        "group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu ) As Z";
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                BigDecimal bd= (BigDecimal)session.createNativeQuery(sql).uniqueResult();
+                total = bd.doubleValue(); 
+            tr.commit();
+            return total;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return total;
+    }
+
+    @Override
+    public double getTotal(int thangOrNam, Boolean thang, int year) {
+        double total = 0;
+        String sql = "";
+        if(thang == true){
+            sql = "select sum(TongTien) from ("+
+        "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "where DATEPART(MONTH, ngayLapHoaDon) = "+thangOrNam+" and DATEPART(YEAR, ngayLapHoaDon) = "+year+
+        " group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu ) As Z";
+        }else{
+            sql = "select sum(TongTien) from ("+
+        "select mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu,soLuongTieuThu = sum(soLuong),TongTien = sum(ct.thanhTien) from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu\n" +
+        "join ChiTietHoaDon as ct on mh.maMatHang = ct.maMatHang\n" +
+        "join HoaDon as hd on ct.maHoaDon = hd.maHoaDon\n" +
+        "where DATEPART(YEAR, ngayLapHoaDon) = "+thangOrNam+
+        " group by mh.maMatHang,mh.tenMatHang,ldv.tenLoaiDichVu ) As Z";
+        }
+        
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+        
+         try {
+            tr.begin();
+                BigDecimal bd= (BigDecimal)session.createNativeQuery(sql).uniqueResult();
+                total = bd.doubleValue(); 
+            tr.commit();
+            return total;
+        } catch (Exception e) {
+            e.printStackTrace();
+            tr.rollback();
+        }
+        
+        return total;
     }
 }

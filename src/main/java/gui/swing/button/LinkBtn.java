@@ -7,13 +7,31 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
 
 public class LinkBtn extends JButton {
+    
+    private Color overColor = new Color(31, 111, 235);
+    private Color textColor = new Color(0, 0, 0);
+
+    public Color getOverColor() {
+        return overColor;
+    }
+
+    public void setOverColor(Color overColor) {
+        this.overColor = overColor;
+    }
+
+    @Override
+    public void setForeground(Color fg) {
+        super.setForeground(fg);
+        overColor = fg;
+    }
+    
     public LinkBtn() {
         setOpaque(false);
         setContentAreaFilled(false);
@@ -29,6 +47,21 @@ public class LinkBtn extends JButton {
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         setBorder(new EmptyBorder(2, 10, 2, 10));
         setFont(new Font("sansserif", Font.BOLD, 12));
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                textColor = overColor;
+                repaint();
+                revalidate();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                textColor = getForeground();
+                repaint();
+                revalidate();
+            }
+        });
     }
     
     @Override
@@ -45,7 +78,7 @@ public class LinkBtn extends JButton {
         double x2 = (width - r2.getWidth()) / 2;
         double y2 = (height - r2.getHeight()) / 2;
         
-        g2.setColor(getForeground());
+        g2.setColor(textColor);
         g2.fillRect((int) (x2), (int) (y2 + ft.getAscent() + 3),(int) r2.getWidth(), 1);
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
     }

@@ -55,6 +55,8 @@ public class HoaDon {
     private double tienThua;
     @Column(columnDefinition = "money")
     private double donGiaPhongCu;
+    @Column(columnDefinition = "money",nullable = true)
+    private double tienCoc;
 
     /**
      * @param maHoaDon
@@ -67,7 +69,7 @@ public class HoaDon {
         this.nhanVien = nhanVien;
         this.thoiGianBatDau = new Date();
         this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
-        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.dsChiTietHoaDon = new ArrayList<>();
         this.gioHat = getGioHat();
         this.donGiaPhong = getDonGiaPhong();
         this.tongTienMatHang = getTongTienMatHang();
@@ -337,6 +339,14 @@ public class HoaDon {
         return tienThua = getTienKhachDua() - getTongHoaDon();
     }
 
+    public double getTienCoc() {
+        return tienCoc;
+    }
+
+    public void setTienCoc(double tienCoc) {
+        this.tienCoc = tienCoc;
+    }
+    
     @Override
     public String toString() {
         return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong=" + phong + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", thoiGianBatDau=" + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + ", chietKhau=" + chietKhau + ", trangThai=" + trangThai + ", dsChiTietHoaDon=" + dsChiTietHoaDon + ", gioHat=" + gioHat + ", donGiaPhong=" + donGiaPhong + ", tongTienMatHang=" + tongTienMatHang + ", tongHoaDon=" + tongHoaDon + ", tienKhachDua=" + tienKhachDua + ", tienThua=" + tienThua + '}';
@@ -351,7 +361,7 @@ public class HoaDon {
     
     public Object[] convertToRowTableInGDThongKeDoanhThu() {
         DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
+        df = new DecimalFormat("#,###");
         SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String ngayLap = gio.format(ngayLapHoaDon);
         return new Object[]{maHoaDon, ngayLap, khachHang == null ? "Trống":khachHang.getTenKhachHang(), nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};

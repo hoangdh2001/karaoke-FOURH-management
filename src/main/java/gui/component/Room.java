@@ -1,6 +1,7 @@
 package gui.component;
 
 import entity.HoaDon;
+import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.TrangThaiPhong;
 import gui.swing.panel.PanelShadow;
@@ -29,6 +30,7 @@ public class Room extends PanelShadow {
     private final int fontStyle = Font.PLAIN;
     private HoaDon hoaDon;
     private Phong phong;
+    private PhieuDatPhong phieuDatPhong;
     private long thoiGian;
     private JLabel lblGioHat;
     private JMenuItem mniKhachVaoHat;
@@ -65,6 +67,12 @@ public class Room extends PanelShadow {
     public Room(Phong phong, HoaDon hoaDon) {
         this.phong = phong;
         this.hoaDon = hoaDon;
+        buildRoom();
+    }
+    
+    public Room(Phong phong, PhieuDatPhong phieuDatPhong) {
+        this.phong = phong;
+        this.phieuDatPhong = phieuDatPhong;
         buildRoom();
     }
 
@@ -312,11 +320,11 @@ public class Room extends PanelShadow {
         lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongTrong.add(lblTrangThai);
         
-        Button btnDat = new Button("Đặt", true);
-        btnDat.setForeground(Color.WHITE);
-        btnDat.setBackground(new Color(0, 31, 63));
-        btnDat.setBorderRadius(5);
-        pnlPhongTrong.add(btnDat, "split 2");
+//        Button btnDat = new Button("Đặt", true);
+//        btnDat.setForeground(Color.WHITE);
+//        btnDat.setBackground(new Color(0, 31, 63));
+//        btnDat.setBorderRadius(5);
+//        pnlPhongTrong.add(btnDat, "split 2");
         
         Button btnThue = new Button("Thuê", true);
         btnThue.setForeground(Color.WHITE);
@@ -539,6 +547,7 @@ public class Room extends PanelShadow {
         lblTenPhong.setForeground(Color.WHITE);
         lblTenPhong.setFont(new Font(fontName, fontStyle, 24));
         lblTenPhong.setText(phong.getTenPhong());
+        lblTenPhong.setText(phong.getTenPhong());
         pnlPhongDatTruoc.add(lblTenPhong);
         
         JLabel lblLoaiPhong = new JLabel();
@@ -550,31 +559,42 @@ public class Room extends PanelShadow {
         JLabel lblTrangThai = new JLabel("Đã đặt trước");
         lblTrangThai.setForeground(Color.WHITE);
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
-        lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongDatTruoc.add(lblTrangThai);
         
         JLabel lblKhachHang = new JLabel("Đỗ Huy Hoàng");
         lblKhachHang.setForeground(Color.WHITE);
         lblKhachHang.setFont(new Font(fontName, fontStyle, 14));
-//        lblKhachHang.setText(hoaDon.getKhachHang().getTenKhachHang());
+        lblKhachHang.setText(phieuDatPhong.getKhachHang().getTenKhachHang());
         pnlPhongDatTruoc.add(lblKhachHang);
 
         JLabel lblBatDau = new JLabel("22/10/2021 9:00");
         lblBatDau.setForeground(Color.WHITE);
         lblBatDau.setFont(new Font(fontName, fontStyle, 14));
-//        lblBatDau.setText(sdf.format(hoaDon.getThoiGianBatDau()));
+        lblBatDau.setText(sdf.format(phieuDatPhong.getNgayDat()));
         pnlPhongDatTruoc.add(lblBatDau);
         
         Button btnThue = new Button("Thuê", true);
         btnThue.setForeground(Color.WHITE);
         btnThue.setBackground(new Color(0, 31, 63));
         btnThue.setBorderRadius(5);
+        btnThue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setHoaDon(event.addBtnThueEvent(phong, phieuDatPhong));
+            }
+        });
         pnlPhongDatTruoc.add(btnThue, "split 2");
         
         Button btnHuy = new Button("Hủy", true);
         btnHuy.setForeground(Color.WHITE);
         btnHuy.setBackground(new Color(0, 31, 63));
         btnHuy.setBorderRadius(5);
+        btnHuy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.addBtnHuyEvent(phong, phieuDatPhong);
+            }
+        });
         pnlPhongDatTruoc.add(btnHuy);
         
         return pnlPhongDatTruoc;

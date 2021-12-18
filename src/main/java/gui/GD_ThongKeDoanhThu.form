@@ -130,7 +130,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="8" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -213,6 +213,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbTKChiTietActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Object&gt;"/>
           </AuxValues>
@@ -320,7 +323,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="gui.swing.table2.MyTableFlatlaf" name="tblThongKe">
+                    <Component class="gui.swing.table.MyTableFlatlaf" name="tblThongKe">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="5" rowCount="0">
@@ -387,29 +390,25 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="pnlPage" min="-2" pref="253" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="pnlPage" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="lblChenhLech" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtChenhLech" pref="149" max="32767" attributes="0"/>
+                                      <Component id="txtChenhLech" pref="146" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtSoHD" pref="149" max="32767" attributes="0"/>
+                                      <Component id="txtSoHD" pref="146" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtTong" pref="165" max="32767" attributes="0"/>
+                                      <Component id="txtTong" pref="204" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="btnXuat" pref="162" max="32767" attributes="0"/>
+                                      <Component id="btnXuat" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -424,15 +423,13 @@
                                       <Component id="txtChenhLech" max="32767" attributes="0"/>
                                       <Component id="lblChenhLech" min="-2" pref="26" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                          <Component id="jLabel7" alignment="3" max="32767" attributes="0"/>
-                                          <Component id="txtTong" alignment="3" max="32767" attributes="0"/>
-                                          <Component id="btnXuat" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="txtSoHD" max="32767" attributes="0"/>
-                                      <Component id="jLabel6" max="32767" attributes="0"/>
+                                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel7" alignment="3" max="32767" attributes="0"/>
+                                      <Component id="txtTong" alignment="3" max="32767" attributes="0"/>
+                                      <Component id="btnXuat" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="txtSoHD" max="32767" attributes="0"/>
+                                  <Component id="jLabel6" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -490,13 +487,19 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="btnXuat">
                       <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="99" green="58" red="36" type="rgb"/>
+                        </Property>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Segoe UI" size="14" style="0"/>
+                          <Font name="SansSerif" size="12" style="1"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Xu&#xe2;&#x301;t danh sa&#x301;ch"/>
                       </Properties>
                     </Component>
-                    <Component class="gui.swing.table2.PanelPage" name="pnlPage">
+                    <Component class="gui.swing.table.PanelPage" name="pnlPage">
                       <Properties>
                         <Property name="opaque" type="boolean" value="false"/>
                       </Properties>

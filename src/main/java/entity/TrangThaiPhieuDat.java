@@ -16,14 +16,14 @@ public enum TrangThaiPhieuDat {
         this.statusColor = statusColor;
     }
     
-    public static TrangThaiPhieuDat getTrangThaiPhieuDatByTrangThai(String trangThai) {
-       for (TrangThaiPhieuDat trangThaiPhieuDat : TrangThaiPhieuDat.values()) {
-           if (trangThaiPhieuDat.trangThai.equals(trangThai)) {
-               return trangThaiPhieuDat;
-           }
-       }
-       return null;
-   }
+//    public static TrangThaiPhieuDat getTrangThaiPhieuDatByTrangThai(String trangThai) {
+//       for (TrangThaiPhieuDat trangThaiPhieuDat : TrangThaiPhieuDat.values()) {
+//           if (trangThaiPhieuDat.trangThai.equals(trangThai)) {
+//               return trangThaiPhieuDat;
+//           }
+//       }
+//       return null;
+//   }
 
     public String getTrangThai() {
         return trangThai;

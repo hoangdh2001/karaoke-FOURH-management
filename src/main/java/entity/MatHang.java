@@ -1,8 +1,5 @@
 package entity;
 
-import gui.swing.event.EventAdd;
-import gui.swing.model.ModelAdd;
-import java.text.DecimalFormat;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import objectcombobox.ObjectComboBox;
 
 @Entity
 @Table(name = "MatHang")
@@ -131,24 +127,6 @@ public class MatHang {
     public String toString() {
         return "MatHang [maMatHang=" + maMatHang + ", tenMatHang=" + tenMatHang + ", loaiDichVu=" + loaiDichVu
                 + ", sLTonKho=" + sLTonKho + ", donGia=" + donGia + "]";
-    }
-
-    public Object[] convertToRowTableInGDTiepNhanDatPhong(EventAdd event) {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0 VND");
-        return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), new ModelAdd(this, event)};
-    }
-    
-    public Object[] convertToRowTableInGDTiepNhanDatPhong() {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
-        return new Object[]{new ObjectComboBox(tenMatHang, maMatHang), sLTonKho, df.format(donGia), false};
-    }
-
-    public Object[] convertToRowTableInGDXemDichVu() {
-        DecimalFormat df;
-        df = new DecimalFormat("#,##0.00");
-        return new Object[]{tenMatHang, loaiDichVu.getTenLoaiDichVu(), sLTonKho, df.format(donGia)};
     }
 
     @Override

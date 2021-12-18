@@ -14,22 +14,26 @@ import javax.swing.JTextField;
 
 public class MyTextField extends JTextField {
 
-    private Color backgroundColor = new Color(230, 245, 241);
+    private Color backgroundColor = new Color(197, 238, 245);
     private boolean borderLine = false;
     private Color borderColor = new Color(0, 0, 0, 0.3f);
     private int borderRadius = 0;
     private Icon prefixIcon;
     private Icon suffixIcon;
     private String hint = "";
-    
+
     public String getHint() {
         return hint;
     }
 
     @Override
     public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled); //To change body of generatedColor methods, choose Tools | Templates.
-        setBackground(Color.LIGHT_GRAY);
+        super.setEnabled(enabled);
+        if (enabled) {
+            backgroundColor = Color.WHITE;
+        } else {
+            backgroundColor = new Color(242, 242, 242);
+        }
     }
 
     public void setHint(String hint) {
@@ -53,11 +57,11 @@ public class MyTextField extends JTextField {
         this.suffixIcon = suffixIcon;
         initBorder();
     }
-    
+
     public Color getBackgroundColor() {
         return backgroundColor;
     }
-    
+
     public void setBackgroundColor(Color bg) {
         this.backgroundColor = bg;
     }
@@ -85,13 +89,13 @@ public class MyTextField extends JTextField {
     public void setBorderRadius(int borderRadius) {
         this.borderRadius = borderRadius;
     }
-    
+
     public MyTextField() {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(new Color(0, 0, 0, 0));
         setForeground(Color.decode("#7A8C8D"));
         setFont(new java.awt.Font("sansserif", 0, 13));
-        setSelectionColor(new Color(75, 175, 152));
+        setSelectionColor(new Color(54, 88, 153));
     }
 
     @Override
@@ -103,8 +107,7 @@ public class MyTextField extends JTextField {
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
             g2.setColor(borderColor);
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, borderRadius, borderRadius);
-        }
-        else {
+        } else {
             g2.setColor(backgroundColor);
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
         }

@@ -212,7 +212,7 @@ public class NhanVien_DAO implements NhanVienService {
                 // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                 + gioiTinhString
                 + "   and maCa like '%" + maCaLam + "%'"
-                + "and maLoaiNhanVien like '%" + maLoaiNV + "%'"
+                + "and maLoaiNhanVien like '%" + maLoaiNV + "%' and maLoaiNhanVien != 'LNV005' "
                 + " order by maNhanVien offset " + soLuong + " rows fetch next 20 rows only";
 
         if (searchOption == "Mã nhân viên") {
@@ -221,7 +221,7 @@ public class NhanVien_DAO implements NhanVienService {
                     // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                     + gioiTinhString
                     + "   and maCa like '%" + maCaLam + "%'"
-                    + "and maLoaiNhanVien like '%" + maLoaiNV + "%'"
+                    + "and maLoaiNhanVien like '%" + maLoaiNV + "%' and maLoaiNhanVien != 'LNV005' "
                     + " order by maNhanVien offset " + soLuong + " rows fetch next 20 rows only";
         } else if (searchOption == "Căn cước công dân") {
             query = "select * from NhanVien where  "
@@ -229,7 +229,7 @@ public class NhanVien_DAO implements NhanVienService {
                     // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                     + gioiTinhString
                     + "   and maCa like '%" + maCaLam + "%'"
-                    + "and maLoaiNhanVien like '%" + maLoaiNV + "%'"
+                    + "and maLoaiNhanVien like '%" + maLoaiNV + "%' and maLoaiNhanVien != 'LNV005' "
                     + " order by maNhanVien offset " + soLuong + " rows fetch next 20 rows only";
         }
 
@@ -271,7 +271,7 @@ public class NhanVien_DAO implements NhanVienService {
                 // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                 + gioiTinhString
                 + "   and maCa like '%" + maCaLam + "%'"
-                + " and maNhanVien like '%" + maLoaiNV + "%'";
+                + " and maNhanVien like '%" + maLoaiNV + "%' and maLoaiNhanVien != 'LNV005' ";
 
         if ("Mã nhân viên".equals(searchOption)) {
             query = "select count(*) from NhanVien where  "
@@ -279,7 +279,7 @@ public class NhanVien_DAO implements NhanVienService {
                     // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                     + gioiTinhString
                     + "   and maCa like '%" + maCaLam + "%'"
-                    + "  and maNhanVien like '%" + maLoaiNV + "%'";
+                    + "  and maNhanVien like '%" + maLoaiNV + "%' and maLoaiNhanVien != 'LNV005' ";
 
         } else if ("Căn cước công dân".equals(searchOption)) {
             query = "select count(*) from NhanVien where  "
@@ -287,7 +287,7 @@ public class NhanVien_DAO implements NhanVienService {
                     // + "and ( gioiTinh =" + gioiTinh0 + " OR gioiTinh = " + gioiTinh1 + " ) "
                     + gioiTinhString
                     + "   and maCa like '%" + maCaLam + "%'"
-                    + " and maNhanVien like '%" + maLoaiNV + "%'";
+                    + " and maNhanVien like '%" + maLoaiNV + "%' and maLoaiNhanVien != 'LNV005' ";
         }
 
         try {
@@ -415,22 +415,5 @@ public class NhanVien_DAO implements NhanVienService {
         }
 
         return false;
-    }
-
-    @Override
-    public NhanVien getNhanVienByID(String maNhanVien) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction tr = session.getTransaction();
-        try {
-            tr.begin();
-            NhanVien nhanVien = session.find(NhanVien.class, maNhanVien);
-            tr.commit();
-            return nhanVien;
-        } catch (Exception e) {
-            e.printStackTrace();
-            tr.rollback();
-        }
-
-        return null;
     }
 }

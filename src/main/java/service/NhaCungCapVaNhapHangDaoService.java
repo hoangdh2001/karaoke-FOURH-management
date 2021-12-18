@@ -33,5 +33,7 @@ public interface NhaCungCapVaNhapHangDaoService {
     public boolean insertCTNhapHang(ChiTietNhapHang ctNhaphang,String maLoHang);
     public String getLastNhaCungCap();
     public boolean insertNhaCungCap(NhaCungCap ncc);
-
+    public int getSLNhapByDate(String maMatHang,String batDau, String ketThuc);
+    public int getSLNhap(String maMatHang,int thangOrNam,Boolean thang,int year);
+    public List<Integer> getAllYearExist();
 }

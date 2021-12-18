@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.LoaiPhong;
 import entity.Phong;
+import entity.TrangThaiHoaDon;
 import entity.TrangThaiPhong;
 import java.util.List;
 import org.hibernate.Session;
@@ -96,8 +92,8 @@ public class Phong_DAO implements PhongService {
     public List<Phong> getDsPhong(int numPage, String tenPhong, String loaiPhong) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
-        String sql = "select p.* from Phong p where tenPhong like N'%"+ tenPhong +"%' "
-                + "and maLoaiPhong like '%"+ loaiPhong +"%' "
+        String sql = "select p.* from Phong p where tenPhong like N'%" + tenPhong + "%' "
+                + "and maLoaiPhong like '%" + loaiPhong + "%' "
                 + "order by maPhong offset :x row fetch next 20 rows only";
         try {
             tr.begin();
@@ -121,22 +117,22 @@ public class Phong_DAO implements PhongService {
     public int getSoLuongPhong(String tenPhong, String loaiPhong) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        
-        String sql = "select count(*) from Phong where tenPhong like N'%"+ tenPhong +"%' "
-                + "and maLoaiPhong like '%"+ loaiPhong +"%'";
+
+        String sql = "select count(*) from Phong where tenPhong like N'%" + tenPhong + "%' "
+                + "and maLoaiPhong like '%" + loaiPhong + "%'";
         try {
             tr.begin();
             int rs = (int) session.
                     createNativeQuery(sql)
                     .getSingleResult();
             tr.commit();
-            return  rs;
+            return rs;
         } catch (Exception e) {
             tr.rollback();
         }
         return 0;
     }
-    
+
     @Override
     public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai) {
         Session session = sessionFactory.openSession();
@@ -187,9 +183,10 @@ public class Phong_DAO implements PhongService {
                 + "on p.maPhong = hd.maPhong inner join KhachHang kh "
                 + "on kh.maKhachHang = hd.maKhachHang "
                 + "where (sdt like '%" + sdtOrTen + "%' "
-                + "or tenKhachHang like N'%" + sdtOrTen + "%') "
+                + "or tenKhachHang like N'%" + sdtOrTen + "%' "
+                + "or dbo.ufn_removeMark(tenKhachHang) like N'%" + sdtOrTen + "%') "
                 + "and tang like '%" + (tang == 0 ? "" : tang) + "%' "
-                + "and p.trangThai = '" + TrangThaiPhong.DANG_HAT + "'";
+                + "and hd.trangThai = '" + TrangThaiHoaDon.DANG_XU_LY + "'";
 
         try {
             tr.begin();
@@ -231,7 +228,8 @@ public class Phong_DAO implements PhongService {
 
         String sql = "select * from Phong where tang like '%" + (tang == 0 ? "" : tang) + "%' "
                 + "and maLoaiPhong like '%" + maLoaiPhong + "%' "
-                + "and tenPhong like '%" + tenPhong + "%'";
+                + "and (tenPhong like '%" + tenPhong + "%' "
+                + "or dbo.ufn_removeMark(tenPhong) like '%" + tenPhong + "%')";
 
         try {
             tr.begin();
@@ -247,16 +245,16 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-    
+
     @Override
     public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangthai) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
-        String sql = "select * from Phong where trangThai = '"+trangthai+"' and maLoaiPhong != 'LP0003'";
-        
+        String sql = "select * from Phong where trangThai = '" + trangthai + "' and maLoaiPhong != 'LP0003'";
+
         try {
             tr.begin();
-                List<Phong> dsPhong = session.createNativeQuery(sql, Phong.class).getResultList();  
+            List<Phong> dsPhong = session.createNativeQuery(sql, Phong.class).getResultList();
             tr.commit();
             return dsPhong;
         } catch (Exception e) {
@@ -265,43 +263,25 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-    
-//    @Override
-//    public boolean updatePhong(String maPhong,TrangThaiPhong trangThai) {
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        String sql = "update Phong set trangThai = '"+trangThai+"' where maPhong = '"+maPhong+"'";
-//        try {
-//            tr.begin();
-//                session.createNativeQuery(sql).executeUpdate();
-//            tr.commit();
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            tr.rollback();
-//        }
-//        return false;
-//        
-//    }
-    
+
     @Override
-    public List<Phong> getDSPhongChuaDat(String date,String maLoaiPhong) {
-        String sql = "select * from Phong where maPhong not in (\n" +
-                    "select p.maPhong from Phong p join PhieuDatPhong pdp on p.maPhong = pdp.maPhong and pdp.trangThai = 'DANG_DOI' \n" +
-                    "where Cast(( CAST(N'"+date+"' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) ";
-        String sqlMa = "select * from Phong where maPhong not in (\n" +
-                    "select p.maPhong from Phong p join PhieuDatPhong pdp on p.maPhong = pdp.maPhong and pdp.trangThai = 'DANG_DOI' \n" +
-                    "where Cast(( CAST(N'"+date+"' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) "
-                    + "and maLoaiPhong = '"+maLoaiPhong+"'";
+    public List<Phong> getDSPhongChuaDat(String date, String maLoaiPhong) {
+        String sql = "select * from Phong where maPhong not in (\n"
+                + "select p.maPhong from Phong p join PhieuDatPhong pdp on p.maPhong = pdp.maPhong and pdp.trangThai = 'DANG_DOI' \n"
+                + "where Cast(( CAST(N'" + date + "' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) ";
+        String sqlMa = "select * from Phong where maPhong not in (\n"
+                + "select p.maPhong from Phong p join PhieuDatPhong pdp on p.maPhong = pdp.maPhong and pdp.trangThai = 'DANG_DOI' \n"
+                + "where Cast(( CAST(N'" + date + "' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) "
+                + "and maLoaiPhong = '" + maLoaiPhong + "'";
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         try {
             tr.begin();
             List<Phong> dsPhong = null;
-            if(maLoaiPhong.equals("")){
-                dsPhong = session.createNativeQuery(sql,Phong.class).getResultList();
-            }else{
-                dsPhong = session.createNativeQuery(sqlMa,Phong.class).getResultList();
+            if (maLoaiPhong.equals("")) {
+                dsPhong = session.createNativeQuery(sql, Phong.class).getResultList();
+            } else {
+                dsPhong = session.createNativeQuery(sqlMa, Phong.class).getResultList();
             }
             tr.commit();
             return dsPhong;
@@ -310,8 +290,6 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-    
-    
 
     @Override
     public String getMaxId() {
@@ -332,4 +310,21 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
+
+    @Override
+    public void updatePhongByPhieu() {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = session.getTransaction();
+
+        String sql = "exec updateAll";
+
+        try {
+            tr.begin();
+            session.createNativeQuery(sql).executeUpdate();
+            tr.commit();
+        } catch (Exception e) {
+            tr.rollback();
+        }
+    }
+
 }

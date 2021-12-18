@@ -1,10 +1,10 @@
 package gui.component;
 
 import dao.MatHang_DAO;
-import dao.NhaCungCapVaNhapHang_DAO;
+import dao.NhaCungCap_DAO;
 import entity.MatHang;
 import java.util.List;
-import objectcombobox.ObjectComboBox;
+import gui.swing.model.ModelObjectComboBox;
 import service.MatHangService;
 
 public class PanelTenSanPham extends javax.swing.JPanel {
@@ -54,7 +54,7 @@ public class PanelTenSanPham extends javax.swing.JPanel {
             List<MatHang> listMH = matHangDao.getDanhSachMatHangByLoaiDichVu(id);
             for (int i = 0; i < listMH.size(); i++) {
                 MatHang dv = listMH.get(i);
-                cbSPDaCo.addItem(new ObjectComboBox(dv.getTenMatHang(),dv.getMaMatHang()));  
+                cbSPDaCo.addItem(new ModelObjectComboBox(dv.getTenMatHang(),dv.getMaMatHang()));  
             } 
         } 
     }
@@ -70,7 +70,7 @@ public class PanelTenSanPham extends javax.swing.JPanel {
         return cbSPDaCo.getSelectedItem().toString();
     }
     public String getMaSanPhamCu(){
-        ObjectComboBox dv = (ObjectComboBox)cbSPDaCo.getSelectedItem();
+        ModelObjectComboBox dv = (ModelObjectComboBox)cbSPDaCo.getSelectedItem();
         return dv.getMa();
     }
     

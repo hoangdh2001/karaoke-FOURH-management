@@ -1,16 +1,16 @@
 package gui.component;
 
 import dao.HoaDon_DAO;
+import dao.PhieuDatPhong_DAO;
 import entity.HoaDon;
+import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.TrangThaiHoaDon;
 import entity.TrangThaiPhong;
 import gui.swing.event.EventRoom;
 import gui.swing.event.EventTabSelected;
 import gui.swing.layout.WrapLayout;
 import gui.swing.panel.PanelShadow;
 import gui.swing.panel.TabButton;
-import gui.swing.scrollbar.ScrollBarCustom;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,13 +24,14 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import gui.swing.event.EventShowInfoOver;
+import gui.swing.panel.PanelEmpty;
 
 public class PanelMap extends PanelShadow {
 
     private JPanel pane;
     private TabButton tabPane;
-    private JPanel roomMap;
-    private List<JPanel> panels = new ArrayList<>();
+    private PanelEmpty roomMap;
+    private List<PanelEmpty> panels = new ArrayList<>();
     private JScrollPane sp;
     private int indexShowing;
     private EventShowInfoOver event;
@@ -89,11 +90,6 @@ public class PanelMap extends PanelShadow {
         pane.setLayout(new BorderLayout());
         pane.setBackground(Color.WHITE);
         pane.add(createRoomMap());
-//        sp.getViewport().setBackground(Color.WHITE);
-//        sp.setVerticalScrollBar(new ScrollBarCustom());
-//        JPanel p = new JPanel();
-//        p.setOpaque(false);
-//        sp.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         sp.setViewportView(pane);
         sp.getVerticalScrollBar().setUnitIncrement(50);
         sp.setBorder(null);
@@ -113,8 +109,8 @@ public class PanelMap extends PanelShadow {
         pane.revalidate();
     }
 
-    private JPanel createRoomMap() {
-        roomMap = new JPanel();
+    private PanelEmpty createRoomMap() {
+        roomMap = new PanelEmpty();
         roomMap.setOpaque(false);
         roomMap.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
 
@@ -122,7 +118,7 @@ public class PanelMap extends PanelShadow {
         return roomMap;
     }
 
-    public void addRoom(JPanel panel, Room room) {
+    public void addRoom(PanelEmpty panel, Room room) {
         room.setPreferredSize(new Dimension(200, 250));
 
         room.addMouseListener(new MouseAdapter() {
@@ -151,12 +147,15 @@ public class PanelMap extends PanelShadow {
 
     public void loadMap(List<Phong> dsPhong, int tang) {
         panels.get(tang).removeAll();
-        System.out.println(dsPhong);
         for (Phong phong : dsPhong) {
             if(phong.getTrangThai() == TrangThaiPhong.DANG_HAT) {
-                HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong(), TrangThaiHoaDon.DANG_XU_LY);
+                HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong());
                 addRoom(panels.get(tang), new Room(phong, hoaDon));
-            } else {
+            } else if(phong.getTrangThai() == TrangThaiPhong.DAT_TRUOC) {
+                PhieuDatPhong phieuDatPhong = new PhieuDatPhong_DAO().getPhieuDatPhongByIDPhong(phong.getMaPhong());
+                addRoom(panels.get(tang), new Room(phong, phieuDatPhong));
+            }
+                else {
                 addRoom(panels.get(tang), new Room(phong));
             }
             panels.get(tang).repaint();
@@ -168,8 +167,8 @@ public class PanelMap extends PanelShadow {
         tabPane.removeAll();
         tabPane.addTabButtonItem("Tất cả");
         for (int i = 0; i < tang; i++) {
-            JPanel tabFloor = new JPanel();
-            tabFloor.setOpaque(false);
+            PanelEmpty tabFloor = new PanelEmpty();
+//            tabFloor.setOpaque(false);
             tabFloor.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
             tabPane.addTabButtonItem("Tầng " + tabPane.getComponentCount());
             panels.add(tabFloor);
