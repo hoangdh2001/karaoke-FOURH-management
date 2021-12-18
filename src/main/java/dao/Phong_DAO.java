@@ -266,11 +266,15 @@ public class Phong_DAO implements PhongService {
     public List<Phong> getDSPhongChuaDat(String date, String maLoaiPhong) {
         String sql = "select * from Phong where maPhong not in (\n"
                 + "select p.maPhong from Phong p join PhieuDatPhong pdp on p.maPhong = pdp.maPhong and pdp.trangThai = 'DANG_DOI' \n"
-                + "where Cast(( CAST(N'" + date + "' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) ";
+                + "where Cast(( CAST(N'" + date + "' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) and maPhong in(\n"
+                + "	select maPhong from Phong where trangThai = 'TRONG'\n"
+                + ")";
         String sqlMa = "select * from Phong where maPhong not in (\n"
                 + "select p.maPhong from Phong p join PhieuDatPhong pdp on p.maPhong = pdp.maPhong and pdp.trangThai = 'DANG_DOI' \n"
                 + "where Cast(( CAST(N'" + date + "' AS datetime) - pdp.ngayDat) as Float) * 24.0 < 6) "
-                + "and maLoaiPhong = '" + maLoaiPhong + "'";
+                + "and maLoaiPhong = '" + maLoaiPhong + "' and maPhong in(\n"
+                + "	select maPhong from Phong where trangThai = 'TRONG'\n"
+                + ")";
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
         try {
