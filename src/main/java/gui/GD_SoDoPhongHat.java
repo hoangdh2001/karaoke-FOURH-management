@@ -36,11 +36,8 @@ import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventTabSelected;
 import gui.swing.textfield.MyTextFieldFlatlaf;
-import java.awt.Desktop;
-import java.net.MalformedURLException;
-import java.net.URI;
+import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -180,8 +177,8 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
-                    openWebpage(new URL("https://www.youtube.com/"));
-                } catch (MalformedURLException ex) {
+                    Application.openWebpage(new File(getClass().getResource("index.html").toURI()));
+                } catch (URISyntaxException ex) {
                     Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -386,27 +383,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         }).start();
     }
 
-    public static boolean openWebpage(URI uri) {
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-            try {
-                desktop.browse(uri);
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
-    public static boolean openWebpage(URL url) {
-        try {
-            return openWebpage(url.toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

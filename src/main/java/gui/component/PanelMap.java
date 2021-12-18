@@ -31,7 +31,7 @@ public class PanelMap extends PanelShadow {
     private JPanel pane;
     private TabButton tabPane;
     private PanelEmpty roomMap;
-    private List<PanelEmpty> panels = new ArrayList<>();
+    private final List<PanelEmpty> panels = new ArrayList<>();
     private JScrollPane sp;
     private int indexShowing;
     private EventShowInfoOver event;
@@ -91,7 +91,7 @@ public class PanelMap extends PanelShadow {
         pane.setBackground(Color.WHITE);
         pane.add(createRoomMap());
         sp.setViewportView(pane);
-        sp.getVerticalScrollBar().setUnitIncrement(50);
+        sp.getVerticalScrollBar().setUnitIncrement(16);
         sp.setBorder(null);
         return sp;
     }
@@ -112,14 +112,14 @@ public class PanelMap extends PanelShadow {
     private PanelEmpty createRoomMap() {
         roomMap = new PanelEmpty();
         roomMap.setOpaque(false);
-        roomMap.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
+        roomMap.setLayout(new WrapLayout(WrapLayout.LEADING, 20, 10));
 
         panels.add(roomMap);
         return roomMap;
     }
 
     public void addRoom(PanelEmpty panel, Room room) {
-        room.setPreferredSize(new Dimension(200, 250));
+        room.setPreferredSize(new Dimension(250, 150));
 
         room.addMouseListener(new MouseAdapter() {
             @Override
@@ -148,15 +148,20 @@ public class PanelMap extends PanelShadow {
     public void loadMap(List<Phong> dsPhong, int tang) {
         panels.get(tang).removeAll();
         for (Phong phong : dsPhong) {
-            if(phong.getTrangThai() == TrangThaiPhong.DANG_HAT) {
-                HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong());
-                addRoom(panels.get(tang), new Room(phong, hoaDon));
-            } else if(phong.getTrangThai() == TrangThaiPhong.DAT_TRUOC) {
-                PhieuDatPhong phieuDatPhong = new PhieuDatPhong_DAO().getPhieuDatPhongByIDPhong(phong.getMaPhong());
-                addRoom(panels.get(tang), new Room(phong, phieuDatPhong));
-            }
-                else {
+            if(null == phong.getTrangThai()) {
                 addRoom(panels.get(tang), new Room(phong));
+            } else switch (phong.getTrangThai()) {
+                case DANG_HAT:
+                    HoaDon hoaDon = new HoaDon_DAO().getHoaDonByIdPhong(phong.getMaPhong());
+                    addRoom(panels.get(tang), new Room(phong, hoaDon));
+                    break;
+                case DAT_TRUOC:
+                    PhieuDatPhong phieuDatPhong = new PhieuDatPhong_DAO().getPhieuDatPhongByIDPhong(phong.getMaPhong());
+                    addRoom(panels.get(tang), new Room(phong, phieuDatPhong));
+                    break;
+                default:
+                    addRoom(panels.get(tang), new Room(phong));
+                    break;
             }
             panels.get(tang).repaint();
             panels.get(tang).revalidate();
@@ -169,7 +174,7 @@ public class PanelMap extends PanelShadow {
         for (int i = 0; i < tang; i++) {
             PanelEmpty tabFloor = new PanelEmpty();
 //            tabFloor.setOpaque(false);
-            tabFloor.setLayout(new WrapLayout(WrapLayout.LEADING, 50, 20));
+            tabFloor.setLayout(new WrapLayout(WrapLayout.LEADING, 15, 10));
             tabPane.addTabButtonItem("Tầng " + tabPane.getComponentCount());
             panels.add(tabFloor);
         }
