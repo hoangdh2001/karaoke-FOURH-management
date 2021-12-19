@@ -90,6 +90,7 @@ public class Room extends PanelShadow {
         JPopupMenu pop = new JPopupMenu();
         pop.setPreferredSize(new Dimension(150, 250));
         mniKhachVaoHat = new JMenuItem("Khách vào hát");
+        mniKhachVaoHat.setIconTextGap(15);
         mniKhachVaoHat.setIcon(new ImageIcon(getClass().getResource("/icon/key.png")));
         mniKhachVaoHat.addActionListener(new ActionListener() {
             @Override
@@ -99,6 +100,8 @@ public class Room extends PanelShadow {
             }
         });
         mniThanhToan = new JMenuItem("Thanh toán");
+        mniThanhToan.setIcon(new ImageIcon(getClass().getResource("/icon/payment.png")));
+        mniThanhToan.setIconTextGap(15);
         mniThanhToan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +110,11 @@ public class Room extends PanelShadow {
             }
         });
         mniDoiPhong = new JMenuItem("Đổi phòng");
+        mniDoiPhong.setIcon(new ImageIcon(getClass().getResource("/icon/change.png")));
+        mniDoiPhong.setIconTextGap(15);
         mniThemDichVu = new JMenuItem("Cập nhật dịch vụ");
+        mniThemDichVu.setIcon(new ImageIcon(getClass().getResource("/icon/updateservice.png")));
+        mniThemDichVu.setIconTextGap(15);
         mniThemDichVu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,8 +122,14 @@ public class Room extends PanelShadow {
             }
         });
         mniDatPhong = new JMenuItem("Đặt phòng");
+        mniDatPhong.setIcon(new ImageIcon(getClass().getResource("/icon/book_room.png")));
+        mniDatPhong.setIconTextGap(15);
         mniDonPhong = new JMenuItem("Dọn phòng");
+        mniDonPhong.setIcon(new ImageIcon(getClass().getResource("/icon/cleaning_small.png")));
+        mniDonPhong.setIconTextGap(15);
         mniSuaPhong = new JMenuItem("Sửa phòng");
+        mniSuaPhong.setIcon(new ImageIcon(getClass().getResource("/icon/fix_small.png")));
+        mniSuaPhong.setIconTextGap(15);
         pop.add(mniKhachVaoHat);
         pop.addSeparator();
         pop.add(mniThanhToan);
