@@ -1,7 +1,9 @@
+/**
+ * ChiTietHoaDon bao gồm các thông tin chi tiet hóa đơn: thông tin măt
+ * hàng, số lượng sản phẩm, thành tiền.
+ */
 package entity;
 
-import gui.swing.event.EventMinus;
-import java.text.DecimalFormat;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import gui.swing.model.ModelObjectComboBox;
 
 @Entity
 @IdClass(ChiTietHoaDon_PK.class)
@@ -74,9 +75,14 @@ public class ChiTietHoaDon {
 
     /**
      * @param matHang the matHang to set
+     * @throws java.lang.Exception
      */
-    public void setMatHang(MatHang matHang) {
-        this.matHang = matHang;
+    public void setMatHang(MatHang matHang) throws Exception {
+        if(matHang != null) {
+            this.matHang = matHang;
+        } else {
+            throw new Exception("Mặt hàng không được rỗng");
+        }
     }
 
     /**
@@ -88,9 +94,14 @@ public class ChiTietHoaDon {
 
     /**
      * @param soLuong the soLuong to set
+     * @throws java.lang.Exception
      */
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
+    public void setSoLuong(int soLuong) throws Exception {
+        if(soLuong > 0) {
+            this.soLuong = soLuong;
+        } else {
+            throw new Exception("Phải có ít nhất 1 mặt hàng");
+        }
     }
 
     /**

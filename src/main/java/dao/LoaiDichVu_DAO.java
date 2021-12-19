@@ -16,7 +16,11 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
     public LoaiDichVu_DAO() {
         sessionFactory = HibernateUtil.getInstance().getSessionFactory();
     }
-
+    /**
+     * Lấy loại dịch vụ theo mã dịch vụ
+     * @param id: mã loại dịch vụ
+     * @return loaiDichVu
+     */
     @Override
     public LoaiDichVu getLoaiDichVu(String id) {
         Session session = sessionFactory.getCurrentSession();
@@ -32,7 +36,10 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách loại dịch vụ
+     * @return 
+     */
     @Override
     public List<LoaiDichVu> getDsLoaiDichVu() {
         Session session = sessionFactory.openSession();
@@ -50,7 +57,10 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách tên loại dịch vụ
+     * @return 
+     */
     @Override
     public List<String> getDsTenLoaiDichVu() {
         Session session = sessionFactory.openSession();
@@ -68,7 +78,11 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
         }
         return null;
     }
-    
+    /**
+     * Lấy loại dịch vu theo mã loại dịch vụ
+     * @param ma: mã loại dịch vụ
+     * @return loaiDichVu
+     */
     @Override
     public LoaiDichVu getLoaiDichVuByMa(String ma) {
         Session session = sessionFactory.getCurrentSession();
@@ -84,7 +98,12 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
         }
         return null;
     }
-
+    /**
+     * Lấy tổng mặt hàng
+     * @param batDau
+     * @param ketThuc
+     * @return 
+     */
     @Override
     public List<String> getPercent(String batDau, String ketThuc) {
         List<String> list = new ArrayList<String>();
@@ -114,7 +133,13 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
         
         return list;
     }
-
+    /**
+     * Lấy tổng mặt hàng
+     * @param thangOrNam
+     * @param thang
+     * @param year
+     * @return 
+     */
     @Override
     public List<String> getPercent(int thangOrNam, Boolean thang, int year) {
         List<String> list = new ArrayList<String>();

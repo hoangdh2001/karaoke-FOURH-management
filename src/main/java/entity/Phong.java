@@ -74,9 +74,14 @@ public class Phong {
 
     /**
      * @param tenPhong the tenPhong to set
+     * @throws java.lang.Exception
      */
-    public void setTenPhong(String tenPhong) {
-        this.tenPhong = tenPhong;
+    public void setTenPhong(String tenPhong) throws Exception {
+        if (tenPhong.length() > 0) {
+            this.tenPhong = tenPhong;
+        } else {
+            throw new Exception("Tên phòng không được rỗng");
+        }
     }
 
     /**
@@ -88,9 +93,14 @@ public class Phong {
 
     /**
      * @param trangThai the trangThai to set
+     * @throws java.lang.Exception
      */
-    public void setTrangThai(TrangThaiPhong trangThai) {
-        this.trangThai = trangThai;
+    public void setTrangThai(TrangThaiPhong trangThai) throws Exception {
+        if (trangThai != null) {
+            this.trangThai = trangThai;
+        } else {
+            throw new Exception("Trạng thái không được rỗng");
+        }
     }
 
     /**
@@ -102,9 +112,14 @@ public class Phong {
 
     /**
      * @param loaiPhong the loaiPhong to set
+     * @throws java.lang.Exception
      */
-    public void setLoaiPhong(LoaiPhong loaiPhong) {
-        this.loaiPhong = loaiPhong;
+    public void setLoaiPhong(LoaiPhong loaiPhong) throws Exception {
+        if (loaiPhong != null) {
+            this.loaiPhong = loaiPhong;
+        } else {
+            throw new Exception("Loại phòng không được rỗng");
+        }
     }
 
     /**
@@ -113,27 +128,28 @@ public class Phong {
     public int getTang() {
         return tang;
     }
-    
+
     /**
      * @param tang the tang to set
      */
     public void setTang(int tang) {
         this.tang = tang;
     }
+
     /**
      * @return the anhPhong
      */
     public byte[] getAnhPhong() {
         return anhPhong;
     }
-    
+
     /**
-     * @param anhPhong 
+     * @param anhPhong
      */
     public void setAnhPhong(byte[] anhPhong) {
         this.anhPhong = anhPhong;
     }
-    
+
     @Override
     public String toString() {
         return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", trangThai=" + trangThai + ", loaiPhong="

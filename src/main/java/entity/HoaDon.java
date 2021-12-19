@@ -35,7 +35,7 @@ public class HoaDon {
     private Date ngayLapHoaDon;
     @Column(columnDefinition = "datetime")
     private Date thoiGianBatDau;
-    @Column(nullable = false,columnDefinition = "datetime")
+    @Column(nullable = false, columnDefinition = "datetime")
     private Date thoiGianKetThuc;
     private float chietKhau;
     @Enumerated(EnumType.STRING)
@@ -55,7 +55,7 @@ public class HoaDon {
     private double tienThua;
     @Column(columnDefinition = "money")
     private double donGiaPhongCu;
-    @Column(columnDefinition = "money",nullable = true)
+    @Column(columnDefinition = "money", nullable = true)
     private double tienCoc;
 
     /**
@@ -110,7 +110,7 @@ public class HoaDon {
      * @param matHang
      * @param soLuong
      */
-    public void themCT_HoaDon(MatHang matHang, int soLuong) {
+    public void themCT_HoaDon(MatHang matHang, int soLuong) throws Exception {
         ChiTietHoaDon newChiTietHoaDon = new ChiTietHoaDon(this, matHang, soLuong);
         if (dsChiTietHoaDon.contains(newChiTietHoaDon)) {
             ChiTietHoaDon chiTietHoaDon = dsChiTietHoaDon.get(dsChiTietHoaDon.indexOf(newChiTietHoaDon));
@@ -157,9 +157,14 @@ public class HoaDon {
 
     /**
      * @param phong the phong to set
+     * @throws java.lang.Exception
      */
-    public void setPhong(Phong phong) {
-        this.phong = phong;
+    public void setPhong(Phong phong) throws Exception {
+        if (phong != null) {
+            this.phong = phong;
+        } else {
+            throw new Exception("Phòng không được rỗng");
+        }
     }
 
     /**
@@ -171,9 +176,14 @@ public class HoaDon {
 
     /**
      * @param nhanVien the nhanVien to set
+     * @throws java.lang.Exception
      */
-    public void setNhanVien(NhanVien nhanVien) {
-        this.nhanVien = nhanVien;
+    public void setNhanVien(NhanVien nhanVien) throws Exception {
+        if (nhanVien != null) {
+            this.nhanVien = nhanVien;
+        } else {
+            throw new Exception("Nhân viên không được rỗng");
+        }
     }
 
     /**
@@ -185,9 +195,14 @@ public class HoaDon {
 
     /**
      * @param ngayLapHoaDon the ngayLapHoaDon to set
+     * @throws java.lang.Exception
      */
-    public void setNgayLapHoaDon(Date ngayLapHoaDon) {
-        this.ngayLapHoaDon = ngayLapHoaDon;
+    public void setNgayLapHoaDon(Date ngayLapHoaDon) throws Exception {
+        if (ngayLapHoaDon != null) {
+            this.ngayLapHoaDon = ngayLapHoaDon;
+        } else {
+            throw new Exception("Ngày lập hóa đơn không được rỗng");
+        }
     }
 
     /**
@@ -199,9 +214,14 @@ public class HoaDon {
 
     /**
      * @param thoiGianKetThuc the thoiGianKetThuc to set
+     * @throws java.lang.Exception
      */
-    public void setThoiGianKetThuc(Date thoiGianKetThuc) {
-        this.thoiGianKetThuc = thoiGianKetThuc;
+    public void setThoiGianKetThuc(Date thoiGianKetThuc) throws Exception {
+        if (thoiGianKetThuc.after(thoiGianBatDau)) {
+            this.thoiGianKetThuc = thoiGianKetThuc;
+        } else {
+            throw new Exception("Thời gian kết thúc phải sau ngày hiện tại");
+        }
     }
 
     /**
@@ -227,9 +247,14 @@ public class HoaDon {
 
     /**
      * @param trangThai
+     * @throws java.lang.Exception
      */
-    public void setTrangThai(TrangThaiHoaDon trangThai) {
-        this.trangThai = trangThai;
+    public void setTrangThai(TrangThaiHoaDon trangThai) throws Exception {
+        if (trangThai != null) {
+            this.trangThai = trangThai;
+        } else {
+            throw new Exception("Trạng thái không được rỗng");
+        }
     }
 
     /**
@@ -253,8 +278,16 @@ public class HoaDon {
         return thoiGianBatDau;
     }
 
-    public void setThoiGianBatDau(Date thoiGianBatDau) {
-        this.thoiGianBatDau = thoiGianBatDau;
+    /**
+     * @param thoiGianBatDau
+     * @throws Exception
+     */
+    public void setThoiGianBatDau(Date thoiGianBatDau) throws Exception {
+        if (thoiGianBatDau != null) {
+            this.thoiGianBatDau = thoiGianBatDau;
+        } else {
+            throw new Exception("Thời gian bắt đầu không được rỗng");
+        }
     }
 
     /**
@@ -291,14 +324,14 @@ public class HoaDon {
     public double getDonGiaPhongCu() {
         return donGiaPhongCu;
     }
-    
+
     /**
-     * @param donPhongCu 
+     * @param donGiaPhongCu
      */
-    public void setDonPhongCu(double donPhongCu) {
-        this.donGiaPhongCu = donPhongCu;
+    public void setDonGiaPhongCu(double donGiaPhongCu) {
+        this.donGiaPhongCu = donGiaPhongCu;
     }
-    
+
     /**
      * @return the tongTienMatHang
      */
@@ -339,31 +372,27 @@ public class HoaDon {
         return tienThua = getTienKhachDua() - getTongHoaDon();
     }
 
+    /**
+     * @return tienCoc
+     */
     public double getTienCoc() {
         return tienCoc;
     }
 
-    public void setTienCoc(double tienCoc) {
-        this.tienCoc = tienCoc;
+    /**
+     * @param tienCoc
+     * @throws Exception
+     */
+    public void setTienCoc(double tienCoc) throws Exception {
+        if (tienCoc > 0) {
+            this.tienCoc = tienCoc;
+        } else {
+            throw new Exception("Tiền cọc phải lớn hơn 0");
+        }
     }
-    
+
     @Override
     public String toString() {
         return "HoaDon{" + "maHoaDon=" + maHoaDon + ", khachHang=" + khachHang + ", phong=" + phong + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", thoiGianBatDau=" + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + ", chietKhau=" + chietKhau + ", trangThai=" + trangThai + ", dsChiTietHoaDon=" + dsChiTietHoaDon + ", gioHat=" + gioHat + ", donGiaPhong=" + donGiaPhong + ", tongTienMatHang=" + tongTienMatHang + ", tongHoaDon=" + tongHoaDon + ", tienKhachDua=" + tienKhachDua + ", tienThua=" + tienThua + '}';
-    }
-
-    public Object[] convertToRowTable(){
-        DecimalFormat dcf = new DecimalFormat("#,###");
-        SimpleDateFormat fm1 = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat fm2 = new SimpleDateFormat("HH:mm");
-        return new Object[]{maHoaDon, khachHang.getTenKhachHang(), phong.getTenPhong(), gioHat, fm1.format(ngayLapHoaDon), fm2.format(thoiGianBatDau), dcf.format(tongTienMatHang), dcf.format(phong.getLoaiPhong().getGiaPhong()), dcf.format(tongHoaDon), nhanVien.getTenNhanVien()};
-    }
-    
-    public Object[] convertToRowTableInGDThongKeDoanhThu() {
-        DecimalFormat df;
-        df = new DecimalFormat("#,###");
-        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String ngayLap = gio.format(ngayLapHoaDon);
-        return new Object[]{maHoaDon, ngayLap, khachHang == null ? "Trống":khachHang.getTenKhachHang(), nhanVien.getTenNhanVien(), df.format(getTongHoaDon())};
     }
 }

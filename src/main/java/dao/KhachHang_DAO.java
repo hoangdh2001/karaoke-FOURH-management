@@ -154,7 +154,11 @@ public class KhachHang_DAO implements KhachHangService {
         }
         return false;
     }
-
+    /**
+     * Tìm kiếm khách hàng theo từ khóa đã chọn
+     * @param tuKhoa
+     * @return dsKhachHang
+     */
     @Override
     public List<KhachHang> getDsKhachHangLimit(String tuKhoa) {
         Session session = sessionFactory.openSession();
@@ -179,7 +183,11 @@ public class KhachHang_DAO implements KhachHangService {
         }
         return null;
     }
-
+    
+    /**
+     * Lấy mã khách hàng mới nhất
+     * @return maKhachHang
+     */
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();

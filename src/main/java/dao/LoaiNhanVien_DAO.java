@@ -16,7 +16,10 @@ public class LoaiNhanVien_DAO implements LoaiNhanVienService {
         HibernateUtil hibernateUtil = HibernateUtil.getInstance();
         this.sessionFactory = hibernateUtil.getSessionFactory();
     }
-
+    /**
+     * Lấy danh sách nhân viên
+     * @return dsNhanVien
+     */
     @Override
     public List<LoaiNhanVien> getLoaiNhanViens() {
         Session session = sessionFactory.getCurrentSession();

@@ -13,7 +13,11 @@ public class ChiTietNhapHang_DAO implements ChiTietNhapHangService{
     public ChiTietNhapHang_DAO() {
         this.sessionFactory = HibernateUtil.getInstance().getSessionFactory();
     }
-
+    /**
+     * Thêm một chi tiết nhập hàng
+     * @param chiTietNhapHang
+     * @return 
+     */
     @Override
     public boolean addChiTietNhapHang(ChiTietNhapHang chiTietNhapHang) {
         Session session = sessionFactory.getCurrentSession();

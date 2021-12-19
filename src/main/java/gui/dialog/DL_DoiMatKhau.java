@@ -5,6 +5,8 @@ import entity.NhanVien;
 import gui.GD_Chinh;
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import service.NhanVienService;
@@ -305,11 +307,19 @@ public class DL_DoiMatKhau extends javax.swing.JDialog {
         NhanVien nhanVien = GD_Chinh.NHAN_VIEN;
         if (validData()) {
             if (cbShowCapNhat.isSelected()) {
-                nhanVien.setEmail(email);
-                nhanVien.setSoDienThoai(sdt);
+                try {
+                    nhanVien.setEmail(email);
+                    nhanVien.setSoDienThoai(sdt);
+                } catch (Exception ex) {
+                    Logger.getLogger(DL_DoiMatKhau.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             if (cbShow.isSelected()) {
-                nhanVien.setMatKhau(nhapLai);
+                try {
+                    nhanVien.setMatKhau(nhapLai);
+                } catch (Exception ex) {
+                    Logger.getLogger(DL_DoiMatKhau.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             if (nhanVienService.updateNhanVien(nhanVien)) {
                 JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công!");

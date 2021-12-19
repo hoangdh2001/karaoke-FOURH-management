@@ -40,7 +40,7 @@ public class KhachHang {
      *
      */
     public KhachHang() {
-        
+
     }
 
     /**
@@ -66,9 +66,14 @@ public class KhachHang {
 
     /**
      * @param tenKhachHang the tenKhachHang to set
+     * @throws java.lang.Exception
      */
-    public void setTenKhachHang(String tenKhachHang) {
-        this.tenKhachHang = tenKhachHang;
+    public void setTenKhachHang(String tenKhachHang) throws Exception {
+        if(tenKhachHang.length() > 0) {
+            this.tenKhachHang = tenKhachHang;
+        } else {
+            throw new Exception("Tên khách hàng không được rỗng");
+        }
     }
 
     /**
@@ -80,9 +85,14 @@ public class KhachHang {
 
     /**
      * @param canCuocCD the canCuocCD to set
+     * @throws java.lang.Exception
      */
-    public void setCanCuocCD(String canCuocCD) {
-        this.canCuocCD = canCuocCD;
+    public void setCanCuocCD(String canCuocCD) throws Exception {
+        if(canCuocCD.length() > 0) {
+            this.canCuocCD = canCuocCD;
+        } else {
+            throw new Exception("Căn cước công dân không được rỗng");
+        }
     }
 
     /**
@@ -94,9 +104,14 @@ public class KhachHang {
 
     /**
      * @param soDienThoai the soDienThoai to set
+     * @throws java.lang.Exception
      */
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
+    public void setSoDienThoai(String soDienThoai) throws Exception {
+        if(soDienThoai.length() > 0) {
+            this.soDienThoai = soDienThoai;
+        } else {
+            throw new Exception("Số điện thoại không được rỗng");
+        }
     }
 
     @Override

@@ -41,9 +41,14 @@ public class LoaiNhanVien {
 
     /**
      * @param maLoaiNV the maLoaiNV to set
+     * @throws java.lang.Exception
      */
-    public void setMaLoaiNV(String maLoaiNV) {
-        this.maLoaiNV = maLoaiNV;
+    public void setMaLoaiNV(String maLoaiNV) throws Exception {
+        if(maLoaiNV.length() > 0) {
+            this.maLoaiNV = maLoaiNV;
+        } else {
+            throw new Exception("Mã loại nhân viên không được rỗng");
+        }
     }
 
     /**
@@ -55,9 +60,14 @@ public class LoaiNhanVien {
 
     /**
      * @param tenLoaiNV the tenLoaiNV to set
+     * @throws java.lang.Exception
      */
-    public void setTenLoaiNV(String tenLoaiNV) {
-        this.tenLoaiNV = tenLoaiNV;
+    public void setTenLoaiNV(String tenLoaiNV) throws Exception {
+        if(tenLoaiNV.length() > 0) {
+            this.tenLoaiNV = tenLoaiNV;
+        } else {
+            throw new Exception("Tên loại nhân viên không được rỗng");
+        }
     }
 
     @Override

@@ -121,9 +121,13 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
             return;
         }
 
-        dsHoaDon.forEach(hoaDon -> {
-            tblThongKe.addRow(hoaDon.convertToRowTableInGDThongKeDoanhThu());
-        });
+        for (HoaDon hoaDon : dsHoaDon) {
+            tblThongKe.addRow(new Object[]{hoaDon.getMaHoaDon(), 
+                gio.format(hoaDon.getNgayLapHoaDon()), 
+                hoaDon.getKhachHang() == null ? "Trống":hoaDon.getKhachHang().getTenKhachHang(),
+                hoaDon.getNhanVien().getTenNhanVien(),
+                df.format(hoaDon.getTongHoaDon())});
+        }
     }
 
     private void showMsg(String msg) {

@@ -1,3 +1,7 @@
+/**
+ * Các thông tin chi tiết của lô hàng bao gồm mặt hàng nhập, số lượng,
+ * giá nhập, thành tiền.
+ */
 package entity;
 
 import javax.persistence.Column;
@@ -68,9 +72,14 @@ public class ChiTietNhapHang {
 
     /**
      * @param matHang the matHang to set
+     * @throws java.lang.Exception
      */
-    public void setMatHang(MatHang matHang) {
-        this.matHang = matHang;
+    public void setMatHang(MatHang matHang) throws Exception {
+        if(matHang != null) {
+            this.matHang = matHang;
+        } else {
+            throw new Exception("Mặt hàng không được rỗng");
+        }
     }
 
     /**
@@ -82,9 +91,14 @@ public class ChiTietNhapHang {
 
     /**
      * @param soLuongNhap the soLuongNhap to set
+     * @throws java.lang.Exception
      */
-    public void setSoLuongNhap(int soLuongNhap) {
-        this.soLuongNhap = soLuongNhap;
+    public void setSoLuongNhap(int soLuongNhap) throws Exception {
+        if(soLuongNhap > 0) {
+            this.soLuongNhap = soLuongNhap;
+        } else {
+            throw new Exception("Số lượng nhập phải lớn hơn 0");
+        }
     }
 
     /**
@@ -96,9 +110,14 @@ public class ChiTietNhapHang {
 
     /**
      * @param giaNhap the giaNhap to set
+     * @throws java.lang.Exception
      */
-    public void setGiaNhap(double giaNhap) {
-        this.giaNhap = giaNhap;
+    public void setGiaNhap(double giaNhap) throws Exception {
+        if(giaNhap > 0) {
+            this.giaNhap = giaNhap;
+        } else {
+            throw new Exception("Giá nhập phải lớn hơn 0");
+        }
     }
 
     /**

@@ -11,10 +11,6 @@ import org.hibernate.Transaction;
 import service.PhongService;
 import util.HibernateUtil;
 
-/**
- *
- * @author Admin
- */
 public class Phong_DAO implements PhongService {
 
     private SessionFactory sessionFactory;
@@ -23,7 +19,11 @@ public class Phong_DAO implements PhongService {
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-
+    /**
+     * Thêm một phòng
+     * @param phong
+     * @return true: thêm thành công, false: thêm thất bại
+     */
     @Override
     public boolean addPhong(Phong phong) {
         Session session = sessionFactory.getCurrentSession();
@@ -39,7 +39,11 @@ public class Phong_DAO implements PhongService {
         }
         return false;
     }
-
+    /**
+     * Cập nhật phòng
+     * @param phong
+     * @return true: cập nhật thành công, false: cập nhật thất bại
+     */
     @Override
     public boolean updatePhong(Phong phong) {
         Session session = sessionFactory.getCurrentSession();
@@ -55,7 +59,11 @@ public class Phong_DAO implements PhongService {
         }
         return false;
     }
-
+    /**
+     * Xóa một phòng theo mã phòng
+     * @param maPhong
+     * @return true: Xóa thành công, false: Xóa thất bại
+     */
     @Override
     public boolean deletePhong(String maPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -71,7 +79,11 @@ public class Phong_DAO implements PhongService {
         }
         return false;
     }
-
+    /**
+     * Lấy phòng theo mã phòng
+     * @param maPhong
+     * @return phong
+     */
     @Override
     public Phong getPhong(String maPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -87,7 +99,13 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách phòng theo tham số
+     * @param numPage
+     * @param tenPhong
+     * @param loaiPhong
+     * @return 
+     */
     @Override
     public List<Phong> getDsPhong(int numPage, String tenPhong, String loaiPhong) {
         Session session = sessionFactory.openSession();
@@ -111,7 +129,12 @@ public class Phong_DAO implements PhongService {
         session.close();
         return null;
     }
-
+    /**
+     * Lấy số lượng phòng
+     * @param tenPhong
+     * @param loaiPhong
+     * @return soLuong
+     */
     @Override
     public int getSoLuongPhong(String tenPhong, String loaiPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -131,7 +154,11 @@ public class Phong_DAO implements PhongService {
         }
         return 0;
     }
-
+    /**
+     * Lấy số lượng phòng theo trạng thái
+     * @param trangThai
+     * @return soLuong
+     */
     @Override
     public int getSoLuongPhongTheoTrangThai(TrangThaiPhong trangThai) {
         Session session = sessionFactory.openSession();
@@ -147,7 +174,14 @@ public class Phong_DAO implements PhongService {
         }
         return soLuong;
     }
-
+    /**
+     * Lấy danh sách phòng theo các thuộc tính phòng
+     * @param tang
+     * @param tenPhong
+     * @param loaiPhong
+     * @param trangThai
+     * @return dsPhong
+     */
     @Override
     public List<Phong> getPhongByAttributes(int tang, String tenPhong, LoaiPhong loaiPhong, TrangThaiPhong trangThai) {
         Session session = sessionFactory.openSession();
@@ -172,7 +206,12 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách phòng theo hóa đơn có tên khách hàng hoặc số điện thoại
+     * @param sdtOrTen
+     * @param tang
+     * @return dsPhong
+     */
     @Override
     public List<Phong> getDsPhongBySDTOrTen(String sdtOrTen, int tang) {
         Session session = sessionFactory.openSession();
@@ -199,7 +238,10 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-
+    /**
+     * Lấy tầng cao nhất
+     * @return tang
+     */
     @Override
     public int getTang() {
         Session session = sessionFactory.getCurrentSession();
@@ -217,7 +259,13 @@ public class Phong_DAO implements PhongService {
         }
         return 0;
     }
-
+    /**
+     * Lấy danh sách phòng theo tầng, tên phòng, loại phòng.
+     * @param tang
+     * @param tenPhong
+     * @param loaiPhong
+     * @return dsPhong
+     */
     @Override
     public List<Phong> getDsPhongByTang(int tang, String tenPhong, LoaiPhong loaiPhong) {
         Session session = sessionFactory.openSession();
@@ -244,7 +292,11 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách phòng theo trạng thái phòng
+     * @param trangthai
+     * @return 
+     */
     @Override
     public List<Phong> getDSPhongByTrangThai(TrangThaiPhong trangthai) {
         Session session = sessionFactory.getCurrentSession();
@@ -261,7 +313,12 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách phòng chưa đặt, và không phải đang hát
+     * @param date
+     * @param maLoaiPhong
+     * @return dsPhong
+     */
     @Override
     public List<Phong> getDSPhongChuaDat(String date, String maLoaiPhong) {
         String sql = "select * from Phong where maPhong not in (\n"
@@ -292,7 +349,10 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-
+    /**
+     * Lấy mã phòng mới nhất
+     * @return id: mã phòng
+     */
     @Override
     public String getMaxId() {
         Session session = sessionFactory.getCurrentSession();
@@ -312,7 +372,9 @@ public class Phong_DAO implements PhongService {
         }
         return null;
     }
-
+    /**
+     * Cập nhật tất cả phòng và phiếu khi phiếu hết hạn
+     */
     @Override
     public void updatePhongByPhieu() {
         Session session = sessionFactory.getCurrentSession();

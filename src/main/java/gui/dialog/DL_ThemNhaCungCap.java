@@ -21,6 +21,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -323,38 +325,42 @@ public class DL_ThemNhaCungCap extends javax.swing.JDialog {
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
             if (obj.equals(btnThemVaSua) && valiDataNull()) {
-                NhaCungCap nccMoi = new NhaCungCap();
-                String maxID = nhaCungCapService.getMaxID();
-                String maNhaCungCap;
-                if (maxID == null) {
-                    maNhaCungCap = "NCC001";
-                } else {
-                    maNhaCungCap = AutoID.generateId(maxID, "NCC");
+                try {
+                    NhaCungCap nccMoi = new NhaCungCap();
+                    String maxID = nhaCungCapService.getMaxID();
+                    String maNhaCungCap;
+                    if (maxID == null) {
+                        maNhaCungCap = "NCC001";
+                    } else {
+                        maNhaCungCap = AutoID.generateId(maxID, "NCC");
+                    }
+                    nccMoi.setMaNCC(maNhaCungCap);
+                    String tinhThanh = cmbTinh.getSelectedItem().toString();
+                    String quanHuyen = cmbQuan_Huyen.getSelectedItem().toString();
+                    String xaPhuong = cmbXaPhuong.getSelectedItem().toString();
+                    
+                    String[] soNhaSoDuong = txtSoNha_Duong.getText().split("-");
+                    
+                    DiaChi diachi = new DiaChi(soNhaSoDuong[0], soNhaSoDuong[1], xaPhuong, quanHuyen, tinhThanh);
+                    
+                    nccMoi.setDiaChi(diachi);
+                    nccMoi.setSoDienThoai(txtSDT.getText().trim());
+                    nccMoi.setTenNCC(txtTenNCC.getText().trim());
+                    
+                    if (model != null) {
+                        NhaCungCap nccCu = (NhaCungCap) model;
+                        nccMoi.setMaNCC(nccCu.getMaNCC());
+                        nhaCungCapService.updateNhaCungCap(nccMoi);
+                        showMsg("Sửa thành công nhà cung cấp: " + nccMoi.getTenNCC());
+                    } else {
+                        nhaCungCapService.addNhaCungCap(nccMoi);
+                        showMsg("Thêm thành công nhà cung cấp: " + nccMoi.getTenNCC());
+                    }
+                    
+                    dispose();
+                } catch (Exception ex) {
+                    Logger.getLogger(DL_ThemNhaCungCap.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                nccMoi.setMaNCC(maNhaCungCap);
-                String tinhThanh = cmbTinh.getSelectedItem().toString();
-                String quanHuyen = cmbQuan_Huyen.getSelectedItem().toString();
-                String xaPhuong = cmbXaPhuong.getSelectedItem().toString();
-
-                String[] soNhaSoDuong = txtSoNha_Duong.getText().split("-");
-
-                DiaChi diachi = new DiaChi(soNhaSoDuong[0], soNhaSoDuong[1], xaPhuong, quanHuyen, tinhThanh);
-
-                nccMoi.setDiaChi(diachi);
-                nccMoi.setSoDienThoai(txtSDT.getText().trim());
-                nccMoi.setTenNCC(txtTenNCC.getText().trim());
-
-                if (model != null) {
-                    NhaCungCap nccCu = (NhaCungCap) model;
-                    nccMoi.setMaNCC(nccCu.getMaNCC());
-                    nhaCungCapService.updateNhaCungCap(nccMoi);
-                    showMsg("Sửa thành công nhà cung cấp: " + nccMoi.getTenNCC());
-                } else {
-                    nhaCungCapService.addNhaCungCap(nccMoi);
-                    showMsg("Thêm thành công nhà cung cấp: " + nccMoi.getTenNCC());
-                }
-
-                dispose();
             } else if (obj.equals(cmbTinh)) {
                 resetQuanHuyen();
             } else if (obj.equals(cmbQuan_Huyen)) {

@@ -96,9 +96,14 @@ public final class LoHang {
 
     /**
      * @param nhaCungCap the nhaCungCap to set
+     * @throws java.lang.Exception
      */
-    public void setNhaCungCap(NhaCungCap nhaCungCap) {
-        this.nhaCungCap = nhaCungCap;
+    public void setNhaCungCap(NhaCungCap nhaCungCap) throws Exception {
+        if(nhaCungCap != null) {
+            this.nhaCungCap = nhaCungCap;
+        } else {
+            throw new Exception("Nhà cung cấp không được rỗng");
+        }
     }
 
     /**
@@ -110,9 +115,14 @@ public final class LoHang {
 
     /**
      * @param ngayNhap the ngayNhap to set
+     * @throws java.lang.Exception
      */
-    public void setNgayNhap(Date ngayNhap) {
-        this.ngayNhap = ngayNhap;
+    public void setNgayNhap(Date ngayNhap) throws Exception {
+        if(ngayNhap != null) {
+            this.ngayNhap = ngayNhap;
+        } else {
+            throw new Exception("Ngày nhập không được rỗng");
+        }
     }
 
     /**
@@ -124,9 +134,14 @@ public final class LoHang {
 
     /**
      * @param nguoiNhap the nguoiNhap to set
+     * @throws java.lang.Exception
      */
-    public void setNguoiNhap(NhanVien nguoiNhap) {
-        this.nguoiNhap = nguoiNhap;
+    public void setNguoiNhap(NhanVien nguoiNhap) throws Exception {
+        if(nguoiNhap != null) {
+            this.nguoiNhap = nguoiNhap;
+        } else {
+            throw new Exception("Người nhập không được rỗng");
+        }
     }
 
     /**

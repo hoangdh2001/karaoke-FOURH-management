@@ -59,9 +59,14 @@ public class NhaCungCap {
 
     /**
      * @param tenNCC the tenNCC to set
+     * @throws java.lang.Exception
      */
-    public void setTenNCC(String tenNCC) {
-        this.tenNCC = tenNCC;
+    public void setTenNCC(String tenNCC) throws Exception {
+        if(tenNCC.length() > 0) {
+            this.tenNCC = tenNCC;
+        } else {
+            throw new Exception("Tên nhà cung cấp không được rỗng");
+        }
     }
 
     /**
@@ -73,9 +78,14 @@ public class NhaCungCap {
 
     /**
      * @param soDienThoai the soDienThoai to set
+     * @throws java.lang.Exception
      */
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
+    public void setSoDienThoai(String soDienThoai) throws Exception {
+        if(soDienThoai.length() > 0) {
+            this.soDienThoai = soDienThoai;
+        } else {
+            throw new Exception("Số điện thoại không được rỗng");
+        }
     }
 
     /**
@@ -87,9 +97,14 @@ public class NhaCungCap {
 
     /**
      * @param diaChi the diaChi to set
+     * @throws java.lang.Exception
      */
-    public void setDiaChi(DiaChi diaChi) {
-        this.diaChi = diaChi;
+    public void setDiaChi(DiaChi diaChi) throws Exception {
+        if(diaChi != null) {
+            this.diaChi = diaChi;
+        } else {
+            throw new Exception("Địa chỉ không được rỗng");
+        }
     }
 
     @Override

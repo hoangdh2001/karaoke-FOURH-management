@@ -19,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
@@ -140,13 +142,17 @@ public class GD_DanhSachPhong extends JPanel {
             public void update(ModelAction action) {
                 Phong phong = (Phong) action.getObj();
                 if (JOptionPane.showConfirmDialog(GD_DanhSachPhong.this, "Bạn có muốn cập nhật không?", "Cập nhật", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    phong.setTenPhong(table.getValueAt(table.getSelectedRow(), 2).toString());
-                    String s = phong_DAO.updatePhong(phong) == true ? "Cập nhật thành công" : "Cập nhật thất bại";
-                    JOptionPane.showMessageDialog(GD_DanhSachPhong.this, s);
-                    DefaultTableModel df = (DefaultTableModel) table.getModel();
-                    df.getDataVector().removeAllElements();
-                    table.clearSelection();
-                    loadData(pnlPage.getCurrentIndex());
+                    try {
+                        phong.setTenPhong(table.getValueAt(table.getSelectedRow(), 2).toString());
+                        String s = phong_DAO.updatePhong(phong) == true ? "Cập nhật thành công" : "Cập nhật thất bại";
+                        JOptionPane.showMessageDialog(GD_DanhSachPhong.this, s);
+                        DefaultTableModel df = (DefaultTableModel) table.getModel();
+                        df.getDataVector().removeAllElements();
+                        table.clearSelection();
+                        loadData(pnlPage.getCurrentIndex());
+                    } catch (Exception ex) {
+                        Logger.getLogger(GD_DanhSachPhong.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         };
@@ -168,8 +174,12 @@ public class GD_DanhSachPhong extends JPanel {
                     LoaiPhong loaiPhong = loaiPhong_DAO.getLoaiPhongByName(cmbColumnLoaiPhong.getSelectedItem().toString());
                     if (!phong.getLoaiPhong().getMaLoaiPhong().equals(loaiPhong.getMaLoaiPhong())) {
                         if (phong.getTrangThai() != TrangThaiPhong.DANG_HAT) {
-                            phong.setLoaiPhong(loaiPhong);
-                            phong_DAO.updatePhong(phong);
+                            try {
+                                phong.setLoaiPhong(loaiPhong);
+                                phong_DAO.updatePhong(phong);
+                            } catch (Exception ex) {
+                                Logger.getLogger(GD_DanhSachPhong.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         } else {
                             JOptionPane.showMessageDialog(null, "Phòng đang hát cập nhật sau!");
 

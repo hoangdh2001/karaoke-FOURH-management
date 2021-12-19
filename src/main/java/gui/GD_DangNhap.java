@@ -155,6 +155,8 @@ public class GD_DangNhap extends javax.swing.JFrame {
                         pnlLoading.setVisible(false);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(GD_DangNhap.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }).start();
             }

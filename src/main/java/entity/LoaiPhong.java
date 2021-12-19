@@ -47,9 +47,14 @@ public class LoaiPhong {
 
     /**
      * @param maLoaiPhong the maLoaiPhong to set
+     * @throws java.lang.Exception
      */
-    public void setMaLoaiPhong(String maLoaiPhong) {
-        this.maLoaiPhong = maLoaiPhong;
+    public void setMaLoaiPhong(String maLoaiPhong) throws Exception {
+        if(maLoaiPhong.length() > 0) {
+            this.maLoaiPhong = maLoaiPhong;
+        } else {
+            throw new Exception("Mã loại phòng không được rỗng");
+        }
     }
 
     /**
@@ -61,9 +66,14 @@ public class LoaiPhong {
 
     /**
      * @param tenLoaiPhong the tenLoaiPhong to set
+     * @throws java.lang.Exception
      */
-    public void setTenLoaiPhong(String tenLoaiPhong) {
-        this.tenLoaiPhong = tenLoaiPhong;
+    public void setTenLoaiPhong(String tenLoaiPhong) throws Exception {
+        if(tenLoaiPhong.length() > 0) {
+            this.tenLoaiPhong = tenLoaiPhong;
+        } else {
+            throw new Exception("Tên loại phòng không được rỗng");
+        }
     }
 
     /**
@@ -75,9 +85,14 @@ public class LoaiPhong {
 
     /**
      * @param giaPhong the giaPhong to set
+     * @throws java.lang.Exception
      */
-    public void setGiaPhong(Double giaPhong) {
-        this.giaPhong = giaPhong;
+    public void setGiaPhong(Double giaPhong) throws Exception {
+        if(giaPhong > 0) {
+            this.giaPhong = giaPhong;
+        } else {
+            throw new Exception("Giá phòng phải lớn hơn 0");
+        }
     }
 
     @Override

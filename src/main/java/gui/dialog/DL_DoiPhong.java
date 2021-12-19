@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import service.HoaDonService;
@@ -28,7 +30,7 @@ public class DL_DoiPhong extends javax.swing.JDialog implements ActionListener {
         return hoaDon;
     }
 
-    public DL_DoiPhong(Frame frame, HoaDon hoaDon) {
+    public DL_DoiPhong(Frame frame, HoaDon hoaDon) throws Exception {
         super(frame, true);
         this.phongService = new Phong_DAO();
         this.hoaDonService = new HoaDon_DAO();
@@ -70,21 +72,25 @@ public class DL_DoiPhong extends javax.swing.JDialog implements ActionListener {
             txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
             txtGiaPhong.setText(df.format(phong.getLoaiPhong().getGiaPhong()));
         } else if (obj.equals(btnDoiPhong)) {
-            Phong phong = dsPhong.get(cmbPhong.getSelectedIndex());
-            Phong phongCu = hoaDon.getPhong();
-            phongCu.setTrangThai(TrangThaiPhong.BAN);
-            phongService.updatePhong(phongCu);
-            hoaDon.setDonPhongCu(hoaDon.getDonGiaPhongCu() + hoaDon.getDonGiaPhong());
-            hoaDon.setPhong(phong);
-            hoaDon.setThoiGianBatDau(new Date());
-            hoaDon.setThoiGianKetThuc(new Date());
-            if(hoaDonService.finishHoaDon(hoaDon)) {
-                JOptionPane.showMessageDialog(rootPane, "Đổi phòng thành công!");
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Đổi phòng thất bại!");
+            try {
+                Phong phong = dsPhong.get(cmbPhong.getSelectedIndex());
+                Phong phongCu = hoaDon.getPhong();
+                phongCu.setTrangThai(TrangThaiPhong.BAN);
+                phongService.updatePhong(phongCu);
+                hoaDon.setDonGiaPhongCu(hoaDon.getDonGiaPhongCu() + hoaDon.getDonGiaPhong());
+                hoaDon.setPhong(phong);
+                hoaDon.setThoiGianBatDau(new Date());
+                hoaDon.setThoiGianKetThuc(new Date());
+                if(hoaDonService.finishHoaDon(hoaDon)) {
+                    JOptionPane.showMessageDialog(rootPane, "Đổi phòng thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Đổi phòng thất bại!");
+                }
+                
+                dispose();
+            } catch (Exception ex) {
+                Logger.getLogger(DL_DoiPhong.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            dispose();
         } else if (obj.equals(btnHuy)) {
             dispose();
         }

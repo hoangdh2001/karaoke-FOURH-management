@@ -98,7 +98,7 @@ public class NhanVien_DAO implements NhanVienService {
     }
 
     /**
-     *
+     *  Lấy nhân viên theo mã nhân viên
      * @param id
      * @return
      */
@@ -118,7 +118,11 @@ public class NhanVien_DAO implements NhanVienService {
         }
         return null;
     }
-
+    
+    /**
+     * Lấy danh sách nhân viên
+     * @return dsNhanVien
+     */
     @Override
     public List<NhanVien> getNhanViens() {
         Session session = sessionFactory.openSession();
@@ -136,7 +140,11 @@ public class NhanVien_DAO implements NhanVienService {
         }
         return null;
     }
-
+    
+    /**
+     * Lấy nhân viên mới nhất
+     * @return nhanVien
+     */
     @Override
     public NhanVien getLastNhanVien() {
         Session session = sessionFactory.getCurrentSession();
@@ -156,14 +164,21 @@ public class NhanVien_DAO implements NhanVienService {
         return null;
 
     }
-
+    
+    /**
+     * Đăng nhập nhân viên theo sdt hoặc email, matKhau
+     * @param sdtOrEmail
+     * @param matKhau
+     * @return 
+     */
     @Override
-    public NhanVien getNhanVienByLogin(String sdt, byte[] matKhau) {
+    public NhanVien getNhanVienByLogin(String sdtOrEmail, byte[] matKhau) {
         Session session = sessionFactory.openSession();
         Transaction tr = session.getTransaction();
 
         String sql = "select * from NhanVien "
-                + "where sdt = '" + sdt + "' "
+                + "where (sdt = '" + sdtOrEmail + "' "
+                + "or email = '"+ sdtOrEmail +"') "
                 + "and matKhau = :x";
 
         try {
@@ -179,7 +194,17 @@ public class NhanVien_DAO implements NhanVienService {
         }
         return null;
     }
-
+    
+    /**
+     * Tìm kiếm nhân viên theo tham số
+     * @param textSearch
+     * @param searchOption
+     * @param gioiTinh
+     * @param maLoaiNV
+     * @param maCaLam
+     * @param numPage
+     * @return dsNhanVien
+     */
     @Override
     public List<NhanVien> searchNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV,
             String maCaLam, int numPage) {
@@ -236,7 +261,15 @@ public class NhanVien_DAO implements NhanVienService {
         return null;
 
     }
-
+    /**
+     * Lấy số lượng tất cả nhân viên theo tham số
+     * @param textSearch
+     * @param searchOption
+     * @param gioiTinh
+     * @param maLoaiNV
+     * @param maCaLam
+     * @return sl
+     */
     @Override
     public int getSoLuongNhanVien(String textSearch, String searchOption, int gioiTinh, String maLoaiNV,
             String maCaLam) {
@@ -291,7 +324,12 @@ public class NhanVien_DAO implements NhanVienService {
         }
         return 0;
     }
-
+    
+    /**
+     * Lấy nhân viên theo số điện thoại hoặc email
+     * @param sdtOrEmail
+     * @return 
+     */
     @Override
     public NhanVien getNhanVienBySdtOrEmail(String sdtOrEmail) {
         Session session = sessionFactory.openSession();
@@ -314,7 +352,10 @@ public class NhanVien_DAO implements NhanVienService {
         }
         return null;
     }
-
+    /**
+     * Lấy tất cả mã nhân viên
+     * @return 
+     */
     @Override
     public List<String> getMaNhanVienQuanLy() {
         Session session = sessionFactory.openSession();
@@ -384,7 +425,11 @@ public class NhanVien_DAO implements NhanVienService {
 
         return false;
     }
-
+    /**
+     * Kiểm tra trùng email
+     * @param email
+     * @return true: trùng, false: chưa có
+     */
     @Override
     public boolean checkEmail(String email) {
         Session session = sessionFactory.getCurrentSession();

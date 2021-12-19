@@ -15,7 +15,11 @@ public class DiaChi_DAO implements DiaChiService{
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-
+    
+    /**
+     * Lấy danh sách quận huyện
+     * @return dsQuanHuyen
+     */
     @Override
     public List<String> getDSQuanHuyen() {
         Session session = sessionFactory.openSession();
@@ -34,7 +38,10 @@ public class DiaChi_DAO implements DiaChiService{
         session.close();
         return null;
     }
-
+    /**
+     * Lấy danh sách tỉnh thành
+     * @return dsTinhThanh
+     */
     @Override
     public List<String> getDSTinhThanh() {
         Session session = sessionFactory.openSession();
@@ -53,7 +60,10 @@ public class DiaChi_DAO implements DiaChiService{
         session.close();
         return null;
     }
-
+    /**
+     * Lấy danh sách phường xã
+     * @return 
+     */
     @Override
     public List<String> getDSXaPhuong() {
         Session session = sessionFactory.openSession();
@@ -72,7 +82,11 @@ public class DiaChi_DAO implements DiaChiService{
         session.close();
         return null;
     }
-
+    /**
+     * Lấy danh sách quan huyen theo tinh
+     * @param tinh
+     * @return 
+     */
     @Override
     public List<String> getDSQuanHuyenByTinh(String tinh) {
         Session session = sessionFactory.openSession();
@@ -92,7 +106,12 @@ public class DiaChi_DAO implements DiaChiService{
         session.close();
         return null;
     }
-
+    /**
+     * Lấy danh sách xa phường theo tỉnhThanh, quận huyện
+     * @param tinh
+     * @param quanHuyen
+     * @return 
+     */
     @Override
     public List<String> getDSXaPhuongByQuanHuyen(String tinh, String quanHuyen) {
         Session session = sessionFactory.openSession();
