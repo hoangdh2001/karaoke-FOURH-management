@@ -669,6 +669,8 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         });
         tblThongKe.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblThongKe.setRowHeight(40);
+        tblThongKe.setSelectionBackground(new java.awt.Color(239, 244, 255));
+        tblThongKe.setSelectionForeground(new java.awt.Color(51, 51, 51));
         tblThongKe.setShowGrid(true);
         tblThongKe.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tblThongKe);

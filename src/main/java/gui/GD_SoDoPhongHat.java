@@ -60,6 +60,12 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
     private MyTextFieldFlatlaf txtTenPhong;
     private JComboBox<Object> cbLoaiPhong;
     private List<LoaiPhong> dsLoaiPhong;
+    private PanelStatus pnlTrong;
+    private PanelStatus pnlDangHat;
+    private PanelStatus pnlDatTruoc;
+    private PanelStatus pnlBan;
+    private PanelStatus pnlDangDon;
+    private PanelStatus pnlDangSua;
 
     public void addEvent(EventShowInfoOver event) {
         panelMap.addEvent(event);
@@ -209,31 +215,40 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         pnlStatus.setOpaque(false);
         pnlStatus.setLayout(new MigLayout("fill", "", ""));
 
-        PanelStatus pnlTrong = new PanelStatus(TrangThaiPhong.TRONG);
+        pnlTrong = new PanelStatus(TrangThaiPhong.TRONG);
         pnlTrong.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.TRONG));
         pnlStatus.add(pnlTrong);
 
-        PanelStatus pnlDangHat = new PanelStatus(TrangThaiPhong.DANG_HAT);
+        pnlDangHat = new PanelStatus(TrangThaiPhong.DANG_HAT);
         pnlDangHat.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_HAT));
         pnlStatus.add(pnlDangHat);
 
-        PanelStatus pnlDatTruoc = new PanelStatus(TrangThaiPhong.DAT_TRUOC);
+        pnlDatTruoc = new PanelStatus(TrangThaiPhong.DAT_TRUOC);
         pnlDatTruoc.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DAT_TRUOC));
         pnlStatus.add(pnlDatTruoc);
 
-        PanelStatus pnlBan = new PanelStatus(TrangThaiPhong.BAN);
+        pnlBan = new PanelStatus(TrangThaiPhong.BAN);
         pnlBan.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.BAN));
         pnlStatus.add(pnlBan);
 
-        PanelStatus pnlDangDon = new PanelStatus(TrangThaiPhong.DANG_DON);
+        pnlDangDon = new PanelStatus(TrangThaiPhong.DANG_DON);
         pnlDangDon.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_DON));
         pnlStatus.add(pnlDangDon);
 
-        PanelStatus pnlDangSua = new PanelStatus(TrangThaiPhong.DANG_SUA);
+        pnlDangSua = new PanelStatus(TrangThaiPhong.DANG_SUA);
         pnlDangSua.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_SUA));
         pnlStatus.add(pnlDangSua);
 
         return pnlStatus;
+    }
+    
+    private void updateStatus() {
+        pnlTrong.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.TRONG));
+        pnlDangHat.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_HAT));
+        pnlDatTruoc.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DAT_TRUOC));
+        pnlBan.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.BAN));
+        pnlDangDon.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_DON));
+        pnlDangSua.setText(phongService.getSoLuongPhongTheoTrangThai(TrangThaiPhong.DANG_SUA));
     }
 
     private PanelMap panelMap() {
@@ -260,11 +275,13 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 if (dsPhieuDatPhong.isEmpty()) {
                     DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
                     dlDialog.setVisible(true);
+                    updateStatus();
                     return dlDialog.getHoaDon();
                 } else {
                     if (JOptionPane.showConfirmDialog(null, "Còn khoảng hơn 2 tiếng sẽ có người đặt bạn có đồng ý cho thuê?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
                         dlDialog.setVisible(true);
+                        updateStatus();
                         return dlDialog.getHoaDon();
                     } else {
                         return null;
@@ -282,32 +299,37 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             public void addBtnThanhToanEvent(HoaDon hoaDon) {
                 DL_ThanhToan dialog = new DL_ThanhToan(Application.login, hoaDon, GD_Chinh.NHAN_VIEN);
                 dialog.setVisible(true);
+                updateStatus();
             }
 
             @Override
             public void addBtnDonXongEvent(Phong phong) {
                 if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn đã dọn xong?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                     phong.setTrangThai(TrangThaiPhong.TRONG);
-                    phongService.updatePhong(phong);
+                    if(phongService.updatePhong(phong))
+                        updateStatus();
                 }
             }
 
             @Override
             public void addBtnSuaPhongEvent(Phong phong) {
                 phong.setTrangThai(TrangThaiPhong.DANG_SUA);
-                phongService.updatePhong(phong);
+                if(phongService.updatePhong(phong))
+                    updateStatus();
             }
 
             @Override
             public void addBtnDonPhongEvent(Phong phong) {
                 phong.setTrangThai(TrangThaiPhong.DANG_DON);
-                phongService.updatePhong(phong);
+                if(phongService.updatePhong(phong))
+                    updateStatus();
             }
 
             @Override
             public void addBtnSuaXongEvent(Phong phong) {
                 phong.setTrangThai(TrangThaiPhong.TRONG);
-                phongService.updatePhong(phong);
+                if(phongService.updatePhong(phong))
+                    updateStatus();
             }
 
             @Override
@@ -316,6 +338,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 dldp.setVisible(true);
                 if(!phong.getMaPhong().equals(hoaDon.getPhong().getMaPhong())) {
                     loadMap(panelMap.getIndexShowing());
+                    updateStatus();
                 }
             }
 
@@ -326,6 +349,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                     phong.setTrangThai(TrangThaiPhong.TRONG);
                     if (new PhieuDatPhong_DAO().capNhatPhieuDatPhong(phieuDatPhong) && phongService.updatePhong(phong)) {
                         JOptionPane.showMessageDialog(null, "Bạn đã hủy thành công phiếu " + phieuDatPhong.getMaPhieuDat());
+                        updateStatus();
                     } else {
                         JOptionPane.showMessageDialog(null, "Phiếu " + phieuDatPhong.getMaPhieuDat() + " hủy thất bại.");
                     }
@@ -337,6 +361,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
                 dlDialog.setPhieuDatPhong(phieuDatPhong);
                 dlDialog.setVisible(true);
+                updateStatus();
                 return dlDialog.getHoaDon();
             }
 
@@ -348,6 +373,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 dldatPhong.setVisible(true);
                 if(phong != phieuDatPhong.getPhong()) {
                     loadMap(panelMap.getIndexShowing());
+                    updateStatus();
                 }
             }
 
@@ -358,6 +384,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                 dltndp.setVisible(true);
                 if (phong.getTrangThai() == TrangThaiPhong.DAT_TRUOC) {
                     loadMap(panelMap.getIndexShowing());
+                    updateStatus();
                 }
             }
 
