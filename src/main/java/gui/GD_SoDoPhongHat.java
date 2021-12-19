@@ -273,20 +273,27 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             public HoaDon addBtnThueEvent(Phong phong) {
                 List<PhieuDatPhong> dsPhieuDatPhong = new PhieuDatPhong_DAO().getDsPhieuDatByPhong(phong.getMaPhong());
                 if (dsPhieuDatPhong.isEmpty()) {
-                    DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
-                    dlDialog.setVisible(true);
-                    updateStatus();
-                    return dlDialog.getHoaDon();
-                } else {
-                    if (JOptionPane.showConfirmDialog(null, "Còn khoảng hơn 2 tiếng sẽ có người đặt bạn có đồng ý cho thuê?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    try {
                         DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
                         dlDialog.setVisible(true);
                         updateStatus();
                         return dlDialog.getHoaDon();
-                    } else {
-                        return null;
+                    } catch (Exception ex) {
+                        Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    if (JOptionPane.showConfirmDialog(null, "Còn khoảng hơn 2 tiếng sẽ có người đặt bạn có đồng ý cho thuê?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        try {
+                            DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
+                            dlDialog.setVisible(true);
+                            updateStatus();
+                            return dlDialog.getHoaDon();
+                        } catch (Exception ex) {
+                            Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
+                return null;
             }
 
             @Override
@@ -297,72 +304,105 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
             @Override
             public void addBtnThanhToanEvent(HoaDon hoaDon) {
-                DL_ThanhToan dialog = new DL_ThanhToan(Application.login, hoaDon, GD_Chinh.NHAN_VIEN);
-                dialog.setVisible(true);
-                updateStatus();
+                try {
+                    DL_ThanhToan dialog = new DL_ThanhToan(Application.login, hoaDon, GD_Chinh.NHAN_VIEN);
+                    dialog.setVisible(true);
+                    updateStatus();
+                } catch (Exception ex) {
+                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             @Override
             public void addBtnDonXongEvent(Phong phong) {
                 if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn đã dọn xong?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    phong.setTrangThai(TrangThaiPhong.TRONG);
-                    if(phongService.updatePhong(phong))
-                        updateStatus();
+                    try {
+                        phong.setTrangThai(TrangThaiPhong.TRONG);
+                        if(phongService.updatePhong(phong))
+                            updateStatus();
+                    } catch (Exception ex) {
+                        Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
 
             @Override
             public void addBtnSuaPhongEvent(Phong phong) {
-                phong.setTrangThai(TrangThaiPhong.DANG_SUA);
-                if(phongService.updatePhong(phong))
-                    updateStatus();
+                try {
+                    phong.setTrangThai(TrangThaiPhong.DANG_SUA);
+                    if(phongService.updatePhong(phong))
+                        updateStatus();
+                } catch (Exception ex) {
+                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             @Override
             public void addBtnDonPhongEvent(Phong phong) {
-                phong.setTrangThai(TrangThaiPhong.DANG_DON);
-                if(phongService.updatePhong(phong))
-                    updateStatus();
+                try {
+                    phong.setTrangThai(TrangThaiPhong.DANG_DON);
+                    if(phongService.updatePhong(phong))
+                        updateStatus();
+                } catch (Exception ex) {
+                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             @Override
             public void addBtnSuaXongEvent(Phong phong) {
-                phong.setTrangThai(TrangThaiPhong.TRONG);
-                if(phongService.updatePhong(phong))
-                    updateStatus();
+                try {
+                    phong.setTrangThai(TrangThaiPhong.TRONG);
+                    if(phongService.updatePhong(phong))
+                        updateStatus();
+                } catch (Exception ex) {
+                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             @Override
             public void addBtnDoiPhongEvent(Phong phong, HoaDon hoaDon) {
-                DL_DoiPhong dldp = new DL_DoiPhong(Application.login, hoaDon);
-                dldp.setVisible(true);
-                if(!phong.getMaPhong().equals(hoaDon.getPhong().getMaPhong())) {
-                    loadMap(panelMap.getIndexShowing());
-                    updateStatus();
+                try {
+                    DL_DoiPhong dldp = new DL_DoiPhong(Application.login, hoaDon);
+                    dldp.setVisible(true);
+                    if(!phong.getMaPhong().equals(hoaDon.getPhong().getMaPhong())) {
+                        loadMap(panelMap.getIndexShowing());
+                        updateStatus();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
             @Override
             public void addBtnHuyEvent(Phong phong, PhieuDatPhong phieuDatPhong) {
                 if (JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn hủy phiếu " + phieuDatPhong.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    phieuDatPhong.setTrangThai(TrangThaiPhieuDat.DA_HUY);
-                    phong.setTrangThai(TrangThaiPhong.TRONG);
-                    if (new PhieuDatPhong_DAO().capNhatPhieuDatPhong(phieuDatPhong) && phongService.updatePhong(phong)) {
-                        JOptionPane.showMessageDialog(null, "Bạn đã hủy thành công phiếu " + phieuDatPhong.getMaPhieuDat());
-                        updateStatus();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Phiếu " + phieuDatPhong.getMaPhieuDat() + " hủy thất bại.");
+                    try {
+                        phieuDatPhong.setTrangThai(TrangThaiPhieuDat.DA_HUY);
+                        phong.setTrangThai(TrangThaiPhong.TRONG);
+                        if (new PhieuDatPhong_DAO().capNhatPhieuDatPhong(phieuDatPhong) && phongService.updatePhong(phong)) {
+                            JOptionPane.showMessageDialog(null, "Bạn đã hủy thành công phiếu " + phieuDatPhong.getMaPhieuDat());
+                            updateStatus();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Phiếu " + phieuDatPhong.getMaPhieuDat() + " hủy thất bại.");
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
 
             @Override
             public HoaDon addBtnThueEvent(Phong phong, PhieuDatPhong phieuDatPhong) {
-                DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
-                dlDialog.setPhieuDatPhong(phieuDatPhong);
-                dlDialog.setVisible(true);
-                updateStatus();
-                return dlDialog.getHoaDon();
+                try {
+                    DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
+                    dlDialog.setPhieuDatPhong(phieuDatPhong);
+                    dlDialog.setVisible(true);
+                    updateStatus();
+                    return dlDialog.getHoaDon();
+                } catch (Exception ex) {
+                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return null;
             }
 
             @Override
@@ -379,12 +419,16 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
             @Override
             public void addBtnDatPhongEvent(Phong phong) {
-                DL_TiepNhanDatPhong dltndp = new DL_TiepNhanDatPhong(Application.login);
-                dltndp.setPhong(phong);
-                dltndp.setVisible(true);
-                if (phong.getTrangThai() == TrangThaiPhong.DAT_TRUOC) {
-                    loadMap(panelMap.getIndexShowing());
-                    updateStatus();
+                try {
+                    DL_TiepNhanDatPhong dltndp = new DL_TiepNhanDatPhong(Application.login);
+                    dltndp.setPhong(phong);
+                    dltndp.setVisible(true);
+                    if (phong.getTrangThai() == TrangThaiPhong.DAT_TRUOC) {
+                        loadMap(panelMap.getIndexShowing());
+                        updateStatus();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 

@@ -58,9 +58,14 @@ public class LoaiDichVu {
 
     /**
      * @param tenLoaiDichVu the tenLoaiDichVu to set
+     * @throws java.lang.Exception
      */
-    public void setTenLoaiDichVu(String tenLoaiDichVu) {
-        this.tenLoaiDichVu = tenLoaiDichVu;
+    public void setTenLoaiDichVu(String tenLoaiDichVu) throws Exception {
+        if(tenLoaiDichVu.length() > 0) {
+            this.tenLoaiDichVu = tenLoaiDichVu;
+        } else {
+            throw new Exception("Tên loại dịch vụ không được rỗng");
+        }
     }
 
     @Override

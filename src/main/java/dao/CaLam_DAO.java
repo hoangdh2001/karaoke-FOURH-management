@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package dao;
 
 import entity.CaLam;
@@ -16,7 +19,10 @@ public class CaLam_DAO implements CaLamService {
         HibernateUtil hibernateUtil = HibernateUtil.getInstance();
         this.sessionFactory = hibernateUtil.getSessionFactory();
     }
-
+    /**
+     * Lấy danh sách ca làm
+     * @return caLam
+     */
     @Override
     public List<CaLam> getCaLams() {
 
@@ -31,7 +37,6 @@ public class CaLam_DAO implements CaLamService {
             return caLams;
 
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
 
         }

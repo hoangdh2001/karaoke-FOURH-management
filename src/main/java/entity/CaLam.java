@@ -1,3 +1,7 @@
+/**
+ * Entity CaLam có các thuộc tính xác định khoảng thời gian làm việc của
+ * NhanVien
+ */
 package entity;
 
 import java.util.List;
@@ -61,9 +65,14 @@ public class CaLam {
 
     /**
      * @param gioBatDau the gioBatDau to set
+     * @throws java.lang.Exception
      */
-    public void setGioBatDau(String gioBatDau) {
-        this.gioBatDau = gioBatDau;
+    public void setGioBatDau(String gioBatDau) throws Exception {
+        if(gioBatDau.length() > 0) {
+            this.gioBatDau = gioBatDau;
+        } else {
+            throw new Exception("Giờ bắt đầu không được rỗng");
+        }
     }
 
     /**
@@ -75,9 +84,15 @@ public class CaLam {
 
     /**
      * @param gioKetThuc the gioKetThuc to set
+     * @throws java.lang.Exception
      */
-    public void setGioKetThuc(String gioKetThuc) {
-        this.gioKetThuc = gioKetThuc;
+    public void setGioKetThuc(String gioKetThuc) throws Exception {
+        if(gioKetThuc != null) {
+            this.gioKetThuc = gioKetThuc;
+        } else {
+            throw new Exception("Giờ kết thúc không được rỗng");
+        }
+       
     }
 
     /**

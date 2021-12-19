@@ -14,7 +14,11 @@ public class ChiTietHoaDon_DAO implements ChiTietHoaDonService{
     public ChiTietHoaDon_DAO() {
         sessionFactory = HibernateUtil.getInstance().getSessionFactory();
     }
-    
+    /**
+     * Thêm một chi tiết hóa đơn
+     * @param chiTietHoaDon
+     * @return 
+     */
     @Override
     public boolean addChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
         Session session = sessionFactory.getCurrentSession();
@@ -29,7 +33,11 @@ public class ChiTietHoaDon_DAO implements ChiTietHoaDonService{
         }
         return false;
     }
-
+    /**
+     * Cập nhật một chi tiết hóa đơn
+     * @param chiTietHoaDon
+     * @return 
+     */
     @Override
     public boolean updateChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
         Session session = sessionFactory.getCurrentSession();
@@ -45,7 +53,11 @@ public class ChiTietHoaDon_DAO implements ChiTietHoaDonService{
         }
         return false;
     }
-
+    /**
+     * Xóa một chi tiết hóa đơn
+     * @param chiTietHoaDon
+     * @return 
+     */
     @Override
     public boolean deleteChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
         Session session = sessionFactory.getCurrentSession();
@@ -61,7 +73,11 @@ public class ChiTietHoaDon_DAO implements ChiTietHoaDonService{
         }
         return false;
     }
-
+    /**
+     * Lấy danh sách chi tiết hóa đơn có mã hóa đơn là
+     * @param id
+     * @return 
+     */
     @Override
     public List<ChiTietHoaDon> getDsChiTietHoaDonByMaHoaDon(String id) {
         Session session = sessionFactory.openSession();

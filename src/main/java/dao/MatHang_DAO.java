@@ -18,7 +18,11 @@ public class MatHang_DAO implements MatHangService {
     public MatHang_DAO() {
         sessionFactory = HibernateUtil.getInstance().getSessionFactory();
     }
-    
+    /**
+     * Thêm một mặt hàng
+     * @param matHang
+     * @return kq
+     */
     @Override
     public boolean addMatHang(MatHang matHang) {
         Session session = sessionFactory.getCurrentSession();
@@ -34,7 +38,12 @@ public class MatHang_DAO implements MatHangService {
         }
         return false;
     }
-
+    
+    /**
+     * Cập nhật môt mặt hàng
+     * @param matHang
+     * @return 
+     */
     @Override
     public boolean updateMatHang(MatHang matHang) {
         Session session = sessionFactory.getCurrentSession();
@@ -50,7 +59,11 @@ public class MatHang_DAO implements MatHangService {
         }
         return false;
     }
-
+    /**
+     * Xóa một mặt hàng
+     * @param id: mã mặt hàng
+     * @return kq
+     */
     @Override
     public boolean deleteMatHang(String id) {
         Session session = sessionFactory.getCurrentSession();
@@ -66,7 +79,11 @@ public class MatHang_DAO implements MatHangService {
         }
         return false;
     }
-
+    /**
+     * Lấy một mặt hàng theo mã mặt hàng
+     * @param id: maMatHang
+     * @return matHang
+     */
     @Override
     public MatHang getMatHang(String id) {
         Session session = sessionFactory.openSession();
@@ -82,7 +99,10 @@ public class MatHang_DAO implements MatHangService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách mặt hàng
+     * @return dsMatHang
+     */
     @Override
     public List<MatHang> getDsMatHang() {
         Session session = sessionFactory.openSession();
@@ -100,7 +120,10 @@ public class MatHang_DAO implements MatHangService {
         }
         return null;
     }
-    
+    /**
+     * Lấy mã mặt hàng mới nhất
+     * @return id
+     */
     @Override
     public String getLastMatHang() {
         Session session = sessionFactory.getCurrentSession();
@@ -130,7 +153,12 @@ public class MatHang_DAO implements MatHangService {
         }
         return null;
     }
-    
+    /**
+     * Tìm kiếm mặt hàng theo từ khóa
+     * @param textFind
+     * @param type
+     * @return dsMatHang
+     */
     @Override
     public List<MatHang> findMatHang(String textFind, int type) {
         String sql = "select * from MatHang order by maLoaiDichVu";
@@ -162,7 +190,11 @@ public class MatHang_DAO implements MatHangService {
         return null;
     
     }
-    
+    /**
+     * Lấy danh sách mặt hàng theo loại dịch vụ
+     * @param id: maLoaiDichVu
+     * @return dsMatHang
+     */
     @Override
     public List<MatHang> getDanhSachMatHangByLoaiDichVu(String id){
         
@@ -182,7 +214,13 @@ public class MatHang_DAO implements MatHangService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách TK theo thoiGian
+     * @param batDau
+     * @param ketThuc
+     * @param page
+     * @return 
+     */
     @Override
     public List<String> getListTKByDate(String batDau, String ketThuc,int page) {
         List<String> list = new ArrayList<String>();
@@ -215,7 +253,12 @@ public class MatHang_DAO implements MatHangService {
         
         return list;
     }
-
+    /**
+     * Lấy danh sách số trang theo thời gian
+     * @param batDau
+     * @param ketThuc
+     * @return 
+     */
     @Override
     public int getPageByDate(String batDau, String ketThuc) {
         int page = 0;
@@ -241,6 +284,13 @@ public class MatHang_DAO implements MatHangService {
         return page;
     }
     
+    /**
+     * Lấy số lượng trang theo thời gian
+     * @param thangOrNam
+     * @param thang
+     * @param year
+     * @return page
+     */
     @Override
     public int getPage(int thangOrNam,Boolean thang,int year) {
         int page = 0;
@@ -276,6 +326,14 @@ public class MatHang_DAO implements MatHangService {
         return page;
     }
     
+    /**
+     * Lấy danh sách TK
+     * @param thangOrNam
+     * @param thang
+     * @param year
+     * @param page
+     * @return 
+     */
     @Override
     public List<String> getListTK(int thangOrNam,Boolean thang,int year,int page) {
         List<String> list = new ArrayList<String>();
@@ -319,7 +377,12 @@ public class MatHang_DAO implements MatHangService {
         
         return list;
     }
-
+    /**
+     * Lấy tổng tiền mặt hàng theo thời gian
+     * @param batDau
+     * @param ketThuc
+     * @return total
+     */
     @Override
     public double getTotalBydate(String batDau, String ketThuc) {
         double total = 0;
@@ -345,7 +408,13 @@ public class MatHang_DAO implements MatHangService {
         
         return total;
     }
-
+    /**
+     * Lấy tổng tiền mặt hàng theo tháng hoặc năm
+     * @param thangOrNam
+     * @param thang
+     * @param year
+     * @return 
+     */
     @Override
     public double getTotal(int thangOrNam, Boolean thang, int year) {
         double total = 0;

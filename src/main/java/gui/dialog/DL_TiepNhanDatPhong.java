@@ -61,7 +61,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         initUpdate();
     }
 
-    public void setPhong(Phong phong) {
+    public void setPhong(Phong phong) throws Exception {
         phieuDatPhong.setPhong(phong);
         txtTenPhong.setText(phieuDatPhong.getPhong().getTenPhong());
         txtLoaiPhongTT.setText(phieuDatPhong.getPhong().getLoaiPhong().getTenLoaiPhong());
@@ -173,6 +173,8 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
                 timPhongPhuHop();
             } catch (ParseException ex) {
                 Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
@@ -184,12 +186,16 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
         menu.add(search);
         menu.setFocusable(false);
         search.addEventClick((Object obj) -> {
-            KhachHang khachHang = (KhachHang) obj;
-            phieuDatPhong.setKhachHang(khachHang);
-            menu.setVisible(false);
-            txtTenKhachHang.setText(khachHang.getTenKhachHang());
-            txtSDT.setText(khachHang.getSoDienThoai());
-            txtCCCD.setText(khachHang.getCanCuocCD());
+            try {
+                KhachHang khachHang = (KhachHang) obj;
+                phieuDatPhong.setKhachHang(khachHang);
+                menu.setVisible(false);
+                txtTenKhachHang.setText(khachHang.getTenKhachHang());
+                txtSDT.setText(khachHang.getSoDienThoai());
+                txtCCCD.setText(khachHang.getCanCuocCD());
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 
@@ -220,16 +226,22 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void loadDataTTKH() {
-        KhachHang khachHang = (KhachHang) search.getSelectedRow();
-        phieuDatPhong.setKhachHang(khachHang);
-        txtTenKhachHang.setText(khachHang.getTenKhachHang());
-        txtCCCD.setText(khachHang.getCanCuocCD());
-        txtSDT.setText(khachHang.getSoDienThoai());
-        menu.setVisible(false);
+        try {
+            KhachHang khachHang = (KhachHang) search.getSelectedRow();
+            phieuDatPhong.setKhachHang(khachHang);
+            txtTenKhachHang.setText(khachHang.getTenKhachHang());
+            txtCCCD.setText(khachHang.getCanCuocCD());
+            txtSDT.setText(khachHang.getSoDienThoai());
+            menu.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void deleteTableData() {
@@ -729,19 +741,23 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
 
     private void btnDatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDatActionPerformed
         if (validateData() && validataTienCoc()) {
-            phieuDatPhong.setTienCoc(Double.parseDouble(txtTienCoc.getText().replace(",", "")));
-            khachHangService.themKhachHang(phieuDatPhong.getKhachHang());
-            if (phieuDatPhongService.addPhieuDatPhong(phieuDatPhong)) {
-                showMsg("Đặt thành công " + phieuDatPhong.getPhong().getTenPhong() + " vào lúc: " + sdf.format(phieuDatPhong.getNgayDat()));
-                long diff = (phieuDatPhong.getNgayDat().getTime() - new Date().getTime()) / 1000;
-                int diffHours = (int) (diff / 3600);
-                if (diffHours < 2) {
-                    phieuDatPhong.getPhong().setTrangThai(TrangThaiPhong.DAT_TRUOC);
-                    phongService.updatePhong(phieuDatPhong.getPhong());
+            try {
+                phieuDatPhong.setTienCoc(Double.parseDouble(txtTienCoc.getText().replace(",", "")));
+                khachHangService.themKhachHang(phieuDatPhong.getKhachHang());
+                if (phieuDatPhongService.addPhieuDatPhong(phieuDatPhong)) {
+                    showMsg("Đặt thành công " + phieuDatPhong.getPhong().getTenPhong() + " vào lúc: " + sdf.format(phieuDatPhong.getNgayDat()));
+                    long diff = (phieuDatPhong.getNgayDat().getTime() - new Date().getTime()) / 1000;
+                    int diffHours = (int) (diff / 3600);
+                    if (diffHours < 2) {
+                        phieuDatPhong.getPhong().setTrangThai(TrangThaiPhong.DAT_TRUOC);
+                        phongService.updatePhong(phieuDatPhong.getPhong());
+                    }
+                    dispose();
+                } else {
+                    showMsg("Chọn thời gian!");
                 }
-                dispose();
-            } else {
-                showMsg("Chọn thời gian!");
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnDatActionPerformed
@@ -749,11 +765,15 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void tblPhongMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhongMousePressed
         int row = tblPhong.getSelectedRow();
         if (row != -1) {
-            ModelObjectComboBox cb = (ModelObjectComboBox) tblPhong.getValueAt(row, 0);
-            txtTenPhong.setText(cb.toString());
-            txtLoaiPhongTT.setText(tblPhong.getValueAt(row, 1).toString());
-            txtGia.setText(tblPhong.getValueAt(row, 3).toString());
-            phieuDatPhong.setPhong(phongService.getPhong(cb.getMa()));
+            try {
+                ModelObjectComboBox cb = (ModelObjectComboBox) tblPhong.getValueAt(row, 0);
+                txtTenPhong.setText(cb.toString());
+                txtLoaiPhongTT.setText(tblPhong.getValueAt(row, 1).toString());
+                txtGia.setText(tblPhong.getValueAt(row, 3).toString());
+                phieuDatPhong.setPhong(phongService.getPhong(cb.getMa()));
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanDatPhong.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_tblPhongMousePressed
 

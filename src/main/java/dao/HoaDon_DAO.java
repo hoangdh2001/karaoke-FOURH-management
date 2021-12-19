@@ -32,7 +32,7 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     /**
-     * Thêm hóa đơn
+     * Thêm một hóa đơn
      * @param hoaDon
      * @return true nếu thêm thành công, false nếu thất bại
      */
@@ -53,7 +53,7 @@ public class HoaDon_DAO implements HoaDonService {
     }
 
     /**
-     * 
+     * Kết thúc một hóa đơn
      * @param hoaDon
      * @return 
      */
@@ -446,7 +446,10 @@ public class HoaDon_DAO implements HoaDonService {
         }
         return 0;
     }
-    
+    /**
+     * Lấy mã hóa đơn mới nhất
+     * @return id: maHoaDon
+     */
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
@@ -466,7 +469,15 @@ public class HoaDon_DAO implements HoaDonService {
         }
         return null;
     }
-    
+    /**
+     * Tìm kiếm hóa đơn theo tháng năm
+     * @param thangOrNam
+     * @param loaiPhong
+     * @param thang
+     * @param year
+     * @param page
+     * @return dsHoaDon
+     */
     @Override
     public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year,int page) {
         String sql ="";
@@ -508,7 +519,14 @@ public class HoaDon_DAO implements HoaDonService {
         
         return null;
     }
-    
+    /**
+     * Tìm kiếm hóa đơn theo bắt đầu, kết thúc, maHoaDon
+     * @param batDau
+     * @param ketThuc
+     * @param ma
+     * @param page
+     * @return dsHoaDon
+     */
     @Override
     public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma,int page) {
         String sql= "";
@@ -541,7 +559,14 @@ public class HoaDon_DAO implements HoaDonService {
         
         return null;
     }
-    
+    /**
+     * Lấy số hoaDon theo tham số
+     * @param thangOrNam
+     * @param loaiPhong
+     * @param thang
+     * @param year
+     * @return num
+     */
     @Override
     public int getNumOfRecord(int thangOrNam,String loaiPhong,Boolean thang,int year) {
         int num = 0;
@@ -567,7 +592,13 @@ public class HoaDon_DAO implements HoaDonService {
         
         return num;
     }
-    
+    /**
+     * Lấy số hoaDon theo thoiGian
+     * @param batDau
+     * @param ketThuc
+     * @param ma
+     * @return num
+     */
     @Override
     public int getNumOfRecordByDate(String batDau, String ketThuc,String ma) {
         int num = 0;
@@ -592,7 +623,14 @@ public class HoaDon_DAO implements HoaDonService {
         
         return num;
     }
-    
+    /**
+     * Lấy tong hoaDon theo tham số
+     * @param thangOrNam
+     * @param loaiPhong
+     * @param thang
+     * @param year
+     * @return tongHoaDon
+     */
     @Override
     public double getTotalOfRecord(int thangOrNam,String loaiPhong,Boolean thang,int year){
         double num = 0;
@@ -626,6 +664,14 @@ public class HoaDon_DAO implements HoaDonService {
         }
         return num;
     }
+    
+    /**
+     * Lấy tổng hóa đơn theo thời gian
+     * @param batDau
+     * @param ketThuc
+     * @param ma
+     * @return num
+     */
     @Override
     public double getTotalOfRecordByDate(String batDau, String ketThuc,String ma){
         double num = 0;
@@ -649,7 +695,12 @@ public class HoaDon_DAO implements HoaDonService {
         }
         return num;
     }
-
+    
+    /**
+     * Tìm kiếm hóa đơn theo mã phòng
+     * @param id: mã phòng
+     * @return hoaDon
+     */
     @Override
     public HoaDon getHoaDonByIdPhong(String id) {
         Session session = sessionFactory.getCurrentSession();
@@ -669,7 +720,12 @@ public class HoaDon_DAO implements HoaDonService {
         }
         return null;
     }
-
+    
+    /**
+     * Lấy doanh thu theo năm
+     * @param nam
+     * @return rs
+     */
     @Override
     public Map<Integer, Double> getDoanhThuHoaDonTheoNam(int nam) {
         Session session = sessionFactory.getCurrentSession();
@@ -704,7 +760,13 @@ public class HoaDon_DAO implements HoaDonService {
         }
         return null;
     }
-
+    
+    /**
+     * Lấy doanh thu theo tháng
+     * @param thang
+     * @param nam
+     * @return rs
+     */
     @Override
     public Map<Integer, Double> getDoanhThuHoaDonTheoThang(int thang, int nam) {
         Session session = sessionFactory.getCurrentSession();

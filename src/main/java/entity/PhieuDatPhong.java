@@ -1,11 +1,6 @@
 package entity;
 
-import gui.swing.table.EventAction;
-import gui.swing.model.ModelAction;
-import java.text.DecimalFormat;
 import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.swing.JCheckBox;
 
 @Entity
 @NamedQueries({
@@ -107,9 +101,14 @@ public class PhieuDatPhong {
 
     /**
      * @param khachHang the khachHang to set
+     * @throws java.lang.Exception
      */
-    public void setKhachHang(KhachHang khachHang) {
-        this.khachHang = khachHang;
+    public void setKhachHang(KhachHang khachHang) throws Exception {
+        if(khachHang != null) {
+            this.khachHang = khachHang;
+        } else {
+            throw new Exception("Khách hàng không được rỗng");
+        }
     }
 
     /**
@@ -121,9 +120,14 @@ public class PhieuDatPhong {
 
     /**
      * @param phong the phong to set
+     * @throws java.lang.Exception
      */
-    public void setPhong(Phong phong) {
-        this.phong = phong;
+    public void setPhong(Phong phong) throws Exception {
+        if(phong != null) {
+            this.phong = phong;
+        } else {
+            throw new Exception("Phòng không được rỗng");
+        }
     }
 
     /**
@@ -135,9 +139,14 @@ public class PhieuDatPhong {
 
     /**
      * @param ngayDat the ngayDat to set
+     * @throws java.lang.Exception
      */
-    public void setNgayDat(Date ngayDat) {
-        this.ngayDat = ngayDat;
+    public void setNgayDat(Date ngayDat) throws Exception {
+        if(ngayDat.after(new Date())) {
+            this.ngayDat = ngayDat;
+        } else {
+            throw new Exception("Ngày đặt phải sau ngày hiện tại");
+        }
     }
     
     /**
@@ -148,9 +157,14 @@ public class PhieuDatPhong {
     }
     /**
      * @param ngayTao 
+     * @throws java.lang.Exception 
      */
-    public void setNgayTao(Date ngayTao) {
-        this.ngayTao = ngayTao;
+    public void setNgayTao(Date ngayTao) throws Exception {
+        if(ngayTao != null) {
+            this.ngayTao = ngayTao;
+        } else {
+            throw new Exception("Ngày tạo không được rỗng");
+        }
     }
     
     /**
@@ -162,9 +176,14 @@ public class PhieuDatPhong {
 
     /**
      * @param tienCoc the tienCoc to set
+     * @throws java.lang.Exception
      */
-    public void setTienCoc(double tienCoc) {
-        this.tienCoc = tienCoc;
+    public void setTienCoc(double tienCoc) throws Exception {
+        if(tienCoc > 0) {
+            this.tienCoc = tienCoc;
+        } else {
+            throw new Exception("Tiền cọc phải lớn hơn 0");
+        }
     }
     
     /**

@@ -15,7 +15,10 @@ public class LoHang_DAO implements LoHangService{
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-    
+    /**
+     * Lấy mã lô hàng mới nhất
+     * @return id: mã lô hàng
+     */
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
@@ -36,6 +39,11 @@ public class LoHang_DAO implements LoHangService{
         return null;
     }
     
+    /**
+     * Thêm một lô hàng mới
+     * @param loHang
+     * @return boolean: kết quả thêm
+     */
     @Override
     public boolean insertLohang(LoHang loHang) {
     Session session = sessionFactory.openSession();

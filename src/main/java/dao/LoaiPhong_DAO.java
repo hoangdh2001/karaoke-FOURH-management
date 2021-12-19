@@ -15,7 +15,11 @@ public class LoaiPhong_DAO implements LoaiPhongService {
     public LoaiPhong_DAO() {
         sessionFactory = HibernateUtil.getInstance().getSessionFactory();
     }
-    
+    /**
+     * Thêm loại phòng
+     * @param loaiPhong
+     * @return kq
+     */
     @Override
     public boolean addLoaiPhong(LoaiPhong loaiPhong) {
         Session sesion = sessionFactory.getCurrentSession();
@@ -31,7 +35,12 @@ public class LoaiPhong_DAO implements LoaiPhongService {
         }
         return false;
     }
-
+    
+    /**
+     * Cập nhật loại phòng
+     * @param loaiPhong
+     * @return kq
+     */
     @Override
     public boolean updateLoaiPhong(LoaiPhong loaiPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -47,7 +56,11 @@ public class LoaiPhong_DAO implements LoaiPhongService {
         }
         return false;
     }
-
+    /**
+     * Xóa một loại phòng theo mã loại phòng
+     * @param id
+     * @return kq
+     */
     @Override
     public boolean deleteLoaiPhong(String id) {
         Session session = sessionFactory.getCurrentSession();
@@ -63,7 +76,11 @@ public class LoaiPhong_DAO implements LoaiPhongService {
         }
         return false;
     }
-
+    /**
+     * Lấy loại phòng theo mã loại phòng
+     * @param id
+     * @return kq 
+     */
     @Override
     public LoaiPhong getLoaiPhong(String id) {
         Session session = sessionFactory.openSession();
@@ -79,7 +96,11 @@ public class LoaiPhong_DAO implements LoaiPhongService {
         }
         return null;
     }
-
+    /**
+     * Lấy loại phòng theo tên loại phòng
+     * @param name
+     * @return loaiPhong
+     */
     @Override
     public LoaiPhong getLoaiPhongByName(String name) {
         Session session = sessionFactory.openSession();
@@ -100,7 +121,10 @@ public class LoaiPhong_DAO implements LoaiPhongService {
         }
         return null;
     }
-    
+    /**
+     * Lấy danh sách loại phòng
+     * @return dsLoaiPhong
+     */
     @Override
     public List<LoaiPhong> getDsLoaiPhong() {
         Session session = sessionFactory.openSession();

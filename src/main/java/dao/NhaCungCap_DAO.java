@@ -16,6 +16,10 @@ public class NhaCungCap_DAO implements NhaCungCapService{
         this.sessionFactory = util.getSessionFactory();
     }
     
+    /**
+     * Lấy danh sách nhà cung cấp
+     * @return dsNhaCungCap
+     */
     @Override
     public List<NhaCungCap> getNhaCungCap() {
         Session session = sessionFactory.getCurrentSession();
@@ -33,7 +37,12 @@ public class NhaCungCap_DAO implements NhaCungCapService{
         }
         return null;
     }
-
+    
+    /**
+     * Lấy nhà cung cấp theo mã nhà cung cấp
+     * @param id: maNCC
+     * @return nhaCungCap
+     */
     @Override
     public NhaCungCap getNhaCungCapById(String id) {
         Session session = sessionFactory.getCurrentSession();
@@ -52,7 +61,12 @@ public class NhaCungCap_DAO implements NhaCungCapService{
         }
         return null;
     }
-
+    
+    /**
+     * Thêm một nhà cung cấp
+     * @param ncc
+     * @return kq
+     */
     @Override
     public boolean addNhaCungCap(NhaCungCap ncc) {
         Session session = sessionFactory.getCurrentSession();
@@ -67,7 +81,12 @@ public class NhaCungCap_DAO implements NhaCungCapService{
         }
         return false;
     }
-
+    
+    /**
+     * Cập nhật nhà cung cấp
+     * @param ncc
+     * @return kq
+     */
     @Override
     public boolean updateNhaCungCap(NhaCungCap ncc) {
         Session session = sessionFactory.getCurrentSession();
@@ -84,12 +103,16 @@ public class NhaCungCap_DAO implements NhaCungCapService{
         return false;
     }
     
+    /**
+     * Lấy mã nhà cung cấp mới nhất
+     * @return id
+     */
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
         Transaction tr = session.getTransaction();
 
-        String sql = "select max(maHoaDon) from HoaDon";
+        String sql = "select max(maNCC) from NhaCungCap";
 
         try {
             tr.begin();
@@ -103,7 +126,14 @@ public class NhaCungCap_DAO implements NhaCungCapService{
         }
         return null;
     }
-
+    
+    /**
+     * Lấy số lượng nhập theo ngày, mã mặt hàng
+     * @param maMatHang
+     * @param batDau
+     * @param ketThuc
+     * @return sl
+     */
     @Override
     public int getSLNhapByDate(String maMatHang,String batDau, String ketThuc) {
         int sl = 0;
@@ -125,6 +155,14 @@ public class NhaCungCap_DAO implements NhaCungCapService{
         }
     }
     
+    /**
+     * Lấy số lượng nhập theo tháng hoặc năm
+     * @param maMatHang
+     * @param thangOrNam
+     * @param thang
+     * @param year
+     * @return sl
+     */
     @Override
     public int getSLNhap(String maMatHang,int thangOrNam,Boolean thang, int year) {
         int sl = 0;
@@ -154,7 +192,10 @@ public class NhaCungCap_DAO implements NhaCungCapService{
             return 0;
         }
     }
-    
+    /**
+     * Lấy tất cả các năm không tồn tại
+     * @return dsThang
+     */
     @Override
     public List<Integer> getAllYearExist() {
         Session session = sessionFactory.openSession();

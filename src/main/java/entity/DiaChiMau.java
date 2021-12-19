@@ -1,3 +1,7 @@
+/**
+ * Có chứa sẵn các dữ liệu địa chỉ, mục đích dùng để lấy các thông tin địa
+ * chỉ có sẵn để người dùng chọn, tránh nhập sai.
+ */
 package entity;
 
 import javax.persistence.Column;

@@ -72,9 +72,14 @@ public class MatHang {
 
     /**
      * @param tenMatHang the tenMatHang to set
+     * @throws java.lang.Exception
      */
-    public void setTenMatHang(String tenMatHang) {
-        this.tenMatHang = tenMatHang;
+    public void setTenMatHang(String tenMatHang) throws Exception {
+        if(tenMatHang.length() > 0) {
+            this.tenMatHang = tenMatHang;
+        } else {
+            throw new Exception("Tên mặt hàng không được rỗng");
+        }
     }
 
     /**
@@ -86,9 +91,14 @@ public class MatHang {
 
     /**
      * @param loaiDichVu the loaiDichVu to set
+     * @throws java.lang.Exception
      */
-    public void setLoaiDichVu(LoaiDichVu loaiDichVu) {
-        this.loaiDichVu = loaiDichVu;
+    public void setLoaiDichVu(LoaiDichVu loaiDichVu) throws Exception {
+        if(loaiDichVu != null) {
+            this.loaiDichVu = loaiDichVu;
+        } else {
+            throw new Exception("Loại dịch vụ không được rỗng");
+        }
     }
 
     /**
@@ -100,6 +110,7 @@ public class MatHang {
 
     /**
      * @param sLTonKho the sLTonKho to set
+     * @throws java.lang.Exception
      */
     public void setsLTonKho(int sLTonKho) throws Exception {
         if (sLTonKho >= 0) {
@@ -118,9 +129,14 @@ public class MatHang {
 
     /**
      * @param donGia the donGia to set
+     * @throws java.lang.Exception
      */
-    public void setDonGia(double donGia) {
-        this.donGia = donGia;
+    public void setDonGia(double donGia) throws Exception {
+        if(donGia > 0) {
+            this.donGia = donGia;
+        } else {
+            throw new Exception("Đơn giá phải lớn hơn 0");
+        }
     }
 
     @Override

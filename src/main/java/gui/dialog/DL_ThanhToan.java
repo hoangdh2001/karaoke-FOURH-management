@@ -57,7 +57,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         return hoaDon;
     }
 
-    public DL_ThanhToan(Frame frame, HoaDon hoaDon, NhanVien nhanVien) {
+    public DL_ThanhToan(Frame frame, HoaDon hoaDon, NhanVien nhanVien) throws Exception {
         super(frame, true);
         this.hoaDonService = new HoaDon_DAO();
         this.matHangService = new MatHang_DAO();
@@ -850,38 +850,42 @@ public class DL_ThanhToan extends javax.swing.JDialog {
             }
         }
         if (JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn trả phòng?\nLƯU Ý: Vui lòng kiểm tra và nhắc khách không để quên đồ", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            loadDataForm();
-            hoaDon.setTrangThai(TrangThaiHoaDon.HOAN_THANH);
-            hoaDon.getPhong().setTrangThai(TrangThaiPhong.BAN);
-            hoaDon.setNgayLapHoaDon(new Date());
-            List<ChiTietHoaDon> dsChiTietHoaDonTruocCapNhat = chiTietHoaDonService.getDsChiTietHoaDonByMaHoaDon(hoaDon.getMaHoaDon());
-            dsChiTietHoaDonTruocCapNhat.forEach(chiTietHoaDon -> {
-                if (!hoaDon.getDsChiTietHoaDon().contains(chiTietHoaDon)) {
-                    chiTietHoaDonService.deleteChiTietHoaDon(chiTietHoaDon);
-                }
-            });
-            hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
-                chiTietHoaDonService.updateChiTietHoaDon(chiTietHoaDon);
-            });
-            if (hoaDonService.finishHoaDon(hoaDon)) {
-                if (cbInHoaDon.isSelected()) {
-                    bHeight = Double.valueOf(hoaDon.getDsChiTietHoaDon().size());
-
-                    PrinterJob pj = PrinterJob.getPrinterJob();
-                    pj.setJobName(hoaDon.getMaHoaDon());
-                    pj.setPrintable(new BillPrintable(hoaDon), getPageFormat(pj));
-                    boolean returningResult = pj.printDialog();
-                    if (returningResult) {
-                        try {
-                            pj.print();
-                        } catch (Exception e) {
-                            JOptionPane.showMessageDialog(this, "Print Error: " + e.getMessage(), "Thông báo", JOptionPane.ERROR_MESSAGE);
+            try {
+                loadDataForm();
+                hoaDon.setTrangThai(TrangThaiHoaDon.HOAN_THANH);
+                hoaDon.getPhong().setTrangThai(TrangThaiPhong.BAN);
+                hoaDon.setNgayLapHoaDon(new Date());
+                List<ChiTietHoaDon> dsChiTietHoaDonTruocCapNhat = chiTietHoaDonService.getDsChiTietHoaDonByMaHoaDon(hoaDon.getMaHoaDon());
+                dsChiTietHoaDonTruocCapNhat.forEach(chiTietHoaDon -> {
+                    if (!hoaDon.getDsChiTietHoaDon().contains(chiTietHoaDon)) {
+                        chiTietHoaDonService.deleteChiTietHoaDon(chiTietHoaDon);
+                    }
+                });
+                hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
+                    chiTietHoaDonService.updateChiTietHoaDon(chiTietHoaDon);
+                });
+                if (hoaDonService.finishHoaDon(hoaDon)) {
+                    if (cbInHoaDon.isSelected()) {
+                        bHeight = Double.valueOf(hoaDon.getDsChiTietHoaDon().size());
+                        
+                        PrinterJob pj = PrinterJob.getPrinterJob();
+                        pj.setJobName(hoaDon.getMaHoaDon());
+                        pj.setPrintable(new BillPrintable(hoaDon), getPageFormat(pj));
+                        boolean returningResult = pj.printDialog();
+                        if (returningResult) {
+                            try {
+                                pj.print();
+                            } catch (Exception e) {
+                                JOptionPane.showMessageDialog(this, "Print Error: " + e.getMessage(), "Thông báo", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                     }
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Thanh toán thất bại!");
                 }
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Thanh toán thất bại!");
+            } catch (Exception ex) {
+                Logger.getLogger(DL_ThanhToan.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnThanhToanActionPerformed

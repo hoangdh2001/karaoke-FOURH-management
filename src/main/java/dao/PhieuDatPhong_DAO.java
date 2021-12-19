@@ -20,7 +20,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         HibernateUtil util = HibernateUtil.getInstance();
         this.sessionFactory = util.getSessionFactory();
     }
-
+    /**
+     * Thêm một phiếu đặt phòng
+     * @param phieuDatPhong
+     * @return true: thêm thành công, false: thêm thất bại
+     */
     @Override
     public boolean addPhieuDatPhong(PhieuDatPhong phieuDatPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -148,7 +152,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         session.close();
         return null;
     }
-
+    /**
+     * Lấy phiếu đặt phòng theo mã phiếu
+     * @param maPhieuDat
+     * @return phieuDatPhong
+     */
     @Override
     public PhieuDatPhong getPhieuDatPhong(String maPhieuDat) {
         Session session = sessionFactory.openSession();
@@ -165,7 +173,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         }
         return null;
     }
-
+    
+    /**
+     * Lấy mã phiếu đặt phòng mới nhất
+     * @return id
+     */
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
@@ -185,7 +197,12 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         }
         return null;
     }
-
+    
+    /**
+     * Lấy phiếu đặt phòng hôm nay theo mã phòng
+     * @param maPhong
+     * @return dsPhong
+     */
     @Override
     public List<PhieuDatPhong> getPhieuHomNay(String maPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -244,7 +261,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         }
         return 0;
     }
-
+    /**
+     * Lấy phiếu đặt phognf theo mã phiếu đặt phòng
+     * @param maPhong
+     * @return phieuDatPhong
+     */
     @Override
     public PhieuDatPhong getPhieuDatPhongByIDPhong(String maPhong) {
         Session session = sessionFactory.getCurrentSession();
@@ -264,7 +285,11 @@ public class PhieuDatPhong_DAO implements PhieuDatPhongService {
         }
         return null;
     }
-
+    /**
+     * Lấy danh sách phòng theo mã  phòng
+     * @param maPhong
+     * @return dsPhieuDatPhong
+     */
     @Override
     public List<PhieuDatPhong> getDsPhieuDatByPhong(String maPhong) {
         Session session = sessionFactory.openSession();

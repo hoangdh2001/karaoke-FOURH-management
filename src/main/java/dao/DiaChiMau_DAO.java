@@ -15,7 +15,10 @@ public class DiaChiMau_DAO implements DiaChiMauService {
         HibernateUtil hibernateUtil = HibernateUtil.getInstance();
         this.sessionFactory = hibernateUtil.getSessionFactory();
     }
-
+    /**
+     * Lấy tất cả tỉnh thành
+     * @return tinhThanhs
+     */
     @Override
     public List<String> getAllTinhThanh() {
         Session session = sessionFactory.getCurrentSession();
@@ -30,13 +33,16 @@ public class DiaChiMau_DAO implements DiaChiMauService {
             return tinhThanhs;
 
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
 
         return null;
     }
-
+    /**
+     * Lấy tất cả huyện của tỉnh thành
+     * @param tinhThanh
+     * @return quanHuyen
+     */
     @Override
     public List<String> getQuanHuyenTheoTinhThanh(String tinhThanh) {
         Session session = sessionFactory.getCurrentSession();
@@ -56,7 +62,12 @@ public class DiaChiMau_DAO implements DiaChiMauService {
 
         return null;
     }
-
+    /**
+     * Lấy tất cả phường xã của quận huyện, tỉnh thành
+     * @param quanHuyen
+     * @param tinhThanh
+     * @return 
+     */
     @Override
     public List<String> getPhuongXaTheoQHTH(String quanHuyen, String tinhThanh) {
         Session session = sessionFactory.getCurrentSession();

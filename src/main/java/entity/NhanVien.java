@@ -1,7 +1,8 @@
 package entity;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Arrays;
 
 import javax.persistence.Column;
@@ -10,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.swing.JCheckBox;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -117,9 +117,14 @@ public class NhanVien {
 
     /**
      * @param tenNhanVien the tenNhanVien to set
+     * @throws java.lang.Exception
      */
-    public void setTenNhanVien(String tenNhanVien) {
-        this.tenNhanVien = tenNhanVien;
+    public void setTenNhanVien(String tenNhanVien) throws Exception {
+        if(tenNhanVien.length() > 0) {
+            this.tenNhanVien = tenNhanVien;
+        } else {
+            throw new Exception("Tên nhân viên không được rỗng");
+        }
     }
 
     /**
@@ -159,9 +164,14 @@ public class NhanVien {
 
     /**
      * @param canCuocCD the canCuocCD to set
+     * @throws java.lang.Exception
      */
-    public void setCanCuocCD(String canCuocCD) {
-        this.canCuocCD = canCuocCD;
+    public void setCanCuocCD(String canCuocCD) throws Exception {
+        if(canCuocCD.length() > 0) {
+            this.canCuocCD = canCuocCD;
+        } else {
+            throw new Exception("Căn cước công dân không được rỗng");
+        }
     }
 
     /**
@@ -187,9 +197,14 @@ public class NhanVien {
 
     /**
      * @param ngaySinh the ngaySinh to set
+     * @throws java.lang.Exception
      */
-    public void setNgaySinh(Date ngaySinh) {
-        this.ngaySinh = ngaySinh;
+    public void setNgaySinh(Date ngaySinh) throws Exception {
+        if(Period.between(ngaySinh.toLocalDate(), LocalDate.now()).getYears() >= 18) {
+            this.ngaySinh = ngaySinh;
+        } else {
+            throw new Exception("Nhân viên phải trên 18 tuổi");
+        }
     }
 
     /**
@@ -201,9 +216,14 @@ public class NhanVien {
 
     /**
      * @param soDienThoai the soDienThoai to set
+     * @throws java.lang.Exception
      */
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
+    public void setSoDienThoai(String soDienThoai) throws Exception {
+        if(soDienThoai.length() > 0) {
+            this.soDienThoai = soDienThoai;
+        } else {
+            throw new Exception("Số điện thoại không được rỗng");
+        }
     }
 
     /**
@@ -215,9 +235,14 @@ public class NhanVien {
 
     /**
      * @param email the email to set
+     * @throws java.lang.Exception
      */
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String email) throws Exception {
+        if(email.length() > 0) {
+            this.email = email;
+        } else {
+            throw new Exception("Email không được rỗng");
+        }
     }
 
     /**
@@ -243,9 +268,14 @@ public class NhanVien {
 
     /**
      * @param matKhau the matKhau to set
+     * @throws java.lang.Exception
      */
-    public void setMatKhau(byte[] matKhau) {
-        this.matKhau = matKhau;
+    public void setMatKhau(byte[] matKhau) throws Exception {
+        if(matKhau != null) {
+            this.matKhau = matKhau;
+        } else {
+            throw new Exception("Mật khẩu không được rỗng");
+        }
     }
 
     @Override

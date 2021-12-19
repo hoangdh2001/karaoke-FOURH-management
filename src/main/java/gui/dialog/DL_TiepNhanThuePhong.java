@@ -22,7 +22,6 @@ import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
 import gui.swing.event.EventAdd;
 import gui.swing.event.EventMinus;
-import gui.swing.image.WindowIcon;
 import gui.swing.model.AutoID;
 import gui.swing.model.ModelAdd;
 import gui.swing.table.SpinnerEditor;
@@ -81,7 +80,7 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
         return phieuDatPhong;
     }
 
-    public void setPhieuDatPhong(PhieuDatPhong phieuDatPhong) {
+    public void setPhieuDatPhong(PhieuDatPhong phieuDatPhong) throws Exception {
         this.phieuDatPhong = phieuDatPhong;
         loadDataForm();
     }
@@ -90,7 +89,7 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
         return hoaDon;
     }
 
-    public DL_TiepNhanThuePhong(Frame frame, Phong phong, NhanVien nv) {
+    public DL_TiepNhanThuePhong(Frame frame, Phong phong, NhanVien nv) throws Exception {
         super(frame, true);
         this.hoaDonService = new HoaDon_DAO();
         this.matHangService = new MatHang_DAO();
@@ -110,7 +109,7 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
         buildDisplay();
     }
 
-    private void buildDisplay() {
+    private void buildDisplay() throws Exception {
         createTableMatHang();
         createTableCTHoaDon();
         createTablePhieuDatPhong();
@@ -192,7 +191,7 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
         });
     }
 
-    private void loadDataForm() {
+    private void loadDataForm() throws Exception {
         if (hoaDon.getPhong() != null) {
             ((DefaultComboBoxModel) cbLoaiDichVu.getModel()).addAll(loaiDichVuService.getDsTenLoaiDichVu());
             txtMaHoaDon.setText(hoaDon.getMaHoaDon());
@@ -363,7 +362,7 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
         }
     }
 
-    private void loadDataTTKH() {
+    private void loadDataTTKH() throws Exception {
         KhachHang khachHang = (KhachHang) search.getSelectedRow();
         hoaDon.setKhachHang(khachHang);
         setData();
@@ -387,6 +386,8 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
                 txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
             } catch (ParseException ex) {
                 Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             try {
@@ -395,6 +396,8 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
                 hoaDon.setThoiGianBatDau(date);
                 txtTienPhongDuKien.setText(df.format(hoaDon.getDonGiaPhong()));
             } catch (ParseException ex) {
+                Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
                 Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -1134,7 +1137,11 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
         } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             search.keyDown();
         } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            loadDataTTKH();
+            try {
+                loadDataTTKH();
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_txtTenKhachHangKeyPressed
 
@@ -1150,7 +1157,11 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
         } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             search.keyDown();
         } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            loadDataTTKH();
+            try {
+                loadDataTTKH();
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_txtCCCDKeyPressed
 
@@ -1193,22 +1204,30 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
         } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             search.keyDown();
         } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            loadDataTTKH();
+            try {
+                loadDataTTKH();
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_txtSdtKeyPressed
 
     private void btnGiaoPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiaoPhongActionPerformed
-        hoaDon.getPhong().setTrangThai(TrangThaiPhong.DANG_HAT);
-        khachHangService.themKhachHang(hoaDon.getKhachHang());
-        hoaDonService.addHoaDon(hoaDon);
-        hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
-            chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
-        });
-        if (phieuDatPhong != null) {
-            phieuDatPhongService.capNhatPhieuDatPhong(phieuDatPhong);
+        try {
+            hoaDon.getPhong().setTrangThai(TrangThaiPhong.DANG_HAT);
+            khachHangService.themKhachHang(hoaDon.getKhachHang());
+            hoaDonService.addHoaDon(hoaDon);
+            hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
+                chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
+            });
+            if (phieuDatPhong != null) {
+                phieuDatPhongService.capNhatPhieuDatPhong(phieuDatPhong);
+            }
+            start = false;
+            dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
         }
-        start = false;
-        dispose();
     }//GEN-LAST:event_btnGiaoPhongActionPerformed
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
@@ -1222,15 +1241,19 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
     private void tablePhieuDatPhongMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePhieuDatPhongMousePressed
         int row = tablePhieuDatPhong.getSelectedRow();
         if (row != -1) {
-            phieuDatPhong = dsPhieuDat.get(row);
-            phieuDatPhong.setTrangThai(TrangThaiPhieuDat.DA_TIEP_NHAN);
-            hoaDon.setKhachHang(phieuDatPhong.getKhachHang());
-            hoaDon.setTienCoc(phieuDatPhong.getTienCoc());
-            setData();
-            txtDaCoc.setText(df.format(hoaDon.getTienCoc()));
-            txtTenKhachHang.setEnabled(false);
-            txtSdt.setEnabled(false);
-            txtCCCD.setEnabled(false);
+            try {
+                phieuDatPhong = dsPhieuDat.get(row);
+                phieuDatPhong.setTrangThai(TrangThaiPhieuDat.DA_TIEP_NHAN);
+                hoaDon.setKhachHang(phieuDatPhong.getKhachHang());
+                hoaDon.setTienCoc(phieuDatPhong.getTienCoc());
+                setData();
+                txtDaCoc.setText(df.format(hoaDon.getTienCoc()));
+                txtTenKhachHang.setEnabled(false);
+                txtSdt.setEnabled(false);
+                txtCCCD.setEnabled(false);
+            } catch (Exception ex) {
+                Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_tablePhieuDatPhongMousePressed
 
