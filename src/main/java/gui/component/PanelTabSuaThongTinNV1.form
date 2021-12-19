@@ -316,7 +316,7 @@
         </Component>
         <Component class="gui.swing.button.Button" name="btnSua">
           <Properties>
-            <Property name="text" type="java.lang.String" value="S&#x1b0;&#x309;a"/>
+            <Property name="text" type="java.lang.String" value="L&#x1b0;u"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="SansSerif" size="14" style="1"/>
             </Property>

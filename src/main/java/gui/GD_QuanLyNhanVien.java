@@ -281,7 +281,7 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
                 // Nếu click chuột trái và click 2 lần
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
 
-                    String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString();
+                    String maNhanVien = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString();
                     eventSelectedRow.selectedRow(nhanVien_DAO.getNhanVien(maNhanVien));
                 }
             }
@@ -442,6 +442,10 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         cmbCaLamTK.setSelectedIndex(0);
         cmbLoaiNVTK.setSelectedIndex(0);
         cmbGioiTinhTK.setSelectedIndex(0);
+
+        pnlPageHandle();
+
+        loadDataTable(pnlPage.getCurrentIndex());
     }
 
     @SuppressWarnings("unchecked")
