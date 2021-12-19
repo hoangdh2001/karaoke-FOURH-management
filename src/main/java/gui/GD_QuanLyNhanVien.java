@@ -442,6 +442,10 @@ public class GD_QuanLyNhanVien extends javax.swing.JPanel {
         cmbCaLamTK.setSelectedIndex(0);
         cmbLoaiNVTK.setSelectedIndex(0);
         cmbGioiTinhTK.setSelectedIndex(0);
+
+        pnlPageHandle();
+
+        loadDataTable(pnlPage.getCurrentIndex());
     }
 
     @SuppressWarnings("unchecked")
