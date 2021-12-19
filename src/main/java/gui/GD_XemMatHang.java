@@ -277,6 +277,8 @@ public class GD_XemMatHang extends javax.swing.JPanel {
         });
         table.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         table.setRowHeight(40);
+        table.setSelectionBackground(new java.awt.Color(239, 244, 255));
+        table.setSelectionForeground(new java.awt.Color(51, 51, 51));
         table.setShowGrid(true);
         table.setShowVerticalLines(false);
         jScrollPane1.setViewportView(table);

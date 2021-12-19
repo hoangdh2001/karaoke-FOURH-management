@@ -23,8 +23,6 @@ public interface HoaDonService {
     public List<Integer> getDSThangTheoNgayLap(int quy);
     public List<Integer> getDSNamTheoNgayLap();
     public List<Integer> getDSQuyTheoNgayLap();
-
-//    Huu
     public List<HoaDon> findHoaDon(String batDau, String ketThuc,String ma,int page);
     public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year,int page);
     public String getMaxID();

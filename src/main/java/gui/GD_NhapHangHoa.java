@@ -6,12 +6,10 @@ import dao.LoHang_DAO;
 import dao.LoaiDichVu_DAO;
 import dao.MatHang_DAO;
 import dao.NhaCungCap_DAO;
-import entity.ChiTietNhapHang;
 import entity.LoHang;
 import entity.LoaiDichVu;
 import entity.MatHang;
 import entity.NhaCungCap;
-import entity.NhanVien;
 import gui.component.PanelTenSanPham;
 import gui.swing.button.Button;
 import gui.swing.model.AutoID;
@@ -25,7 +23,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +42,7 @@ import service.LoaiDichVuService;
 import service.MatHangService;
 import service.NhaCungCapService;
 
-public class NhapHangHoa extends javax.swing.JPanel {
+public class GD_NhapHangHoa extends javax.swing.JPanel {
 
     private JComboBox<Object> cbNhaCungCap;
     private JComboBox<Object> cbLoaiSP;
@@ -86,7 +83,7 @@ public class NhapHangHoa extends javax.swing.JPanel {
     private Color colorBtn = new Color(184, 238, 241);
     private Color colorLabel = new Color(47, 72, 210);
 
-    public NhapHangHoa() {
+    public GD_NhapHangHoa() {
         loHangService = new LoHang_DAO();
         matHangService = new MatHang_DAO();
         loaiDichVuService = new LoaiDichVu_DAO();
@@ -640,6 +637,8 @@ public class NhapHangHoa extends javax.swing.JPanel {
         });
         table.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         table.setRowHeight(40);
+        table.setSelectionBackground(new java.awt.Color(239, 244, 255));
+        table.setSelectionForeground(new java.awt.Color(51, 51, 51));
         table.setShowGrid(true);
         table.setShowVerticalLines(false);
         jScrollPane2.setViewportView(table);

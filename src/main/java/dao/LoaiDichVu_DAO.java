@@ -80,7 +80,6 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
             tr.commit();
             return ldv;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return null;
@@ -110,7 +109,6 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
             tr.commit();
             return list;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         
@@ -150,7 +148,6 @@ public class LoaiDichVu_DAO implements LoaiDichVuService {
             tr.commit();
             return list;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         

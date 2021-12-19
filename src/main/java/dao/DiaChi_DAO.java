@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import java.util.List;
@@ -11,10 +7,6 @@ import org.hibernate.Transaction;
 import service.DiaChiService;
 import util.HibernateUtil;
 
-/**
- *
- * @author Hao
- */
 public class DiaChi_DAO implements DiaChiService{
     
     private SessionFactory sessionFactory;
@@ -38,7 +30,6 @@ public class DiaChi_DAO implements DiaChiService{
             return  dsQuanHuyen;
         } catch (Exception e) {
             tr.rollback();
-            System.err.println(e);
         }
         session.close();
         return null;
@@ -58,7 +49,6 @@ public class DiaChi_DAO implements DiaChiService{
             return  dsTinhThanh;
         } catch (Exception e) {
             tr.rollback();
-            System.err.println(e);
         }
         session.close();
         return null;
@@ -78,7 +68,6 @@ public class DiaChi_DAO implements DiaChiService{
             return  dsXaPhuong;
         } catch (Exception e) {
             tr.rollback();
-            System.err.println(e);
         }
         session.close();
         return null;
@@ -99,7 +88,6 @@ public class DiaChi_DAO implements DiaChiService{
             return  dsXaPhuong;
         } catch (Exception e) {
             tr.rollback();
-            System.err.println(e);
         }
         session.close();
         return null;
@@ -120,7 +108,6 @@ public class DiaChi_DAO implements DiaChiService{
             return  dsXaPhuong;
         } catch (Exception e) {
             tr.rollback();
-            System.err.println(e);
         }
         session.close();
         return null;

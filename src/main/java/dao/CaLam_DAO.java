@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.CaLam;
@@ -13,10 +8,6 @@ import org.hibernate.Transaction;
 import service.CaLamService;
 import util.HibernateUtil;
 
-/**
- *
- * @author NGUYE
- */
 public class CaLam_DAO implements CaLamService {
 
     private SessionFactory sessionFactory;

@@ -244,7 +244,7 @@ public class GD_QuanLyHoaDon extends javax.swing.JPanel implements ActionListene
                 if (dsHoaDon != null) {
                     for (HoaDon hoaDon : dsHoaDon) {
                         ((DefaultTableModel) tblHoaDon.getModel()).addRow(new Object[]{hoaDon.getMaHoaDon(),
-                            hoaDon.getKhachHang().getTenKhachHang(),
+                            hoaDon.getKhachHang() == null ? "":hoaDon.getKhachHang().getTenKhachHang(),
                             hoaDon.getPhong().getTenPhong(),
                             hoaDon.getGioHat(),
                             fm1.format(hoaDon.getNgayLapHoaDon()),

@@ -15,4 +15,6 @@ public interface EventRoom {
     public void addBtnDoiPhongEvent(Phong phong, HoaDon hoaDon);
     public void addBtnHuyEvent(Phong phong, PhieuDatPhong phieuDatPhong);
     public HoaDon addBtnThueEvent(Phong phong, PhieuDatPhong phieuDatPhong);
+    public void addBtnDoiPhongEvent(PhieuDatPhong phieuDatPhong);
+    public void addBtnDatPhongEvent(Phong phong);
 }

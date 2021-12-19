@@ -68,7 +68,6 @@ public class GD_Chinh extends JFrame {
     private final DecimalFormat df = new DecimalFormat("##0.###");
     private final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     private TabLayout tab;
-    private JScrollPane sp;
     
     public GD_Chinh(Frame frame, String title, NhanVien nhanVien) {
         super(title);
@@ -219,8 +218,7 @@ public class GD_Chinh extends JFrame {
      *
      * @return JPanel content
      */
-    private JScrollPane createContent() {
-        sp = new JScrollPane();
+    private Content createContent() {
         content = new Content();
         content.setBackground(new Color(245, 245, 245));
         if(NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Quản lý") || NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Lễ tân")) {
@@ -236,24 +234,11 @@ public class GD_Chinh extends JFrame {
                         x = e.getXOnScreen() - e.getX() - 400;
                         y = e.getYOnScreen() - e.getY() - 10;
                     } else {
-                        x = e.getXOnScreen() + 200 - e.getX();
+                        x = e.getXOnScreen() + 240 - e.getX();
                         y = e.getYOnScreen() - e.getY() - 10;
                     }
                     infoOver.setLocation(x, y);
                     infoOver.setVisible(true);
-
-                    sp.addMouseWheelListener(new MouseWheelListener() {
-                        @Override
-                        public void mouseWheelMoved(MouseWheelEvent arg0) {
-                            infoOver.closeMenu();
-                        }
-                    });
-                    soDoPhongHat.addEventSp(new MouseWheelListener() {
-                        @Override
-                        public void mouseWheelMoved(MouseWheelEvent arg0) {
-                            infoOver.closeMenu();
-                        }
-                    });
                 }
 
             });
@@ -262,10 +247,7 @@ public class GD_Chinh extends JFrame {
         } else if (NHAN_VIEN.getLoaiNhanVien().getTenLoaiNV().equals("Kế toán")) {
             content.showForm(new GD_ThongKeDoanhThu());
         }
-        sp.setViewportView(content);
-        sp.getVerticalScrollBar().setUnitIncrement(50);
-        sp.setBorder(null);
-        return sp;
+        return content;
     }
 
     /**
@@ -349,17 +331,11 @@ public class GD_Chinh extends JFrame {
                                         x = e.getXOnScreen() - e.getX() - 400;
                                         y = e.getYOnScreen() - e.getY() - 10;
                                     } else {
-                                        x = e.getXOnScreen() + 200 - e.getX();
+                                        x = e.getXOnScreen() + 240 - e.getX();
                                         y = e.getYOnScreen() - e.getY() - 10;
                                     }
                                     infoOver.setLocation(x, y);
                                     infoOver.setVisible(true);
-                                    sp.addMouseWheelListener(new MouseWheelListener() {
-                                        @Override
-                                        public void mouseWheelMoved(MouseWheelEvent arg0) {
-                                            infoOver.closeMenu();
-                                        }
-                                    });
                                     soDoPhongHat.addEventSp(new MouseWheelListener() {
                                         @Override
                                         public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -483,7 +459,7 @@ public class GD_Chinh extends JFrame {
                         if(subMenuIndex == 0) {
                             content.showForm(new GD_XemMatHang());
                         } else if (subMenuIndex == 1) {
-                            content.showForm(new NhapHangHoa());
+                            content.showForm(new GD_NhapHangHoa());
                         }
                         break;
                     default:
@@ -516,12 +492,6 @@ public class GD_Chinh extends JFrame {
                                     }
                                     infoOver.setLocation(x, y);
                                     infoOver.setVisible(true);
-                                    sp.addMouseWheelListener(new MouseWheelListener() {
-                                        @Override
-                                        public void mouseWheelMoved(MouseWheelEvent arg0) {
-                                            infoOver.closeMenu();
-                                        }
-                                    });
                                     soDoPhongHat.addEventSp(new MouseWheelListener() {
                                         @Override
                                         public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -597,7 +567,7 @@ public class GD_Chinh extends JFrame {
                         if(subMenuIndex == 0) {
                             content.showForm(new GD_XemMatHang());
                         } else if (subMenuIndex == 1) {
-                            content.showForm(new NhapHangHoa());
+                            content.showForm(new GD_NhapHangHoa());
                         }
                         break;
                     default:

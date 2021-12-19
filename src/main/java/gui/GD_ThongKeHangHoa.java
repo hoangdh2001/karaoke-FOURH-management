@@ -29,7 +29,6 @@ import service.HoaDonService;
 import service.LoaiDichVuService;
 import service.MatHangService;
 import service.NhaCungCapService;
-import service.NhaCungCapVaNhapHangDaoService;
 
 public class GD_ThongKeHangHoa extends javax.swing.JPanel {
     private final DecimalFormat df = new DecimalFormat("#,###");
@@ -520,6 +519,8 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
         ));
         tblSPBanChay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblSPBanChay.setRowHeight(40);
+        tblSPBanChay.setSelectionBackground(new java.awt.Color(239, 244, 255));
+        tblSPBanChay.setSelectionForeground(new java.awt.Color(51, 51, 51));
         jScrollPane4.setViewportView(tblSPBanChay);
         if (tblSPBanChay.getColumnModel().getColumnCount() > 0) {
             tblSPBanChay.getColumnModel().getColumn(0).setPreferredWidth(350);
@@ -540,6 +541,8 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
         ));
         tblPhanTram.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblPhanTram.setRowHeight(40);
+        tblPhanTram.setSelectionBackground(new java.awt.Color(239, 244, 255));
+        tblPhanTram.setSelectionForeground(new java.awt.Color(51, 51, 51));
         jScrollPane1.setViewportView(tblPhanTram);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

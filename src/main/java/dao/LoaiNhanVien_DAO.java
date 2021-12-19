@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import entity.LoaiNhanVien;
@@ -13,10 +8,6 @@ import org.hibernate.Transaction;
 import service.LoaiNhanVienService;
 import util.HibernateUtil;
 
-/**
- *
- * @author NGUYE
- */
 public class LoaiNhanVien_DAO implements LoaiNhanVienService {
 
     private SessionFactory sessionFactory;
@@ -39,7 +30,6 @@ public class LoaiNhanVien_DAO implements LoaiNhanVienService {
 
             return loaiNhanViens;
         } catch (Exception e) {
-            e.printStackTrace();
             transaction.rollback();
         }
 

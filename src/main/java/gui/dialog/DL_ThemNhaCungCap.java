@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,8 +41,8 @@ public class DL_ThemNhaCungCap extends javax.swing.JDialog {
     private JTextField txtSDT;
     private JTextField txtSoNha_Duong;
 
-    private Button btnThemVaSua;
-    private Button btnHuy;
+    private JButton btnThemVaSua;
+    private JButton btnHuy;
     private DiaChi_DAO diaChi_Dao;
     private NhaCungCapService nhaCungCapService;
 
@@ -130,16 +131,18 @@ public class DL_ThemNhaCungCap extends javax.swing.JDialog {
         pnlRight.add(cmbXaPhuong, "w 250!, h 36!, wrap");
 
         //Nút hủy
-        btnHuy = new Button("Hủy");
-        btnHuy.setFont(new Font(fontName, fontStyle, fontSize));
-        btnHuy.setBackground(colorBtn);
-        pnlRight.add(btnHuy, "w 100!, h 36!, skip 1, split 2, align right");
+        btnHuy = new JButton("Hủy");
+        btnHuy.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnHuy.setBackground(new Color(54,88,153));
+        btnHuy.setForeground(Color.WHITE);
+        pnlRight.add(btnHuy, "w 90!, h 30!, skip 1, split 2, align right");
 
         // Nút Thêm
-        btnThemVaSua = new Button("Thêm");
-        btnThemVaSua.setFont(new Font(fontName, fontStyle, fontSize));
-        btnThemVaSua.setBackground(colorBtn);
-        pnlRight.add(btnThemVaSua, "w 100!, h 36!");
+        btnThemVaSua = new JButton("Thêm");
+        btnThemVaSua.setFont(new Font("sansserif", Font.BOLD, 12));
+        btnThemVaSua.setBackground(new Color(54,88,153));
+        btnThemVaSua.setForeground(Color.WHITE);
+        pnlRight.add(btnThemVaSua, "w 90!, h 30!");
 
         setSize(800, 280);
         setResizable(false);

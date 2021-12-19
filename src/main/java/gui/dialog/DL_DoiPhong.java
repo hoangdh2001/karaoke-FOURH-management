@@ -23,6 +23,10 @@ public class DL_DoiPhong extends javax.swing.JDialog implements ActionListener {
     private HoaDon hoaDon;
     private final DecimalFormat df = new DecimalFormat("#,##0.#");
     private List<Phong> dsPhong;
+    
+    public HoaDon getHoaDon() {
+        return hoaDon;
+    }
 
     public DL_DoiPhong(Frame frame, HoaDon hoaDon) {
         super(frame, true);

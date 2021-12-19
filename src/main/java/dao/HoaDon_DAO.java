@@ -68,7 +68,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         } finally {
             session.close();
@@ -96,7 +95,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsHoaDon;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -118,7 +116,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return hoaDon;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         return null;
@@ -148,7 +145,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsHoaDon;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -184,7 +180,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsHoaDon;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -206,7 +201,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return ngayNho;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -228,7 +222,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return ngayLon;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -261,7 +254,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsHoaDon;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -291,7 +283,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsThang;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -315,7 +306,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsThang;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -339,7 +329,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return dsThang;
         } catch (Exception e) {
-            System.err.println(e);
             tr.rollback();
         }
         session.close();
@@ -458,127 +447,6 @@ public class HoaDon_DAO implements HoaDonService {
         return 0;
     }
     
-    
-//    Huu
-//    @Override
-//    public boolean insertCTHoaDon(ChiTietHoaDon ctHoaDon) {
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        try {
-//            tr.begin();
-//                session.save(ctHoaDon);  
-//            tr.commit();
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            tr.rollback();
-//        }
-//        return false;
-//    }
-//    @Override
-//    public boolean updateCTHoaDon(ChiTietHoaDon ctHoaDon) {
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        String sql ="";
-//        if(ctHoaDon.getSoLuong() >0){
-//            sql = "update ChiTietHoaDon set soLuong = "+ctHoaDon.getSoLuong()+",thanhTien = "+ctHoaDon.getThanhTien()
-//                +"where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
-//                + "and maMatHang = '" +ctHoaDon.getMatHang().getMaMatHang()+"' ";
-//        }else{
-//            sql = "delete ChiTietHoaDon"
-//                +" where maHoaDon = '"+ctHoaDon.getHoaDon().getMaHoaDon()+"' "
-//                + "and maMatHang = '"+ctHoaDon.getMatHang().getMaMatHang()+"'";
-//        }
-//        
-//        try {
-//            tr.begin();
-//                session.createNativeQuery(sql).executeUpdate();  
-//            tr.commit();
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            tr.rollback();
-//        }
-//        return false;
-//    }
-
-//    @Override
-//    public HoaDon getHoaDon(Phong phong) {
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        String sql = "select top 1 * from HoaDon where maPhong = '"+phong.getMaPhong()+"' order by maHoaDon desc";
-//        try {
-//            tr.begin();
-//                HoaDon hoadon= session.createNativeQuery(sql,HoaDon.class).getSingleResult();
-//            tr.commit();
-//            return hoadon;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            tr.rollback();
-//        }
-//        return null;
-//    }
-
-//    @Override
-//    public boolean updateHoaDon(HoaDon hoaDon,String gioHat,double tongTienPhong,double tongTien,double tongTienMatHang) {
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        
-//        SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//        java.util.Date date = new java.util.Date(System.currentTimeMillis());
-//        String ngayLapHoaDon = gio.format(date);
-//        
-//        String sql = "update HoaDon "
-//                + "set donGiaPhong = "+tongTienPhong+","
-//                + "gioHat = '"+gioHat+"',"
-//                + "ngayLapHoaDon = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
-//                + ",thoiGianKetThuc = CAST(N'"+ngayLapHoaDon+"' AS datetime)"
-//                + ",tongHoaDon = "+tongTien
-//                + ",tongTienMatHang = "+tongTienMatHang+" where maHoaDon = '"+hoaDon.getMaHoaDon()+"' ";
-//        try {
-//            tr.begin();
-//                session.createNativeQuery(sql).executeUpdate();  
-//            tr.commit();
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            tr.rollback();
-//        }
-//        
-//        return false;
-//    }
-    
-//    @Override
-//    public String getlastMaHoaDonTang() {
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        String sql = "select top 1 maHoaDon from HoaDon order by maHoaDon desc";
-//        
-//        try {
-//            tr.begin();
-//                String maHoaDon = "";
-//                String maCuoiCung = "HD";
-//
-//                try {
-//                    maHoaDon = (String)session.createNativeQuery(sql).uniqueResult(); 
-//                    int so = Integer.parseInt(maHoaDon.split("HD")[1]) + 1;
-//                int soChuSo = String.valueOf(so).length();
-//
-//                for (int i = 0; i< 7-soChuSo; i++){
-//                    maCuoiCung += "0";
-//                }
-//                maCuoiCung += String.valueOf(so);
-//                } catch (Exception e) {
-//                    maCuoiCung = "HD0000001";
-//                }      
-//            tr.commit();
-//            return maCuoiCung;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//             tr.rollback();
-//        }
-//        return null;
-//    }
     @Override
     public String getMaxID() {
         Session session = sessionFactory.getCurrentSession();
@@ -599,28 +467,6 @@ public class HoaDon_DAO implements HoaDonService {
         return null;
     }
     
-//    @Override
-//    public boolean updateHoaDonDoiPhong(HoaDon hoaDon) {
-////        String sql = "update HoaDon set maPhong = :x"
-////                +",gioHat = '00:00', "
-////                + ",donGiaPhongCu = :y"
-////                + ",thoiGianBatDau = :z"
-////                + ",thoiGianKetThuc = :a"
-////                + " where maHoaDon = :b";
-//        Session session = sessionFactory.getCurrentSession();
-//        Transaction tr = session.getTransaction();
-//        
-//        try {
-//            tr.begin();
-//                session.update(hoaDon);
-//            tr.commit();
-//            return true;
-//        } catch (Exception e) {
-//            tr.rollback();
-//        }
-//        return false;
-//    }
-//    
     @Override
     public List<HoaDon> findHoaDonByThangNam(int thangOrNam,String loaiPhong,Boolean thang,int year,int page) {
         String sql ="";
@@ -685,13 +531,11 @@ public class HoaDon_DAO implements HoaDonService {
                 try {
                     dsHoaDon = session.createNativeQuery(sql,HoaDon.class).getResultList();
                 } catch (Exception e) {
-                    e.printStackTrace();
                     return null;
                 }
             tr.commit();
             return dsHoaDon;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         
@@ -718,7 +562,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return num;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         
@@ -744,7 +587,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return num;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         
@@ -780,7 +622,6 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return num;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return num;
@@ -804,27 +645,11 @@ public class HoaDon_DAO implements HoaDonService {
             tr.commit();
             return num;
         } catch (Exception e) {
-            e.printStackTrace();
             tr.rollback();
         }
         return num;
     }
 
-//    @Override
-//    public boolean insertHoaDon(HoaDon hoaDon) {
-//        Session session = sessionFactory.openSession();
-//        Transaction tr = session.getTransaction();
-//        try {
-//            tr.begin();
-//                session.save(hoaDon);
-//            tr.commit();
-//            session.clear();
-//            return true;
-//        } catch (Exception e) {
-//            tr.rollback();
-//        }
-//        return false;
-//    }
     @Override
     public HoaDon getHoaDonByIdPhong(String id) {
         Session session = sessionFactory.getCurrentSession();
