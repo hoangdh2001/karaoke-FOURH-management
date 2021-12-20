@@ -4,7 +4,7 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 ### Thủ công
 - Bạn có thể Clone project về:
 1. Chọn vào code copy link repository.
-2. Mở cmd nhập lệnh git clone link repository (Yêu cầu phải cài đặt sẵn git ([git](https://git-scm.com/)).
+2. Mở cmd nhập lệnh git clone link repository (Yêu cầu phải cài đặt sẵn [git](https://git-scm.com/)).
 3. Khởi chạy lệnh.
 4. Mở project bằng IDE Netbeans.
 - Bạn có thể download project về.
