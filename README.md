@@ -18,7 +18,7 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 - Window 10+
 - SQL Server 2019+
 ### Thư viện
-- Miglayout 5.0 [5.0](https://search.maven.org/artifact/com.miglayout/miglayout-swing)
+- Miglayout [5.0](https://search.maven.org/artifact/com.miglayout/miglayout-swing)
 - TimingFramwork 0.55
 - JCalendar [1.4](https://search.maven.org/artifact/com.toedter/jcalendar)
 - Hibernate [5.5.7.Final](https://mvnrepository.com/artifact/org.hibernate/hibernate-core)
