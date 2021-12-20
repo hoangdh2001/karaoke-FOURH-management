@@ -8,6 +8,7 @@ import entity.HoaDon;
 import entity.LoaiPhong;
 import gui.swing.event.EventPagination;
 import gui.swing.model.ModelChart;
+import gui.swing.model.ModelPolarAreaChart;
 import gui.swing.table.MyTableFlatlaf;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import service.HoaDonService;
@@ -52,45 +54,47 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
     }
     
     private void createChart() {
-        barChart.addLegend("Income", new Color(0, 108, 247), new Color(0, 108, 247));
-        barChart.addLegend("Expense", new Color(104, 49, 200), new Color(0, 108, 247));
-        barChart.addLegend("Profit", new Color(95, 209, 69), new Color(0, 108, 247));
-        barChart.addLegend("Cost", new Color(241, 100, 120), new Color(0, 108, 247));
+//        barChart.addLegend("Income", new Color(0, 108, 247), new Color(0, 108, 247));
+//        barChart.addLegend("Expense", new Color(104, 49, 200), new Color(0, 108, 247));
+//        barChart.addLegend("Profit", new Color(95, 209, 69), new Color(0, 108, 247));
+//        barChart.addLegend("Cost", new Color(241, 100, 120), new Color(0, 108, 247));
     }
     
     private void loadDataChart() {
-        barChart.addData(new ModelChart("January", new double[]{500, 200, 80, 89}));
-        barChart.addData(new ModelChart("February", new double[]{600, 750, 90, 150}));
-        barChart.addData(new ModelChart("March", new double[]{200, 350, 460, 900}));
-        barChart.addData(new ModelChart("April", new double[]{480, 150, 750, 700}));
-        barChart.addData(new ModelChart("May", new double[]{350, 540, 300, 150}));
-        barChart.addData(new ModelChart("June", new double[]{190, 280, 81, 200}));
-        barChart.start();
+//        chart.addData(new ModelChart("January", new double[]{500, 200, 80, 89}));
+//        barChart.addData(new ModelChart("February", new double[]{600, 750, 90, 150}));
+//        barChart.addData(new ModelChart("March", new double[]{200, 350, 460, 900}));
+//        barChart.addData(new ModelChart("April", new double[]{480, 150, 750, 700}));
+//        barChart.addData(new ModelChart("May", new double[]{350, 540, 300, 150}));
+//        barChart.addData(new ModelChart("June", new double[]{190, 280, 81, 200}));
+//        barChart.start();
+//        chart.addItem(new ModelPolarAreaChart(Color.yellow, TOOL_TIP_TEXT_KEY, ALLBITS));
+        
     }
     
-    private void hiddenLoading() {
-        TimingTarget target = new TimingTargetAdapter() {
-            @Override
-            public void begin() {
-                barChart.setVisible(true);
-            }
-
-            @Override
-            public void timingEvent(float fraction) {
-                pnlLoading.setAlpha(1f - fraction);
-                repaint();
-            }
-
-            @Override
-            public void end() {
-                pnlLoading.setVisible(false);
-            }
-        };
-        Animator animator2 = new Animator(200, target);
-        animator2.setResolution(0);
-        animator2.setAcceleration(0.5f);
-        animator2.start();
-    }
+//    private void hiddenLoading() {
+//        TimingTarget target = new TimingTargetAdapter() {
+//            @Override
+//            public void begin() {
+//                barChart.setVisible(true);
+//            }
+//
+//            @Override
+//            public void timingEvent(float fraction) {
+//                pnlLoading.setAlpha(1f - fraction);
+//                repaint();
+//            }
+//
+//            @Override
+//            public void end() {
+//                pnlLoading.setVisible(false);
+//            }
+//        };
+//        Animator animator2 = new Animator(200, target);
+//        animator2.setResolution(0);
+//        animator2.setAcceleration(0.5f);
+//        animator2.start();
+//    }
     
     private void init() {
         loaiDichVuDao = new LoaiDichVu_DAO();
@@ -200,6 +204,7 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
     
     private void loadDataTypePercent(List<String> list){
         removeData(tblPhanTram);
+        chart.clear();
         double tong = 0;
         for(String i: list){
             String sl = i.split(";")[1];
@@ -209,9 +214,14 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
         for(String i: list){
             String [] row = i.split(";");
             tblPhanTram.addRow(new Object[]{row[0],row[1],dfPercent.format(Double.parseDouble(row[1])/tong),df.format(Double.parseDouble(row[2]))});
+            Random random = new Random();
+            float r = random.nextFloat();
+            float g = random.nextFloat();
+            float b = random.nextFloat();
+            chart.addItem(new ModelPolarAreaChart(new Color(r, g, b), row[0], (Double.parseDouble(row[1])/tong) * 100));
             tongCong+= Double.parseDouble(row[2]);
         }
-        
+        chart.start();
         txtTongTieuThu.setText(df.format(tongCong));
     }
     
@@ -345,10 +355,8 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPhanTram = new gui.swing.table.MyTableFlatlaf();
         jPanel3 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jPanel4 = new javax.swing.JPanel();
-        barChart = new gui.swing.chart.Chart();
-        pnlLoading = new gui.component.PanelLoading();
+        chart = new gui.swing.chart.PolarAreaChart();
+        jLabel4 = new javax.swing.JLabel();
 
         myTableFlatlaf1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -606,32 +614,26 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
 
         jPanel3.setOpaque(false);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5" }));
+        chart.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jPanel4.setOpaque(false);
-        jPanel4.setLayout(new java.awt.CardLayout());
-        jPanel4.add(barChart, "card2");
-
-        pnlLoading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Ellipsis-1s-58px.gif"))); // NOI18N
-        jPanel4.add(pnlLoading, "card3");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Biểu đồ thể hiển tỉ lệ tiêu thụ của các loại dịch vụ");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1088, Short.MAX_VALUE)
+            .addComponent(chart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(179, 179, 179)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jTabbedPane1.addTab("Biểu đồ", jPanel3);
@@ -643,10 +645,7 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         if (jTabbedPane1.getSelectedIndex() == 1) {
-            barChart.clear();
-//            pnlLoading.setVisible(true);
-//            barChart.setVisible(false);
-            loadDataChart();
+            chart.start();
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
@@ -660,23 +659,22 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.swing.chart.Chart barChart;
+    private gui.swing.chart.PolarAreaChart chart;
     private javax.swing.JComboBox<Object> cmbTKChiTiet;
     private javax.swing.JComboBox<String> cmbTKTheo;
     private com.toedter.calendar.JDateChooser dscBatDau;
     private com.toedter.calendar.JDateChooser dscKetThuc;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -684,7 +682,6 @@ public class GD_ThongKeHangHoa extends javax.swing.JPanel {
     private javax.swing.JLabel lblThangNam;
     private gui.swing.table.MyTableFlatlaf myTableFlatlaf1;
     private gui.swing.panel.PanelShadow pnlCenter;
-    private gui.component.PanelLoading pnlLoading;
     private gui.swing.table.PanelPage pnlPageBanCHay;
     private gui.swing.panel.PanelShadow pnlTop;
     private gui.swing.table.MyTableFlatlaf tblPhanTram;

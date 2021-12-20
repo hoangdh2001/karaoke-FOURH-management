@@ -11,7 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Application {
-// Hello
+
     public static GD_DangNhap login;
 
     public static GD_DangNhap getLogin() {
@@ -21,7 +21,7 @@ public class Application {
     public static void setLogin(GD_DangNhap login) {
         Application.login = login;
     }
-    
+
     public static boolean openWebpage(URI uri) {
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -43,7 +43,7 @@ public class Application {
         }
         return false;
     }
-    
+
     public static boolean openWebpage(File file) {
         return openWebpage(file.toURI());
     }

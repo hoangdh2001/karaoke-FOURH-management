@@ -515,8 +515,8 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         btnXuat = new javax.swing.JButton();
         pnlPage = new gui.swing.table.PanelPage();
         jPanel3 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        chart = new gui.swing.chart.Chart();
+        jLabel9 = new javax.swing.JLabel();
+        chart = new gui.swing.chart.LineChart();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout(0, 5));
@@ -762,11 +762,10 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(100, 100, 100));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Tổng doanh thu");
-        jPanel3.add(jLabel5, java.awt.BorderLayout.SOUTH);
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Biểu đồ thể hiện tổng doanh thu");
+        jPanel3.add(jLabel9, java.awt.BorderLayout.PAGE_START);
         jPanel3.add(chart, java.awt.BorderLayout.CENTER);
 
         jTabbedPane1.addTab("Biểu đồ", jPanel3);
@@ -790,7 +789,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnXuat;
-    private gui.swing.chart.Chart chart;
+    private gui.swing.chart.LineChart chart;
     private javax.swing.JComboBox<Object> cmbKhac;
     private javax.swing.JComboBox<Object> cmbTKChiTiet;
     private javax.swing.JComboBox<String> cmbTKTheo;
@@ -800,10 +799,10 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
