@@ -20,6 +20,7 @@ import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
 import entity.TrangThaiPhong;
+import gui.Application;
 import gui.swing.event.EventAdd;
 import gui.swing.event.EventMinus;
 import gui.swing.model.AutoID;
@@ -56,7 +57,7 @@ import service.MatHangService;
 import service.PhieuDatPhongService;
 
 public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
-    
+
     private final DecimalFormat df = new DecimalFormat("#,##0");
     private final SimpleDateFormat formatterGio = new SimpleDateFormat("HH:mm");
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -438,6 +439,52 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
                     new ModelAdd(matHang, event)});
             });
         }
+    }
+
+    private void showMsg(String msg) {
+        JOptionPane.showMessageDialog(Application.login, msg);
+    }
+
+    private boolean validateData() {
+        String hoTen = txtTenKhachHang.getText().trim();
+        String CCCD = txtCCCD.getText().trim();
+        String sdt = txtSdt.getText().trim();
+        
+        if(sdt.trim().equals("") && hoTen.trim().equals("") && CCCD.trim().equals(""))
+            return true;
+        
+        if (sdt.trim().equals("")) {
+            showMsg("Số điện thoại khách hàng trống !");
+            txtSdt.requestFocus();
+            return false;
+        } else {
+            if (!(sdt.matches("^[0-9]{10}$"))) {
+                showMsg("Số điện thoại khách hàng không hợp lệ");
+                txtSdt.requestFocus();
+                txtSdt.selectAll();
+                return false;
+            }
+        }
+
+        if (hoTen.trim().equals("")) {
+            showMsg("Họ tên khách hàng trống !");
+            txtTenKhachHang.requestFocus();
+            return false;
+        }
+
+        if (CCCD.trim().equals("")) {
+            showMsg("Căn cước công dân không được trống !");
+            txtCCCD.requestFocus();
+            return false;
+        } else {
+            if (!(CCCD.matches("^(0)[0-9]{11}$"))) {
+                showMsg("Căn cước công dân không hợp lệ");
+                txtCCCD.requestFocus();
+                txtCCCD.selectAll();
+                return false;
+            }
+        }
+        return true;
     }
 
     @SuppressWarnings("unchecked")
@@ -1214,17 +1261,22 @@ public class DL_TiepNhanThuePhong extends javax.swing.JDialog {
 
     private void btnGiaoPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiaoPhongActionPerformed
         try {
-            hoaDon.getPhong().setTrangThai(TrangThaiPhong.DANG_HAT);
-            khachHangService.themKhachHang(hoaDon.getKhachHang());
-            hoaDonService.addHoaDon(hoaDon);
-            hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
-                chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
-            });
-            if (phieuDatPhong != null) {
-                phieuDatPhongService.capNhatPhieuDatPhong(phieuDatPhong);
+            if (validateData()) {
+                hoaDon.getPhong().setTrangThai(TrangThaiPhong.DANG_HAT);
+                khachHangService.themKhachHang(hoaDon.getKhachHang());
+                if (hoaDonService.addHoaDon(hoaDon)) {
+                    hoaDon.getDsChiTietHoaDon().forEach(chiTietHoaDon -> {
+                        chiTietHoaDonService.addChiTietHoaDon(chiTietHoaDon);
+                    });
+                    if (phieuDatPhong != null) {
+                        phieuDatPhongService.capNhatPhieuDatPhong(phieuDatPhong);
+                    }
+                    start = false;
+                    dispose();
+                } else {
+                    showMsg("Chọn thời gian kết thúc");
+                }
             }
-            start = false;
-            dispose();
         } catch (Exception ex) {
             Logger.getLogger(DL_TiepNhanThuePhong.class.getName()).log(Level.SEVERE, null, ex);
         }

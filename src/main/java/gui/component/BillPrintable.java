@@ -83,7 +83,7 @@ public class BillPrintable implements Printable {
             g2.drawString(String.format("%s %25s", "TIEN PHONG CU:", df.format(hoaDon.getDonGiaPhongCu())), 12, y);
             y += yShift;
         }
-        if(hoaDon.getTienCoc() != 0) {
+        if (hoaDon.getTienCoc() != 0) {
             g2.drawString(String.format("%s %21s", "DA COC:", df.format(hoaDon.getDonGiaPhongCu())), 12, y);
             y += yShift;
         }
@@ -93,8 +93,10 @@ public class BillPrintable implements Printable {
         y += yShift;
         g2.drawString(String.format("%s %24s", "TIEN KHACH DUA:", df.format(hoaDon.getTienKhachDua())), 12, y);
         y += yShift;
-        g2.drawString(String.format("%s %28s", "KHACH HANG:", hoaDon.getKhachHang().getTenKhachHang()), 12, y);
-        y += yShift + 30;
+        if (hoaDon.getKhachHang() != null) {
+            g2.drawString(String.format("%s %28s", "KHACH HANG:", hoaDon.getKhachHang().getTenKhachHang()), 12, y);
+            y += yShift + 30;
+        }
         g2.drawString("------------------------------------------", 12, y);
         y += yShift;
         g2.drawString("       Cám ơn quý khách hẹn gặp lại       ", 12, y);

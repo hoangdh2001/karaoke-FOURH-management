@@ -31,10 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import gui.swing.model.ModelObjectComboBox;
 import java.awt.Frame;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.DialogOwner;
-import javax.print.attribute.standard.DialogTypeSelection;
+import java.awt.print.PrinterException;
 import service.ChiTietHoaDonService;
 import service.HoaDonService;
 import service.LoaiDichVuService;
@@ -875,12 +872,14 @@ public class DL_ThanhToan extends javax.swing.JDialog {
                         if (returningResult) {
                             try {
                                 pj.print();
-                            } catch (Exception e) {
+                                dispose();
+                            } catch (PrinterException e) {
                                 JOptionPane.showMessageDialog(this, "Print Error: " + e.getMessage(), "Thông báo", JOptionPane.ERROR_MESSAGE);
                             }
                         }
+                    } else {
+                        dispose();
                     }
-                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Thanh toán thất bại!");
                 }

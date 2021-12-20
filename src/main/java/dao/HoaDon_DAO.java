@@ -1,10 +1,6 @@
 package dao;
 
-import entity.ChiTietHoaDon;
 import entity.HoaDon;
-import entity.Phong;
-import java.text.SimpleDateFormat;
-import entity.TrangThaiHoaDon;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

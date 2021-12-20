@@ -17,9 +17,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -30,7 +27,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
@@ -48,7 +44,6 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     private LoaiPhongService loaiPhongService;
     private final DecimalFormat df = new DecimalFormat("#,###");
     private final SimpleDateFormat gio = new SimpleDateFormat("yyyy-MM-dd");
-    private List<HoaDon> dsHoaDon;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private List<LoaiPhong> dsLoaiPhong;
 
@@ -123,7 +118,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 
         for (HoaDon hoaDon : dsHoaDon) {
             tblThongKe.addRow(new Object[]{hoaDon.getMaHoaDon(), 
-                gio.format(hoaDon.getNgayLapHoaDon()), 
+                sdf.format(hoaDon.getNgayLapHoaDon()), 
                 hoaDon.getKhachHang() == null ? "Trống":hoaDon.getKhachHang().getTenKhachHang(),
                 hoaDon.getNhanVien().getTenNhanVien(),
                 df.format(hoaDon.getTongHoaDon())});
@@ -400,11 +395,6 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         }
     }
     
-    private void loadPage(List<HoaDon> dsHoaDon) {
-        int soLuong = dsHoaDon.size();
-        pnlPage.init(soLuong% 20 == 0 ? soLuong / 20 : (soLuong / 20) + 1);
-    }
-    
     private void loadPageInt(int soLuong) {
         pnlPage.init(soLuong% 20 == 0 ? soLuong / 20 : (soLuong / 20) + 1);
     }
@@ -553,11 +543,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8_advance_20px_3.png"))); // NOI18N
 
         dscBatDau.setDate(new Date());
-        dscBatDau.setDateFormatString("dd-MM-yyyy");
+        dscBatDau.setDateFormatString("dd-MM-yyyy hh:mm");
         dscBatDau.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         dscBatDau.setOpaque(false);
 
-        dscKetThuc.setDateFormatString("dd-MM-yyyy");
+        dscKetThuc.setDateFormatString("dd-MM-yyyy hh:mm");
         dscKetThuc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         dscKetThuc.setOpaque(false);
 
@@ -660,7 +650,7 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã hóa đơn", "Ngày lập hóa đơn", "Khách hàng", "Nhân viên", "Tổng hóa đơn'"
+                "Mã hóa đơn", "Ngày lập hóa đơn", "Khách hàng", "Nhân viên", "Tổng hóa đơn"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -679,7 +669,9 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
         tblThongKe.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tblThongKe);
         if (tblThongKe.getColumnModel().getColumnCount() > 0) {
+            tblThongKe.getColumnModel().getColumn(0).setResizable(false);
             tblThongKe.getColumnModel().getColumn(1).setResizable(false);
+            tblThongKe.getColumnModel().getColumn(2).setResizable(false);
             tblThongKe.getColumnModel().getColumn(3).setResizable(false);
             tblThongKe.getColumnModel().getColumn(4).setResizable(false);
         }
@@ -776,14 +768,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
-//        if (jTabbedPane1.getSelectedIndex() == 1) {
-//            loadDataChart();
-//
-//        }
+
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void cmbTKChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTKChiTietActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_cmbTKChiTietActionPerformed
 
 
