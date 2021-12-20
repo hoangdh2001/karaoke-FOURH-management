@@ -35,3 +35,5 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 
 ![image](https://user-images.githubusercontent.com/76101060/146707474-56131ca5-d215-43c1-b239-e50a06538a24.png)
 
+## Hướng dẫn sử dụng chi tiết phần mềm Karaoke FourH [link](https://nguyenhung-hub.github.io/user-manual-karaokeFourH/)
+
