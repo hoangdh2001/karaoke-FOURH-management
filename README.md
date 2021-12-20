@@ -15,6 +15,8 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 ### Cấu hình
 - Java 11+ ([JDK 11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)).
 - IDE Netbeans [12.0](https://netbeans.apache.org/download/nb120/nb120.html).
+- Window 10+
+- SQL Server 2019+
 ### Thư viện
 - Miglayout 5.0 [5.0](https://search.maven.org/artifact/com.miglayout/miglayout-swing)
 - TimingFramwork 0.55
