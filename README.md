@@ -27,8 +27,7 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 - Flatlaf look and feel [1.6.4](https://search.maven.org/artifact/com.formdev/flatlaf/1.6.4/jar)
 ## Một số hình ảnh về giao diện
 - Đăng nhập
-
-![image](https://user-images.githubusercontent.com/76101060/146707579-9957f5f1-6718-43af-b01d-6c067c102f4f.png)
+![image](https://user-images.githubusercontent.com/76101060/146707658-a399832f-4f09-4866-ad26-5c09e43fad6d.png)
 - Màn hình chính
 ![image](https://user-images.githubusercontent.com/76101060/146707474-56131ca5-d215-43c1-b239-e50a06538a24.png)
 
