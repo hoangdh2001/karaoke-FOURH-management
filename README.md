@@ -25,3 +25,9 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 - Apache poi-ooxml [5.0.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.0.0)
 - LGoodDatePicker [11.2.1](https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker/11.2.1)
 - Flatlaf look and feel [1.6.4](https://search.maven.org/artifact/com.formdev/flatlaf/1.6.4/jar)
+## Một số hình ảnh về giao diện
+- Đăng nhập
+![image](https://user-images.githubusercontent.com/76101060/146707495-44f2f7cd-3389-4223-8069-9c5a32381fa6.png)
+- Màn hình chính
+![image](https://user-images.githubusercontent.com/76101060/146707474-56131ca5-d215-43c1-b239-e50a06538a24.png)
+
