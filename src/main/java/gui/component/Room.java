@@ -186,6 +186,9 @@ public class Room extends PanelShadow {
         for (ActionListener actionListener : mniDoiPhong.getActionListeners()) {
             mniDoiPhong.removeActionListener(actionListener);
         }
+        for (ActionListener actionListener : mniDatPhong.getActionListeners()) {
+            mniDatPhong.removeActionListener(actionListener);
+        }
     }
 
     private JPanel buildPhongDangHaT() {
@@ -545,8 +548,6 @@ public class Room extends PanelShadow {
         lblTrangThai.setFont(new Font(fontName, fontStyle, 14));
         lblTrangThai.setText(phong.getTrangThai().getTrangThai());
         pnlPhongDangDon.add(lblTrangThai);
-        
-        
         
         Button btnDonXong = new Button("Dọn xong", true);
         btnDonXong.setForeground(Color.WHITE);

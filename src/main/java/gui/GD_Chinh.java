@@ -165,7 +165,7 @@ public class GD_Chinh extends JFrame {
                     new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
                 } else if(subMenuIndex == 1) {
                     new DL_DoiMatKhau(GD_Chinh.this).setVisible(true);
-                } else if (subMenuIndex == 2) {
+                } else if (subMenuIndex == 3) {
                     if(JOptionPane.showConfirmDialog(rootPane, "Bạn có đồng ý đăng xuất!", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         FRAME.setVisible(true);
                         dispose();

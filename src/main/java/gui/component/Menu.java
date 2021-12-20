@@ -77,14 +77,14 @@ public class Menu extends JPanel {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/combo_chart_20px.png")), "Báo cáo thống kê", "Thống kê doanh thu", "Thống kê hàng hóa"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/goods_20px.png")), "Quản lý hàng hóa", "Xem mặt hàng", "Nhập hàng hóa"));
     }
-    
+
     public void initMenuItemNhanVienLT() {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/singing_20px.png")), "Quản lý phòng hát", "Sơ đồ phòng hát"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/deposit_20px.png")), "Quản lý đặt phòng"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/customer_20px.png")), "Quản lý khách hàng"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/bill_20px.png")), "Quản lý hóa đơn"));
     }
-    
+
     public void initMenuItemNhanVienKT() {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/combo_chart_20px.png")), "Báo cáo thống kê", "Thống kê doanh thu", "Thống kê hàng hóa"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/goods_20px.png")), "Quản lý hàng hóa", "Xem mặt hàng", "Nhập hàng hóa"));
@@ -163,7 +163,8 @@ public class Menu extends JPanel {
 //        GradientPaint gra = new GradientPaint(0, 0, new Color(242, 153, 74), getWidth(), 0, new Color(242, 201, 76));
 //        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#56CCF2"), 0, getHeight(), Color.decode("#2F80ED"));
 //        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#2C3B41"), 0, getHeight(), Color.decode("#222D32"));
-        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#323232"), 0, getHeight(), Color.decode("#323232"));
+//        GradientPaint gra = new GradientPaint(0, 0, Color.decode("#323232"), 0, getHeight(), Color.decode("#323232"));
+        GradientPaint gra = new GradientPaint(0, 0, new Color(41, 45, 62), 0, getHeight(), new Color(41, 45, 62));
         g2.setPaint(gra);
         g2.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(grphcs);

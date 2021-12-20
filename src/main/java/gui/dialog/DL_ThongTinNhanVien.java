@@ -25,7 +25,7 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
         } else {
             imgAvatar.setIcon(new ImageIcon(getClass().getResource("/icon/avatar_male.png")));
         }
-        lblID.setText("ID: " + nhanVien.getMaNhanVien());
+        lblID.setText("Mã: " + nhanVien.getMaNhanVien());
         lblTen.setText(nhanVien.getTenNhanVien());
         lblLoaiNhanVien.setText(nhanVien.getLoaiNhanVien().getTenLoaiNV());
         lblNgaySinh.setText("Ngày sinh: " + sdf.format(nhanVien.getNgaySinh()));
@@ -44,7 +44,6 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
         imgAvatar = new gui.swing.image.ImageAvatar();
         lblTen = new javax.swing.JLabel();
         lblLoaiNhanVien = new javax.swing.JLabel();
-        btnChinhSua = new javax.swing.JButton();
         lblID = new javax.swing.JLabel();
         lblCCCD = new javax.swing.JLabel();
         lblNgaySinh = new javax.swing.JLabel();
@@ -73,14 +72,9 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
         lblLoaiNhanVien.setForeground(new java.awt.Color(101, 103, 107));
         lblLoaiNhanVien.setText("Quản lý");
 
-        btnChinhSua.setBackground(new java.awt.Color(216, 218, 223));
-        btnChinhSua.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnChinhSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/fix.png"))); // NOI18N
-        btnChinhSua.setText("Chỉnh sửa thông tin các nhân");
-
         lblID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblID.setForeground(new java.awt.Color(102, 102, 102));
-        lblID.setText("ID: NV000001");
+        lblID.setText("Mã: NV000001");
 
         lblCCCD.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblCCCD.setText("CCCD: 077201006061");
@@ -126,10 +120,8 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
                                     .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnXacNhan)
-                                    .addComponent(btnChinhSua))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
+                                .addComponent(btnXacNhan)
                                 .addGap(16, 16, 16))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,10 +148,8 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTen)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblLoaiNhanVien)
-                        .addGap(4, 4, 4)
-                        .addComponent(btnChinhSua, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(lblLoaiNhanVien)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(lblNgaySinh)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblCCCD)
@@ -194,7 +184,6 @@ public class DL_ThongTinNhanVien extends javax.swing.JDialog {
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnChinhSua;
     private javax.swing.JButton btnXacNhan;
     private gui.swing.image.ImageAvatar imgAvatar;
     private javax.swing.JPanel jPanel1;

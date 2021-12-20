@@ -160,7 +160,7 @@ public class MenuItem extends JPanel {
         int height = getPreferredSize().height;
         Graphics2D g2 = (Graphics2D) grphcs;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(new Color(50, 50, 50));
+        g2.setColor(new Color(49, 54, 74));
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         g2.fillRect(0, 2, width, this.height);
         g2.setComposite(AlphaComposite.SrcOver);

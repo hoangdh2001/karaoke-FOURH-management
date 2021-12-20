@@ -43,6 +43,14 @@ public class Phong {
         this.tang = tang;
         this.anhPhong = anhPhong;
     }
+    
+    /**
+     * @param maPhong
+     */
+    public Phong(String maPhong) {
+        this.maPhong = maPhong;
+        this.trangThai = TrangThaiPhong.TRONG;
+    }
 
     /**
      *

@@ -141,18 +141,13 @@ public class GD_DanhSachPhong extends JPanel {
             @Override
             public void update(ModelAction action) {
                 Phong phong = (Phong) action.getObj();
-                if (JOptionPane.showConfirmDialog(GD_DanhSachPhong.this, "Bạn có muốn cập nhật không?", "Cập nhật", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    try {
-                        phong.setTenPhong(table.getValueAt(table.getSelectedRow(), 2).toString());
-                        String s = phong_DAO.updatePhong(phong) == true ? "Cập nhật thành công" : "Cập nhật thất bại";
-                        JOptionPane.showMessageDialog(GD_DanhSachPhong.this, s);
-                        DefaultTableModel df = (DefaultTableModel) table.getModel();
-                        df.getDataVector().removeAllElements();
-                        table.clearSelection();
-                        loadData(pnlPage.getCurrentIndex());
-                    } catch (Exception ex) {
-                        Logger.getLogger(GD_DanhSachPhong.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                if (phong.getTrangThai() != TrangThaiPhong.DANG_HAT || phong.getTrangThai() != TrangThaiPhong.DAT_TRUOC) {
+                    DL_TaoPhong dltp = new DL_TaoPhong(GD_Chinh.FRAME, true);
+                    dltp.setPhong(phong);
+                    dltp.setVisible(true);
+                    loadData(pnlPage.getCurrentIndex());
+                } else {
+                    JOptionPane.showMessageDialog(Application.login, "Phòng " + phong.getTrangThai().getTrangThai() + " không thể sửa!");
                 }
             }
         };

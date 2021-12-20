@@ -57,8 +57,9 @@ public class Header extends PanelShadow {
         popupMenu.setBackground(Color.WHITE);
         addItem("Hồ sơ", 0);
         addItem("Đổi mật khẩu", 1);
+        addItem("Hướng dẫn", 2);
         popupMenu.addSeperator();
-        addItem("Đăng xuất", 2);
+        addItem("Đăng xuất", 3);
     }
     
     private void addItem(String text, int index) {

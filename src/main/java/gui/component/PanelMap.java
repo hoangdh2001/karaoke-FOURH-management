@@ -92,6 +92,7 @@ public class PanelMap extends PanelShadow {
         pane.add(createRoomMap());
         sp.setViewportView(pane);
         sp.getVerticalScrollBar().setUnitIncrement(16);
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         sp.setBorder(null);
         return sp;
     }

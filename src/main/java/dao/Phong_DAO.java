@@ -20,7 +20,7 @@ public class Phong_DAO implements PhongService {
         this.sessionFactory = util.getSessionFactory();
     }
     /**
-     * Thêm một phòng
+     * Thêm hoặc cập nhật một phòng 
      * @param phong
      * @return true: thêm thành công, false: thêm thất bại
      */
@@ -31,7 +31,7 @@ public class Phong_DAO implements PhongService {
 
         try {
             tr.begin();
-            session.save(phong);
+            session.saveOrUpdate(phong);
             tr.commit();
             return true;
         } catch (Exception e) {

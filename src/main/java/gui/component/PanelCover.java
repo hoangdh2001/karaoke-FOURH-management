@@ -41,20 +41,20 @@ public class PanelCover extends BackgroundImage {
         
         dfs.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(dfs);
-        layout = new MigLayout("wrap", "push[center]push", "push[]10[]10[]push");
+        layout = new MigLayout("wrap", "push[center]push", "push[]10[]10[]100");
         setLayout(layout);
         title = new JLabel("KARAOKE FOURH");
         title.setFont(new Font("sansserif", Font.BOLD, 24));
         title.setForeground(Color.WHITE);
         add(title);
 
-        slogan = new JLabel("Phần mềm thân thiện");
-        slogan.setFont(new Font("sansserif", Font.ITALIC, 15));
+        slogan = new JLabel("Enjoy as you never did before");
+        slogan.setFont(new Font("sansserif", Font.ITALIC|Font.BOLD, 15));
         slogan.setForeground(Color.WHITE);
         add(slogan);
 
-        slogan1 = new JLabel("Siêu cấp vip pro");
-        slogan1.setFont(new Font("sansserif", Font.ITALIC, 15));
+        slogan1 = new JLabel("Music brings joys to life");
+        slogan1.setFont(new Font("sansserif", Font.ITALIC|Font.BOLD, 15));
         slogan1.setForeground(Color.WHITE);
         add(slogan1);
         

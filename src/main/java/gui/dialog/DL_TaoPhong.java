@@ -32,11 +32,38 @@ public class DL_TaoPhong extends javax.swing.JDialog {
     private LoaiPhongService loaiPhongService;
     private BufferedImage bImage;
     private File file;
+    private List<LoaiPhong> dsLoaiPhong;
+    private Phong phong;
+    private String message = "Tạo phòng thành công";
+
+    public Phong getPhong() {
+        return phong;
+    }
+
+    public void setPhong(Phong phong) {
+        this.phong = phong;
+        setDataForm();
+    }
+
+    public void setDataForm() {
+        txtTenPhong.setText(phong.getTenPhong());
+        spnTang.setValue(phong.getTang());
+        for (int i = 0; i < dsLoaiPhong.size(); i++) {
+            if (phong.getLoaiPhong().getMaLoaiPhong().equals(dsLoaiPhong.get(i).getMaLoaiPhong())) {
+                cmbLoaiPhong.setSelectedIndex(i);
+            }
+        }
+        pictureBox1.setImage(new ImageIcon(phong.getAnhPhong()));
+        jButton2.setText("Cập nhật");
+        message = "Cập nhật thành công";
+    }
 
     public DL_TaoPhong(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.phongService = new Phong_DAO();
         this.loaiPhongService = new LoaiPhong_DAO();
+        String maPhong = AutoID.generateId(phongService.getMaxId(), "PH");
+        phong = new Phong(maPhong);
         initComponents();
         panelLoading1.setIcon(new ImageIcon(getClass().getResource("/icon/Ellipsis-1s-58px.gif")));
         panelLoading1.setVisible(false);
@@ -44,9 +71,11 @@ public class DL_TaoPhong extends javax.swing.JDialog {
     }
 
     private void loadDataForm() {
-        List<LoaiPhong> dsLoaiPhong = loaiPhongService.getDsLoaiPhong();
+        dsLoaiPhong = loaiPhongService.getDsLoaiPhong();
         if (dsLoaiPhong != null) {
-            ((DefaultComboBoxModel) cmbLoaiPhong.getModel()).addAll(dsLoaiPhong);
+            dsLoaiPhong.forEach(loaiPhong -> {
+                ((DefaultComboBoxModel) cmbLoaiPhong.getModel()).addElement(loaiPhong.getTenLoaiPhong());
+            });
         }
         ((SpinnerNumberModel) spnTang.getModel()).setMaximum(phongService.getTang());
     }
@@ -226,24 +255,37 @@ public class DL_TaoPhong extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String maPhong = AutoID.generateId(phongService.getMaxId(), "PH");
-        String tenPhong = txtTenPhong.getText().trim();
-        int tang = Integer.parseInt(spnTang.getValue() + "");
-        LoaiPhong loaiPhong = (LoaiPhong) cmbLoaiPhong.getSelectedItem();
-        byte[] anhPhong = null;
         try {
-            anhPhong = Files.readAllBytes(file.toPath());
-        } catch (IOException ex) {
-            
+
+            String tenPhong = txtTenPhong.getText().trim();
+            int tang = Integer.parseInt(spnTang.getValue() + "");
+            LoaiPhong loaiPhong = dsLoaiPhong.get(cmbLoaiPhong.getSelectedIndex());
+            byte[] anhPhong = null;
+            try {
+                if(file != null) {
+                    anhPhong = Files.readAllBytes(file.toPath());
+                }
+            } catch (IOException ex) {
+
+            }
+            phong.setTenPhong(tenPhong);
+            phong.setLoaiPhong(loaiPhong);
+            phong.setTang(tang);
+            if(anhPhong != null) {
+                phong.setAnhPhong(anhPhong);
+            }
+            if (phongService.addPhong(phong)) {
+                JOptionPane.showMessageDialog(null, message);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Tạo phòng thất bại!");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(DL_TaoPhong.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        Phong phong = new Phong(maPhong, tenPhong, TrangThaiPhong.TRONG, loaiPhong, tang, anhPhong);
-        if (phongService.addPhong(phong)) {
-            JOptionPane.showMessageDialog(null, "Tạo phòng thành công!");
-            dispose();
-        } else {
-            JOptionPane.showMessageDialog(null, "Tạo phòng thất bại!");
-        }
-            
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

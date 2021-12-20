@@ -183,18 +183,18 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
         });
         popupMenu.add(mniLamMoi);
 
-        JMenuItem mniHuongDan = new JMenuItem("Hướng dẫn");
-        mniHuongDan.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                try {
-                    Application.openWebpage(new File(getClass().getResource("index.html").toURI()));
-                } catch (URISyntaxException ex) {
-                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        popupMenu.add(mniHuongDan);
+//        JMenuItem mniHuongDan = new JMenuItem("Hướng dẫn");
+//        mniHuongDan.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent arg0) {
+//                try {
+//                    Application.openWebpage(new File(getClass().getResource("index.html").toURI()));
+//                } catch (URISyntaxException ex) {
+//                    Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//        popupMenu.add(mniHuongDan);
 
         open.addActionListener(new ActionListener() {
             @Override
