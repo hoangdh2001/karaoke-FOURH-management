@@ -23,3 +23,5 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 - mssql-jdbc [9.4.jre11](https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/9.4.0.jre11)
 - Apache poi [5.0.0](https://mvnrepository.com/artifact/org.apache.poi/poi/5.0.0)
 - Apache poi-ooxml [5.0.0](https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/5.0.0)
+- LGoodDatePicker [11.2.1](https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker/11.2.1)
+- Flatlaf look and feel [1.6.4](https://search.maven.org/artifact/com.formdev/flatlaf/1.6.4/jar)
