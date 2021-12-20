@@ -11,7 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Application {
-
+// Hello
     public static GD_DangNhap login;
 
     public static GD_DangNhap getLogin() {
