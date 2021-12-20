@@ -26,8 +26,9 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 - LGoodDatePicker [11.2.1](https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker/11.2.1)
 - Flatlaf look and feel [1.6.4](https://search.maven.org/artifact/com.formdev/flatlaf/1.6.4/jar)
 ## Một số hình ảnh về giao diện
-- Màn hình đăng nhập/n
+- Màn hình đăng nhập.
+
 ![image](https://user-images.githubusercontent.com/76101060/146707658-a399832f-4f09-4866-ad26-5c09e43fad6d.png)
-- Màn hình chính
+- Màn hình chính.
 ![image](https://user-images.githubusercontent.com/76101060/146707474-56131ca5-d215-43c1-b239-e50a06538a24.png)
 
