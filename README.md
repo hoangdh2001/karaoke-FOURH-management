@@ -33,7 +33,7 @@ Karaoke FourH hiện tại đang có ý định áp dụng một phần mềm đ
 ![image](https://user-images.githubusercontent.com/76101060/146707658-a399832f-4f09-4866-ad26-5c09e43fad6d.png)
 - Màn hình chính.
 
-![image](https://user-images.githubusercontent.com/76101060/146756662-ed73c10f-ee2e-4699-8224-b50999280493.png)
+![image](https://user-images.githubusercontent.com/76101060/146756723-9eabe17e-fc59-4302-be10-7866d0f6ef0a.png)
 
 ## Hướng dẫn sử dụng chi tiết phần mềm Karaoke FourH [link](https://nguyenhung-hub.github.io/user-manual-karaokeFourH/)
 
