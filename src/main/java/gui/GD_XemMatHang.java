@@ -119,7 +119,7 @@ public class GD_XemMatHang extends javax.swing.JPanel {
                     listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), cmbSelected);
                     addDataToTable();
                 } else {
-                    listMatHang = matHangDao.getDsMatHang();
+                    listMatHang = matHangDao.findMatHang(txtNhap.getText().trim(), 3);
                     addDataToTable();
                 }
             }

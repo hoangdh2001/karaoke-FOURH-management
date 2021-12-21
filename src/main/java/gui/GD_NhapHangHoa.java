@@ -491,6 +491,32 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
 
         return true;
     }
+    
+    public String getLastNew(String ma){
+        String maMH = "MH";
+        int sl = 0;
+        for (var entry : isNewSP.entrySet()) {
+            if(entry.getValue()){
+                sl++;
+            }
+        }
+        if(sl>0){
+            try {
+                int so = Integer.parseInt(ma.split("MH")[1]) + sl;
+                int soChuSo = String.valueOf(so).length();
+                
+                for (int i = 0; i< 4 - soChuSo; i++){
+                    maMH += "0";
+                }
+                maMH += String.valueOf(so);
+            } catch (Exception e) {
+                maMH = "MH0001";
+            } 
+        }else{
+            maMH = ma;
+        }
+        return maMH;
+    }
 
     private void showMsg(String msg) {
         JOptionPane.showMessageDialog(null, msg);
@@ -511,13 +537,14 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
                     loHangService.insertLohang(loHang);
 
 ////insert and update sp
-                    isNewSP.forEach((sp, isInsert) -> {
-                        if (isInsert) {
-                            matHangService.addMatHang(sp);
-                        } else {
-                            matHangService.updateMatHang(sp);
-                        }
-                    });
+                isNewSP.forEach((sp,isInsert) ->{
+                    if(isInsert){
+                        matHangService.addMatHang(sp);
+                    }else{
+//                        sp.setsLTonKho(sp.getsLTonKho());
+                        matHangService.updateMatHang(sp);
+                    }
+                });
 //insert ct nhap
                     loHang.getDsChiTietNhapHang().forEach(ct -> {
                         chiTietNhapHangService.addChiTietNhapHang(ct);
@@ -544,18 +571,21 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
                 MatHang matHang;
 
                 if (cbSpMoi.isSelected()) {
-                    String maMatHang = matHangService.getLastMatHang();
+                    String maMatHang = getLastNew(matHangService.getLastMatHang());
+                    System.out.println(maMatHang);
                     tenMatHang = pnlSPMoi.getTenSanPhamMoi();
                     matHang = new MatHang(maMatHang, pnlSPMoi.getTenSanPhamMoi(), loaiDichVu, soLuong, giaBan);
                     isNewSP.put(matHang, true);
                 } else {
                     tenMatHang = pnlSPMoi.getTenSanPhamCu();
                     String maMatHang = pnlSPMoi.getMaSanPhamCu();
-                    matHang = new MatHang(maMatHang, tenMatHang, loaiDichVu, soLuong, giaBan);
-                    isNewSP.put(matHang, false);
+                    MatHang cu = matHangService.getMatHang(maMatHang);
+                    matHang = new MatHang(maMatHang,tenMatHang, loaiDichVu,cu.getsLTonKho()+soLuong, cu.getDonGia() > giaBan ? cu.getDonGia() : giaBan );
+                    
+                    isNewSP.put(matHang,false);
                 }
                 Ma.add(matHang.getMaMatHang());
-                
+
                 loHang.themCT_NhapHang(matHang, soLuong, giaNhap);
 
                 table.addRow(new Object[]{new ModelObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()),

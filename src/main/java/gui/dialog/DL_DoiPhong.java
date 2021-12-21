@@ -80,7 +80,7 @@ public class DL_DoiPhong extends javax.swing.JDialog implements ActionListener {
                 hoaDon.setDonGiaPhongCu(hoaDon.getDonGiaPhongCu() + hoaDon.getDonGiaPhong());
                 hoaDon.setPhong(phong);
                 hoaDon.setThoiGianBatDau(new Date());
-                hoaDon.setThoiGianKetThuc(new Date());
+//                hoaDon.setThoiGianKetThuc(new Date());
                 if(hoaDonService.finishHoaDon(hoaDon)) {
                     JOptionPane.showMessageDialog(rootPane, "Đổi phòng thành công!");
                 } else {

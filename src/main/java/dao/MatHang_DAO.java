@@ -165,6 +165,7 @@ public class MatHang_DAO implements MatHangService {
         
         switch (type) {
             case 0:
+                sql = "select * from MatHang as mh join LoaiDichVu as ldv on mh.maLoaiDichVu = ldv.maLoaiDichVu where ldv.tenLoaiDichVu like N'%"+textFind+"%' or tenMatHang like N'%"+textFind+"%'order by ldv.maLoaiDichVu";
                 break;
             case 1:
                 sql = "select * from MatHang where tenMatHang like N'%"+textFind+"%' order by maLoaiDichVu";
