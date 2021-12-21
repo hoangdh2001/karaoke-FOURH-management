@@ -3,7 +3,9 @@ package entity;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-
+/**
+ * @author Bùi Quang Hữu
+ */
 @Embeddable
 public class ChiTietNhapHang_PK implements Serializable {
 	/**

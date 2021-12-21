@@ -102,6 +102,7 @@ public class DL_TiepNhanDatPhong extends javax.swing.JDialog {
     private void initUpdate() {
         if (phieuDatPhong != null) {
             btnDat.setText("Chỉnh sửa");
+            setTitle("Sửa phiếu đặt phòng");
             txtMaPhieu.setText(phieuDatPhong.getMaPhieuDat());
             txtTenKhachHang.setText(phieuDatPhong.getKhachHang().getTenKhachHang());
             txtCCCD.setText(phieuDatPhong.getKhachHang().getCanCuocCD());

@@ -1,7 +1,3 @@
-/**
- * Entity CaLam có các thuộc tính xác định khoảng thời gian làm việc của
- * NhanVien
- */
 package entity;
 
 import java.util.List;
@@ -11,7 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-
+/**
+ * @author Nguyễn Thị Hảo
+ */
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getCaLams", query = "select cl from CaLam cl")

@@ -13,7 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-
+/**
+ * @author Nguyễn Hưng
+ */
 @Entity
 @NamedQueries({
         @NamedQuery(name = "getDSNhanVien", query = "select nv from NhanVien nv")

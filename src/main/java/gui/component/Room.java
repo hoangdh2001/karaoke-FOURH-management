@@ -92,13 +92,7 @@ public class Room extends PanelShadow {
         mniKhachVaoHat = new JMenuItem("Khách vào hát");
         mniKhachVaoHat.setIconTextGap(15);
         mniKhachVaoHat.setIcon(new ImageIcon(getClass().getResource("/icon/key.png")));
-        mniKhachVaoHat.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setHoaDon(event.addBtnThueEvent(phong));
-                checkTrangThai();
-            }
-        });
+        
         mniThanhToan = new JMenuItem("Thanh toán");
         mniThanhToan.setIcon(new ImageIcon(getClass().getResource("/icon/payment.png")));
         mniThanhToan.setIconTextGap(15);
@@ -188,6 +182,9 @@ public class Room extends PanelShadow {
         }
         for (ActionListener actionListener : mniDatPhong.getActionListeners()) {
             mniDatPhong.removeActionListener(actionListener);
+        }
+        for (ActionListener actionListener : mniKhachVaoHat.getActionListeners()) {
+            mniKhachVaoHat.removeActionListener(actionListener);
         }
     }
 
@@ -324,6 +321,14 @@ public class Room extends PanelShadow {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 event.addBtnDatPhongEvent(phong);
+                checkTrangThai();
+            }
+        });
+        
+        mniKhachVaoHat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setHoaDon(event.addBtnThueEvent(phong));
                 checkTrangThai();
             }
         });

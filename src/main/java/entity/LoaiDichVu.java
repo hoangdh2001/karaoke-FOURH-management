@@ -6,7 +6,9 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
+/**
+ * @author Nguyễn Thị Hảo
+ */
 @Entity
 @Table(name = "LoaiDichVu")
 @NamedQueries({

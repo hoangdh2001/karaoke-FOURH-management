@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package gui;
 
 import dao.MatHang_DAO;
@@ -36,10 +32,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import service.MatHangService;
 
-/**
- *
- * @author 84975
- */
 public class GD_XemMatHang extends javax.swing.JPanel {
 
     private JTextField txtNhap;

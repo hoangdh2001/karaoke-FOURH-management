@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+/**
+ * @author Đỗ Huy Hoàng
+ */
 @Embeddable
 public class ChiTietHoaDon_PK implements Serializable {
 

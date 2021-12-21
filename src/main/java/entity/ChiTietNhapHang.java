@@ -1,7 +1,3 @@
-/**
- * Các thông tin chi tiết của lô hàng bao gồm mặt hàng nhập, số lượng,
- * giá nhập, thành tiền.
- */
 package entity;
 
 import javax.persistence.Column;
@@ -10,7 +6,9 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+/**
+ * @author Bùi Quang Hữu
+ */
 @Entity
 @IdClass(ChiTietNhapHang_PK.class)
 public class ChiTietNhapHang {

@@ -1,7 +1,9 @@
 package entity;
 
 import java.awt.Color;
-        
+/**
+ * @author Đỗ Huy Hoàng
+ */
 public enum TrangThaiHoaDon {
     DANG_XU_LY("Đang xử lý", Color.BLUE),
     HOAN_THANH("Hoàn thành", Color.YELLOW),

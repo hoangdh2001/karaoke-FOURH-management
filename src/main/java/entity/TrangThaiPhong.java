@@ -2,6 +2,9 @@ package entity;
 
 import java.awt.Color;
 
+/**
+ * @author Nguyễn Hưng
+ */
 public enum TrangThaiPhong {
     
     TRONG ("Trống", new Color(0, 166, 90)),

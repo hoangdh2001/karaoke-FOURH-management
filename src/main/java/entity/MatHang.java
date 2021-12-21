@@ -9,7 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
+/**
+ * @author Bùi Quang Hữu
+ */
 @Entity
 @Table(name = "MatHang")
 @NamedQueries({

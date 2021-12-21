@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +43,7 @@ public class GD_DanhSachPhong extends JPanel {
 
     private final Phong_DAO phong_DAO;
     private final LoaiPhong_DAO loaiPhong_DAO;
+    private final DecimalFormat df = new DecimalFormat("#,##0");
     private EventAction eventAction;
     private JTextField txtTenPhong;
     private DefaultComboBoxModel<Object> loaiphongModel;
@@ -207,6 +209,7 @@ public class GD_DanhSachPhong extends JPanel {
                             phong.getTang(),
                             phong.getTrangThai(),
                             phong.getLoaiPhong().getTenLoaiPhong(),
+                            df.format(phong.getLoaiPhong().getGiaPhong()),
                             new ModelAction(phong, eventAction)});
                     }
                 }
@@ -283,7 +286,7 @@ public class GD_DanhSachPhong extends JPanel {
         int soLuongPhong = phong_DAO.getSoLuongPhong(tenPhong, loaiPhong);
         pnlPage.init(soLuongPhong % 20 == 0 ? soLuongPhong / 20 : (soLuongPhong / 20) + 1);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -325,14 +328,14 @@ public class GD_DanhSachPhong extends JPanel {
 
             },
             new String [] {
-                "", "Mã phòng", "Tên phòng", "Tầng", "Trạng thái", "Loại phòng", ""
+                "", "Mã phòng", "Tên phòng", "Tầng", "Trạng thái", "Loại phòng", "Giá phòng(VND)", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, true
+                false, false, false, false, false, true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -356,13 +359,14 @@ public class GD_DanhSachPhong extends JPanel {
             table.getColumnModel().getColumn(1).setResizable(false);
             table.getColumnModel().getColumn(1).setPreferredWidth(60);
             table.getColumnModel().getColumn(2).setResizable(false);
-            table.getColumnModel().getColumn(2).setPreferredWidth(200);
+            table.getColumnModel().getColumn(2).setPreferredWidth(150);
             table.getColumnModel().getColumn(3).setResizable(false);
             table.getColumnModel().getColumn(4).setResizable(false);
             table.getColumnModel().getColumn(4).setPreferredWidth(150);
             table.getColumnModel().getColumn(5).setResizable(false);
             table.getColumnModel().getColumn(6).setResizable(false);
-            table.getColumnModel().getColumn(6).setPreferredWidth(60);
+            table.getColumnModel().getColumn(7).setResizable(false);
+            table.getColumnModel().getColumn(7).setPreferredWidth(60);
         }
 
         pnlBottom.add(sp, java.awt.BorderLayout.CENTER);

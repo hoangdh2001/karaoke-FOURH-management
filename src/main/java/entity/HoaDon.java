@@ -1,7 +1,5 @@
 package entity;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.transaction.Transactional;
-
+/**
+ * @author Đỗ Huy Hoàng
+ */
 @Entity
 @Transactional
 public class HoaDon {
@@ -84,7 +84,7 @@ public class HoaDon {
         this.nhanVien = nhanVien;
         this.thoiGianBatDau = new Date();
         this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
-        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.dsChiTietHoaDon = new ArrayList<>();
         this.gioHat = getGioHat();
         this.donGiaPhong = getDonGiaPhong();
         this.tongTienMatHang = getTongTienMatHang();
@@ -98,7 +98,7 @@ public class HoaDon {
     public HoaDon() {
         this.thoiGianBatDau = new Date();
         this.trangThai = TrangThaiHoaDon.DANG_XU_LY;
-        this.dsChiTietHoaDon = new ArrayList<ChiTietHoaDon>();
+        this.dsChiTietHoaDon = new ArrayList<>();
         this.gioHat = getGioHat();
         this.donGiaPhong = getDonGiaPhong();
         this.tongTienMatHang = getTongTienMatHang();
@@ -109,6 +109,7 @@ public class HoaDon {
     /**
      * @param matHang
      * @param soLuong
+     * @throws java.lang.Exception
      */
     public void themCT_HoaDon(MatHang matHang, int soLuong) throws Exception {
         ChiTietHoaDon newChiTietHoaDon = new ChiTietHoaDon(this, matHang, soLuong);

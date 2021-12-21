@@ -316,7 +316,7 @@ public class DL_ThanhToan extends javax.swing.JDialog {
         txtChietKhau = new gui.swing.textfield.MyTextFieldPerUnit();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("TIếp nhận thuê phòng");
+        setTitle("Thanh toán");
         setModal(true);
         setResizable(false);
 

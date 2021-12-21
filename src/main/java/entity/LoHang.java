@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
+/**
+ * @author Bùi Quang Hữu
+ */
 @Entity
-public final class LoHang {
+public class LoHang {
 
     @Id
     private String maLoHang;

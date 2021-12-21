@@ -1,7 +1,3 @@
-/**
- * ChiTietHoaDon bao gồm các thông tin chi tiet hóa đơn: thông tin măt
- * hàng, số lượng sản phẩm, thành tiền.
- */
 package entity;
 
 import java.util.Objects;
@@ -14,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
+/**
+ * @author Đỗ Huy Hoàng
+ */
 @Entity
 @IdClass(ChiTietHoaDon_PK.class)
 @NamedQueries({

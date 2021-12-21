@@ -48,6 +48,10 @@ import gui.swing.event.EventSelectedRow;
 import gui.swing.event.EventShowInfoOver;
 import javax.swing.JOptionPane;
 import gui.component.Header;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GD_Chinh extends JFrame {
     
@@ -165,6 +169,12 @@ public class GD_Chinh extends JFrame {
                     new DL_ThongTinNhanVien(GD_Chinh.this, true).setVisible(true);
                 } else if(subMenuIndex == 1) {
                     new DL_DoiMatKhau(GD_Chinh.this).setVisible(true);
+                } else if(subMenuIndex == 2){
+                    try {
+                        Application.openWebpage(new URL("https://nguyenhung-hub.github.io/user-manual-karaokeFourH/"));
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(GD_Chinh.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else if (subMenuIndex == 3) {
                     if(JOptionPane.showConfirmDialog(rootPane, "Bạn có đồng ý đăng xuất!", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         FRAME.setVisible(true);

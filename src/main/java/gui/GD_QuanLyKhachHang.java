@@ -23,10 +23,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import service.KhachHangService;
 
-/**
- *
- * @author Hao
- */
 public class GD_QuanLyKhachHang extends javax.swing.JPanel implements ActionListener, KeyListener{
     List<KhachHang> dsKhachHang ;
     private KhachHangService khachHangService;

@@ -2,6 +2,9 @@ package entity;
 
 import java.awt.Color;
 
+/**
+ * @author Nguyễn Thị Hảo
+ */
 public enum TrangThaiPhieuDat {
     DANG_DOI ("Đang đợi", new Color(0, 166, 90)),
     DA_TIEP_NHAN ("Đã tiếp nhận", Color.BLUE),
@@ -16,15 +19,6 @@ public enum TrangThaiPhieuDat {
         this.statusColor = statusColor;
     }
     
-//    public static TrangThaiPhieuDat getTrangThaiPhieuDatByTrangThai(String trangThai) {
-//       for (TrangThaiPhieuDat trangThaiPhieuDat : TrangThaiPhieuDat.values()) {
-//           if (trangThaiPhieuDat.trangThai.equals(trangThai)) {
-//               return trangThaiPhieuDat;
-//           }
-//       }
-//       return null;
-//   }
-
     public String getTrangThai() {
         return trangThai;
     }  

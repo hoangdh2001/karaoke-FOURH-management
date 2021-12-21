@@ -2,7 +2,9 @@ package entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
+/**
+ * @author Nguyễn Hưng
+ */
 @Embeddable
 public class DiaChi {
     private String soNha;

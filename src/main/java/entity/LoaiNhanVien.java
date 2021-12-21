@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-
+/**
+ * @author Nguyễn Hưng
+ */
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getLoaiNhanViens", query = "select lnv from LoaiNhanVien lnv")

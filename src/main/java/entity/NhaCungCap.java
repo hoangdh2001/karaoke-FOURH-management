@@ -4,7 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
+/**
+ * @author Bùi Quang Hữu
+ */
 @Entity
 public class NhaCungCap {
 

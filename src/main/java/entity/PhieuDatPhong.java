@@ -11,7 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-
+/**
+ * @author Nguyễn Thị Hảo
+ */
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getDSPhieuDatPhong", query = "select p from PhieuDatPhong p")

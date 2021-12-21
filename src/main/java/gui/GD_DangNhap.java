@@ -13,8 +13,6 @@ import java.awt.Component;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import service.NhanVienService;
 
 public class GD_DangNhap extends javax.swing.JFrame {

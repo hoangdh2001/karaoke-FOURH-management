@@ -36,8 +36,6 @@ import net.miginfocom.swing.MigLayout;
 import gui.swing.event.EventShowInfoOver;
 import gui.swing.event.EventTabSelected;
 import gui.swing.textfield.MyTextFieldFlatlaf;
-import java.io.File;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -52,10 +50,9 @@ import service.PhongService;
 public class GD_SoDoPhongHat extends javax.swing.JPanel {
 
     private PanelMap panelMap;
-    private PhongService phongService;
-    private LoaiPhongService loaiPhongService;
+    private final PhongService phongService;
+    private final LoaiPhongService loaiPhongService;
     private DefaultComboBoxModel<Object> cbLoaiPhongModel;
-    private DefaultComboBoxModel<TrangThaiPhong> cbTrangThaiModel;
     private MyTextField txtSearch;
     private MyTextFieldFlatlaf txtTenPhong;
     private JComboBox<Object> cbLoaiPhong;
@@ -187,7 +184,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 popupMenu.show(open, 0, open.getHeight());
-                popupMenu.setPopupSize(popupMenu.getWidth(), 90);
+                popupMenu.setPopupSize(popupMenu.getWidth(), 60);
             }
         });
 
@@ -260,6 +257,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
             public HoaDon addBtnThueEvent(Phong phong) {
                 List<PhieuDatPhong> dsPhieuDatPhong = new PhieuDatPhong_DAO().getDsPhieuDatByPhong(phong.getMaPhong());
                 if (dsPhieuDatPhong.isEmpty()) {
+                    System.out.println("if");
                     try {
                         DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);
                         dlDialog.setVisible(true);
@@ -269,6 +267,7 @@ public class GD_SoDoPhongHat extends javax.swing.JPanel {
                         Logger.getLogger(GD_SoDoPhongHat.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
+                    System.out.println("else");
                     if (JOptionPane.showConfirmDialog(null, "Còn khoảng hơn 2 tiếng sẽ có người đặt bạn có đồng ý cho thuê?", "Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         try {
                             DL_TiepNhanThuePhong dlDialog = new DL_TiepNhanThuePhong(Application.login, phong, GD_Chinh.NHAN_VIEN);

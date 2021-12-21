@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * @author Nguyễn Hưng
+ */
 @Entity
 @Table(name = "Phong")
 public class Phong {

@@ -36,6 +36,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import gui.swing.model.ModelObjectComboBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.ChiTietNhapHangService;
@@ -68,7 +70,7 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
 
     private JCheckBox cbSpMoi;
 
-    private List<Boolean> isNew;
+    private List<String> Ma;
 
     private Map<MatHang, Boolean> isNewSP;
 
@@ -270,7 +272,7 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
     public void initDao() {
         isNewSP = new HashMap<>();
 
-        isNew = new ArrayList<>();
+        Ma = new ArrayList<>();
 
         loadNCC();
 
@@ -303,6 +305,13 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
                 } else {
                     pnlSPMoi.setComboboxItem("");
                 }
+            }
+        });
+        
+        table.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e) {
+                if (e.getSource().equals(table))
+		removeOrderItem(e.getButton(), e.getClickCount());
             }
         });
 
@@ -587,6 +596,24 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
         }
 
     }
+    
+        private void removeOrderItem(int mouseClick, int clickCount) {
+		int row = table.getSelectedRow();
+		if (row == -1)
+			return;
+                String maMH = Ma.get(row);
+		if (mouseClick == 3 && clickCount == 1) {
+			int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn hủy nhập sản phẩm này?", "Xác nhận",
+					JOptionPane.YES_NO_OPTION);
+			if (confirm == JOptionPane.YES_OPTION) {
+                                
+                                MatHang matHang = new MatHang(maMH, "r", new LoaiDichVu(), 0, 0);
+                                isNewSP.remove(matHang);
+				((DefaultTableModel)table.getModel()).removeRow(row);
+			}
+		}
+	}
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
