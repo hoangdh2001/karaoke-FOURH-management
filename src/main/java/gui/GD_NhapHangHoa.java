@@ -307,11 +307,12 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
                 }
             }
         });
-        
-        table.addMouseListener(new MouseAdapter(){
+
+        table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getSource().equals(table))
-		removeOrderItem(e.getButton(), e.getClickCount());
+                if (e.getSource().equals(table)) {
+                    removeOrderItem(e.getButton(), e.getClickCount());
+                }
             }
         });
 
@@ -553,7 +554,8 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
                     matHang = new MatHang(maMatHang, tenMatHang, loaiDichVu, soLuong, giaBan);
                     isNewSP.put(matHang, false);
                 }
-
+                Ma.add(matHang.getMaMatHang());
+                
                 loHang.themCT_NhapHang(matHang, soLuong, giaNhap);
 
                 table.addRow(new Object[]{new ModelObjectComboBox(matHang.getTenMatHang(), matHang.getMaMatHang()),
@@ -596,24 +598,24 @@ public class GD_NhapHangHoa extends javax.swing.JPanel {
         }
 
     }
-    
-        private void removeOrderItem(int mouseClick, int clickCount) {
-		int row = table.getSelectedRow();
-		if (row == -1)
-			return;
-                String maMH = Ma.get(row);
-		if (mouseClick == 3 && clickCount == 1) {
-			int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn hủy nhập sản phẩm này?", "Xác nhận",
-					JOptionPane.YES_NO_OPTION);
-			if (confirm == JOptionPane.YES_OPTION) {
-                                
-                                MatHang matHang = new MatHang(maMH, "r", new LoaiDichVu(), 0, 0);
-                                isNewSP.remove(matHang);
-				((DefaultTableModel)table.getModel()).removeRow(row);
-			}
-		}
-	}
 
+    private void removeOrderItem(int mouseClick, int clickCount) {
+        int row = table.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
+        String maMH = Ma.get(row);
+        if (mouseClick == 3 && clickCount == 1) {
+            int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn hủy nhập sản phẩm này?", "Xác nhận",
+                    JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+
+                MatHang matHang = new MatHang(maMH, "r", new LoaiDichVu(), 0, 0);
+                isNewSP.remove(matHang);
+                ((DefaultTableModel) table.getModel()).removeRow(row);
+            }
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
