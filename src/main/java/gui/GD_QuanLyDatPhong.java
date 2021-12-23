@@ -5,6 +5,7 @@ import dao.PhieuDatPhong_DAO;
 import dao.Phong_DAO;
 import entity.PhieuDatPhong;
 import entity.TrangThaiPhieuDat;
+import entity.TrangThaiPhong;
 import gui.dialog.DL_TiepNhanDatPhong;
 import gui.swing.graphics.ShadowType;
 import gui.swing.button.Button;
@@ -37,6 +38,8 @@ import gui.swing.textfield.MyTextFieldFlatlaf;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import service.PhieuDatPhongService;
@@ -203,15 +206,20 @@ public class GD_QuanLyDatPhong extends javax.swing.JPanel implements ActionListe
                 PhieuDatPhong phieu = phieuDatPhongService.getPhieuDatPhong(maPhieu);
                 if (phieu.getTrangThai() == TrangThaiPhieuDat.DANG_DOI) {
                     if (JOptionPane.showConfirmDialog(GD_QuanLyDatPhong.this, "Bạn có chắc muốn hủy phiếu " + phieu.getMaPhieuDat() + " không?", "Delete", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        phieu.setTrangThai(TrangThaiPhieuDat.DA_HUY);
-                        if (phieuDatPhongService.capNhatPhieuDatPhong(phieu)) {
-                            JOptionPane.showMessageDialog(GD_QuanLyDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
-                            dsPhieu = phieuDatPhongService.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
-                            xoaDuLieu();
-                            loadPage();
-                            taiLaiDuLieu(dsPhieu);
-                        } else {
-                            JOptionPane.showMessageDialog(GD_QuanLyDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " hủy thất bại.");
+                        try {
+                            phieu.setTrangThai(TrangThaiPhieuDat.DA_HUY);
+                            phieu.getPhong().setTrangThai(TrangThaiPhong.TRONG);
+                            if (phieuDatPhongService.capNhatPhieuDatPhong(phieu) && new Phong_DAO().updatePhong(phieu.getPhong())) {
+                                JOptionPane.showMessageDialog(GD_QuanLyDatPhong.this, "Bạn đã hủy thành công phiếu " + phieu.getMaPhieuDat());
+                                dsPhieu = phieuDatPhongService.getDsPhieuDatPhong(pnlPage.getCurrentIndex());
+                                xoaDuLieu();
+                                loadPage();
+                                taiLaiDuLieu(dsPhieu);
+                            } else {
+                                JOptionPane.showMessageDialog(GD_QuanLyDatPhong.this, "Phiếu " + phieu.getMaPhieuDat() + " hủy thất bại.");
+                            }
+                        } catch (Exception ex) {
+                            Logger.getLogger(GD_QuanLyDatPhong.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 } else {

@@ -71,7 +71,7 @@ public class PanelLogin extends javax.swing.JLayeredPane {
      * Xây dựng giao diện login
      */
     private void buildLogin() {
-        login.setLayout(new MigLayout("wrap", "push[center]push", "push[]40[]10[]10[]25[]push"));
+        login.setLayout(new MigLayout("wrap", "push[center]push", "push[]40[]10[]10[]25[]10[]push"));
 
         JLabel label = new JLabel("Đăng nhập");
         label.setFont(new Font("sansserif", Font.BOLD, 24));
@@ -129,6 +129,18 @@ public class PanelLogin extends javax.swing.JLayeredPane {
             }
         });
         login.add(loginBtn, "w 40%, h 40!");
+        
+        Button exitBtn = new Button("Thoát", true);
+        exitBtn.setBackground(new Color(54, 88, 153));
+        exitBtn.setFont(new Font("Sansserif", Font.BOLD, 12));
+        exitBtn.setForeground(Color.WHITE);
+        exitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                System.exit(0);
+            }
+        });
+        login.add(exitBtn, "w 40%, h 40!");
     }
 
     /**

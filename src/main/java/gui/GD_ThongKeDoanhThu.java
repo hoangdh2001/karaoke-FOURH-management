@@ -10,8 +10,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -293,7 +296,11 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
                     HoaDon hd = hoaDons.get(rows);
                     row.createCell(0).setCellValue(hd.getMaHoaDon());
                     row.createCell(1).setCellValue(hd.getNgayLapHoaDon().toString());
-                    row.createCell(2).setCellValue(hd.getKhachHang().getTenKhachHang());
+                    if(hd.getKhachHang() != null) {
+                        row.createCell(2).setCellValue(hd.getKhachHang().getTenKhachHang());
+                    } else {
+                        row.createCell(2).setCellValue("Không có thông tin khách hàng");
+                    }
                     row.createCell(3).setCellValue(hd.getNhanVien().getTenNhanVien());
                     row.createCell(4).setCellValue(hd.getTongHoaDon());
 
@@ -380,7 +387,9 @@ public class GD_ThongKeDoanhThu extends javax.swing.JPanel {
             showMsg("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
             return false;
         }
-
+        dscBatDau.addKeyListener(new KeyAdapter() {
+            
+        });
         return true;
     }
 
